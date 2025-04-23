@@ -6,14 +6,16 @@ void main(List<String> arguments) {
     Card(child: ListView(items: ["1234567890", "234", "4567"])),
 
     onKey: (key) {
-      switch (key) {
+      switch (key.label) {
         case "q":
           Radartui.exitApp();
           break;
-        case "\t":
-          // FocusManager.instance.focusNext();
-          break;
+        // case "\t":
+        //   FocusManager.instance.focusNext();
+        //   break;
       }
+      print("example.onKey :${key.type}");
+      FocusManager.instance.onKey(key);
     },
   );
 }
