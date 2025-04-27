@@ -1,18 +1,7 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
+import 'package:radartui/enum/alignment.dart';
 import 'package:radartui/widget/widget.dart';
-
-enum Alignment {
-  topLeft,
-  topCenter,
-  topRight,
-  centerLeft,
-  center,
-  centerRight,
-  bottomLeft,
-  bottomCenter,
-  bottomRight,
-}
 
 class Align extends Widget {
   Align({required this.alignment, required this.child});

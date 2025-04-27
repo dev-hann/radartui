@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/enum/key_type.dart';
+import 'package:radartui/logger/file_logger.dart';
 import 'package:radartui/logger/logger.dart';
 import 'package:radartui/model/key.dart';
 import 'package:radartui/widget/widget.dart';
@@ -15,8 +16,13 @@ export 'logger/logger.dart';
 class Radartui {
   static final canvas = Canvas();
 
-  static Future runApp(Widget app, {required Function(Key key) onKey}) async {
-    await Logger.run(
+  static Future runApp(
+    Widget app, {
+    required Function(Key key) onKey,
+    Logger? logger,
+  }) async {
+    logger ??= FileLogger();
+    await logger.run(
       callback: () {
         canvas.init();
         app.initState();

@@ -1,5 +1,6 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
+import 'package:radartui/model/edge_insets.dart';
 import 'package:radartui/widget/widget.dart';
 
 class Padding extends Widget {

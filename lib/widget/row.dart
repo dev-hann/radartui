@@ -2,10 +2,8 @@ import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/widget/widget.dart';
 
-class Row extends Widget {
-  Row({required this.children});
-
-  final List<Widget> children;
+class Row extends MultiChildWidget {
+  Row({required super.children});
 
   @override
   void render(Canvas canvas, Rect rect) {

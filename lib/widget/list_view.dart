@@ -3,27 +3,23 @@ import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/canvas/style.dart';
 import 'package:radartui/enum/key_type.dart';
 import 'package:radartui/model/key.dart';
-import 'package:radartui/widget/focus_manager.dart';
+import 'package:radartui/widget/focusable_mixin.dart';
 import 'package:radartui/widget/widget.dart';
 
-class ListView extends FocusableWidget {
+class ListView extends Widget with FocusableMixin {
   ListView({
     required this.items,
     this.selectedIndex = 0,
     this.style = const Style(),
-    this.highlightStyle = const Style(bold: true, underLine: true),
+    this.selectedPrefix = "➤ ",
+    this.highlightStyle = const Style(bold: true),
   });
 
   final List<String> items;
   int selectedIndex;
   final Style style;
+  final String selectedPrefix;
   final Style highlightStyle;
-
-  @override
-  void initState() {
-    super.initState();
-    FocusManager.instance.requestFocus(focusNode);
-  }
 
   @override
   void render(Canvas canvas, Rect rect) {
@@ -37,7 +33,7 @@ class ListView extends FocusableWidget {
 
       canvas.move(rect.x, rect.y + (i - startIndex));
       canvas.drawChar(
-        (isSelected ? "➤ " : "  ") + line.padRight(rect.width - 2),
+        (isSelected ? selectedPrefix : "  ") + line.padRight(rect.width - 2),
         style: isSelected ? highlightStyle : style,
       );
     }
@@ -65,7 +61,6 @@ class ListView extends FocusableWidget {
 
   @override
   void onKey(Key key) {
-    print("ListView.onKey : ${key.type}");
     if (key.type == KeyType.up) {
       selectedIndex = (selectedIndex - 1).clamp(0, items.length - 1);
     }

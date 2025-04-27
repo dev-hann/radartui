@@ -1,63 +1,126 @@
-
-Radartui: initState FocusableWidget
-Radartui: init!!
-Radartui: init!!
-Radartui: FocusManager: onKey
-Radartui: FocusManager: onKey
-Radartui: FocusManager: onKey
-Radartui: FocusManager: onKey
-Radartui: FocusManager: onKey
-Radartui: FocusManager: onKey
-Radartui: FocusManager: onKey
-Radartui: init!!
-Radartui: 646129653
-Radartui: FocusManager: onKey
-Radartui: 646129653
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: onKey: Key(KeyType.up, ↑)
+Radartui: onKey: Key(KeyType.tab, 	)
+Radartui: onKey: Key(KeyType.tab, 	)
+Radartui: onKey: Key(KeyType.right, →)
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: onKey: Key(KeyType.left, ←)
+Radartui: onKey: Key(KeyType.up, ↑)
+Radartui: onKey: Key(KeyType.right, →)
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: onKey: Key(KeyType.left, ←)
+Radartui: onKey: Key(KeyType.up, ↑)
+Radartui: onKey: Key(KeyType.right, →)
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: -1
+Radartui: 0
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: -1
+Radartui: 0
+Radartui: onKey: Key(KeyType.right, →)
+Radartui: -1
+Radartui: 0
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: -1
+Radartui: 0
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: -1
+Radartui: 0
+Radartui: onKey: Key(KeyType.right, →)
+Radartui: -1
+Radartui: 0
+Radartui: onKey: Key(KeyType.left, ←)
+Radartui: -1
+Radartui: 0
+Radartui: onKey: Key(KeyType.tab, 	)
+Radartui: -1
+Radartui: 0
+Radartui: SingleChildWidget initState
+Radartui: Instance of 'Card'
+Radartui: SingleChildWidget initState
+Radartui: Instance of 'Card'
+Radartui: SingleChildWidget initState
+Radartui: Instance of 'Row'
+Radartui: Instance of 'Card'
+Radartui: SingleChildWidget initState
+Radartui: Instance of 'Row'
+Radartui: Instance of 'Card'
+Radartui: SingleChildWidget initState
+Radartui: Instance of 'ListView'
+Radartui: initState
+Radartui: registerFocusNode: false
+Radartui: Instance of 'Card'
+Radartui: SingleChildWidget initState
+Radartui: Instance of 'ListView'
+Radartui: initState
+Radartui: registerFocusNode: false
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: 1
+Radartui: 2
+Radartui: 1
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 646129653
+Radartui: onKey: Key(KeyType.up, ↑)
+Radartui: 1
+Radartui: 2
+Radartui: 1
 Radartui: true
-Radartui: init!!
-Radartui: 277834212
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.tab, 	)
+Radartui: 0
+Radartui: 2
+Radartui: 0
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: 0
+Radartui: 2
+Radartui: 0
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: 0
+Radartui: 2
+Radartui: 0
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: 0
+Radartui: 2
+Radartui: 0
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: 0
+Radartui: 2
+Radartui: 0
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.up, ↑)
+Radartui: 0
+Radartui: 2
+Radartui: 0
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.up, ↑)
+Radartui: 0
+Radartui: 2
+Radartui: 0
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.up, ↑)
+Radartui: 0
+Radartui: 2
+Radartui: 0
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.tab, 	)
+Radartui: 1
+Radartui: 2
+Radartui: 1
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: 1
+Radartui: 2
+Radartui: 1
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.down, ↓)
+Radartui: 1
+Radartui: 2
+Radartui: 1
 Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
-Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
-Radartui: true
-Radartui: FocusManager: onKey
-Radartui: 277834212
+Radartui: onKey: Key(KeyType.tab, 	)
+Radartui: 0
+Radartui: 2
+Radartui: 0
 Radartui: true

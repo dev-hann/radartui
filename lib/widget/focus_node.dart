@@ -1,25 +1,25 @@
-import 'dart:async';
-
 import 'package:radartui/model/key.dart';
-import 'package:radartui/widget/focus_manager.dart';
 
 class FocusNode {
-  FocusNode() {
-    FocusManager.instance.registerFocusNode(this);
-  }
-
-  final keyStreamController = StreamController<Key>.broadcast();
   bool _focused = false;
 
   bool get isFocused => _focused;
+  final List<Function(Key)> _listeners = [];
 
   void requestFocus() => _focused = true;
   void unfocus() => _focused = false;
 
-  Stream<Key> get keyStream => keyStreamController.stream;
+  void addListener(Function(Key) listener) {
+    _listeners.add(listener);
+  }
 
-  void dispose() {
-    FocusManager.instance.unregisterFocusNode(this);
-    keyStreamController.close();
+  void removeListener(Function(Key) listener) {
+    _listeners.remove(listener);
+  }
+
+  void notifyListeners(Key key) {
+    for (final listener in _listeners) {
+      listener(key);
+    }
   }
 }
