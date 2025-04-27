@@ -1,6 +1,9 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/canvas/style.dart';
+import 'package:radartui/enum/key_type.dart';
+import 'package:radartui/model/key.dart';
+import 'package:radartui/widget/focus_manager.dart';
 import 'package:radartui/widget/widget.dart';
 
 class ListView extends FocusableWidget {
@@ -15,6 +18,12 @@ class ListView extends FocusableWidget {
   int selectedIndex;
   final Style style;
   final Style highlightStyle;
+
+  @override
+  void initState() {
+    super.initState();
+    FocusManager.instance.requestFocus(focusNode);
+  }
 
   @override
   void render(Canvas canvas, Rect rect) {
@@ -55,7 +64,13 @@ class ListView extends FocusableWidget {
   }
 
   @override
-  void onKey(String key) {
-    // TODO: implement onKeyDown
+  void onKey(Key key) {
+    print("ListView.onKey : ${key.type}");
+    if (key.type == KeyType.up) {
+      selectedIndex = (selectedIndex - 1).clamp(0, items.length - 1);
+    }
+    if (key.type == KeyType.down) {
+      selectedIndex = (selectedIndex + 1).clamp(0, items.length - 1);
+    }
   }
 }

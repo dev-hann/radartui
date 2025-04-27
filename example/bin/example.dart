@@ -3,7 +3,7 @@ import 'package:radartui/widget/focus_manager.dart';
 
 void main(List<String> arguments) {
   Radartui.runApp(
-    Card(child: ListView(items: ["1234567890", "234", "4567"])),
+    ListView(items: ["1234567890", "234", "4567"]),
 
     onKey: (key) {
       switch (key.label) {
@@ -14,7 +14,6 @@ void main(List<String> arguments) {
         //   FocusManager.instance.focusNext();
         //   break;
       }
-      print("example.onKey :${key.type}");
       FocusManager.instance.onKey(key);
     },
   );

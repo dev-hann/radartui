@@ -1,31 +1,63 @@
-focusManager.onKey :KeyType.left[Radartui] :  example.onKey :KeyType.down example.onKey :KeyType.down[Radartui] :  focusManager.onKey :KeyType.down focusManager.onKey :KeyType.down[Radartui] :  example.onKey :KeyType.right example.onKey :KeyType.right[Radartui] :  focusManager.onKey :KeyType.right focusManager.onKey :KeyType.right[Radartui] :  example.onKey :KeyType.down example.onKey :KeyType.down[Radartui] :  focusManager.onKey :KeyType.down focusManager.onKey :KeyType.down[Radartui] :  example.onKey :KeyType.left example.onKey :KeyType.left[Radartui] :  focusManager.onKey :KeyType.left focusManager.onKey :KeyType.left[Radartui] :  example.onKey :KeyType.down
-example.onKey :KeyType.down[Radartui] :  focusManager.onKey :KeyType.down
-focusManager.onKey :KeyType.down[Radartui] :  example.onKey :KeyType.left
-example.onKey :KeyType.left[Radartui] :  focusManager.onKey :KeyType.left
-focusManager.onKey :KeyType.left
-[Radartui] :  example.onKey :KeyType.left
-example.onKey :KeyType.left[Radartui] :  focusManager.onKey :KeyType.left
-focusManager.onKey :KeyType.left[Radartui] :  example.onKey :KeyType.down
-[Radartui] :  focusManager.onKey :KeyType.down
-[Radartui] :  example.onKey :KeyType.left
-[Radartui] :  focusManager.onKey :KeyType.left
-[Radartui] :  example.onKey :KeyType.right
-[Radartui] :  focusManager.onKey :KeyType.right
-[Radartui] :  example.onKey :KeyType.down
-[Radartui] :  focusManager.onKey :KeyType.down
-[Radartui] :  example.onKey :KeyType.left
-[Radartui] :  focusManager.onKey :KeyType.left
-[Radartui] :  example.onKey :KeyType.up
-[Radartui] :  focusManager.onKey :KeyType.up
-[Radartui] :  example.onKey :KeyType.right
-[Radartui] :  focusManager.onKey :KeyType.right
-[Radartui] :  example.onKey :KeyType.down
-[Radartui] :  focusManager.onKey :KeyType.down
-[Radartui] :  example.onKey :KeyType.down
-[Radartui] :  focusManager.onKey :KeyType.down
-Radartui: example.onKey :KeyType.right
-Radartui: focusManager.onKey :KeyType.right
-Radartui: example.onKey :KeyType.down
-Radartui: focusManager.onKey :KeyType.down
-Radartui: example.onKey :KeyType.left
-Radartui: focusManager.onKey :KeyType.left
+
+Radartui: initState FocusableWidget
+Radartui: init!!
+Radartui: init!!
+Radartui: FocusManager: onKey
+Radartui: FocusManager: onKey
+Radartui: FocusManager: onKey
+Radartui: FocusManager: onKey
+Radartui: FocusManager: onKey
+Radartui: FocusManager: onKey
+Radartui: FocusManager: onKey
+Radartui: init!!
+Radartui: 646129653
+Radartui: FocusManager: onKey
+Radartui: 646129653
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 646129653
+Radartui: true
+Radartui: init!!
+Radartui: 277834212
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true
+Radartui: FocusManager: onKey
+Radartui: 277834212
+Radartui: true

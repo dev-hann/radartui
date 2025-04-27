@@ -1,3 +1,4 @@
+import 'package:radartui/model/key.dart';
 import 'package:radartui/widget/focus_node.dart';
 
 class FocusManager {
@@ -13,6 +14,17 @@ class FocusManager {
 
   void unregisterFocusNode(FocusNode node) {
     _focusNodeList.remove(node);
+  }
+
+  void onKey(Key key) {
+    for (final node in _focusNodeList) {
+      if (node.isFocused) {
+        print("FocusManager: onKey");
+        print(node.hashCode);
+        print(node.keyStreamController.hasListener);
+        node.keyStreamController.add(key);
+      }
+    }
   }
 
   void requestFocus(FocusNode node) {

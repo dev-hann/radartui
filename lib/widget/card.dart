@@ -22,10 +22,8 @@ class EdgeInsets {
   final int bottom;
 }
 
-class Card extends Widget {
-  Card({required this.child});
-
-  final Widget child;
+class Card extends WithChildWidget {
+  Card({required super.child});
 
   @override
   void render(Canvas canvas, Rect rect) {
