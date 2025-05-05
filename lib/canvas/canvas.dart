@@ -52,7 +52,7 @@ class Canvas {
     stdout.write('\x1b[4${background.value}m');
   }
 
-  void _clearStyle() {
+  void clearStyle() {
     stdout.write('\x1b[0m');
   }
 
@@ -69,6 +69,6 @@ class Canvas {
       _updateStyle(style);
     }
     stdout.write(text);
-    _clearStyle();
+    clearStyle();
   }
 }

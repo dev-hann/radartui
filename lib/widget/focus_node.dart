@@ -3,7 +3,7 @@ import 'package:radartui/model/key.dart';
 class FocusNode {
   bool _focused = false;
 
-  bool get isFocused => _focused;
+  bool get hasFocus => _focused;
   final List<Function(Key)> _listeners = [];
 
   void requestFocus() => _focused = true;

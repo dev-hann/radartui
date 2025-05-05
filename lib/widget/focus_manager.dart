@@ -64,7 +64,7 @@ class FocusManager {
   void onKey(Key key) {
     if (_currentIndex == -1 || _focusNodeList.isEmpty) return;
     final node = _focusNodeList[_currentIndex];
-    if (node.isFocused) {
+    if (node.hasFocus) {
       node.notifyListeners(key);
     }
   }

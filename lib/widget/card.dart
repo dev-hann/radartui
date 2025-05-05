@@ -8,7 +8,7 @@ class Card extends SingleChildWidget {
   bool get _isChildFocused {
     if (child is FocusableMixin) {
       final focusableChild = child as FocusableMixin;
-      return focusableChild.focusNode.isFocused;
+      return focusableChild.focusNode.hasFocus;
     }
     return false;
   }
