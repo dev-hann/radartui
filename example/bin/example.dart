@@ -1,42 +1,19 @@
 import 'package:radartui/radartui.dart';
-import 'package:radartui/widget/expnaded.dart';
+import 'package:radartui/widget/button.dart';
+import 'package:radartui/widget/expanded.dart';
 import 'package:radartui/widget/focus_manager.dart';
 import 'package:radartui/widget/row.dart';
 import 'package:radartui/widget/text_field.dart';
+import 'package:radartui/widget/text_field_controller.dart';
+import 'package:radartui/view/view.dart';
 
 void main(List<String> arguments) {
   Radartui.runApp(
-    Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Card(
-                child: Card(
-                  child: ListView(items: ["1234567890", "234", "4567"]),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 8,
-              child: Card(
-                child: Card(
-                  child: ListView(items: ["1234567890", "234", "4567"]),
-                ),
-              ),
-            ),
-          ],
-        ),
-        Card(child: TextField()),
-      ],
-    ),
+    MyApp(),
     onKey: (key) {
       switch (key.label) {
         case "q":
-          if (key.ctrl) {
-            Radartui.exitApp();
-          }
+          Radartui.exitApp();
           break;
         case "\t": // 탭키 누르면
           FocusManager.instance.focusNext();
@@ -49,3 +26,38 @@ void main(List<String> arguments) {
     },
   );
 }
+
+class MyApp extends View {
+  final controller = TextEditingController(text: "Hello");
+  String text = "1234";
+  @override
+  Widget build() {
+    print("text: $text");
+    return Column(
+      children: [
+        Text(text),
+        Card(
+          child: Row(
+            children: [
+              TextField(controller: controller),
+              Button(
+                label: "Send",
+                onPressed: () {
+                  print(controller.text);
+                  text = controller.text;
+                  Future.microtask(() {
+                    update();
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
+element 생서해서 그쪽에서 중복되는값 체크할껏..
+https://chatgpt.com/c/6817250e-1b94-8006-a61f-aa4378a13fc9

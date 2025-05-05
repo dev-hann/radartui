@@ -1,374 +1,61 @@
-
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: Key(KeyType.char, i, ctrl=true, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.char, i, ctrl=true, alt=false, shift=false, meta=false)
 Radartui: 9
 Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 49
-Radartui: Key(KeyType.char, 1, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 50
-Radartui: Key(KeyType.char, 2, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 51
-Radartui: Key(KeyType.char, 3, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 52
-Radartui: Key(KeyType.char, 4, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.up, ↑, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.left, ←, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.left, ←, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.left, ←, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.left, ←, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.left, ←, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 97
-Radartui: Key(KeyType.char, a, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 115
-Radartui: Key(KeyType.char, s, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 100
-Radartui: Key(KeyType.char, d, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 102
-Radartui: Key(KeyType.char, f, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 96
-Radartui: Key(KeyType.char, `, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 96
-Radartui: Key(KeyType.char, `, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 49
-Radartui: Key(KeyType.char, 1, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 50
-Radartui: Key(KeyType.char, 2, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 51
-Radartui: Key(KeyType.char, 3, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 120
-Radartui: Key(KeyType.char, x, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 122
-Radartui: Key(KeyType.char, z, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 99
-Radartui: Key(KeyType.char, c, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 118
-Radartui: Key(KeyType.char, v, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 122
-Radartui: Key(KeyType.char, z, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 118
-Radartui: Key(KeyType.char, v, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.left, ←, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.left, ←, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.left, ←, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.delete, Del, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.delete, Del, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.delete, Del, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.delete, Del, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.delete, Del, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.left, ←, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.left, ←, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.left, ←, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.down, ↓, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.right, →, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: Hello
 Radartui: 113
 Radartui: Key(KeyType.char, q, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: 1234
+Radartui: text: 1234
+Radartui: children[i]: Text
+Radartui: children[i].shouldUpdate(oldWidget.children[i]): false
 Radartui: 9
 Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 113
-Radartui: Key(KeyType.char, q, ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: 1234
+Radartui: children[i]: Text
+Radartui: children[i].shouldUpdate(oldWidget.children[i]): false
 Radartui: 9
 Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: 1234
+Radartui: children[i]: Text
+Radartui: children[i].shouldUpdate(oldWidget.children[i]): false
 Radartui: 9
 Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: 1234
+Radartui: children[i]: Text
+Radartui: children[i].shouldUpdate(oldWidget.children[i]): false
 Radartui: 9
 Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.down, ↓, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.down, ↓, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.down, ↓, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.down, ↓, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.down, ↓, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.down, ↓, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.up, ↑, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 27
-Radartui: Key(KeyType.up, ↑, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 97
-Radartui: Key(KeyType.char, a, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 115
-Radartui: Key(KeyType.char, s, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 100
-Radartui: Key(KeyType.char, d, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 102
-Radartui: Key(KeyType.char, f, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 97
-Radartui: Key(KeyType.char, a, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 100
-Radartui: Key(KeyType.char, d, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 102
-Radartui: Key(KeyType.char, f, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 113
-Radartui: Key(KeyType.char, q, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 113
-Radartui: Key(KeyType.char, q, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 127
-Radartui: Key(KeyType.backspace, , ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 97
-Radartui: Key(KeyType.char, a, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 115
-Radartui: Key(KeyType.char, s, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 100
-Radartui: Key(KeyType.char, d, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 97
-Radartui: Key(KeyType.char, a, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 115
-Radartui: Key(KeyType.char, s, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 100
-Radartui: Key(KeyType.char, d, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 97
-Radartui: Key(KeyType.char, a, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 115
-Radartui: Key(KeyType.char, s, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 100
-Radartui: Key(KeyType.char, d, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 97
-Radartui: Key(KeyType.char, a, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 115
-Radartui: Key(KeyType.char, s, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 100
-Radartui: Key(KeyType.char, d, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 97
-Radartui: Key(KeyType.char, a, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 115
-Radartui: Key(KeyType.char, s, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 100
-Radartui: Key(KeyType.char, d, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 97
-Radartui: Key(KeyType.char, a, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 115
-Radartui: Key(KeyType.char, s, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 100
-Radartui: Key(KeyType.char, d, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 97
-Radartui: Key(KeyType.char, a, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 100
-Radartui: Key(KeyType.char, d, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 115
-Radartui: Key(KeyType.char, s, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 97
-Radartui: Key(KeyType.char, a, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 100
-Radartui: Key(KeyType.char, d, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 10
-Radartui: Key(KeyType.enter, 
-, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 113
-Radartui: Key(KeyType.char, q, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 119
-Radartui: Key(KeyType.char, w, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 101
-Radartui: Key(KeyType.char, e, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 113
-Radartui: Key(KeyType.char, q, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 119
-Radartui: Key(KeyType.char, w, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 101
-Radartui: Key(KeyType.char, e, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
-Radartui: 9
-Radartui: Key(KeyType.tab, 	, ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: 1234
+Radartui: children[i]: Text
+Radartui: children[i].shouldUpdate(oldWidget.children[i]): false
+Radartui: 227
+Radartui: Key(KeyType.char, ã, ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: 1234
+Radartui: children[i]: Text
+Radartui: children[i].shouldUpdate(oldWidget.children[i]): false
+Radartui: 133
+Radartui: Key(KeyType.char, , ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: 1234
+Radartui: children[i]: Text
+Radartui: children[i].shouldUpdate(oldWidget.children[i]): false
+Radartui: 130
+Radartui: Key(KeyType.char, , ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: 1234
+Radartui: children[i]: Text
+Radartui: children[i].shouldUpdate(oldWidget.children[i]): false
+Radartui: 227
+Radartui: Key(KeyType.char, ã, ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: 1234
+Radartui: children[i]: Text
+Radartui: children[i].shouldUpdate(oldWidget.children[i]): false
+Radartui: 133
+Radartui: Key(KeyType.char, , ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: 1234
+Radartui: children[i]: Text
+Radartui: children[i].shouldUpdate(oldWidget.children[i]): false
+Radartui: 130
+Radartui: Key(KeyType.char, , ctrl=false, alt=false, shift=false, meta=false)
+Radartui: text: 1234
+Radartui: children[i]: Text
+Radartui: children[i].shouldUpdate(oldWidget.children[i]): false
 Radartui: 113
 Radartui: Key(KeyType.char, q, ctrl=false, alt=false, shift=false, meta=false)
