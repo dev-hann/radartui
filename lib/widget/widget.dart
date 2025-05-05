@@ -7,12 +7,17 @@ export './card.dart';
 export './list_view.dart';
 
 abstract class Widget {
+  Widget({this.key});
+  final String? key;
+
   void render(Canvas canvs, Rect rect);
 
   int preferredHeight(int width);
 
-  void initState() {}
-  void dispose() {}
+  bool shouldUpdate(covariant Widget oldWidget);
+
+  void onMount() {}
+  void onUnmount() {}
 }
 
 abstract class SingleChildWidget extends Widget {
@@ -20,15 +25,18 @@ abstract class SingleChildWidget extends Widget {
   final Widget child;
 
   @override
-  void initState() {
-    super.initState();
-    child.initState();
+  void onMount() {
+    child.onMount();
   }
 
   @override
-  void dispose() {
-    child.dispose();
-    super.dispose();
+  void onUnmount() {
+    child.onUnmount();
+  }
+
+  @override
+  bool shouldUpdate(covariant SingleChildWidget oldWidget) {
+    return child.shouldUpdate(oldWidget.child);
   }
 }
 
@@ -37,17 +45,25 @@ abstract class MultiChildWidget extends Widget {
   final List<Widget> children;
 
   @override
-  void initState() {
-    super.initState();
+  bool shouldUpdate(covariant MultiChildWidget oldWidget) {
+    if (children.length != oldWidget.children.length) return false;
+    for (int i = 0; i < children.length; i++) {
+      if (!children[i].shouldUpdate(oldWidget.children[i])) return false;
+    }
+    return true;
+  }
+
+  @override
+  void onMount() {
     for (final child in children) {
-      child.initState();
+      child.onMount();
     }
   }
 
   @override
-  void dispose() {
+  void onUnmount() {
     for (final child in children) {
-      child.dispose();
+      child.onUnmount();
     }
   }
 }

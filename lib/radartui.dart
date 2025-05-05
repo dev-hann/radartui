@@ -25,7 +25,7 @@ class Radartui {
     await logger.run(
       callback: () {
         canvas.init();
-        app.initState();
+        app.onMount();
         while (true) {
           canvas.clear();
           app.render(

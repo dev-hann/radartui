@@ -1,7 +1,7 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/enum/axis.dart';
-import 'package:radartui/widget/expnaded.dart';
+import 'package:radartui/widget/expanded.dart';
 import 'package:radartui/widget/widget.dart';
 
 class Flex extends MultiChildWidget {

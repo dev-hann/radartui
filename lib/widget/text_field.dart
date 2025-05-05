@@ -4,43 +4,47 @@ import 'package:radartui/canvas/style.dart';
 import 'package:radartui/model/key.dart';
 import 'package:radartui/enum/key_type.dart';
 import 'package:radartui/widget/focusable_mixin.dart';
+import 'package:radartui/widget/text_field_controller.dart';
 import 'package:radartui/widget/widget.dart';
 
 class TextField extends Widget with FocusableMixin {
   TextField({
     this.hintText = '',
+    this.controller,
     this.style = const Style(),
     this.focusedStyle = const Style(bold: true, underLine: true),
+    this.onChanged,
+    this.onSubmitted,
   });
 
   final String hintText;
   final Style style;
   final Style focusedStyle;
+  final TextEditingController? controller;
+  final void Function(String)? onChanged;
+  final void Function(String)? onSubmitted;
 
-  String _text = '';
-  int _cursorIndex = 0;
+  late final _internalController =
+      controller ?? TextEditingController(); // 내부 컨트롤러
+
+  TextEditingController get _ctrl => _internalController;
 
   @override
   void render(Canvas canvas, Rect rect) {
     final hasFocus = focusNode.hasFocus;
-    final displayText = _text.isEmpty ? hintText : _text;
+    final displayText = _ctrl.text.isEmpty ? hintText : _ctrl.text;
+    final cursorIndex = _ctrl.cursorIndex.clamp(0, displayText.length);
 
-    String renderText;
-    if (hasFocus) {
-      // 커서를 표시
-      renderText =
-          '${displayText.substring(0, _cursorIndex)}|${displayText.substring(_cursorIndex)}';
-    } else {
-      renderText = displayText;
-    }
+    final renderText =
+        hasFocus
+            ? '${displayText.substring(0, cursorIndex)}|${displayText.substring(cursorIndex)}'
+            : displayText;
 
     canvas.move(rect.x, rect.y);
     canvas.setStyle(hasFocus ? focusedStyle : style);
-
     for (int i = 0; i < renderText.length; i++) {
       canvas.drawChar(renderText[i], style: hasFocus ? focusedStyle : style);
     }
-
     canvas.clearStyle();
   }
 
@@ -55,30 +59,35 @@ class TextField extends Widget with FocusableMixin {
       case KeyType.tab:
         break;
       case KeyType.char:
-        _text =
-            _text.substring(0, _cursorIndex) +
-            key.label +
-            _text.substring(_cursorIndex);
-        _cursorIndex++;
-        break;
-      case KeyType.backspace:
-        if (_cursorIndex > 0) {
-          _text =
-              _text.substring(0, _cursorIndex - 1) +
-              _text.substring(_cursorIndex);
-          _cursorIndex--;
+        if (!key.ctrl && !key.alt && !key.meta) {
+          _ctrl.insert(key.label);
+          onChanged?.call(_ctrl.text);
         }
         break;
+      case KeyType.backspace:
+        _ctrl.deleteBack();
+        onChanged?.call(_ctrl.text);
+        break;
       case KeyType.left:
-        if (_cursorIndex > 0) _cursorIndex--;
+        _ctrl.moveLeft();
         break;
       case KeyType.right:
-        if (_cursorIndex < _text.length) _cursorIndex++;
+        _ctrl.moveRight();
+        break;
+      case KeyType.enter:
+        onSubmitted?.call(_ctrl.text);
         break;
       default:
         break;
     }
   }
 
-  String get value => _text;
+  String get value => _ctrl.text;
+
+  @override
+  bool shouldUpdate(covariant TextField oldWidget) {
+    return _ctrl.text != oldWidget._ctrl.text ||
+        style != oldWidget.style ||
+        focusedStyle != oldWidget.focusedStyle;
+  }
 }

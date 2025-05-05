@@ -7,19 +7,19 @@ mixin FocusableMixin on Widget {
   final focusNode = FocusNode();
 
   @override
-  void initState() {
+  void onMount() {
     focusNode.addListener(onKey);
     FocusManager.instance.registerFocusNode(focusNode);
     FocusManager.instance.requestFocus(focusNode);
-    super.initState();
+    super.onMount();
   }
 
   void onKey(Key key);
 
   @override
-  void dispose() {
+  void onUnmount() {
     focusNode.removeListener(onKey);
     FocusManager.instance.unregisterFocusNode(focusNode);
-    super.dispose();
+    super.onUnmount();
   }
 }

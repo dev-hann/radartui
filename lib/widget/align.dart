@@ -57,4 +57,10 @@ class Align extends Widget {
   int preferredHeight(int width) {
     return child.preferredHeight(width);
   }
+
+  @override
+  bool shouldUpdate(covariant Align oldWidget) {
+    return alignment != oldWidget.alignment ||
+        child.shouldUpdate(oldWidget.child);
+  }
 }

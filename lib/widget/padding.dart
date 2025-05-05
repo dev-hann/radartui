@@ -24,4 +24,9 @@ class Padding extends Widget {
     final innerWidth = width - padding.left - padding.right;
     return child.preferredHeight(innerWidth) + padding.top + padding.bottom;
   }
+
+  @override
+  bool shouldUpdate(covariant Padding oldWidget) {
+    return padding != oldWidget.padding || child.shouldUpdate(oldWidget.child);
+  }
 }

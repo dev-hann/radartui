@@ -10,62 +10,78 @@ class ListView extends Widget with FocusableMixin {
   ListView({
     required this.items,
     this.selectedIndex = 0,
+    this.onSelect,
     this.style = const Style(),
-    this.selectedPrefix = "➤ ",
-    this.highlightStyle = const Style(bold: true),
+    this.highlightStyle = const Style(inverted: true),
   });
 
   final List<String> items;
   int selectedIndex;
+  final void Function(int index)? onSelect;
+
   final Style style;
-  final String selectedPrefix;
   final Style highlightStyle;
+
+  int scrollOffset = 0;
+  int lastHeight = 0;
 
   @override
   void render(Canvas canvas, Rect rect) {
+    lastHeight = rect.height;
     final visibleLines = rect.height;
-    final startIndex = _startScrollIndex(rect.height);
-    final endIndex = (startIndex + visibleLines).clamp(0, items.length);
+    final start = scrollOffset;
+    final end = (start + visibleLines).clamp(0, items.length);
 
-    for (int i = startIndex; i < endIndex; i++) {
-      final line = items[i];
-      final isSelected = i == selectedIndex;
-
-      canvas.move(rect.x, rect.y + (i - startIndex));
-      canvas.drawChar(
-        (isSelected ? selectedPrefix : "  ") + line.padRight(rect.width - 2),
-        style: isSelected ? highlightStyle : style,
-      );
+    for (int i = start; i < end; i++) {
+      canvas.move(rect.x, rect.y + i - start);
+      final isSelected = (i == selectedIndex) && focusNode.hasFocus;
+      final currentStyle = isSelected ? highlightStyle : style;
+      canvas.setStyle(currentStyle);
+      canvas.drawChar(items[i].padRight(rect.width), style: currentStyle);
     }
+
+    canvas.clearStyle();
   }
 
   @override
-  int preferredHeight(int width) {
-    return items.length;
-  }
-
-  void moveUp() {
-    if (selectedIndex > 0) selectedIndex--;
-  }
-
-  void moveDown() {
-    if (selectedIndex < items.length - 1) selectedIndex++;
-  }
-
-  int _startScrollIndex(int visibleLines) {
-    if (items.length <= visibleLines) return 0;
-
-    final half = (visibleLines / 2).floor();
-    return (selectedIndex - half).clamp(0, items.length - visibleLines);
-  }
+  int preferredHeight(int width) => items.length;
 
   @override
   void onKey(Key key) {
-    if (key.type == KeyType.up) {
-      selectedIndex = (selectedIndex - 1).clamp(0, items.length - 1);
+    if (!focusNode.hasFocus) return;
+
+    switch (key.type) {
+      case KeyType.up:
+        if (selectedIndex > 0) {
+          selectedIndex--;
+          if (selectedIndex < scrollOffset) {
+            scrollOffset = selectedIndex;
+          }
+        }
+        break;
+      case KeyType.down:
+        if (selectedIndex < items.length - 1) {
+          selectedIndex++;
+          final maxScroll = scrollOffset + lastHeight;
+          if (selectedIndex >= maxScroll) {
+            scrollOffset++;
+          }
+        }
+        break;
+      case KeyType.enter:
+        onSelect?.call(selectedIndex);
+        break;
+      default:
+        break;
     }
-    if (key.type == KeyType.down) {
-      selectedIndex = (selectedIndex + 1).clamp(0, items.length - 1);
-    }
+  }
+
+  @override
+  bool shouldUpdate(covariant ListView oldWidget) {
+    return items != oldWidget.items ||
+        selectedIndex != oldWidget.selectedIndex ||
+        onSelect != oldWidget.onSelect ||
+        style != oldWidget.style ||
+        highlightStyle != oldWidget.highlightStyle;
   }
 }

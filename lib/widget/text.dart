@@ -46,4 +46,9 @@ class Text extends Widget {
   int preferredHeight(int width) {
     return (text.length / width).ceil();
   }
+
+  @override
+  bool shouldUpdate(Text oldWidget) {
+    return text != oldWidget.text || style != oldWidget.style;
+  }
 }
