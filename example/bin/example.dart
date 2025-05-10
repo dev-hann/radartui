@@ -57,7 +57,3 @@ class MyApp extends View {
     );
   }
 }
-
-
-element 생서해서 그쪽에서 중복되는값 체크할껏..
-https://chatgpt.com/c/6817250e-1b94-8006-a61f-aa4378a13fc9

@@ -1,5 +1,6 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
+import 'package:radartui/element/element.dart';
 
 export './text.dart';
 export './column.dart';
@@ -18,6 +19,8 @@ abstract class Widget {
 
   void onMount() {}
   void onUnmount() {}
+
+  Element createElement();
 }
 
 abstract class SingleChildWidget extends Widget {
@@ -66,4 +69,15 @@ abstract class MultiChildWidget extends Widget {
       child.onUnmount();
     }
   }
+}
+
+abstract class LeafWidget extends Widget {
+  @override
+  void onMount();
+
+  @override
+  void onUnmount();
+
+  @override
+  bool shouldUpdate(covariant LeafWidget oldWidget);
 }
