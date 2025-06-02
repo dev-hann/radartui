@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 abstract class Logger {
   const Logger();

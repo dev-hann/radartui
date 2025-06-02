@@ -1,7 +1,7 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/canvas/style.dart';
-import 'package:radartui/element/element.dart';
+// import 'package:radartui/element/element.dart';
 import 'package:radartui/enum/text/text_align.dart';
 import 'package:radartui/widget/widget.dart';
 
@@ -53,8 +53,8 @@ class Text extends LeafWidget {
     return text != oldWidget.text || style != oldWidget.style;
   }
 
-  @override
-  Element createElement() {
-    return LeafElement(this);
-  }
+  // @override
+  // Element createElement() {
+  //   return LeafElement(this);
+  // }
 }

@@ -1,6 +1,5 @@
 import 'package:radartui/radartui.dart';
 import 'package:radartui/widget/button.dart';
-import 'package:radartui/widget/expanded.dart';
 import 'package:radartui/widget/focus_manager.dart';
 import 'package:radartui/widget/row.dart';
 import 'package:radartui/widget/text_field.dart';

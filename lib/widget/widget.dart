@@ -1,6 +1,5 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
-import 'package:radartui/element/element.dart';
 
 export './text.dart';
 export './column.dart';
@@ -20,7 +19,7 @@ abstract class Widget {
   void onMount() {}
   void onUnmount() {}
 
-  Element createElement();
+  // Element createElement();
 }
 
 abstract class SingleChildWidget extends Widget {
