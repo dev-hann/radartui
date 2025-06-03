@@ -52,9 +52,4 @@ class Text extends LeafWidget {
   bool shouldUpdate(Text oldWidget) {
     return text != oldWidget.text || style != oldWidget.style;
   }
-
-  // @override
-  // Element createElement() {
-  //   return LeafElement(this);
-  // }
 }

@@ -1,13 +1,12 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
-import 'package:radartui/widget/focusable_mixin.dart';
 import 'package:radartui/widget/widget.dart';
 
 class Card extends SingleChildWidget {
   Card({required super.child});
   bool get _hasChildFocused {
-    if (child is FocusableMixin) {
-      final focusableChild = child as FocusableMixin;
+    if (child is FocusableWidget) {
+      final focusableChild = child as FocusableWidget;
       return focusableChild.focusNode.hasFocus;
     }
     return false;

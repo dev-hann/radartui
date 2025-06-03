@@ -3,10 +3,9 @@ import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/canvas/style.dart';
 import 'package:radartui/enum/key_type.dart';
 import 'package:radartui/model/key.dart';
-import 'package:radartui/widget/focusable_mixin.dart';
 import 'package:radartui/widget/widget.dart';
 
-class Button extends Widget with FocusableMixin {
+class Button extends FocusableWidget {
   Button({
     required this.label,
     required this.onPressed,

@@ -64,4 +64,17 @@ class Flex extends MultiChildWidget {
           .fold(0, (a, b) => a + b);
     }
   }
+
+  @override
+  bool shouldUpdate(covariant Flex oldWidget) {
+    if (children.length != oldWidget.children.length) return true;
+    for (int i = 0; i < children.length; i++) {
+      if (children[i].runtimeType != oldWidget.children[i].runtimeType ||
+          children[i].key != oldWidget.children[i].key ||
+          children[i].shouldUpdate(oldWidget.children[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

@@ -1,5 +1,8 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
+import 'package:radartui/model/key.dart';
+import 'package:radartui/widget/focus_manager.dart';
+import 'package:radartui/widget/focus_node.dart';
 
 export './text.dart';
 export './column.dart';
@@ -48,11 +51,13 @@ abstract class MultiChildWidget extends Widget {
 
   @override
   bool shouldUpdate(covariant MultiChildWidget oldWidget) {
-    if (children.length != oldWidget.children.length) return false;
+    if (children.length != oldWidget.children.length) return true;
     for (int i = 0; i < children.length; i++) {
-      if (!children[i].shouldUpdate(oldWidget.children[i])) return false;
+      if (children[i].shouldUpdate(oldWidget.children[i])) {
+        return true;
+      }
     }
-    return true;
+    return false;
   }
 
   @override
@@ -79,4 +84,27 @@ abstract class LeafWidget extends Widget {
 
   @override
   bool shouldUpdate(covariant LeafWidget oldWidget);
+}
+
+abstract class FocusableWidget extends LeafWidget {
+  final focusNode = FocusNode();
+  @override
+  void onMount() {
+    focusNode.addListener(onKey);
+    FocusManager.instance.registerFocusNode(focusNode);
+    FocusManager.instance.requestFocus(focusNode);
+    super.onMount();
+  }
+
+  void onKey(Key key);
+
+  @override
+  void onUnmount() {
+    focusNode.removeListener(onKey);
+    FocusManager.instance.unregisterFocusNode(focusNode);
+    super.onUnmount();
+  }
+
+  @override
+  bool shouldUpdate(covariant FocusableWidget oldWidget);
 }
