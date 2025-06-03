@@ -6,8 +6,9 @@ import 'package:radartui/enum/key_type.dart';
 import 'package:radartui/widget/text_field_controller.dart';
 import 'package:radartui/widget/widget.dart';
 
-class TextField extends FocusableWidget {
+class TextField extends LeafWidget {
   TextField({
+    required super.focusID,
     this.hintText = '',
     this.controller,
     this.style = const Style(),
@@ -30,7 +31,6 @@ class TextField extends FocusableWidget {
 
   @override
   void render(Canvas canvas, Rect rect) {
-    final hasFocus = focusNode.hasFocus;
     final displayText = _ctrl.text.isEmpty ? hintText : _ctrl.text;
     final cursorIndex = _ctrl.cursorIndex.clamp(0, displayText.length);
 
@@ -52,7 +52,7 @@ class TextField extends FocusableWidget {
 
   @override
   void onKey(Key key) {
-    if (!focusNode.hasFocus) return;
+    if (!hasFocus) return;
 
     switch (key.type) {
       case KeyType.tab:

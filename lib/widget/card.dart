@@ -3,13 +3,9 @@ import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/widget/widget.dart';
 
 class Card extends SingleChildWidget {
-  Card({required super.child});
+  Card({required super.child, required super.focusID});
   bool get _hasChildFocused {
-    if (child is FocusableWidget) {
-      final focusableChild = child as FocusableWidget;
-      return focusableChild.focusNode.hasFocus;
-    }
-    return false;
+    return child.hasFocus;
   }
 
   void _drawBorder(Canvas canvas, Rect rect, {bool isFocused = false}) {

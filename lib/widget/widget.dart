@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:collection/collection.dart';
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
+import 'package:radartui/input/input.dart';
 import 'package:radartui/model/key.dart';
 import 'package:radartui/widget/focus_manager.dart';
 import 'package:radartui/widget/focus_node.dart';
@@ -10,8 +14,18 @@ export './card.dart';
 export './list_view.dart';
 
 abstract class Widget {
-  Widget({this.key});
+  Widget({this.key, this.focusID = ''});
   final String? key;
+  FocusNode get _focusNode => FocusNode(focusID: focusID);
+  bool get hasFocus {
+    final focusNode = FocusManager.instance.focusNodeList.firstWhereOrNull(
+      (element) => element.focusID == focusID,
+    );
+    return focusNode?.hasFocus ?? false;
+  }
+
+  bool get isFocusable => focusID.isNotEmpty;
+  final String focusID;
 
   void render(Canvas canvs, Rect rect);
 
@@ -19,14 +33,28 @@ abstract class Widget {
 
   bool shouldUpdate(covariant Widget oldWidget);
 
-  void onMount() {}
-  void onUnmount() {}
+  StreamSubscription? _subscription;
 
-  // Element createElement();
+  void onKey(Key key) {}
+
+  void onMount() {
+    if (focusID.isNotEmpty) {
+      _subscription?.cancel();
+      _subscription = Input.instance.stream.listen(onKey);
+      FocusManager.instance.registerFocusNode(_focusNode);
+    }
+  }
+
+  void onUnmount() {
+    if (focusID.isNotEmpty) {
+      _subscription?.cancel();
+      FocusManager.instance.unregisterFocusNode(_focusNode);
+    }
+  }
 }
 
 abstract class SingleChildWidget extends Widget {
-  SingleChildWidget({required this.child});
+  SingleChildWidget({required this.child, super.focusID = ''});
   final Widget child;
 
   @override
@@ -46,7 +74,7 @@ abstract class SingleChildWidget extends Widget {
 }
 
 abstract class MultiChildWidget extends Widget {
-  MultiChildWidget({required this.children});
+  MultiChildWidget({required this.children, super.focusID = ''});
   final List<Widget> children;
 
   @override
@@ -76,6 +104,8 @@ abstract class MultiChildWidget extends Widget {
 }
 
 abstract class LeafWidget extends Widget {
+  LeafWidget({super.focusID = ''});
+
   @override
   void onMount();
 
@@ -84,27 +114,4 @@ abstract class LeafWidget extends Widget {
 
   @override
   bool shouldUpdate(covariant LeafWidget oldWidget);
-}
-
-abstract class FocusableWidget extends LeafWidget {
-  final focusNode = FocusNode();
-  @override
-  void onMount() {
-    focusNode.addListener(onKey);
-    FocusManager.instance.registerFocusNode(focusNode);
-    FocusManager.instance.requestFocus(focusNode);
-    super.onMount();
-  }
-
-  void onKey(Key key);
-
-  @override
-  void onUnmount() {
-    focusNode.removeListener(onKey);
-    FocusManager.instance.unregisterFocusNode(focusNode);
-    super.onUnmount();
-  }
-
-  @override
-  bool shouldUpdate(covariant FocusableWidget oldWidget);
 }

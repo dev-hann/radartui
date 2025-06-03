@@ -5,8 +5,9 @@ import 'package:radartui/enum/key_type.dart';
 import 'package:radartui/model/key.dart';
 import 'package:radartui/widget/widget.dart';
 
-class ListView extends FocusableWidget {
+class ListView extends LeafWidget {
   ListView({
+    required super.focusID,
     required this.items,
     this.selectedIndex = 0,
     this.onSelect,
@@ -33,7 +34,7 @@ class ListView extends FocusableWidget {
 
     for (int i = start; i < end; i++) {
       canvas.move(rect.x, rect.y + i - start);
-      final isSelected = (i == selectedIndex) && focusNode.hasFocus;
+      final isSelected = (i == selectedIndex) && hasFocus;
       final currentStyle = isSelected ? highlightStyle : style;
       canvas.setStyle(currentStyle);
       canvas.drawChar(items[i].padRight(rect.width), style: currentStyle);
@@ -47,7 +48,7 @@ class ListView extends FocusableWidget {
 
   @override
   void onKey(Key key) {
-    if (!focusNode.hasFocus) return;
+    if (!hasFocus) return;
 
     switch (key.type) {
       case KeyType.up:

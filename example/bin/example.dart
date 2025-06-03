@@ -21,36 +21,33 @@ void main(List<String> arguments) {
           FocusManager.instance.focusPrevious();
           break;
       }
-      FocusManager.instance.onKey(key);
     },
   );
 }
 
 class MyApp extends View {
   final controller = TextEditingController(text: "Hello");
-  String text = "1234";
+  final items = List.generate(10, (index) => "Item $index");
+  String text = "Hello";
   @override
   Widget build() {
-    print("text: $text");
     return Column(
       children: [
-        Text(text),
-        Card(
-          child: Row(
-            children: [
-              TextField(controller: controller),
-              Button(
-                label: "Send",
-                onPressed: () {
-                  print(controller.text);
-                  text = controller.text;
-                  Future.microtask(() {
-                    update();
-                  });
-                },
-              ),
-            ],
-          ),
+        // Text(text),
+        ListView(focusID: 'list_view', items: items),
+        Row(
+          children: [
+            TextField(focusID: 'text_field', controller: controller),
+            Button(
+              focusID: 'button',
+              label: "Send",
+              onPressed: () {
+                Future.microtask(() {
+                  update();
+                });
+              },
+            ),
+          ],
         ),
       ],
     );

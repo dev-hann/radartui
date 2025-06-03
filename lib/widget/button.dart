@@ -5,8 +5,9 @@ import 'package:radartui/enum/key_type.dart';
 import 'package:radartui/model/key.dart';
 import 'package:radartui/widget/widget.dart';
 
-class Button extends FocusableWidget {
+class Button extends LeafWidget {
   Button({
+    required super.focusID,
     required this.label,
     required this.onPressed,
     this.style = const Style(),
@@ -20,7 +21,6 @@ class Button extends FocusableWidget {
 
   @override
   void render(Canvas canvas, Rect rect) {
-    final hasFocus = focusNode.hasFocus;
     final text = '[ $label ]';
     final displayStyle = hasFocus ? focusedStyle : style;
 
@@ -37,7 +37,7 @@ class Button extends FocusableWidget {
 
   @override
   void onKey(Key key) {
-    if (!focusNode.hasFocus) return;
+    if (!hasFocus) return;
 
     // Enter 또는 Space 누르면 onPressed 실행
     if (key.type == KeyType.enter || key.label == ' ') {
