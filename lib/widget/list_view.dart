@@ -5,6 +5,7 @@ import 'package:radartui/enum/key_type.dart';
 import 'package:radartui/model/key.dart';
 import 'package:radartui/widget/widget.dart';
 
+// TODO: scroll offset make stateful
 class ListView extends LeafWidget {
   ListView({
     required super.focusID,
