@@ -1,60 +1,19 @@
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
-Radartui: Hello
+Radartui: type 'Null' is not a subtype of type 'int' in type cast
+Radartui: #0      ListIterator.current (dart:_internal/iterable.dart:358:29)
+#1      Input._decode (package:radartui/input/input.dart:42:24)
+#2      Input.readSync (package:radartui/input/input.dart:38:12)
+#3      Widget.render (package:radartui/widget/widget.dart:25:38)
+#4      ListView.render (package:radartui/widget/list_view.dart:64:11)
+#5      Flex.render (package:radartui/widget/flex.dart:40:19)
+#6      Radartui.runApp.<anonymous closure> (package:radartui/radartui.dart:37:18)
+#7      Logger.run.<anonymous closure> (package:radartui/logger/logger.dart:9:24)
+#8      _rootRun (dart:async/zone.dart:1525:13)
+#9      _CustomZone.run (dart:async/zone.dart:1422:19)
+#10     _runZoned (dart:async/zone.dart:2033:6)
+#11     runZonedGuarded (dart:async/zone.dart:2019:12)
+#12     Logger.run (package:radartui/logger/logger.dart:7:12)
+#13     Radartui.runApp (package:radartui/radartui.dart:26:18)
+#14     main (file:///Users/langdy-42/Documents/radartui/example/bin/example.dart:10:12)
+#15     _delayEntrypointInvocation.<anonymous closure> (dart:isolate-patch/isolate_patch.dart:312:33)
+#16     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:193:12)
+

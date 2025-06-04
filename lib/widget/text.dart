@@ -5,7 +5,8 @@ import 'package:radartui/enum/text/text_align.dart';
 import 'package:radartui/widget/widget.dart';
 
 class Text extends LeafWidget {
-  Text(this.text, {this.style, this.textAlign = TextAlign.left});
+  Text(this.text, {this.style, this.textAlign = TextAlign.left})
+    : super(focusID: "");
 
   final String text;
   final Style? style;
@@ -13,6 +14,7 @@ class Text extends LeafWidget {
 
   @override
   void render(Canvas canvas, Rect rect) {
+    super.render(canvas, rect);
     final maxWidth = rect.width;
     final maxLines = rect.height;
     int currentLine = 0;

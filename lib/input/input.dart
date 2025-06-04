@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:radartui/enum/key_type.dart';
 import 'package:radartui/model/key.dart';
 
 class Input {
@@ -28,7 +27,18 @@ class Input {
 
   Stream<Key> get stream => _controller.stream;
 
-  static Key? _decode(Iterator<int> iter) {
+  Key? readSync() {
+    final List<int> buffer = [stdin.readByteSync()];
+    if (buffer.first == 27 && stdin.hasTerminal) {
+      // Escape sequence 예상되면 더 읽기
+      while (stdin.hasTerminal) {
+        buffer.add(stdin.readByteSync());
+      }
+    }
+    return _decode(buffer.iterator);
+  }
+
+  Key? _decode(Iterator<int> iter) {
     final first = iter.current;
 
     // Enter
@@ -74,26 +84,21 @@ class Input {
             return Key(KeyType.end, 'End');
           case 51:
             if (!iter.moveNext()) return null;
-            final fourth = iter.current;
-            if (fourth == 126) return Key(KeyType.delete, 'Del');
+            if (iter.current == 126) return Key(KeyType.delete, 'Del');
             break;
           case 53:
             if (!iter.moveNext()) return null;
-            final fourth = iter.current;
-            if (fourth == 126) return Key(KeyType.pageUp, 'PgUp');
+            if (iter.current == 126) return Key(KeyType.pageUp, 'PgUp');
             break;
           case 54:
             if (!iter.moveNext()) return null;
-            final fourth = iter.current;
-            if (fourth == 126) return Key(KeyType.pageDown, 'PgDn');
+            if (iter.current == 126) return Key(KeyType.pageDown, 'PgDn');
             break;
         }
       }
 
-      // Alt + key
       if (second >= 32 && second <= 126) {
-        final label = String.fromCharCode(second);
-        return Key(KeyType.char, label, alt: true);
+        return Key(KeyType.char, String.fromCharCode(second), alt: true);
       }
 
       return Key(KeyType.escape, 'Esc');

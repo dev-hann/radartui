@@ -1,6 +1,7 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
-import 'package:radartui/model/key.dart';
+import 'package:radartui/widget/focus_manager.dart';
+import 'package:meta/meta.dart';
 
 export './text.dart';
 export './column.dart';
@@ -8,35 +9,26 @@ export './card.dart';
 export './list_view.dart';
 
 abstract class Widget {
-  Widget({this.key});
+  Widget({this.key, this.focusID = ""});
   final String? key;
+  final String focusID;
+  bool get isFocused => FocusManager.instance.isFocused(focusID);
 
-  void render(Canvas canvs, Rect rect);
+  @mustCallSuper
+  void render(Canvas canvas, Rect rect) {
+    if (focusID.isNotEmpty) {
+      FocusManager.instance.registerFocus(focusID);
+    }
+  }
 
   int preferredHeight(int width);
 
   bool shouldUpdate(covariant Widget oldWidget);
-
-  void onKey(Key key) {}
-
-  void onMount() {}
-
-  void onUnmount() {}
 }
 
 abstract class SingleChildWidget extends Widget {
-  SingleChildWidget({required this.child});
+  SingleChildWidget({required this.child, required super.focusID});
   final Widget child;
-
-  @override
-  void onMount() {
-    child.onMount();
-  }
-
-  @override
-  void onUnmount() {
-    child.onUnmount();
-  }
 
   @override
   bool shouldUpdate(covariant SingleChildWidget oldWidget) {
@@ -45,7 +37,7 @@ abstract class SingleChildWidget extends Widget {
 }
 
 abstract class MultiChildWidget extends Widget {
-  MultiChildWidget({required this.children});
+  MultiChildWidget({required this.children, required super.focusID});
   final List<Widget> children;
 
   @override
@@ -58,30 +50,10 @@ abstract class MultiChildWidget extends Widget {
     }
     return false;
   }
-
-  @override
-  void onMount() {
-    for (final child in children) {
-      child.onMount();
-    }
-  }
-
-  @override
-  void onUnmount() {
-    for (final child in children) {
-      child.onUnmount();
-    }
-  }
 }
 
 abstract class LeafWidget extends Widget {
-  LeafWidget();
-
-  @override
-  void onMount();
-
-  @override
-  void onUnmount();
+  LeafWidget({required super.focusID});
 
   @override
   bool shouldUpdate(covariant LeafWidget oldWidget);

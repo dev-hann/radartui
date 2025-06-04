@@ -5,12 +5,13 @@ import 'package:radartui/widget/expanded.dart';
 import 'package:radartui/widget/widget.dart';
 
 class Flex extends MultiChildWidget {
-  Flex({required this.direction, required super.children});
+  Flex({required this.direction, required super.children}) : super(focusID: "");
 
   final Axis direction;
 
   @override
   void render(Canvas canvas, Rect rect) {
+    super.render(canvas, rect);
     final totalFlex = children.fold<int>(
       0,
       (sum, child) => child is Expanded ? sum + child.flex : sum,

@@ -1,4 +1,5 @@
 import 'package:radartui/enum/key_type.dart';
+export 'package:radartui/enum/key_type.dart';
 
 class Key {
   Key(

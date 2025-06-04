@@ -5,7 +5,7 @@ import 'package:radartui/widget/widget.dart';
 class Card extends SingleChildWidget {
   Card({required super.child, required super.focusID});
   bool get _hasChildFocused {
-    return child.hasFocus;
+    return child.isFocused;
   }
 
   void _drawBorder(Canvas canvas, Rect rect, {bool isFocused = false}) {
@@ -35,6 +35,7 @@ class Card extends SingleChildWidget {
 
   @override
   void render(Canvas canvas, Rect rect) {
+    super.render(canvas, rect);
     _drawBorder(canvas, rect, isFocused: _hasChildFocused);
 
     final innerRect = Rect(

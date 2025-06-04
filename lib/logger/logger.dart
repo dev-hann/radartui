@@ -10,6 +10,7 @@ abstract class Logger {
       },
       (e, s) {
         log(e);
+        log(s);
       },
       zoneSpecification: ZoneSpecification(
         print: (self, parent, zone, line) {
