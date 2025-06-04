@@ -1,8 +1,23 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
+import 'package:radartui/state/state.dart';
 import 'package:radartui/widget/widget.dart';
 
-abstract class View extends Widget {
+abstract class View<T extends State> {
+  T? state;
+
+  void initState() {}
+
+  void dispose() {}
+
+  void update(T? newState) {
+    state = newState;
+  }
+
+  Widget build();
+}
+
+abstract class ViewOld extends Widget {
   late Canvas _canvas;
   late Rect _rect;
   Widget? _oldWidget;
@@ -62,7 +77,7 @@ abstract class View extends Widget {
   Widget build();
 
   @override
-  bool shouldUpdate(covariant View oldWidget) {
+  bool shouldUpdate(covariant ViewOld oldWidget) {
     return true;
   }
 }

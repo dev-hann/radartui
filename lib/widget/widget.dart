@@ -1,12 +1,6 @@
-import 'dart:async';
-
-import 'package:collection/collection.dart';
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
-import 'package:radartui/input/input.dart';
 import 'package:radartui/model/key.dart';
-import 'package:radartui/widget/focus_manager.dart';
-import 'package:radartui/widget/focus_node.dart';
 
 export './text.dart';
 export './column.dart';
@@ -14,18 +8,8 @@ export './card.dart';
 export './list_view.dart';
 
 abstract class Widget {
-  Widget({this.key, this.focusID = ''});
+  Widget({this.key});
   final String? key;
-  FocusNode get _focusNode => FocusNode(focusID: focusID);
-  bool get hasFocus {
-    final focusNode = FocusManager.instance.focusNodeList.firstWhereOrNull(
-      (element) => element.focusID == focusID,
-    );
-    return focusNode?.hasFocus ?? false;
-  }
-
-  bool get isFocusable => focusID.isNotEmpty;
-  final String focusID;
 
   void render(Canvas canvs, Rect rect);
 
@@ -33,28 +17,15 @@ abstract class Widget {
 
   bool shouldUpdate(covariant Widget oldWidget);
 
-  StreamSubscription? _subscription;
-
   void onKey(Key key) {}
 
-  void onMount() {
-    if (focusID.isNotEmpty) {
-      _subscription?.cancel();
-      _subscription = Input.instance.stream.listen(onKey);
-      FocusManager.instance.registerFocusNode(_focusNode);
-    }
-  }
+  void onMount() {}
 
-  void onUnmount() {
-    if (focusID.isNotEmpty) {
-      _subscription?.cancel();
-      FocusManager.instance.unregisterFocusNode(_focusNode);
-    }
-  }
+  void onUnmount() {}
 }
 
 abstract class SingleChildWidget extends Widget {
-  SingleChildWidget({required this.child, super.focusID = ''});
+  SingleChildWidget({required this.child});
   final Widget child;
 
   @override
@@ -74,7 +45,7 @@ abstract class SingleChildWidget extends Widget {
 }
 
 abstract class MultiChildWidget extends Widget {
-  MultiChildWidget({required this.children, super.focusID = ''});
+  MultiChildWidget({required this.children});
   final List<Widget> children;
 
   @override
@@ -104,7 +75,7 @@ abstract class MultiChildWidget extends Widget {
 }
 
 abstract class LeafWidget extends Widget {
-  LeafWidget({super.focusID = ''});
+  LeafWidget();
 
   @override
   void onMount();

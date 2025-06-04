@@ -8,7 +8,6 @@ import 'package:radartui/widget/widget.dart';
 
 class TextField extends LeafWidget {
   TextField({
-    required super.focusID,
     this.hintText = '',
     this.controller,
     this.style = const Style(),

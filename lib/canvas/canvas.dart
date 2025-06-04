@@ -4,6 +4,9 @@ import 'package:radartui/canvas/size.dart';
 import 'package:radartui/canvas/style.dart';
 
 class Canvas {
+  Canvas._();
+  static final Canvas instance = Canvas._();
+
   Size get windowSize {
     final height = stdout.terminalLines;
     final width = stdout.terminalColumns;
