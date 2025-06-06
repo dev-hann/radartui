@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:radartui/input/input.dart';
 import 'package:radartui/model/key.dart';
 import 'package:radartui/state/state.dart';
-import 'package:radartui/widget/widget.dart';
+import 'package:radartui/widget/widget.dart' hide State;
 
 abstract class View<T extends State> {
   T? state;
@@ -25,5 +25,5 @@ abstract class View<T extends State> {
     state = newState;
   }
 
-  Widget build();
+  WidgetOld build();
 }

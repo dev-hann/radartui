@@ -72,8 +72,60 @@ class TextEditingController {
   }
 }
 
-class TextField extends LeafWidget {
-  TextField({
+class TextField extends StatefulWidget {
+  final TextEditingController controller;
+  final Style? style;
+  final Style? cursorStyle;
+
+  TextField({required this.controller, this.style, this.cursorStyle});
+
+  @override
+  State createState() => _TextFieldState();
+}
+
+class _TextFieldState extends State<TextField> {
+  TextEditingController get controller => widget.controller;
+
+  // @override
+  // void onKey(Key key) {
+  //   if (key.isCharacter) {
+  //     controller.insert(key.label);
+  //   } else if (key.isBackspace) {
+  //     controller.deleteBack();
+  //   } else if (key.type == KeyType.left) {
+  //     controller.moveCursorLeft();
+  //   } else if (key.type == KeyType.right) {
+  //     controller.moveCursorRight();
+  //   }
+
+  //   rebuild();
+  // }
+
+  // @override
+  // void render(Canvas canvas, Rect rect) {
+  //   final displayText = controller.text;
+  //   final cursorPos = controller.cursor;
+
+  //   final textWithCursor =
+  //       displayText.substring(0, cursorPos) +
+  //       '|' +
+  //       displayText.substring(cursorPos);
+
+  //   canvas.move(rect.x, rect.y);
+  //   canvas.drawChar(textWithCursor.padRight(rect.width), style: widget.style);
+  // }
+
+  // @override
+  // int preferredHeight(int width) => 1;
+
+  @override
+  Widget build() {
+    return Text(controller.text);
+  }
+}
+
+class TextFieldOld extends LeafWidget {
+  TextFieldOld({
     required super.focusID,
     required this.controller,
     this.style = const Style(),
@@ -113,7 +165,7 @@ class TextField extends LeafWidget {
   String get value => controller.text;
 
   @override
-  bool shouldUpdate(covariant TextField oldWidget) {
+  bool shouldUpdate(covariant TextFieldOld oldWidget) {
     return controller.text != oldWidget.controller.text ||
         style != oldWidget.style ||
         focusedStyle != oldWidget.focusedStyle;

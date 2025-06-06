@@ -7,6 +7,8 @@ import 'package:radartui/logger/file_logger.dart';
 import 'package:radartui/logger/logger.dart';
 import 'package:radartui/model/key.dart';
 import 'package:radartui/view/view.dart';
+import 'package:radartui/widget/element.dart';
+import 'package:radartui/widget/widget.dart';
 
 export 'canvas/canvas.dart';
 export 'canvas/rect.dart';
@@ -17,7 +19,7 @@ class Radartui {
   static final canvas = Canvas.instance;
 
   static Future runApp(
-    View app, {
+    Widget rootWidget, {
     Logger? logger,
     Function(Key key)? onKey,
   }) async {
@@ -26,23 +28,20 @@ class Radartui {
     await logger.run(
       callback: () async {
         canvas.init();
-        app.initState();
         Input.instance.init();
+
+        // Element 트리 루트 생성
+        final rootElement = rootWidget.createElement();
+        rootElement.mount(); // 최상위이므로 parent는 null
+
         Input.instance.stream.listen((key) {
           onKey?.call(key);
+          rootElement.onKey(key); // 키 입력도 위임
         });
+
         while (true) {
           canvas.clear();
-          final widget = app.build();
-          widget.render(
-            canvas,
-            Rect(
-              x: 0,
-              y: 0,
-              width: canvas.windowSize.width,
-              height: canvas.windowSize.height,
-            ),
-          );
+          rootElement.render(canvas, Rect.fromCanvas(canvas));
           await Future.delayed(Duration(milliseconds: 100));
         }
       },

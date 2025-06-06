@@ -3,10 +3,10 @@ import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/model/edge_insets.dart';
 import 'package:radartui/widget/widget.dart';
 
-class Padding extends Widget {
+class Padding extends WidgetOld {
   Padding({required this.padding, required this.child});
   final EdgeInsets padding;
-  final Widget child;
+  final WidgetOld child;
 
   @override
   void render(Canvas canvas, Rect rect) {

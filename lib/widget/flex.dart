@@ -2,10 +2,80 @@ import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/enum/axis.dart';
 import 'package:radartui/widget/expanded.dart';
+import 'package:radartui/widget/render_object.dart';
+import 'package:radartui/widget/render_object_widget.dart';
 import 'package:radartui/widget/widget.dart';
 
-class Flex extends MultiChildWidget {
-  Flex({required this.direction, required super.children}) : super(focusID: "");
+abstract class Flex extends RenderObjectWidget {
+  Flex({required this.direction, required this.children});
+
+  final Axis direction;
+  final List<Widget> children;
+
+  @override
+  RenderObject createRenderObject() {
+    final childRenderObjects =
+        children.map((child) {
+          final element = child.createElement();
+          element.mount();
+          return element.renderObject;
+        }).toList();
+
+    return FlexRenderObject(direction: direction, children: childRenderObjects);
+  }
+
+  @override
+  void updateRenderObject(RenderObject renderObject) {
+    // 추후 자식 변경시 대응
+  }
+}
+
+class FlexRenderObject extends RenderObject {
+  FlexRenderObject({required this.direction, required this.children});
+
+  final Axis direction;
+  final List<RenderObject> children;
+
+  @override
+  void layout(Rect rect) {
+    layoutRect = rect;
+
+    final mainSize = direction == Axis.vertical ? rect.height : rect.width;
+    final perChildSize = (mainSize / children.length).floor();
+    int currentOffset = direction == Axis.vertical ? rect.y : rect.x;
+
+    for (final child in children) {
+      final childRect =
+          direction == Axis.vertical
+              ? Rect(
+                x: rect.x,
+                y: currentOffset,
+                width: rect.width,
+                height: perChildSize,
+              )
+              : Rect(
+                x: currentOffset,
+                y: rect.y,
+                width: perChildSize,
+                height: rect.height,
+              );
+
+      child.layout(childRect);
+      currentOffset += perChildSize;
+    }
+  }
+
+  @override
+  void paint(Canvas canvas) {
+    for (final child in children) {
+      child.paint(canvas);
+    }
+  }
+}
+
+class FlexOld extends MultiChildWidget {
+  FlexOld({required this.direction, required super.children})
+    : super(focusID: "");
 
   final Axis direction;
 
@@ -67,7 +137,7 @@ class Flex extends MultiChildWidget {
   }
 
   @override
-  bool shouldUpdate(covariant Flex oldWidget) {
+  bool shouldUpdate(covariant FlexOld oldWidget) {
     if (children.length != oldWidget.children.length) return true;
     for (int i = 0; i < children.length; i++) {
       if (children[i].runtimeType != oldWidget.children[i].runtimeType ||
