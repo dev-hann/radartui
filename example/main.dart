@@ -5,6 +5,8 @@ import 'package:radartui/src/scheduler/binding.dart'; // Added import
 
 void main() {
   runApp(const CounterApp());
+  // Keep the process alive indefinitely to listen for input
+  Future.delayed(Duration(days: 365));
 }
 
 class CounterApp extends StatefulWidget {
