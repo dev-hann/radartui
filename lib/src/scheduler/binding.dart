@@ -6,6 +6,7 @@ import 'package:radartui/src/rendering/render_object.dart';
 import 'package:radartui/src/services/output_buffer.dart';
 import 'package:radartui/src/services/terminal.dart';
 import 'package:radartui/src/widgets/framework.dart';
+import 'package:radartui/src/services/logger.dart'; // Added import
 
 class SchedulerBinding {
   static final instance = SchedulerBinding._();
@@ -18,17 +19,31 @@ class SchedulerBinding {
   bool _frameScheduled = false;
 
   void runApp(Widget app) {
+    AppLogger.initialize(); // Initialize logger
+    AppLogger.log('App started.');
+
     try {
+      AppLogger.log('stdin.hasTerminal: ${stdin.hasTerminal}');
       if (stdin.hasTerminal) {
         stdin.lineMode = false;
         stdin.echoMode = false;
       }
-    } on StdinException {}
+    } on StdinException {
+      AppLogger.log('StdinException during terminal mode setup.');
+    }
     keyboard.initialize(); // Initialize keyboard
     terminal.clear(); // Clear screen once at startup
     _rootElement = app.createElement();
     _rootElement!.mount(null);
     scheduleFrame();
+
+    // Register a shutdown hook to dispose logger and restore terminal
+    ProcessSignal.sigint.watch().listen((signal) {
+      AppLogger.log('SIGINT received. Shutting down.');
+      AppLogger.dispose();
+      terminal.showCursor();
+      exit(0);
+    });
   }
 
   void scheduleFrame() {
@@ -73,20 +88,27 @@ class RawKeyboard {
   final _controller = StreamController<String>();
 
   void initialize() {
-    if (!stdin.hasTerminal) return;
+    if (!stdin.hasTerminal) {
+      AppLogger.log('Not in a terminal. Raw keyboard input disabled.');
+      return;
+    }
     try {
       stdin.lineMode = false;
-    } on StdinException {}
+    } on StdinException {
+      AppLogger.log('StdinException setting lineMode.');
+    }
     try {
       stdin.echoMode = false;
-    } on StdinException {}
+    } on StdinException {
+      AppLogger.log('StdinException setting echoMode.');
+    }
     _stdinSubscription = stdin.listen((List<int> data) {
-      stderr.write('RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}\n'); // Debug print to stderr
+      AppLogger.log('RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}');
       _controller.add(String.fromCharCodes(data));
     }, onError: (e) {
-      stderr.write('RawKeyboard listen error: $e\n');
+      AppLogger.log('RawKeyboard listen error: $e');
     }, onDone: () {
-      stderr.write('RawKeyboard listen done\n');
+      AppLogger.log('RawKeyboard listen done');
     });
   }
 
