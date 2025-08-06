@@ -55,6 +55,7 @@ abstract class State<T extends StatefulWidget> {
   void setState(void Function() fn) {
     fn();
     _element?.markNeedsBuild();
+    AppLogger.log('State.setState called for ${T.runtimeType}');
   }
   Widget build(BuildContext context);
 }
@@ -136,6 +137,7 @@ class RenderObjectElement extends Element implements BuildContext {
   }
   @override
   void update(Widget newWidget) {
+    AppLogger.log('RenderObjectElement.update: widget=${newWidget.runtimeType}'); // Added log
     super.update(newWidget);
     (widget as RenderObjectWidget).updateRenderObject(this, renderObject!);
     renderObject!.markNeedsLayout();
