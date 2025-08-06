@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:radartui/radartui.dart';
+import 'package:radartui/src/scheduler/binding.dart'; // Added import
 
 void main() {
   runApp(const CounterApp());
@@ -20,8 +21,8 @@ class _CounterAppState extends State<CounterApp> {
   @override
   void initState() {
     super.initState();
-    // Use a broadcast stream to allow multiple subscriptions if needed in the future.
-    _sub = stdin.asBroadcastStream().listen((_) {
+    // Subscribe to keyboard events from SchedulerBinding's RawKeyboard
+    _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((_) {
       setState(() {
         _counter++;
       });

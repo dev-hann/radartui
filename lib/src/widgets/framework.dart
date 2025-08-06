@@ -143,7 +143,7 @@ class RenderObjectElement extends Element implements BuildContext {
 
 abstract class SingleChildRenderObjectWidget extends RenderObjectWidget {
   final Widget child;
-  const SingleChildRenderObjectWidget({required this.child}) : super(); // Corrected constructor
+  const SingleChildRenderObjectWidget({required this.child});
   @override
   SingleChildRenderObjectElement createElement() => SingleChildRenderObjectElement(this);
 }
@@ -181,7 +181,7 @@ class SingleChildRenderObjectElement extends RenderObjectElement {
 
 abstract class MultiChildRenderObjectWidget extends RenderObjectWidget {
   final List<Widget> children;
-  const MultiChildRenderObjectWidget({required this.children}) : super(); // Corrected constructor
+  const MultiChildRenderObjectWidget({required this.children});
   @override
   MultiChildRenderObjectElement createElement() => MultiChildRenderObjectElement(this);
 }
@@ -196,6 +196,8 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
     _children = (widget as MultiChildRenderObjectWidget).children.map((w) {
       final child = w.createElement();
       child.mount(this);
+      // Assign FlexParentData to the child's renderObject
+      child.renderObject!.parentData = FlexParentData();
       renderObject.add(child.renderObject!);
       return child;
     }).toList();

@@ -1,4 +1,5 @@
 import 'package:radartui/src/foundation/edge_insets.dart';
+import 'package:radartui/src/foundation/offset.dart';
 import 'package:radartui/src/foundation/size.dart';
 import 'package:radartui/src/rendering/render_object.dart';
 
@@ -15,6 +16,10 @@ class BoxConstraints extends Constraints {
       maxHeight: (maxHeight - vertical).clamp(0, 9999),
     );
   }
+}
+
+class FlexParentData extends ParentData {
+  Offset offset = Offset.zero;
 }
 
 abstract class RenderBox extends RenderObject {}

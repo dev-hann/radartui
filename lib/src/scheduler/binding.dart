@@ -13,6 +13,7 @@ class SchedulerBinding {
 
   final terminal = Terminal();
   late final outputBuffer = OutputBuffer(terminal);
+  final RawKeyboard keyboard = RawKeyboard(); // Added RawKeyboard
   Element? _rootElement;
   bool _frameScheduled = false;
 
@@ -23,6 +24,7 @@ class SchedulerBinding {
         stdin.echoMode = false;
       }
     } on StdinException {}
+    keyboard.initialize(); // Initialize keyboard
     _rootElement = app.createElement();
     _rootElement!.mount(null);
     scheduleFrame();
@@ -63,5 +65,39 @@ class SchedulerBinding {
     final context = PaintingContext(outputBuffer);
     element.renderObject?.paint(context, Offset.zero);
     outputBuffer.flush();
+  }
+}
+
+class RawKeyboard {
+  StreamSubscription<List<int>>? _stdinSubscription;
+  final _controller = StreamController<String>();
+
+  void initialize() {
+    if (!stdin.hasTerminal) return;
+    try {
+      stdin.lineMode = false;
+    } on StdinException {}
+    try {
+      stdin.echoMode = false;
+    } on StdinException {}
+    _stdinSubscription = stdin.listen((List<int> data) {
+      print('RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}'); // Debug print
+      _controller.add(String.fromCharCodes(data));
+    });
+  }
+
+  Stream<String> get keyEvents => _controller.stream;
+
+  void dispose() {
+    _stdinSubscription?.cancel();
+    if (stdin.hasTerminal) {
+      try {
+        stdin.lineMode = true;
+      } on StdinException {}
+      try {
+        stdin.echoMode = true;
+      } on StdinException {}
+    }
+    _controller.close();
   }
 }
