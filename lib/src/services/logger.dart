@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 class AppLogger {
@@ -22,4 +20,3 @@ class AppLogger {
     _sink?.close();
   }
 }
-

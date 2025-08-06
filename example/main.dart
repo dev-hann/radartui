@@ -26,6 +26,7 @@ class _CounterAppState extends State<CounterApp> {
     // Subscribe to keyboard events from SchedulerBinding's RawKeyboard
     _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((_) {
       setState(() {
+        AppLogger.log("counter: $_counter");
         _counter++;
       });
     });
@@ -39,13 +40,14 @@ class _CounterAppState extends State<CounterApp> {
 
   @override
   Widget build(BuildContext context) {
-    @override
-  Widget build(BuildContext context) {
     return Column(
       children: [
         const Text('Welcome to the Radartui Counter!'),
         Padding(
-          padding: const EdgeInsets.symmetric(v: 1, h: 0), // Fixed parameter names
+          padding: const EdgeInsets.symmetric(
+            v: 1,
+            h: 0,
+          ), // Fixed parameter names
           child: Text('Counter: $_counter'),
         ),
         const Text('(Press any key to increment, Ctrl+C to exit)'),
