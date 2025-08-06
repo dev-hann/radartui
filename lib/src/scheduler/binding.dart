@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:radartui/src/foundation/offset.dart';
 import 'package:radartui/src/rendering/render_box.dart';
 import 'package:radartui/src/rendering/render_object.dart';
+import 'package:radartui/src/services/key_parser.dart';
 import 'package:radartui/src/services/output_buffer.dart';
 import 'package:radartui/src/services/terminal.dart';
 import 'package:radartui/src/widgets/framework.dart';
-import 'package:radartui/src/services/logger.dart'; // Added import
+import 'package:radartui/src/services/logger.dart';
 
 class SchedulerBinding {
   static final instance = SchedulerBinding._();
@@ -22,16 +23,7 @@ class SchedulerBinding {
     AppLogger.initialize(); // Initialize logger
     AppLogger.log('App started.');
 
-    try {
-      AppLogger.log('stdin.hasTerminal: ${stdin.hasTerminal}');
-      if (stdin.hasTerminal) {
-        stdin.lineMode = false;
-        stdin.echoMode = false;
-      }
-    } on StdinException {
-      AppLogger.log('StdinException during terminal mode setup.');
-    }
-    keyboard.initialize(); // Initialize keyboard
+    keyboard.initialize(); // Initialize keyboard (handles stdin configuration)
     terminal.clear(); // Clear screen once at startup
     _rootElement = app.createElement();
     _rootElement!.mount(null);
@@ -40,6 +32,7 @@ class SchedulerBinding {
     // Register a shutdown hook to dispose logger and restore terminal
     ProcessSignal.sigint.watch().listen((signal) {
       AppLogger.log('SIGINT received. Shutting down.');
+      keyboard.dispose();
       AppLogger.dispose();
       terminal.showCursor();
       exit(0);
@@ -74,9 +67,11 @@ class SchedulerBinding {
       maxWidth: terminal.width,
       maxHeight: terminal.height,
     ));
+    element.visitChildren(_layout);
   }
 
   void _paint(Element element) {
+    outputBuffer.clear(); // Clear buffer before painting new frame
     final context = PaintingContext(outputBuffer);
     element.renderObject?.paint(context, Offset.zero);
     outputBuffer.flush();
@@ -85,34 +80,41 @@ class SchedulerBinding {
 
 class RawKeyboard {
   StreamSubscription<List<int>>? _stdinSubscription;
-  final _controller = StreamController<String>();
+  final _controller = StreamController<KeyEvent>();
 
   void initialize() {
-    if (!stdin.hasTerminal) {
-      AppLogger.log('Not in a terminal. Raw keyboard input disabled.');
-      return;
-    }
+    AppLogger.log('RawKeyboard initializing, hasTerminal: ${stdin.hasTerminal}');
+    
+    // Try to set terminal modes, but continue even if it fails
     try {
       stdin.lineMode = false;
-    } on StdinException {
-      AppLogger.log('StdinException setting lineMode.');
+      AppLogger.log('Set lineMode = false');
+    } on StdinException catch (e) {
+      AppLogger.log('StdinException setting lineMode: $e');
     }
     try {
       stdin.echoMode = false;
-    } on StdinException {
-      AppLogger.log('StdinException setting echoMode.');
+      AppLogger.log('Set echoMode = false');
+    } on StdinException catch (e) {
+      AppLogger.log('StdinException setting echoMode: $e');
     }
+    
+    // Always try to listen to stdin, even if terminal mode setup failed
+    AppLogger.log('Setting up stdin listener...');
     _stdinSubscription = stdin.listen((List<int> data) {
       AppLogger.log('RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}');
-      _controller.add(String.fromCharCodes(data));
+      final keyEvent = KeyParser.parse(data);
+      AppLogger.log('Parsed key event: $keyEvent');
+      _controller.add(keyEvent);
     }, onError: (e) {
       AppLogger.log('RawKeyboard listen error: $e');
     }, onDone: () {
       AppLogger.log('RawKeyboard listen done');
     });
+    AppLogger.log('Stdin listener setup complete');
   }
 
-  Stream<String> get keyEvents => _controller.stream;
+  Stream<KeyEvent> get keyEvents => _controller.stream;
 
   void dispose() {
     _stdinSubscription?.cancel();

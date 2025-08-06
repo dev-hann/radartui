@@ -158,13 +158,22 @@ class SingleChildRenderObjectElement extends RenderObjectElement {
   void mount(Element? parent) {
     super.mount(parent);
     _child = _updateChild(null, (widget as SingleChildRenderObjectWidget).child);
-    (renderObject as ContainerRenderObjectMixin).add(_child!.renderObject!); // Corrected child assignment
+    if (_child?.renderObject != null) {
+      (renderObject as ContainerRenderObjectMixin).add(_child!.renderObject!);
+    }
   }
   @override
   void update(Widget newWidget) {
     super.update(newWidget);
+    final oldChild = _child;
     _child = _updateChild(_child, (widget as SingleChildRenderObjectWidget).child);
-    (renderObject as ContainerRenderObjectMixin).add(_child!.renderObject!); // Corrected child assignment
+    if (oldChild != _child && _child?.renderObject != null) {
+      final container = renderObject as ContainerRenderObjectMixin;
+      if (oldChild?.renderObject != null) {
+        container.clear();
+      }
+      container.add(_child!.renderObject!);
+    }
   }
   @override
   void visitChildren(void Function(Element e) visitor) {
@@ -206,7 +215,25 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
     }).toList();
   }
   @override
+  void update(Widget newWidget) {
+    super.update(newWidget);
+    final newChildren = (newWidget as MultiChildRenderObjectWidget).children;
+    for (int i = 0; i < newChildren.length && i < _children.length; i++) {
+      _children[i] = _updateChild(_children[i], newChildren[i])!;
+    }
+  }
+  @override
   void visitChildren(void Function(Element e) visitor) {
     for(final c in _children) visitor(c);
+  }
+  Element? _updateChild(Element? child, Widget newWidget) {
+    if (child != null && child.widget.runtimeType == newWidget.runtimeType) {
+      child.update(newWidget);
+      return child;
+    } else {
+      final newChild = newWidget.createElement();
+      newChild.mount(this);
+      return newChild;
+    }
   }
 }
