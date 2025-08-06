@@ -81,7 +81,8 @@ class RawKeyboard {
       stdin.echoMode = false;
     } on StdinException {}
     _stdinSubscription = stdin.listen((List<int> data) {
-      print('RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}'); // Debug print
+      stderr.write('RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}
+'); // Debug print to stderr
       _controller.add(String.fromCharCodes(data));
     });
   }
