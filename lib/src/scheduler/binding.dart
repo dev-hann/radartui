@@ -1,46 +1,67 @@
+import 'dart:async';
+import 'dart:io';
+import 'package:radartui/src/foundation/offset.dart';
+import 'package:radartui/src/rendering/render_box.dart';
+import 'package:radartui/src/rendering/render_object.dart';
+import 'package:radartui/src/services/output_buffer.dart';
+import 'package:radartui/src/services/terminal.dart';
+import 'package:radartui/src/widgets/framework.dart';
 
-import 'package:radartui/src/rendering/pipeline.dart';
-import 'package:radartui/src/widgets/widget.dart';
-
-/// The binding for the scheduler layer.
-///
-/// This singleton class connects the rendering pipeline to the widget framework
-/// and drives the application's lifecycle.
 class SchedulerBinding {
-  /// The single instance of the binding.
-  static final SchedulerBinding instance = SchedulerBinding._();
-
+  static final instance = SchedulerBinding._();
   SchedulerBinding._();
 
-  final PipelineOwner _pipelineOwner = PipelineOwner();
+  final terminal = Terminal();
+  late final outputBuffer = OutputBuffer(terminal);
+  Element? _rootElement;
+  bool _frameScheduled = false;
 
-  /// The main entry point for a Radartui application.
   void runApp(Widget app) {
-    // TODO: This is the starting point of the application.
-    // 1. Set up the root of the widget/element/render tree.
-    //    - Create a root RenderObject and set it on the PipelineOwner.
-    //    - Create a root Element and mount it.
-    // 2. Schedule the very first frame.
+    try {
+      if (stdin.hasTerminal) {
+        stdin.lineMode = false;
+        stdin.echoMode = false;
+      }
+    } on StdinException {}
+    _rootElement = app.createElement();
+    _rootElement!.mount(null);
+    scheduleFrame();
   }
 
-  /// Schedules a new frame to be rendered.
-  ///
-  /// This is called by `setState` or other triggers.
   void scheduleFrame() {
-    // TODO: Add logic to prevent scheduling multiple frames within a short time.
-    // Use a microtask or a timer to call `handleFrame`.
+    if (_frameScheduled) return;
+    _frameScheduled = true;
+    scheduleMicrotask(handleFrame);
   }
 
-  /// The callback that handles a single frame.
   void handleFrame() {
-    // TODO: Execute the frame pipeline.
-    // 1. Handle any transient callbacks (e.g., for animations).
-    // 2. Build the dirty elements in the widget tree.
-    // 3. Run the layout phase.
-    _pipelineOwner.flushLayout();
-    // 4. Run the paint phase.
-    _pipelineOwner.flushPaint();
-    // 5. Flush the output buffer to the terminal.
-    //    (This would be done after the paint phase is complete).
+    _build(_rootElement!);
+    _layout(_rootElement!);
+    _paint(_rootElement!);
+    _frameScheduled = false;
+  }
+
+  void _build(Element element) {
+    if (element.dirty) {
+      if (element is ComponentElement) {
+        element.rebuild();
+      }
+      element.dirty = false;
+    }
+    element.visitChildren(_build);
+  }
+
+  void _layout(Element element) {
+    element.renderObject?.layout(BoxConstraints(
+      maxWidth: terminal.width,
+      maxHeight: terminal.height,
+    ));
+  }
+
+  void _paint(Element element) {
+    terminal.clear();
+    final context = PaintingContext(outputBuffer);
+    element.renderObject?.paint(context, Offset.zero);
+    outputBuffer.flush();
   }
 }

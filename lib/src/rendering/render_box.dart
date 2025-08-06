@@ -1,28 +1,30 @@
-
+import 'package:radartui/src/foundation/edge_insets.dart';
+import 'package:radartui/src/foundation/size.dart';
 import 'package:radartui/src/rendering/render_object.dart';
 
-/// A RenderObject that uses a 2D Cartesian coordinate system.
-///
-/// This is the most common base class for render objects.
-abstract class RenderBox extends RenderObject {
-  // RenderBox introduces a simpler layout model based on BoxConstraints.
-  @override
-  void layout(Constraints constraints) {
-    // TODO: Implement the layout logic for a box.
-    // This usually involves calling a `performLayout` method that subclasses can override.
+class BoxConstraints extends Constraints {
+  final int maxWidth, maxHeight;
+  const BoxConstraints({this.maxWidth = 9999, this.maxHeight = 9999});
+
+  Size get biggest => Size(maxWidth, maxHeight);
+  BoxConstraints deflate(EdgeInsets edge) {
+    final horizontal = edge.left + edge.right;
+    final vertical = edge.top + edge.bottom;
+    return BoxConstraints(
+      maxWidth: (maxWidth - horizontal).clamp(0, 9999),
+      maxHeight: (maxHeight - vertical).clamp(0, 9999),
+    );
   }
 }
 
-/// Constraints for a RenderBox, including min/max width and height.
-class BoxConstraints extends Constraints {
-  final int minWidth, maxWidth, minHeight, maxHeight;
+abstract class RenderBox extends RenderObject {}
 
-  const BoxConstraints({
-    this.minWidth = 0,
-    this.maxWidth = 9999, // A large number representing infinity
-    this.minHeight = 0,
-    this.maxHeight = 9999,
-  });
-
-  // TODO: Add utility methods (e.g., enforce, loosen, tighten).
+mixin ContainerRenderObjectMixin<C extends RenderObject, D extends ParentData> on RenderObject {
+  final List<C> _children = [];
+  void add(C child) {
+    child.parent = this; // Use the setter
+    _children.add(child);
+  }
+  void clear() => _children.clear();
+  List<C> get children => _children;
 }

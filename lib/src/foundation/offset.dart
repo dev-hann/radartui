@@ -1,13 +1,6 @@
-
-/// Represents a 2D offset with x and y coordinates.
 class Offset {
-  final int x;
-  final int y;
-
+  final int x, y;
   const Offset(this.x, this.y);
-
-  static const Offset zero = Offset(0, 0);
-
-  // TODO: Implement methods for arithmetic operations (e.g., +, -)
-  // TODO: Implement comparison operators (==, hashCode)
+  static const zero = Offset(0, 0);
+  Offset operator +(Offset other) => Offset(x + other.x, y + other.y);
 }
