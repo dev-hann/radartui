@@ -85,6 +85,12 @@ class RawKeyboard {
       stderr.write('''RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}
 '''); // Debug print to stderr
       _controller.add(String.fromCharCodes(data));
+    }, onError: (e) {
+      stderr.write('RawKeyboard listen error: $e
+');
+    }, onDone: () {
+      stderr.write('RawKeyboard listen done
+');
     });
   }
 
