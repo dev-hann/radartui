@@ -1,61 +1,207 @@
+import 'package:radartui/src/rendering/render_box.dart';
+import 'package:radartui/src/rendering/render_object.dart';
+import 'package:radartui/src/scheduler/binding.dart';
 
-import 'package:radartui/src/widgets/element.dart';
-import 'package:radartui/src/widgets/state.dart';
-import 'package:radartui/src/widgets/widget.dart';
+abstract class Widget {
+  const Widget();
+  Element createElement();
+}
 
-// This file will contain the concrete implementations of Element subclasses.
+abstract class Element {
+  Element(this.widget);
+  Widget widget;
+  Element? _parent;
+  RenderObject? _renderObject;
+  RenderObject? get renderObject => _renderObject;
+  bool dirty = true;
 
-/// An element that uses a [StatelessWidget] as its configuration.
+  void mount(Element? parent) => _parent = parent;
+  void update(Widget newWidget) => widget = newWidget;
+  void unmount() {}
+  void visitChildren(void Function(Element e) visitor) {}
+
+  void markNeedsBuild() {
+    if (dirty) return;
+    dirty = true;
+    SchedulerBinding.instance.scheduleFrame();
+  }
+}
+
+abstract class BuildContext {}
+
+abstract class StatelessWidget extends Widget {
+  const StatelessWidget();
+  @override
+  StatelessElement createElement() => StatelessElement(this);
+  Widget build(BuildContext context);
+}
+
+abstract class StatefulWidget extends Widget {
+  const StatefulWidget();
+  @override
+  StatefulElement createElement() => StatefulElement(this);
+  State createState();
+}
+
+abstract class State<T extends StatefulWidget> {
+  T get widget => _widget!;
+  T? _widget;
+  StatefulElement? _element;
+
+  void initState() {}
+  void dispose() {}
+
+  void setState(void Function() fn) {
+    fn();
+    _element?.markNeedsBuild();
+  }
+  Widget build(BuildContext context);
+}
+
 class StatelessElement extends ComponentElement {
-  StatelessElement(StatelessWidget widget) : super(widget);
-
+  StatelessElement(StatelessWidget super.widget);
   @override
   Widget build() => (widget as StatelessWidget).build(this);
 }
 
-/// An element that uses a [StatefulWidget] as its configuration.
 class StatefulElement extends ComponentElement {
-  StatefulElement(StatefulWidget widget) : super(widget);
-
-  late final State _state;
-
-  @override
-  void mount(Element? parent) {
-    super.mount(parent);
-    // TODO: Create the state object and call initState.
+  StatefulElement(StatefulWidget super.widget) {
+    _state = (widget as StatefulWidget).createState();
+    _state._widget = widget as StatefulWidget; // Corrected type cast
+    _state._element = this;
   }
-
+  late final State _state;
   @override
   Widget build() => _state.build(this);
-
-  @override
-  void unmount() {
-    super.unmount();
-    // TODO: Call dispose on the state object.
-  }
-}
-
-/// A base class for elements that compose other widgets.
-///
-/// This type of element does not have its own RenderObject.
-/// Its RenderObject is the one from its child.
-abstract class ComponentElement extends Element implements BuildContext {
-  ComponentElement(Widget widget) : super(widget);
-
-  Element? _child;
-
   @override
   void mount(Element? parent) {
     super.mount(parent);
-    // TODO: Call build() and mount the resulting child element.
+    _state.initState();
   }
-
   @override
   void update(Widget newWidget) {
     super.update(newWidget);
-    // TODO: Call build() and update the child element.
+    _state._widget = newWidget as StatefulWidget;
   }
+}
 
-  /// The core method that builds the child widget.
+abstract class ComponentElement extends Element implements BuildContext {
+  ComponentElement(super.widget);
+  Element? _child;
+  @override
+  void mount(Element? parent) {
+    super.mount(parent);
+    rebuild();
+  }
+  @override
+  void update(Widget newWidget) {
+    super.update(newWidget);
+    rebuild();
+  }
+  void rebuild() => _child = _updateChild(_child, build());
+  Element? _updateChild(Element? child, Widget newWidget) {
+    if (child != null && child.widget.runtimeType == newWidget.runtimeType) {
+      child.update(newWidget);
+      return child;
+    } else {
+      final newChild = newWidget.createElement();
+      newChild.mount(this);
+      return newChild;
+    }
+  }
+  @override
+  RenderObject? get renderObject => _child?.renderObject;
+  @override
+  void visitChildren(void Function(Element e) visitor) {
+    if (_child != null) visitor(_child!);
+  }
   Widget build();
+}
+
+abstract class RenderObjectWidget extends Widget {
+  const RenderObjectWidget();
+  @override
+  RenderObjectElement createElement();
+  RenderObject createRenderObject(BuildContext context);
+  void updateRenderObject(BuildContext context, RenderObject renderObject) {}
+}
+
+class RenderObjectElement extends Element implements BuildContext {
+  RenderObjectElement(RenderObjectWidget super.widget);
+  @override
+  void mount(Element? parent) {
+    super.mount(parent);
+    _renderObject = (widget as RenderObjectWidget).createRenderObject(this);
+  }
+  @override
+  void update(Widget newWidget) {
+    super.update(newWidget);
+    (widget as RenderObjectWidget).updateRenderObject(this, renderObject!);
+    renderObject!.markNeedsLayout();
+  }
+}
+
+abstract class SingleChildRenderObjectWidget extends RenderObjectWidget {
+  final Widget child;
+  const SingleChildRenderObjectWidget({required this.child}) : super(); // Corrected constructor
+  @override
+  SingleChildRenderObjectElement createElement() => SingleChildRenderObjectElement(this);
+}
+
+class SingleChildRenderObjectElement extends RenderObjectElement {
+  SingleChildRenderObjectElement(SingleChildRenderObjectWidget super.widget);
+  Element? _child;
+  @override
+  void mount(Element? parent) {
+    super.mount(parent);
+    _child = _updateChild(null, (widget as SingleChildRenderObjectWidget).child);
+    (renderObject as ContainerRenderObjectMixin).add(_child!.renderObject!); // Corrected child assignment
+  }
+  @override
+  void update(Widget newWidget) {
+    super.update(newWidget);
+    _child = _updateChild(_child, (widget as SingleChildRenderObjectWidget).child);
+    (renderObject as ContainerRenderObjectMixin).add(_child!.renderObject!); // Corrected child assignment
+  }
+  @override
+  void visitChildren(void Function(Element e) visitor) {
+    if (_child != null) visitor(_child!);
+  }
+  Element? _updateChild(Element? child, Widget newWidget) {
+    if (child != null && child.widget.runtimeType == newWidget.runtimeType) {
+      child.update(newWidget);
+      return child;
+    } else {
+      final newChild = newWidget.createElement();
+      newChild.mount(this);
+      return newChild;
+    }
+  }
+}
+
+abstract class MultiChildRenderObjectWidget extends RenderObjectWidget {
+  final List<Widget> children;
+  const MultiChildRenderObjectWidget({required this.children}) : super(); // Corrected constructor
+  @override
+  MultiChildRenderObjectElement createElement() => MultiChildRenderObjectElement(this);
+}
+
+class MultiChildRenderObjectElement extends RenderObjectElement {
+  MultiChildRenderObjectElement(MultiChildRenderObjectWidget super.widget);
+  List<Element> _children = [];
+  @override
+  void mount(Element? parent) {
+    super.mount(parent);
+    var renderObject = this.renderObject as ContainerRenderObjectMixin<RenderObject, ParentData>;
+    _children = (widget as MultiChildRenderObjectWidget).children.map((w) {
+      final child = w.createElement();
+      child.mount(this);
+      renderObject.add(child.renderObject!);
+      return child;
+    }).toList();
+  }
+  @override
+  void visitChildren(void Function(Element e) visitor) {
+    for(final c in _children) visitor(c);
+  }
 }

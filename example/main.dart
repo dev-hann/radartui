@@ -1,22 +1,49 @@
-
+import 'dart:async';
+import 'dart:io';
 import 'package:radartui/radartui.dart';
 
 void main() {
-  // This is the entry point of the example application.
-  runApp(const MyApp());
+  runApp(const CounterApp());
 }
 
-/// The root widget of the example application.
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class CounterApp extends StatefulWidget {
+  const CounterApp();
+
+  @override
+  State<CounterApp> createState() => _CounterAppState();
+}
+
+class _CounterAppState extends State<CounterApp> {
+  int _counter = 0;
+  StreamSubscription? _sub;
+
+  @override
+  void initState() {
+    super.initState();
+    // Use a broadcast stream to allow multiple subscriptions if needed in the future.
+    _sub = stdin.asBroadcastStream().listen((_) {
+      setState(() {
+        _counter++;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Build a simple UI to demonstrate the framework.
     return Column(
       children: [
-        Text('Hello, Radartui!'),
-        // Add more widgets here.
+        const Text('Welcome to the Radartui Counter!'),
+        Padding(
+          padding: const EdgeInsets.symmetric(v: 1, h: 0), // Fixed parameter names
+          child: Text('Counter: $_counter'),
+        ),
+        const Text('(Press any key to increment, Ctrl+C to exit)'),
       ],
     );
   }

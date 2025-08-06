@@ -1,44 +1,122 @@
+import 'package:radartui/src/foundation/axis.dart';
+import 'package:radartui/src/foundation/edge_insets.dart';
+import 'package:radartui/src/foundation/offset.dart';
+import 'package:radartui/src/foundation/size.dart';
+import 'package:radartui/src/rendering/render_box.dart';
+import 'package:radartui/src/rendering/render_object.dart';
+import 'package:radartui/src/widgets/framework.dart'; // Added import for framework.dart
 
-import 'package:radartui/src/widgets/state.dart';
-
-/// A widget that displays a string of text.
-class Text extends StatelessWidget {
+class Text extends RenderObjectWidget {
   final String data;
-  // TODO: Add a Style property.
-
-  const Text(this.data, {super.key});
-
+  const Text(this.data);
   @override
-  Widget build(BuildContext context) {
-    // Text is a leaf widget, so it doesn't build other widgets.
-    // It will be associated with a RenderObject that knows how to paint text.
-    // We will need a corresponding RenderObjectWidget for this.
-    return /* RenderTextWidget(...) */;
+  RenderObjectElement createElement() => RenderObjectElement(this);
+  @override
+  RenderText createRenderObject(BuildContext context) => RenderText(data);
+  @override
+  void updateRenderObject(BuildContext context, RenderObject renderObject) {
+    (renderObject as RenderText).text = data;
   }
 }
 
-/// A widget that displays its children in a vertical array.
-class Column extends StatelessWidget {
-  final List<Widget> children;
-
-  const Column({this.children = const [], super.key});
-
+class RenderText extends RenderBox {
+  String text;
+  RenderText(this.text);
   @override
-  Widget build(BuildContext context) {
-    // This will be a RenderObjectWidget that uses a RenderFlex as its RenderObject.
-    return /* RenderFlexWidget(...) */;
+  void performLayout(Constraints constraints) {
+    size = Size(text.length, 1);
+  }
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    for (int i = 0; i < text.length; i++) {
+      context.buffer.write(offset.x + i, offset.y, text[i]);
+    }
   }
 }
 
-/// A widget that displays its children in a horizontal array.
-class Row extends StatelessWidget {
-  final List<Widget> children;
+class Padding extends SingleChildRenderObjectWidget {
+  final EdgeInsets padding;
+  const Padding({required this.padding, required super.child});
+  @override
+  RenderPadding createRenderObject(BuildContext context) => RenderPadding(padding: padding);
+  @override
+  void updateRenderObject(BuildContext context, RenderObject renderObject) {
+    (renderObject as RenderPadding).padding = padding;
+  }
+}
 
-  const Row({this.children = const [], super.key});
+class RenderPadding extends RenderBox with ContainerRenderObjectMixin<RenderBox, ParentData> {
+  EdgeInsets padding;
+  RenderPadding({required this.padding});
+  @override
+  void performLayout(Constraints constraints) {
+    if (children.isNotEmpty) {
+      final child = children.first;
+      child.layout((constraints as BoxConstraints).deflate(padding));
+      size = Size(
+        child.size!.width + padding.left + padding.right,
+        child.size!.height + padding.top + padding.bottom,
+      );
+    } else {
+      size = Size(padding.left + padding.right, padding.top + padding.bottom);
+    }
+  }
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (children.isNotEmpty) {
+      context.paintChild(children.first, offset + Offset(padding.left, padding.top));
+    }
+  }
+}
+
+class Column extends Flex {
+  const Column({required List<Widget> children}) : super(children: children, direction: Axis.vertical);
+}
+
+class Row extends Flex {
+  const Row({required List<Widget> children}) : super(children: children, direction: Axis.horizontal);
+}
+
+abstract class Flex extends MultiChildRenderObjectWidget {
+  final Axis direction;
+  const Flex({required super.children, required this.direction});
+  @override
+  RenderFlex createRenderObject(BuildContext context) => RenderFlex(direction: direction);
+  @override
+  void updateRenderObject(BuildContext context, RenderObject renderObject) {
+    (renderObject as RenderFlex).direction = direction;
+  }
+}
+
+class RenderFlex extends RenderBox with ContainerRenderObjectMixin<RenderBox, ParentData> {
+  Axis direction;
+  RenderFlex({required this.direction});
 
   @override
-  Widget build(BuildContext context) {
-    // This will also be a RenderObjectWidget that uses a RenderFlex.
-    return /* RenderFlexWidget(...) */;
+  void performLayout(Constraints constraints) {
+    int main = 0, cross = 0;
+    for (final child in children) {
+      child.layout(constraints);
+      if (direction == Axis.vertical) {
+        main += child.size!.height;
+        cross = cross > child.size!.width ? cross : child.size!.width;
+      } else {
+        main += child.size!.width;
+        cross = cross > child.size!.height ? cross : child.size!.height;
+      }
+    }
+    size = direction == Axis.vertical ? Size(cross, main) : Size(main, cross);
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    int currentMain = 0;
+    for (final child in children) {
+      final childOffset = direction == Axis.vertical
+        ? offset + Offset(0, currentMain)
+        : offset + Offset(currentMain, 0);
+      context.paintChild(child, childOffset);
+      currentMain += direction == Axis.vertical ? child.size!.height : child.size!.width;
+    }
   }
 }
