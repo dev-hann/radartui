@@ -54,6 +54,7 @@ abstract class State<T extends StatefulWidget> {
   void setState(void Function() fn) {
     fn();
     _element?.markNeedsBuild();
+    stderr.write('setState called, counter: ${(_element?.widget as CounterApp)._counter}\n'); // Debug print
   }
   Widget build(BuildContext context);
 }

@@ -19,13 +19,13 @@ class SchedulerBinding {
 
   void runApp(Widget app) {
     try {
-      stderr.write('stdin.hasTerminal: ${stdin.hasTerminal}\n'); // Debug print
       if (stdin.hasTerminal) {
         stdin.lineMode = false;
         stdin.echoMode = false;
       }
     } on StdinException {}
     keyboard.initialize(); // Initialize keyboard
+    terminal.clear(); // Clear screen once at startup
     _rootElement = app.createElement();
     _rootElement!.mount(null);
     scheduleFrame();
@@ -74,12 +74,19 @@ class RawKeyboard {
 
   void initialize() {
     if (!stdin.hasTerminal) return;
-    // Ensure stdin is in raw mode for immediate input
-    stdin.lineMode = false;
-    stdin.echoMode = false;
-
+    try {
+      stdin.lineMode = false;
+    } on StdinException {}
+    try {
+      stdin.echoMode = false;
+    } on StdinException {}
     _stdinSubscription = stdin.listen((List<int> data) {
+      stderr.write('RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}\n'); // Debug print to stderr
       _controller.add(String.fromCharCodes(data));
+    }, onError: (e) {
+      stderr.write('RawKeyboard listen error: $e\n');
+    }, onDone: () {
+      stderr.write('RawKeyboard listen done\n');
     });
   }
 
@@ -88,8 +95,12 @@ class RawKeyboard {
   void dispose() {
     _stdinSubscription?.cancel();
     if (stdin.hasTerminal) {
-      stdin.lineMode = true;
-      stdin.echoMode = true;
+      try {
+        stdin.lineMode = true;
+      } on StdinException {}
+      try {
+        stdin.echoMode = true;
+      } on StdinException {}
     }
     _controller.close();
   }
