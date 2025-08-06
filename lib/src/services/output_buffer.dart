@@ -11,16 +11,16 @@ class Cell {
 
 class OutputBuffer {
   final Terminal terminal;
-  late List<List<String>> _grid;
-  late List<List<String>> _previousGrid;
+  late List<List<Cell>> _grid;
+  late List<List<Cell>> _previousGrid;
 
   OutputBuffer(this.terminal) {
     resize();
   }
 
   void resize() {
-    _grid = List.generate(terminal.height, (_) => List.generate(terminal.width, (_) => ' '));
-    _previousGrid = List.generate(terminal.height, (_) => List.generate(terminal.width, (_) => ' '));
+    _grid = List.generate(terminal.height, (_) => List.generate(terminal.width, (_) => Cell(' ')));
+    _previousGrid = List.generate(terminal.height, (_) => List.generate(terminal.width, (_) => Cell(' ')));
     AppLogger.log('OutputBuffer resized to ${terminal.width}x${terminal.height}');
   }
 
@@ -29,7 +29,7 @@ class OutputBuffer {
       AppLogger.log("OutputBuffer.write: Out of bounds ($x, $y) char='$char'");
       return;
     }
-    _grid[y][x] = char;
+    _grid[y][x] = Cell(char);
     AppLogger.log("OutputBuffer.write: ($x, $y) char='$char'");
   }
 
@@ -39,9 +39,9 @@ class OutputBuffer {
     for (var y = 0; y < terminal.height; y++) {
       for (var x = 0; x < terminal.width; x++) {
         if (_grid[y][x] != _previousGrid[y][x]) {
-          AppLogger.log("  Diff found at ($x, $y): old='${_previousGrid[y][x]}', new='${_grid[y][x]}'");
+          AppLogger.log("  Diff found at ($x, $y): old='${_previousGrid[y][x].char}', new='${_grid[y][x].char}'");
           terminal.setCursorPosition(x, y);
-          stdout.write(_grid[y][x]);
+          stdout.write(_grid[y][x].char); // Corrected: Access .char property
           _previousGrid[y][x] = _grid[y][x];
         }
       }
