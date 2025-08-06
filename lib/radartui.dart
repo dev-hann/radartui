@@ -1,55 +1,25 @@
-import 'dart:io';
 
-import 'package:radartui/canvas/canvas.dart';
-import 'package:radartui/canvas/rect.dart';
-import 'package:radartui/input/input.dart';
-import 'package:radartui/logger/file_logger.dart';
-import 'package:radartui/logger/logger.dart';
-import 'package:radartui/model/key.dart';
-import 'package:radartui/view/view.dart';
-import 'package:radartui/widget/element.dart';
-import 'package:radartui/widget/widget.dart';
+/// The main entry point for the Radartui library.
+///
+/// This file should export all the public-facing APIs from the `src` directory.
 
-export 'canvas/canvas.dart';
-export 'canvas/rect.dart';
-export 'widget/widget.dart';
-export 'logger/logger.dart';
+// Foundation
+export 'src/foundation/color.dart';
+export 'src/foundation/size.dart';
+export 'src/foundation/offset.dart';
+export 'src/foundation/rect.dart';
+export 'src/foundation/key.dart';
 
-class Radartui {
-  static final canvas = Canvas.instance;
+// Widgets
+export 'src/widgets/widget.dart';
+export 'src/widgets/state.dart';
+export 'src/widgets/framework.dart' show BuildContext;
+export 'src/widgets/basic.dart';
 
-  static Future runApp(
-    Widget rootWidget, {
-    Logger? logger,
-    Function(Key key)? onKey,
-  }) async {
-    logger ??= FileLogger();
+// Scheduler
+export 'src/scheduler/binding.dart' show SchedulerBinding;
 
-    await logger.run(
-      callback: () async {
-        canvas.init();
-        Input.instance.init();
-
-        // Element 트리 루트 생성
-        final rootElement = rootWidget.createElement();
-        rootElement.mount(); // 최상위이므로 parent는 null
-
-        Input.instance.stream.listen((key) {
-          onKey?.call(key);
-          rootElement.onKey(key); // 키 입력도 위임
-        });
-
-        while (true) {
-          canvas.clear();
-          rootElement.render(canvas, Rect.fromCanvas(canvas));
-          await Future.delayed(Duration(milliseconds: 100));
-        }
-      },
-    );
-  }
-
-  static void exitApp() {
-    canvas.dispose();
-    exit(0);
-  }
+/// A convenience function to run a Radartui application.
+void runApp(Widget app) {
+  SchedulerBinding.instance.runApp(app);
 }
