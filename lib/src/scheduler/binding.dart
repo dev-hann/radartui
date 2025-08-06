@@ -19,6 +19,7 @@ class SchedulerBinding {
 
   void runApp(Widget app) {
     try {
+      stderr.write('stdin.hasTerminal: ${stdin.hasTerminal}\n'); // Debug print
       if (stdin.hasTerminal) {
         stdin.lineMode = false;
         stdin.echoMode = false;
@@ -81,8 +82,8 @@ class RawKeyboard {
       stdin.echoMode = false;
     } on StdinException {}
     _stdinSubscription = stdin.listen((List<int> data) {
-      stderr.write('RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}
-'); // Debug print to stderr
+      stderr.write('''RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}
+'''); // Debug print to stderr
       _controller.add(String.fromCharCodes(data));
     });
   }
