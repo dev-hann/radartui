@@ -21,8 +21,10 @@ class _CounterAppState extends State<CounterApp> {
   @override
   void initState() {
     super.initState();
-    // Subscribe to keyboard events from SchedulerBinding's RawKeyboard
-    _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((_) {
+    // Temporarily use stdin.readByteSync() for direct debugging
+    // This will block the UI, but helps diagnose input issues.
+    _sub = stdin.asBroadcastStream().listen((data) {
+      stderr.write('Direct stdin read: ${data.map((e) => e.toRadixString(16)).join(' ')}\n');
       setState(() {
         _counter++;
       });
