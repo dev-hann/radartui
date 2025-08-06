@@ -88,35 +88,35 @@ abstract class Flex extends MultiChildRenderObjectWidget {
   }
 }
 
-class RenderFlex extends RenderBox with ContainerRenderObjectMixin<RenderBox, ParentData> {
+class RenderFlex extends RenderBox with ContainerRenderObjectMixin<RenderBox, FlexParentData> {
   Axis direction;
   RenderFlex({required this.direction});
 
   @override
   void performLayout(Constraints constraints) {
-    int main = 0, cross = 0;
+    int mainAxisExtent = 0;
+    int crossAxisExtent = 0;
     for (final child in children) {
       child.layout(constraints);
+      final childParentData = child.parentData as FlexParentData;
       if (direction == Axis.vertical) {
-        main += child.size!.height;
-        cross = cross > child.size!.width ? cross : child.size!.width;
+        childParentData.offset = Offset(0, mainAxisExtent);
+        mainAxisExtent += child.size!.height;
+        crossAxisExtent = crossAxisExtent > child.size!.width ? crossAxisExtent : child.size!.width;
       } else {
-        main += child.size!.width;
-        cross = cross > child.size!.height ? cross : child.size!.height;
+        childParentData.offset = Offset(mainAxisExtent, 0);
+        mainAxisExtent += child.size!.width;
+        crossAxisExtent = crossAxisExtent > child.size!.height ? crossAxisExtent : child.size!.height;
       }
     }
-    size = direction == Axis.vertical ? Size(cross, main) : Size(main, cross);
+    size = direction == Axis.vertical ? Size(crossAxisExtent, mainAxisExtent) : Size(mainAxisExtent, crossAxisExtent);
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    int currentMain = 0;
     for (final child in children) {
-      final childOffset = direction == Axis.vertical
-        ? offset + Offset(0, currentMain)
-        : offset + Offset(currentMain, 0);
-      context.paintChild(child, childOffset);
-      currentMain += direction == Axis.vertical ? child.size!.height : child.size!.width;
+      final childParentData = child.parentData as FlexParentData;
+      context.paintChild(child, offset + childParentData.offset);
     }
   }
 }
