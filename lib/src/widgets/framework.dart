@@ -1,6 +1,7 @@
 import 'package:radartui/src/rendering/render_box.dart';
 import 'package:radartui/src/rendering/render_object.dart';
 import 'package:radartui/src/scheduler/binding.dart';
+import 'package:radartui/src/services/logger.dart'; // Added import
 
 abstract class Widget {
   const Widget();
@@ -54,7 +55,6 @@ abstract class State<T extends StatefulWidget> {
   void setState(void Function() fn) {
     fn();
     _element?.markNeedsBuild();
-    stderr.write('setState called, counter: ${(_element?.widget as CounterApp)._counter}\n'); // Debug print
   }
   Widget build(BuildContext context);
 }
