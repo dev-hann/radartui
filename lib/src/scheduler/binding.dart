@@ -75,22 +75,12 @@ class RawKeyboard {
 
   void initialize() {
     if (!stdin.hasTerminal) return;
-    try {
-      stdin.lineMode = false;
-    } on StdinException {}
-    try {
-      stdin.echoMode = false;
-    } on StdinException {}
+    // Ensure stdin is in raw mode for immediate input
+    stdin.lineMode = false;
+    stdin.echoMode = false;
+
     _stdinSubscription = stdin.listen((List<int> data) {
-      stderr.write('''RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}
-'''); // Debug print to stderr
       _controller.add(String.fromCharCodes(data));
-    }, onError: (e) {
-      stderr.write('RawKeyboard listen error: $e
-');
-    }, onDone: () {
-      stderr.write('RawKeyboard listen done
-');
     });
   }
 
@@ -99,12 +89,8 @@ class RawKeyboard {
   void dispose() {
     _stdinSubscription?.cancel();
     if (stdin.hasTerminal) {
-      try {
-        stdin.lineMode = true;
-      } on StdinException {}
-      try {
-        stdin.echoMode = true;
-      } on StdinException {}
+      stdin.lineMode = true;
+      stdin.echoMode = true;
     }
     _controller.close();
   }
