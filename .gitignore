@@ -1,0 +1,8 @@
+# Dart & Pub
+.dart_tool/
+.packages
+build/
+pubspec.lock
+
+# Logs
+*.log
