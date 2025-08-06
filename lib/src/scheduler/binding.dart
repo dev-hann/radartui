@@ -62,7 +62,6 @@ class SchedulerBinding {
   }
 
   void _paint(Element element) {
-    terminal.clear();
     final context = PaintingContext(outputBuffer);
     element.renderObject?.paint(context, Offset.zero);
     outputBuffer.flush();
