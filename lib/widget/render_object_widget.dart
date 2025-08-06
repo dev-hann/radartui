@@ -3,6 +3,7 @@ import 'package:radartui/widget/render_object.dart';
 import 'package:radartui/widget/widget.dart';
 
 abstract class RenderObjectWidget extends Widget {
+  const RenderObjectWidget({super.key});
   RenderObject createRenderObject();
   void updateRenderObject(RenderObject renderObject);
 

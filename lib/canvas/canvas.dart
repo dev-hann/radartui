@@ -8,21 +8,35 @@ class Canvas {
   static final Canvas instance = Canvas._();
 
   Size get windowSize {
-    final height = stdout.terminalLines;
-    final width = stdout.terminalColumns;
-    return Size(width, height);
+    try {
+      final height = stdout.terminalLines;
+      final width = stdout.terminalColumns;
+      return Size(width, height);
+    } catch (e) {
+      // Return default size for non-interactive environments
+      return Size(80, 24);
+    }
   }
 
   void init() {
-    stdin.echoMode = false;
-    stdin.lineMode = false;
+    try {
+      stdin.echoMode = false;
+      stdin.lineMode = false;
+    } catch (e) {
+      // Handle non-interactive environments (like CI/testing)
+      // where terminal mode cannot be set
+    }
     clear();
     hideCursor();
   }
 
   void dispose() {
-    stdin.echoMode = true;
-    stdin.lineMode = true;
+    try {
+      stdin.echoMode = true;
+      stdin.lineMode = true;
+    } catch (e) {
+      // Handle non-interactive environments
+    }
     showCursor();
     clear();
   }

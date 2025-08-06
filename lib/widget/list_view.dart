@@ -1,7 +1,9 @@
 import 'package:radartui/canvas/canvas.dart';
-import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/canvas/style.dart';
-import 'package:radartui/model/key.dart';
+import 'package:radartui/model/key.dart' as input_key;
+import 'package:radartui/enum/key_type.dart';
+import 'package:radartui/widget/render_object.dart';
+import 'package:radartui/widget/render_object_widget.dart';
 import 'package:radartui/widget/widget.dart';
 
 class ScrollController {
@@ -18,7 +20,7 @@ class ScrollController {
   final List<String> items;
   final void Function(int index, String item)? onSelect;
 
-  void onKey(Key key) {
+  void onKey(input_key.Key key) {
     switch (key.type) {
       case KeyType.up:
         if (selectedIndex > 0) selectedIndex--;
@@ -44,35 +46,61 @@ class ScrollController {
   }
 }
 
-class ListView extends LeafWidget {
-  ListView({
-    required super.focusID,
+class ListView extends RenderObjectWidget {
+  const ListView({
+    super.key,
     required this.scrollController,
-    this.onSelect,
     this.style = const Style(),
-    this.highlightStyle = const Style(inverted: true),
+    this.highlightStyle = const Style(),
   });
 
   final ScrollController scrollController;
-  final void Function(int index)? onSelect;
   final Style style;
   final Style highlightStyle;
+
+  @override
+  RenderObject createRenderObject() {
+    return RenderListView(
+      scrollController: scrollController,
+      style: style,
+      highlightStyle: highlightStyle,
+    );
+  }
+
+  @override
+  void updateRenderObject(RenderObject renderObject) {
+    (renderObject as RenderListView).scrollController = scrollController;
+    (renderObject as RenderListView).style = style;
+    (renderObject as RenderListView).highlightStyle = highlightStyle;
+  }
+}
+
+class RenderListView extends RenderObject {
+  RenderListView({
+    required this.scrollController,
+    required this.style,
+    required this.highlightStyle,
+  });
+
+  ScrollController scrollController;
+  Style style;
+  Style highlightStyle;
+
   List<String> get items => scrollController.items;
 
   @override
-  void render(Canvas canvas, Rect rect) {
-    super.render(canvas, rect);
-    scrollController.lastHeight = rect.height;
-    final visibleLines = rect.height;
+  void paint(Canvas canvas) {
+    scrollController.lastHeight = layoutRect.height;
+    final visibleLines = layoutRect.height;
     final start = scrollController.scrollOffset;
     final end = (start + visibleLines).clamp(0, items.length);
 
     for (int i = start; i < end; i++) {
-      canvas.move(rect.x, rect.y + i - start);
-      final isSelected = (i == scrollController.selectedIndex) && isFocused;
+      canvas.move(layoutRect.x, layoutRect.y + i - start);
+      final isSelected = (i == scrollController.selectedIndex);
       final currentStyle = isSelected ? highlightStyle : style;
       canvas.setStyle(currentStyle);
-      canvas.drawChar(items[i].padRight(rect.width), style: currentStyle);
+      canvas.drawChar(items[i].padRight(layoutRect.width), style: currentStyle);
     }
 
     canvas.clearStyle();
@@ -80,14 +108,4 @@ class ListView extends LeafWidget {
 
   @override
   int preferredHeight(int width) => items.length;
-
-  @override
-  bool shouldUpdate(covariant ListView oldWidget) {
-    return items != oldWidget.items ||
-        scrollController.selectedIndex !=
-            oldWidget.scrollController.selectedIndex ||
-        onSelect != oldWidget.onSelect ||
-        style != oldWidget.style ||
-        highlightStyle != oldWidget.highlightStyle;
-  }
 }

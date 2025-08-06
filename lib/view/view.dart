@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:radartui/input/input.dart';
-import 'package:radartui/model/key.dart';
+import 'package:radartui/model/key.dart' as input_key;
 import 'package:radartui/state/state.dart';
 import 'package:radartui/widget/widget.dart' hide State;
 
@@ -15,7 +15,7 @@ abstract class View<T extends State> {
     });
   }
 
-  void onKey(Key key) {}
+  void onKey(input_key.Key key);
 
   void dispose() {
     _subscription?.cancel();
@@ -25,5 +25,5 @@ abstract class View<T extends State> {
     state = newState;
   }
 
-  WidgetOld build();
+  Widget build();
 }

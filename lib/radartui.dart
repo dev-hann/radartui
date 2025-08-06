@@ -5,10 +5,10 @@ import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/input/input.dart';
 import 'package:radartui/logger/file_logger.dart';
 import 'package:radartui/logger/logger.dart';
-import 'package:radartui/model/key.dart';
-import 'package:radartui/view/view.dart';
-import 'package:radartui/widget/element.dart';
+import 'package:radartui/model/key.dart' as input_key;
 import 'package:radartui/widget/widget.dart';
+
+import 'package:radartui/widget/focus_manager.dart';
 
 export 'canvas/canvas.dart';
 export 'canvas/rect.dart';
@@ -21,7 +21,7 @@ class Radartui {
   static Future runApp(
     Widget rootWidget, {
     Logger? logger,
-    Function(Key key)? onKey,
+    Function(input_key.Key key)? onKey,
   }) async {
     logger ??= FileLogger();
 
@@ -36,7 +36,7 @@ class Radartui {
 
         Input.instance.stream.listen((key) {
           onKey?.call(key);
-          rootElement.onKey(key); // 키 입력도 위임
+          FocusManager.instance.handleKey(key); // Dispatch to FocusManager
         });
 
         while (true) {

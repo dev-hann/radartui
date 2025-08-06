@@ -13,9 +13,13 @@ class Input {
   void init() {
     if (_isInit) return;
     _isInit = true;
-    stdin
-      ..echoMode = false
-      ..lineMode = false;
+    try {
+      stdin
+        ..echoMode = false
+        ..lineMode = false;
+    } catch (e) {
+      // Handle non-interactive environments
+    }
     stdin.listen((List<int> bytes) async {
       final iterator = bytes.iterator;
       while (iterator.moveNext()) {

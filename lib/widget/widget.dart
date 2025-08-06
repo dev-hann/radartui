@@ -6,28 +6,55 @@ import 'package:meta/meta.dart';
 
 export './text.dart';
 export './column.dart';
+export './row.dart';
 export './card.dart';
 export './list_view.dart';
+export './layout_widget.dart';
+export './inherited_widget.dart';
+export './gesture_detector.dart';
+export './element.dart' show BuildContext;
+
+abstract class WidgetKey {
+  const WidgetKey(this.value);
+  final String value;
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || (other is WidgetKey && value == other.value);
+
+  @override
+  int get hashCode => value.hashCode;
+}
+
+class ValueKey<T> extends WidgetKey {
+  ValueKey(T value) : super(value.toString());
+}
+
+class ObjectKey extends WidgetKey {
+  ObjectKey(Object object) : super(object.toString());
+}
 
 abstract class Widget {
-  const Widget();
+  const Widget({this.key});
+
+  final WidgetKey? key;
 
   Element createElement();
 
-  bool shouldUpdate(covariant Widget oldWidget) => true;
+  bool shouldUpdate(covariant Widget oldWidget) => 
+      runtimeType == oldWidget.runtimeType && key == oldWidget.key;
 }
 
 abstract class StatelessWidget extends Widget {
-  const StatelessWidget();
+  const StatelessWidget({super.key});
 
-  Widget build();
+  Widget build(BuildContext context);
 
   @override
   StatelessElement createElement() => StatelessElement(this);
 }
 
 abstract class StatefulWidget extends Widget {
-  const StatefulWidget();
+  const StatefulWidget({super.key});
 
   State createState();
 
@@ -37,65 +64,30 @@ abstract class StatefulWidget extends Widget {
 
 abstract class State<T extends StatefulWidget> {
   late T widget;
+  StatefulElement? _element;
+
+  BuildContext get context => _element!;
+
+  bool get mounted => _element != null;
 
   void initState() {}
-  void dispose() {}
+  void dispose() {
+    _element = null;
+  }
+  void didUpdateWidget(covariant T oldWidget) {}
 
-  Widget build();
-}
+  Widget build(BuildContext context);
 
-///
-///
-///
-///
-
-abstract class WidgetOld {
-  WidgetOld({this.key, this.focusID = ""});
-  final String? key;
-  final String focusID;
-  bool get isFocused => FocusManager.instance.isFocused(focusID);
-
-  @mustCallSuper
-  void render(Canvas canvas, Rect rect) {
-    if (focusID.isNotEmpty) {
-      FocusManager.instance.registerFocus(focusID);
-    }
+  void setState(VoidCallback fn) {
+    fn();
+    _element?.markNeedsBuild();
   }
 
-  int preferredHeight(int width);
-
-  bool shouldUpdate(covariant WidgetOld oldWidget);
-}
-
-abstract class SingleChildWidget extends WidgetOld {
-  SingleChildWidget({required this.child, required super.focusID});
-  final WidgetOld child;
-
-  @override
-  bool shouldUpdate(covariant SingleChildWidget oldWidget) {
-    return child.shouldUpdate(oldWidget.child);
+  void setElement(StatefulElement element) {
+    _element = element;
   }
 }
 
-abstract class MultiChildWidget extends WidgetOld {
-  MultiChildWidget({required this.children, required super.focusID});
-  final List<WidgetOld> children;
+typedef VoidCallback = void Function();
 
-  @override
-  bool shouldUpdate(covariant MultiChildWidget oldWidget) {
-    if (children.length != oldWidget.children.length) return true;
-    for (int i = 0; i < children.length; i++) {
-      if (children[i].shouldUpdate(oldWidget.children[i])) {
-        return true;
-      }
-    }
-    return false;
-  }
-}
 
-abstract class LeafWidget extends WidgetOld {
-  LeafWidget({required super.focusID});
-
-  @override
-  bool shouldUpdate(covariant LeafWidget oldWidget);
-}

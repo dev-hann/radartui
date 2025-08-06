@@ -1,8 +1,11 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/canvas/style.dart';
-import 'package:radartui/model/key.dart';
+import 'package:radartui/model/key.dart' as input_key;
+import 'package:radartui/enum/key_type.dart';
 import 'package:radartui/widget/widget.dart';
+import 'package:radartui/widget/render_object.dart';
+import 'package:radartui/widget/render_object_widget.dart';
 
 class TextEditingController {
   TextEditingController({String? text}) : _text = text ?? '';
@@ -43,7 +46,7 @@ class TextEditingController {
     if (_cursorIndex < _text.length) _cursorIndex++;
   }
 
-  void onKey(Key key) {
+  void onKey(input_key.Key key) {
     switch (key.type) {
       case KeyType.tab:
         break;
@@ -72,102 +75,55 @@ class TextEditingController {
   }
 }
 
-class TextField extends StatefulWidget {
+class TextField extends RenderObjectWidget {
+  const TextField({
+    super.key,
+    required this.controller,
+    this.style,
+    this.cursorStyle,
+  });
+
   final TextEditingController controller;
   final Style? style;
   final Style? cursorStyle;
 
-  TextField({required this.controller, this.style, this.cursorStyle});
+  @override
+  RenderObject createRenderObject() {
+    return RenderTextField(
+      controller: controller,
+      style: style,
+      cursorStyle: cursorStyle,
+    );
+  }
 
   @override
-  State createState() => _TextFieldState();
-}
-
-class _TextFieldState extends State<TextField> {
-  TextEditingController get controller => widget.controller;
-
-  // @override
-  // void onKey(Key key) {
-  //   if (key.isCharacter) {
-  //     controller.insert(key.label);
-  //   } else if (key.isBackspace) {
-  //     controller.deleteBack();
-  //   } else if (key.type == KeyType.left) {
-  //     controller.moveCursorLeft();
-  //   } else if (key.type == KeyType.right) {
-  //     controller.moveCursorRight();
-  //   }
-
-  //   rebuild();
-  // }
-
-  // @override
-  // void render(Canvas canvas, Rect rect) {
-  //   final displayText = controller.text;
-  //   final cursorPos = controller.cursor;
-
-  //   final textWithCursor =
-  //       displayText.substring(0, cursorPos) +
-  //       '|' +
-  //       displayText.substring(cursorPos);
-
-  //   canvas.move(rect.x, rect.y);
-  //   canvas.drawChar(textWithCursor.padRight(rect.width), style: widget.style);
-  // }
-
-  // @override
-  // int preferredHeight(int width) => 1;
-
-  @override
-  Widget build() {
-    return Text(controller.text);
+  void updateRenderObject(RenderObject renderObject) {
+    (renderObject as RenderTextField).controller = controller;
+    (renderObject as RenderTextField).style = style;
+    (renderObject as RenderTextField).cursorStyle = cursorStyle;
   }
 }
 
-class TextFieldOld extends LeafWidget {
-  TextFieldOld({
-    required super.focusID,
-    required this.controller,
-    this.style = const Style(),
-    this.focusedStyle = const Style(bold: true, underLine: true),
-    this.onChanged,
-    this.onSubmitted,
-  });
+class RenderTextField extends RenderObject {
+  RenderTextField({required this.controller, this.style, this.cursorStyle});
 
-  final Style style;
-  final Style focusedStyle;
-  final TextEditingController controller;
-  final void Function(String)? onChanged;
-  final void Function(String)? onSubmitted;
+  TextEditingController controller;
+  Style? style;
+  Style? cursorStyle;
 
   @override
-  void render(Canvas canvas, Rect rect) {
-    super.render(canvas, rect);
+  void paint(Canvas canvas) {
     final displayText = controller.text;
     final cursorIndex = controller.cursorIndex.clamp(0, displayText.length);
 
     final renderText =
-        isFocused
-            ? '${displayText.substring(0, cursorIndex)}|${displayText.substring(cursorIndex)}'
-            : displayText;
+        '${displayText.substring(0, cursorIndex)}|${displayText.substring(cursorIndex)}';
 
-    canvas.move(rect.x, rect.y);
-    canvas.setStyle(isFocused ? focusedStyle : style);
+    canvas.move(layoutRect.x, layoutRect.y);
+    canvas.setStyle(style ?? Style());
     for (int i = 0; i < renderText.length; i++) {
-      canvas.drawChar(renderText[i], style: isFocused ? focusedStyle : style);
+      canvas.drawChar(renderText[i], style: style ?? Style());
     }
     canvas.clearStyle();
-  }
-
-  @override
-  int preferredHeight(int width) => 1;
-
-  String get value => controller.text;
-
-  @override
-  bool shouldUpdate(covariant TextFieldOld oldWidget) {
-    return controller.text != oldWidget.controller.text ||
-        style != oldWidget.style ||
-        focusedStyle != oldWidget.focusedStyle;
   }
 }

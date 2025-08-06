@@ -1,17 +1,41 @@
 import 'package:radartui/canvas/canvas.dart';
 import 'package:radartui/canvas/rect.dart';
 import 'package:radartui/enum/alignment.dart';
+import 'package:radartui/widget/render_object.dart';
+import 'package:radartui/widget/single_child_render_object_widget.dart';
 import 'package:radartui/widget/widget.dart';
 
-class Align extends WidgetOld {
-  Align({required this.alignment, required this.child});
+class Align extends SingleChildRenderObjectWidget {
+  const Align({
+    super.key,
+    required super.child,
+    this.alignment = Alignment.center,
+  });
 
   final Alignment alignment;
-  final WidgetOld child;
 
   @override
-  void render(Canvas canvas, Rect rect) {
-    final childHeight = child.preferredHeight(rect.width);
+  RenderObject createRenderObject() {
+    return RenderAlign(alignment: alignment, child: child);
+  }
+
+  @override
+  void updateRenderObject(RenderObject renderObject) {
+    (renderObject as RenderAlign).alignment = alignment;
+  }
+}
+
+class RenderAlign extends RenderObject {
+  RenderAlign({required this.alignment, required super.child});
+
+  Alignment alignment;
+
+  @override
+  void paint(Canvas canvas) {
+    if (child == null) return;
+
+    final childRenderObject = child!;
+    final childHeight = childRenderObject.preferredHeight(layoutRect.width);
 
     // 위치 계산
     int yOffset;
@@ -24,12 +48,15 @@ class Align extends WidgetOld {
       case Alignment.centerLeft:
       case Alignment.center:
       case Alignment.centerRight:
-        yOffset = ((rect.height - childHeight) / 2).floor();
+        yOffset = ((layoutRect.height - childHeight) / 2).round();
         break;
       case Alignment.bottomLeft:
       case Alignment.bottomCenter:
       case Alignment.bottomRight:
-        yOffset = rect.height - childHeight;
+        yOffset = layoutRect.height - childHeight;
+        break;
+      default:
+        yOffset = 0;
         break;
     }
 
@@ -37,30 +64,32 @@ class Align extends WidgetOld {
       x: switch (alignment) {
         Alignment.topLeft ||
         Alignment.centerLeft ||
-        Alignment.bottomLeft => rect.x,
+        Alignment.bottomLeft => layoutRect.x,
         Alignment.topCenter ||
         Alignment.center ||
-        Alignment.bottomCenter => rect.x + (rect.width ~/ 2),
+        Alignment.bottomCenter => layoutRect.x + (layoutRect.width ~/ 2),
         Alignment.topRight ||
         Alignment.centerRight ||
-        Alignment.bottomRight => rect.x + rect.width - rect.width,
+        Alignment.bottomRight => layoutRect.x + layoutRect.width - childRenderObject.preferredWidth(childHeight),
       },
-      y: rect.y + yOffset,
-      width: rect.width,
+      y: layoutRect.y + yOffset,
+      width: layoutRect.width,
       height: childHeight,
     );
 
-    child.render(canvas, childRect);
+    childRenderObject.layout(childRect);
+    childRenderObject.paint(canvas);
   }
 
   @override
   int preferredHeight(int width) {
-    return child.preferredHeight(width);
+    if (child == null) return 0;
+    return child!.preferredHeight(width);
   }
 
   @override
-  bool shouldUpdate(covariant Align oldWidget) {
-    return alignment != oldWidget.alignment ||
-        child.shouldUpdate(oldWidget.child);
+  int preferredWidth(int height) {
+    if (child == null) return 0;
+    return child!.preferredWidth(height);
   }
 }
