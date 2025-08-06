@@ -39,6 +39,8 @@ class _CounterAppState extends State<CounterApp> {
 
   @override
   Widget build(BuildContext context) {
+    @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         const Text('Welcome to the Radartui Counter!'),
