@@ -110,5 +110,7 @@ class RawKeyboard {
       } on StdinException {}
     }
     _controller.close();
+    SchedulerBinding.instance.terminal.reset();
+    SchedulerBinding.instance.terminal.showCursor();
   }
 }
