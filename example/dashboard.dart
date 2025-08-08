@@ -35,7 +35,7 @@ class _DashboardAppState extends State<DashboardApp> {
     super.initState();
     _startMonitoring();
     _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
-      if (key.contains('p') || key.contains('P')) {
+      if (key.key == 'p' || key.key == 'P') {
         setState(() {
           _paused = !_paused;
           if (_paused) {

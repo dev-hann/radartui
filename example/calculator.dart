@@ -34,21 +34,21 @@ class _CalculatorAppState extends State<CalculatorApp> {
     super.dispose();
   }
 
-  void _handleKeyInput(String key) {
+  void _handleKeyInput(KeyEvent key) {
     setState(() {
-      if (key.contains(RegExp(r'[0-9]'))) {
-        _inputNumber(key);
-      } else if (key.contains('+')) {
+      if (key.isNumber) {
+        _inputNumber(key.key);
+      } else if (key.key == '+') {
         _inputOperation('+');
-      } else if (key.contains('-')) {
+      } else if (key.key == '-') {
         _inputOperation('-');
-      } else if (key.contains('*')) {
+      } else if (key.key == '*') {
         _inputOperation('*');
-      } else if (key.contains('/')) {
+      } else if (key.key == '/') {
         _inputOperation('/');
-      } else if (key.contains('=') || key.contains('\n')) {
+      } else if (key.key == '=' || key.key == 'Enter') {
         _calculate();
-      } else if (key.contains('c') || key.contains('C')) {
+      } else if (key.key == 'c' || key.key == 'C') {
         _clear();
       }
     });
