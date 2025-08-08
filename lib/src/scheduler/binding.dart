@@ -20,23 +20,27 @@ class SchedulerBinding {
   bool _frameScheduled = false;
 
   void runApp(Widget app) {
-    AppLogger.initialize(); // Initialize logger
+    AppLogger.initialize();
     AppLogger.log('App started.');
 
-    keyboard.initialize(); // Initialize keyboard (handles stdin configuration)
-    terminal.clear(); // Clear screen once at startup
+    keyboard.initialize();
+    terminal.clear();
     _rootElement = app.createElement();
     _rootElement!.mount(null);
     scheduleFrame();
 
-    // Register a shutdown hook to dispose logger and restore terminal
-    ProcessSignal.sigint.watch().listen((signal) {
-      AppLogger.log('SIGINT received. Shutting down.');
-      keyboard.dispose();
-      AppLogger.dispose();
-      terminal.showCursor();
-      exit(0);
-    });
+    // Register shutdown hooks
+    ProcessSignal.sigint.watch().listen((_) => shutdown('SIGINT'));
+    ProcessSignal.sigterm.watch().listen((_) => shutdown('SIGTERM'));
+  }
+
+  void shutdown(String signal) {
+    AppLogger.log('$signal received. Shutting down.');
+    keyboard.dispose();
+    AppLogger.dispose();
+    terminal.showCursor();
+    terminal.clear();
+    exit(0);
   }
 
   void scheduleFrame() {
