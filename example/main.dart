@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
-import 'package:radartui/src/services/key_parser.dart';
 
 void main() {
   runApp(const CounterApp());
@@ -22,7 +20,6 @@ class _CounterAppState extends State<CounterApp> {
   @override
   void initState() {
     super.initState();
-    // Subscribe to keyboard events from SchedulerBinding's RawKeyboard
     _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((
       KeyEvent keyEvent,
     ) {
