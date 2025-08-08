@@ -31,6 +31,9 @@ class SchedulerBinding {
     // Register shutdown hooks
     ProcessSignal.sigint.watch().listen((_) => shutdown('SIGINT'));
     ProcessSignal.sigterm.watch().listen((_) => shutdown('SIGTERM'));
+    ProcessSignal.sigwinch.watch().listen((_) {
+      outputBuffer.resize();
+    });
   }
 
   void shutdown(String signal) {
@@ -85,12 +88,7 @@ class RawKeyboard {
 
   void initialize() {
     // Try to set terminal modes, but continue even if it fails
-    try {
-      stdin.lineMode = false;
-    } on StdinException catch (e) {}
-    try {
-      stdin.echoMode = false;
-    } on StdinException catch (e) {}
+    updateStdinMode(false);
 
     // Always try to listen to stdin, even if terminal mode setup failed
     _stdinSubscription = stdin.listen(
@@ -103,20 +101,16 @@ class RawKeyboard {
     );
   }
 
+  void updateStdinMode(bool value) {
+    stdin.lineMode = value;
+    stdin.echoMode = value;
+  }
+
   Stream<KeyEvent> get keyEvents => _controller.stream;
 
   void dispose() {
+    updateStdinMode(true);
     _stdinSubscription?.cancel();
-    if (stdin.hasTerminal) {
-      try {
-        stdin.lineMode = true;
-      } on StdinException {}
-      try {
-        stdin.echoMode = true;
-      } on StdinException {}
-    }
     _controller.close();
-    SchedulerBinding.instance.terminal.reset();
-    SchedulerBinding.instance.terminal.showCursor();
   }
 }

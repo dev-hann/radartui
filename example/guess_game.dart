@@ -28,7 +28,7 @@ class _GuessGameAppState extends State<GuessGameApp> {
     super.initState();
     _startNewGame();
     _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
-      _handleKeyInput(key.key);
+      _handleKeyInput(key);
     });
   }
 
@@ -47,9 +47,9 @@ class _GuessGameAppState extends State<GuessGameApp> {
     _feedback = 'I\'m thinking of a number between 1-100!';
   }
 
-  void _handleKeyInput(String key) {
+  void _handleKeyInput(KeyEvent key) {
     setState(() {
-      if (key.contains(RegExp(r'[0-9]'))) {
+      if (key.isNumber) {
         if (_currentGuess.length < 3) {
           _currentGuess += key.trim();
         }
@@ -78,7 +78,7 @@ class _GuessGameAppState extends State<GuessGameApp> {
       result = 'CORRECT! 🎉';
       resultColor = Color.green;
       _gameWon = true;
-      _feedback = 'You won in \$_attempts attempts!';
+      _feedback = 'You won in $_attempts attempts!';
     } else if (guess < _targetNumber) {
       result = 'Too LOW ⬆️';
       resultColor = Color.blue;
@@ -103,11 +103,11 @@ class _GuessGameAppState extends State<GuessGameApp> {
       }
     }
 
-    _guessHistory.add('\$_attempts. \$_currentGuess → \$result');
+    _guessHistory.add('$_attempts. $_currentGuess → $result');
     _currentGuess = '';
 
     if (_attempts >= 10 && !_gameWon) {
-      _feedback = 'Game Over! The number was \$_targetNumber';
+      _feedback = 'Game Over! The number was $_targetNumber';
     }
   }
 
@@ -162,8 +162,8 @@ class _GuessGameAppState extends State<GuessGameApp> {
             padding: const EdgeInsets.all(1),
             child: Column(
               children: [
-                const Text(
-                  'Attempts: \$_attempts/10',
+                Text(
+                  'Attempts: $_attempts/10',
                   style: TextStyle(color: Color.white, bold: true),
                 ),
                 Text(_feedback, style: TextStyle(color: Color.white)),

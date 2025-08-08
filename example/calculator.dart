@@ -71,10 +71,10 @@ class _CalculatorAppState extends State<CalculatorApp> {
 
   void _calculate() {
     if (_operation.isEmpty) return;
-    
+
     double secondNumber = double.parse(_display);
     double result = 0;
-    
+
     switch (_operation) {
       case '+':
         result = _firstNumber + secondNumber;
@@ -89,7 +89,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
         result = secondNumber != 0 ? _firstNumber / secondNumber : 0;
         break;
     }
-    
+
     _display = result % 1 == 0 ? result.toInt().toString() : result.toString();
     _operation = '';
     _isNewNumber = true;
@@ -122,9 +122,9 @@ class _CalculatorAppState extends State<CalculatorApp> {
               ),
             ),
           ),
-          
+
           SizedBox(height: 1),
-          
+
           // Display
           Container(
             width: 40,
@@ -153,9 +153,9 @@ class _CalculatorAppState extends State<CalculatorApp> {
               ],
             ),
           ),
-          
+
           SizedBox(height: 1),
-          
+
           // Instructions
           Container(
             width: 40,
@@ -168,29 +168,31 @@ class _CalculatorAppState extends State<CalculatorApp> {
                   style: TextStyle(color: Color.black, bold: true),
                 ),
                 Text('Numbers: 0-9', style: TextStyle(color: Color.black)),
-                Text('Operators: + - * /', style: TextStyle(color: Color.black)),
-                Text('Calculate: = or Enter', style: TextStyle(color: Color.black)),
+                Text('Operators: + - * /',
+                    style: TextStyle(color: Color.black)),
+                Text('Calculate: = or Enter',
+                    style: TextStyle(color: Color.black)),
                 Text('Clear: C', style: TextStyle(color: Color.black)),
               ],
             ),
           ),
-          
+
           SizedBox(height: 1),
-          
+
           // Status
           Row(children: [
             Text('Current Operation: '),
             Text(
-              _operation.isEmpty ? 'None' : '\$_firstNumber \$_operation',
+              _operation.isEmpty ? 'None' : '$_firstNumber $_operation',
               style: TextStyle(
                 color: Color.cyan,
                 bold: true,
               ),
             ),
           ]),
-          
+
           SizedBox(height: 1),
-          
+
           Text(
             'Start typing numbers and operators!',
             style: TextStyle(
