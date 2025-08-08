@@ -120,29 +120,27 @@ class _GuessGameAppState extends State<GuessGameApp> {
     }
 
     return Column(
-      children:
-          _guessHistory.reversed.take(5).map((guess) {
-            Color color = Color.white;
-            if (guess.contains('CORRECT'))
-              color = Color.green;
-            else if (guess.contains('LOW'))
-              color = Color.blue;
-            else if (guess.contains('HIGH'))
-              color = Color.red;
+      children: _guessHistory.reversed.take(5).map((guess) {
+        Color color = Color.white;
+        if (guess.contains('CORRECT'))
+          color = Color.green;
+        else if (guess.contains('LOW'))
+          color = Color.blue;
+        else if (guess.contains('HIGH')) color = Color.red;
 
-            return Text(guess, style: TextStyle(color: color));
-          }).toList(),
+        return Text(guess, style: TextStyle(color: color));
+      }).toList(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(2),
+      padding: const EdgeInsets.all(2),
       child: Column(
         children: [
           // Title
-          Container(
+          const Container(
             width: 60,
             color: Color.magenta,
             child: Center(
@@ -153,19 +151,18 @@ class _GuessGameAppState extends State<GuessGameApp> {
             ),
           ),
 
-          SizedBox(height: 1),
+          const SizedBox(height: 1),
 
           // Game status
           Container(
             width: 60,
-            color:
-                _gameWon
-                    ? Color.green
-                    : (_attempts >= 10 ? Color.red : Color.blue),
-            padding: EdgeInsets.all(1),
+            color: _gameWon
+                ? Color.green
+                : (_attempts >= 10 ? Color.red : Color.blue),
+            padding: const EdgeInsets.all(1),
             child: Column(
               children: [
-                Text(
+                const Text(
                   'Attempts: \$_attempts/10',
                   style: TextStyle(color: Color.white, bold: true),
                 ),

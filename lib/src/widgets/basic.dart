@@ -23,7 +23,6 @@ class Text extends RenderObjectWidget {
     final renderText = renderObject as RenderText;
     renderText.text = data;
     renderText.style = style;
-    AppLogger.log('RenderText.updateRenderObject: text="$data", style=$style');
   }
 }
 
@@ -35,17 +34,12 @@ class RenderText extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     size = Size(text.length, 1);
-    AppLogger.log('RenderText.performLayout: text="$text", size=$size');
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    AppLogger.log('RenderText.paint: text="$text", offset=$offset');
     for (int i = 0; i < text.length; i++) {
       context.buffer.writeStyled(offset.x + i, offset.y, text[i], style);
-      AppLogger.log(
-        '  Writing char: ${text[i]} at (${offset.x + i}, ${offset.y}) with style: $style',
-      );
     }
   }
 }
@@ -78,12 +72,10 @@ class RenderPadding extends RenderBox
     } else {
       size = Size(padding.left + padding.right, padding.top + padding.bottom);
     }
-    AppLogger.log('RenderPadding.performLayout: padding=$padding, size=$size');
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    AppLogger.log('RenderPadding.paint: offset=$offset');
     if (children.isNotEmpty) {
       context.paintChild(
         children.first,
@@ -95,12 +87,12 @@ class RenderPadding extends RenderBox
 
 class Column extends Flex {
   const Column({required List<Widget> children})
-    : super(children: children, direction: Axis.vertical);
+      : super(children: children, direction: Axis.vertical);
 }
 
 class Row extends Flex {
   const Row({required List<Widget> children})
-    : super(children: children, direction: Axis.horizontal);
+      : super(children: children, direction: Axis.horizontal);
 }
 
 abstract class Flex extends MultiChildRenderObjectWidget {
@@ -130,24 +122,20 @@ class RenderFlex extends RenderBox
       if (direction == Axis.vertical) {
         childParentData.offset = Offset(0, mainAxisExtent);
         mainAxisExtent += child.size!.height;
-        crossAxisExtent =
-            crossAxisExtent > child.size!.width
-                ? crossAxisExtent
-                : child.size!.width;
+        crossAxisExtent = crossAxisExtent > child.size!.width
+            ? crossAxisExtent
+            : child.size!.width;
       } else {
         childParentData.offset = Offset(mainAxisExtent, 0);
         mainAxisExtent += child.size!.width;
-        crossAxisExtent =
-            crossAxisExtent > child.size!.height
-                ? crossAxisExtent
-                : child.size!.height;
+        crossAxisExtent = crossAxisExtent > child.size!.height
+            ? crossAxisExtent
+            : child.size!.height;
       }
     }
-    size =
-        direction == Axis.vertical
-            ? Size(crossAxisExtent, mainAxisExtent)
-            : Size(mainAxisExtent, crossAxisExtent);
-    AppLogger.log('RenderFlex.performLayout: direction=$direction, size=$size');
+    size = direction == Axis.vertical
+        ? Size(crossAxisExtent, mainAxisExtent)
+        : Size(mainAxisExtent, crossAxisExtent);
   }
 
   @override
@@ -181,12 +169,12 @@ class Container extends SingleChildRenderObjectWidget {
 
   @override
   RenderContainer createRenderObject(BuildContext context) => RenderContainer(
-    color: color,
-    width: width,
-    height: height,
-    padding: padding,
-    margin: margin,
-  );
+        color: color,
+        width: width,
+        height: height,
+        padding: padding,
+        margin: margin,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -244,8 +232,6 @@ class RenderContainer extends RenderBox
       containerWidth + totalMargin.left + totalMargin.right,
       containerHeight + totalMargin.top + totalMargin.bottom,
     );
-
-    AppLogger.log('RenderContainer.performLayout: size=$size');
   }
 
   @override
@@ -257,16 +243,12 @@ class RenderContainer extends RenderBox
     // Fill background if color is specified
     if (color != null) {
       final bgStyle = TextStyle(backgroundColor: color);
-      for (
-        int y = 0;
-        y < size!.height - totalMargin.top - totalMargin.bottom;
-        y++
-      ) {
-        for (
-          int x = 0;
-          x < size!.width - totalMargin.left - totalMargin.right;
-          x++
-        ) {
+      for (int y = 0;
+          y < size!.height - totalMargin.top - totalMargin.bottom;
+          y++) {
+        for (int x = 0;
+            x < size!.width - totalMargin.left - totalMargin.right;
+            x++) {
           context.buffer.writeStyled(
             innerOffset.x + x,
             innerOffset.y + y,
@@ -295,16 +277,15 @@ class SizedBox extends RenderObjectWidget {
 
   const SizedBox({this.width = 0, this.height = 0, this.child});
   const SizedBox.square({required int dimension, this.child})
-    : width = dimension,
-      height = dimension;
+      : width = dimension,
+        height = dimension;
 
   @override
-  RenderObjectElement createElement() =>
-      child != null
-          ? SingleChildRenderObjectElement(
-            this as SingleChildRenderObjectWidget,
-          )
-          : RenderObjectElement(this);
+  RenderObjectElement createElement() => child != null
+      ? SingleChildRenderObjectElement(
+          this as SingleChildRenderObjectWidget,
+        )
+      : RenderObjectElement(this);
 
   @override
   RenderSizedBox createRenderObject(BuildContext context) =>
@@ -327,7 +308,6 @@ class RenderSizedBox extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     size = Size(width, height);
-    AppLogger.log('RenderSizedBox.performLayout: size=$size');
   }
 
   @override
@@ -356,7 +336,6 @@ class RenderCenter extends RenderBox
     } else {
       size = Size(boxConstraints.maxWidth, boxConstraints.maxHeight);
     }
-    AppLogger.log('RenderCenter.performLayout: size=$size');
   }
 
   @override

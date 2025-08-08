@@ -55,8 +55,8 @@ abstract class State<T extends StatefulWidget> {
   void setState(void Function() fn) {
     fn();
     _element?.markNeedsBuild();
-    AppLogger.log('State.setState called for ${T.runtimeType}');
   }
+
   Widget build(BuildContext context);
 }
 
@@ -80,6 +80,7 @@ class StatefulElement extends ComponentElement {
     super.mount(parent);
     _state.initState();
   }
+
   @override
   void update(Widget newWidget) {
     super.update(newWidget);
@@ -95,11 +96,13 @@ abstract class ComponentElement extends Element implements BuildContext {
     super.mount(parent);
     rebuild();
   }
+
   @override
   void update(Widget newWidget) {
     super.update(newWidget);
     rebuild();
   }
+
   void rebuild() => _child = _updateChild(_child, build());
   Element? _updateChild(Element? child, Widget newWidget) {
     if (child != null && child.widget.runtimeType == newWidget.runtimeType) {
@@ -111,12 +114,14 @@ abstract class ComponentElement extends Element implements BuildContext {
       return newChild;
     }
   }
+
   @override
   RenderObject? get renderObject => _child?.renderObject;
   @override
   void visitChildren(void Function(Element e) visitor) {
     if (_child != null) visitor(_child!);
   }
+
   Widget build();
 }
 
@@ -135,9 +140,9 @@ class RenderObjectElement extends Element implements BuildContext {
     super.mount(parent);
     _renderObject = (widget as RenderObjectWidget).createRenderObject(this);
   }
+
   @override
   void update(Widget newWidget) {
-    AppLogger.log('RenderObjectElement.update: widget=${newWidget.runtimeType}'); // Added log
     super.update(newWidget);
     (widget as RenderObjectWidget).updateRenderObject(this, renderObject!);
     renderObject!.markNeedsLayout();
@@ -148,7 +153,8 @@ abstract class SingleChildRenderObjectWidget extends RenderObjectWidget {
   final Widget child;
   const SingleChildRenderObjectWidget({required this.child});
   @override
-  SingleChildRenderObjectElement createElement() => SingleChildRenderObjectElement(this);
+  SingleChildRenderObjectElement createElement() =>
+      SingleChildRenderObjectElement(this);
 }
 
 class SingleChildRenderObjectElement extends RenderObjectElement {
@@ -157,16 +163,19 @@ class SingleChildRenderObjectElement extends RenderObjectElement {
   @override
   void mount(Element? parent) {
     super.mount(parent);
-    _child = _updateChild(null, (widget as SingleChildRenderObjectWidget).child);
+    _child =
+        _updateChild(null, (widget as SingleChildRenderObjectWidget).child);
     if (_child?.renderObject != null) {
       (renderObject as ContainerRenderObjectMixin).add(_child!.renderObject!);
     }
   }
+
   @override
   void update(Widget newWidget) {
     super.update(newWidget);
     final oldChild = _child;
-    _child = _updateChild(_child, (widget as SingleChildRenderObjectWidget).child);
+    _child =
+        _updateChild(_child, (widget as SingleChildRenderObjectWidget).child);
     if (oldChild != _child && _child?.renderObject != null) {
       final container = renderObject as ContainerRenderObjectMixin;
       if (oldChild?.renderObject != null) {
@@ -175,10 +184,12 @@ class SingleChildRenderObjectElement extends RenderObjectElement {
       container.add(_child!.renderObject!);
     }
   }
+
   @override
   void visitChildren(void Function(Element e) visitor) {
     if (_child != null) visitor(_child!);
   }
+
   Element? _updateChild(Element? child, Widget newWidget) {
     if (child != null && child.widget.runtimeType == newWidget.runtimeType) {
       child.update(newWidget);
@@ -195,7 +206,8 @@ abstract class MultiChildRenderObjectWidget extends RenderObjectWidget {
   final List<Widget> children;
   const MultiChildRenderObjectWidget({required this.children});
   @override
-  MultiChildRenderObjectElement createElement() => MultiChildRenderObjectElement(this);
+  MultiChildRenderObjectElement createElement() =>
+      MultiChildRenderObjectElement(this);
 }
 
 class MultiChildRenderObjectElement extends RenderObjectElement {
@@ -204,7 +216,8 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
   @override
   void mount(Element? parent) {
     super.mount(parent);
-    var renderObject = this.renderObject as ContainerRenderObjectMixin<RenderObject, ParentData>;
+    var renderObject = this.renderObject
+        as ContainerRenderObjectMixin<RenderObject, ParentData>;
     _children = (widget as MultiChildRenderObjectWidget).children.map((w) {
       final child = w.createElement();
       child.mount(this);
@@ -214,6 +227,7 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
       return child;
     }).toList();
   }
+
   @override
   void update(Widget newWidget) {
     super.update(newWidget);
@@ -222,10 +236,12 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
       _children[i] = _updateChild(_children[i], newChildren[i])!;
     }
   }
+
   @override
   void visitChildren(void Function(Element e) visitor) {
-    for(final c in _children) visitor(c);
+    for (final c in _children) visitor(c);
   }
+
   Element? _updateChild(Element? child, Widget newWidget) {
     if (child != null && child.widget.runtimeType == newWidget.runtimeType) {
       child.update(newWidget);

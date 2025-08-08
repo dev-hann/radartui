@@ -109,8 +109,8 @@ class _DashboardAppState extends State<DashboardApp> {
   }
 
   Widget _buildCpuGraph() {
-    if (_cpuHistory.length < 2)
-      return Text('Loading...', style: TextStyle(color: Color.white));
+    // if (_cpuHistory.length < 2)
+    //   return Text('Loading...', style: TextStyle(color: Color.white));
 
     List<Widget> bars = [];
     for (int i = 0; i < _cpuHistory.length; i++) {
@@ -139,17 +139,17 @@ class _DashboardAppState extends State<DashboardApp> {
     final hours = seconds ~/ 3600;
     final minutes = (seconds % 3600) ~/ 60;
     final secs = seconds % 60;
-    return "\${hours.toString().padLeft(2, '0')}:\${minutes.toString().padLeft(2, '0')}:\${secs.toString().padLeft(2, '0')}";
+    return "${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}";
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(1),
+      padding: const EdgeInsets.all(1),
       child: Column(
         children: [
           // Title
-          Container(
+          const Container(
             width: 70,
             color: Color.blue,
             child: Center(
@@ -178,7 +178,7 @@ class _DashboardAppState extends State<DashboardApp> {
                 ),
                 SizedBox(width: 10),
                 Text(
-                  'Uptime: \${_formatUptime(_uptime)}',
+                  'Uptime: ${_formatUptime(_uptime)}',
                   style: TextStyle(color: Color.black),
                 ),
                 SizedBox(width: 5),
@@ -214,7 +214,7 @@ class _DashboardAppState extends State<DashboardApp> {
                       children: [
                         Text('CPU: ', style: TextStyle(color: Color.white)),
                         Text(
-                          '\${_cpuUsage.toStringAsFixed(1)}%',
+                          '${_cpuUsage.toStringAsFixed(1)}%',
                           style: TextStyle(color: Color.yellow),
                         ),
                       ],
@@ -228,7 +228,7 @@ class _DashboardAppState extends State<DashboardApp> {
                       children: [
                         Text('MEM: ', style: TextStyle(color: Color.white)),
                         Text(
-                          '\${_memoryUsage.toStringAsFixed(1)}%',
+                          '${_memoryUsage.toStringAsFixed(1)}%',
                           style: TextStyle(color: Color.green),
                         ),
                       ],
@@ -242,7 +242,7 @@ class _DashboardAppState extends State<DashboardApp> {
                       children: [
                         Text('DISK:', style: TextStyle(color: Color.white)),
                         Text(
-                          '\${_diskUsage.toStringAsFixed(1)}%',
+                          '${_diskUsage.toStringAsFixed(1)}%',
                           style: TextStyle(color: Color.blue),
                         ),
                       ],
@@ -273,13 +273,13 @@ class _DashboardAppState extends State<DashboardApp> {
                       children: [
                         Text('IN: ', style: TextStyle(color: Color.green)),
                         Text(
-                          '\$_networkIn KB/s',
+                          '$_networkIn KB/s',
                           style: TextStyle(color: Color.white),
                         ),
                         SizedBox(width: 3),
                         Text('OUT: ', style: TextStyle(color: Color.red)),
                         Text(
-                          '\$_networkOut KB/s',
+                          '$_networkOut KB/s',
                           style: TextStyle(color: Color.white),
                         ),
                       ],
