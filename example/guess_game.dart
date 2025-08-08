@@ -28,7 +28,7 @@ class _GuessGameAppState extends State<GuessGameApp> {
     super.initState();
     _startNewGame();
     _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
-      _handleKeyInput(key.key);
+      _handleKeyInput(key);
     });
   }
 
@@ -47,17 +47,17 @@ class _GuessGameAppState extends State<GuessGameApp> {
     _feedback = 'I\'m thinking of a number between 1-100!';
   }
 
-  void _handleKeyInput(String key) {
+  void _handleKeyInput(KeyEvent key) {
     setState(() {
-      if (key.contains(RegExp(r'[0-9]'))) {
+      if (KeyParser.isDigit(key.key)) {
         if (_currentGuess.length < 3) {
-          _currentGuess += key.trim();
+          _currentGuess += key.key;
         }
-      } else if (key.contains('\n') || key.contains('=')) {
+      } else if (key.key == 'Enter') {
         _submitGuess();
-      } else if (key.contains('n') || key.contains('N')) {
+      } else if (key.key == 'n' || key.key == 'N') {
         _startNewGame();
-      } else if (key.contains('\b') || key.contains('backspace')) {
+      } else if (key.key == 'Backspace') {
         if (_currentGuess.isNotEmpty) {
           _currentGuess = _currentGuess.substring(0, _currentGuess.length - 1);
         }
