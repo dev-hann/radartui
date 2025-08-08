@@ -23,11 +23,11 @@ class _CounterAppState extends State<CounterApp> {
   void initState() {
     super.initState();
     // Subscribe to keyboard events from SchedulerBinding's RawKeyboard
-    _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((KeyEvent keyEvent) {
+    _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((
+      KeyEvent keyEvent,
+    ) {
       setState(() {
-        AppLogger.log("Key pressed: ${keyEvent.key}, counter before increment: $_counter");
         _counter++;
-        AppLogger.log("counter after increment: $_counter");
       });
     });
   }

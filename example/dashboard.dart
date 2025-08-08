@@ -17,7 +17,7 @@ class DashboardApp extends StatefulWidget {
 class _DashboardAppState extends State<DashboardApp> {
   Timer? _timer;
   StreamSubscription? _keySubscription;
-  
+
   // Mock system data
   double _cpuUsage = 0;
   double _memoryUsage = 0;
@@ -25,7 +25,7 @@ class _DashboardAppState extends State<DashboardApp> {
   int _networkIn = 0;
   int _networkOut = 0;
   int _uptime = 0;
-  List<double> _cpuHistory = [];
+  final List<double> _cpuHistory = [];
   String _systemStatus = 'Optimal';
   Color _statusColor = Color.green;
   bool _paused = false;
@@ -34,7 +34,9 @@ class _DashboardAppState extends State<DashboardApp> {
   void initState() {
     super.initState();
     _startMonitoring();
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       if (key.key == 'p' || key.key == 'P') {
         setState(() {
           _paused = !_paused;
@@ -59,20 +61,20 @@ class _DashboardAppState extends State<DashboardApp> {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         _uptime++;
-        
+
         // Simulate realistic system metrics
         _cpuUsage = 20 + Random().nextDouble() * 60;
         _memoryUsage = 40 + Random().nextDouble() * 40;
         _diskUsage = 55 + Random().nextDouble() * 10;
         _networkIn = Random().nextInt(1000);
         _networkOut = Random().nextInt(800);
-        
+
         // Keep CPU history for graph
         _cpuHistory.add(_cpuUsage);
         if (_cpuHistory.length > 20) {
           _cpuHistory.removeAt(0);
         }
-        
+
         // Update system status
         if (_cpuUsage > 80 || _memoryUsage > 85) {
           _systemStatus = 'Warning';
@@ -91,33 +93,45 @@ class _DashboardAppState extends State<DashboardApp> {
   Widget _buildProgressBar(double value, Color color, int width) {
     final filled = (value * width / 100).round();
     final empty = width - filled;
-    
-    return Row(children: [
-      ...List.generate(filled, (_) => Text('█', style: TextStyle(color: color))),
-      ...List.generate(empty, (_) => Text('░', style: TextStyle(color: Color.brightBlack))),
-    ]);
+
+    return Row(
+      children: [
+        ...List.generate(
+          filled,
+          (_) => Text('█', style: TextStyle(color: color)),
+        ),
+        ...List.generate(
+          empty,
+          (_) => Text('░', style: TextStyle(color: Color.brightBlack)),
+        ),
+      ],
+    );
   }
 
   Widget _buildCpuGraph() {
-    if (_cpuHistory.length < 2) return Text('Loading...', style: TextStyle(color: Color.white));
-    
+    if (_cpuHistory.length < 2)
+      return Text('Loading...', style: TextStyle(color: Color.white));
+
     List<Widget> bars = [];
     for (int i = 0; i < _cpuHistory.length; i++) {
       final value = _cpuHistory[i];
       final height = (value / 25).round().clamp(0, 4);
-      
+
       Color barColor = Color.green;
       if (value > 60) barColor = Color.yellow;
       if (value > 80) barColor = Color.red;
-      
+
       bars.add(
-        Column(children: [
-          for (int j = 4; j > height; j--) Text(' '),
-          for (int j = 0; j < height; j++) Text('▁', style: TextStyle(color: barColor)),
-        ])
+        Column(
+          children: [
+            for (int j = 4; j > height; j--) Text(' '),
+            for (int j = 0; j < height; j++)
+              Text('▁', style: TextStyle(color: barColor)),
+          ],
+        ),
       );
     }
-    
+
     return Row(children: bars);
   }
 
@@ -125,7 +139,7 @@ class _DashboardAppState extends State<DashboardApp> {
     final hours = seconds ~/ 3600;
     final minutes = (seconds % 3600) ~/ 60;
     final secs = seconds % 60;
-    return '\${hours.toString().padLeft(2, '0')}:\${minutes.toString().padLeft(2, '0')}:\${secs.toString().padLeft(2, '0')}';
+    return "\${hours.toString().padLeft(2, '0')}:\${minutes.toString().padLeft(2, '0')}:\${secs.toString().padLeft(2, '0')}";
   }
 
   @override
@@ -141,110 +155,155 @@ class _DashboardAppState extends State<DashboardApp> {
             child: Center(
               child: Text(
                 '📊 RadarTUI System Dashboard 📊',
-                style: TextStyle(
-                  color: Color.white,
-                  bold: true,
-                ),
+                style: TextStyle(color: Color.white, bold: true),
               ),
             ),
           ),
-          
+
           SizedBox(height: 1),
-          
+
           // Status bar
           Container(
             width: 70,
             color: _statusColor,
-            child: Row(children: [
-              Text('System Status: ', style: TextStyle(color: Color.black, bold: true)),
-              Text(_systemStatus, style: TextStyle(color: Color.black, bold: true)),
-              SizedBox(width: 10),
-              Text('Uptime: \${_formatUptime(_uptime)}', style: TextStyle(color: Color.black)),
-              SizedBox(width: 5),
-              Text(_paused ? '[PAUSED]' : '', style: TextStyle(color: Color.black, bold: true)),
-            ]),
+            child: Row(
+              children: [
+                Text(
+                  'System Status: ',
+                  style: TextStyle(color: Color.black, bold: true),
+                ),
+                Text(
+                  _systemStatus,
+                  style: TextStyle(color: Color.black, bold: true),
+                ),
+                SizedBox(width: 10),
+                Text(
+                  'Uptime: \${_formatUptime(_uptime)}',
+                  style: TextStyle(color: Color.black),
+                ),
+                SizedBox(width: 5),
+                Text(
+                  _paused ? '[PAUSED]' : '',
+                  style: TextStyle(color: Color.black, bold: true),
+                ),
+              ],
+            ),
           ),
-          
+
           SizedBox(height: 1),
-          
+
           // Main metrics row
-          Row(children: [
-            // Left column - Resource usage
-            Container(
-              width: 35,
-              height: 12,
-              color: Color.brightBlack,
-              padding: EdgeInsets.all(1),
-              child: Column(
-                children: [
-                  Text('Resource Usage', style: TextStyle(color: Color.cyan, bold: true)),
-                  SizedBox(height: 1),
-                  
-                  // CPU
-                  Row(children: [
-                    Text('CPU: ', style: TextStyle(color: Color.white)),
-                    Text('\${_cpuUsage.toStringAsFixed(1)}%', style: TextStyle(color: Color.yellow)),
-                  ]),
-                  _buildProgressBar(_cpuUsage, Color.yellow, 25),
-                  
-                  SizedBox(height: 1),
-                  
-                  // Memory
-                  Row(children: [
-                    Text('MEM: ', style: TextStyle(color: Color.white)),
-                    Text('\${_memoryUsage.toStringAsFixed(1)}%', style: TextStyle(color: Color.green)),
-                  ]),
-                  _buildProgressBar(_memoryUsage, Color.green, 25),
-                  
-                  SizedBox(height: 1),
-                  
-                  // Disk
-                  Row(children: [
-                    Text('DISK:', style: TextStyle(color: Color.white)),
-                    Text('\${_diskUsage.toStringAsFixed(1)}%', style: TextStyle(color: Color.blue)),
-                  ]),
-                  _buildProgressBar(_diskUsage, Color.blue, 25),
-                ],
+          Row(
+            children: [
+              // Left column - Resource usage
+              Container(
+                width: 35,
+                height: 12,
+                color: Color.brightBlack,
+                padding: EdgeInsets.all(1),
+                child: Column(
+                  children: [
+                    Text(
+                      'Resource Usage',
+                      style: TextStyle(color: Color.cyan, bold: true),
+                    ),
+                    SizedBox(height: 1),
+
+                    // CPU
+                    Row(
+                      children: [
+                        Text('CPU: ', style: TextStyle(color: Color.white)),
+                        Text(
+                          '\${_cpuUsage.toStringAsFixed(1)}%',
+                          style: TextStyle(color: Color.yellow),
+                        ),
+                      ],
+                    ),
+                    _buildProgressBar(_cpuUsage, Color.yellow, 25),
+
+                    SizedBox(height: 1),
+
+                    // Memory
+                    Row(
+                      children: [
+                        Text('MEM: ', style: TextStyle(color: Color.white)),
+                        Text(
+                          '\${_memoryUsage.toStringAsFixed(1)}%',
+                          style: TextStyle(color: Color.green),
+                        ),
+                      ],
+                    ),
+                    _buildProgressBar(_memoryUsage, Color.green, 25),
+
+                    SizedBox(height: 1),
+
+                    // Disk
+                    Row(
+                      children: [
+                        Text('DISK:', style: TextStyle(color: Color.white)),
+                        Text(
+                          '\${_diskUsage.toStringAsFixed(1)}%',
+                          style: TextStyle(color: Color.blue),
+                        ),
+                      ],
+                    ),
+                    _buildProgressBar(_diskUsage, Color.blue, 25),
+                  ],
+                ),
               ),
-            ),
-            
-            SizedBox(width: 2),
-            
-            // Right column - Network and CPU graph
-            Container(
-              width: 32,
-              height: 12,
-              color: Color.black,
-              padding: EdgeInsets.all(1),
-              child: Column(
-                children: [
-                  Text('Network & CPU Graph', style: TextStyle(color: Color.magenta, bold: true)),
-                  SizedBox(height: 1),
-                  
-                  // Network stats
-                  Row(children: [
-                    Text('IN: ', style: TextStyle(color: Color.green)),
-                    Text('\$_networkIn KB/s', style: TextStyle(color: Color.white)),
-                    SizedBox(width: 3),
-                    Text('OUT: ', style: TextStyle(color: Color.red)),
-                    Text('\$_networkOut KB/s', style: TextStyle(color: Color.white)),
-                  ]),
-                  
-                  SizedBox(height: 1),
-                  
-                  Text('CPU History:', style: TextStyle(color: Color.yellow)),
-                  _buildCpuGraph(),
-                  
-                  SizedBox(height: 1),
-                  
-                  Text('0%  25%  50%  75% 100%', style: TextStyle(color: Color.brightBlack)),
-                ],
+
+              SizedBox(width: 2),
+
+              // Right column - Network and CPU graph
+              Container(
+                width: 32,
+                height: 12,
+                color: Color.black,
+                padding: EdgeInsets.all(1),
+                child: Column(
+                  children: [
+                    Text(
+                      'Network & CPU Graph',
+                      style: TextStyle(color: Color.magenta, bold: true),
+                    ),
+                    SizedBox(height: 1),
+
+                    // Network stats
+                    Row(
+                      children: [
+                        Text('IN: ', style: TextStyle(color: Color.green)),
+                        Text(
+                          '\$_networkIn KB/s',
+                          style: TextStyle(color: Color.white),
+                        ),
+                        SizedBox(width: 3),
+                        Text('OUT: ', style: TextStyle(color: Color.red)),
+                        Text(
+                          '\$_networkOut KB/s',
+                          style: TextStyle(color: Color.white),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 1),
+
+                    Text('CPU History:', style: TextStyle(color: Color.yellow)),
+                    _buildCpuGraph(),
+
+                    SizedBox(height: 1),
+
+                    Text(
+                      '0%  25%  50%  75% 100%',
+                      style: TextStyle(color: Color.brightBlack),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ]),
-          
+            ],
+          ),
+
           SizedBox(height: 1),
-          
+
           // Controls
           Container(
             width: 70,

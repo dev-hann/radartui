@@ -16,7 +16,8 @@ class Text extends RenderObjectWidget {
   @override
   RenderObjectElement createElement() => RenderObjectElement(this);
   @override
-  RenderText createRenderObject(BuildContext context) => RenderText(data, style);
+  RenderText createRenderObject(BuildContext context) =>
+      RenderText(data, style);
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
     final renderText = renderObject as RenderText;
@@ -30,7 +31,7 @@ class RenderText extends RenderBox {
   String text;
   TextStyle? style;
   RenderText(this.text, this.style);
-  
+
   @override
   void performLayout(Constraints constraints) {
     size = Size(text.length, 1);
@@ -151,7 +152,6 @@ class RenderFlex extends RenderBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    AppLogger.log('RenderFlex.paint: direction=$direction, offset=$offset');
     int currentMain = 0;
     for (final child in children) {
       final childParentData = child.parentData as FlexParentData;
@@ -169,7 +169,7 @@ class Container extends SingleChildRenderObjectWidget {
   final int? height;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
-  
+
   const Container({
     Widget? child,
     this.color,
@@ -178,7 +178,7 @@ class Container extends SingleChildRenderObjectWidget {
     this.padding,
     this.margin,
   }) : super(child: child ?? const SizedBox());
-  
+
   @override
   RenderContainer createRenderObject(BuildContext context) => RenderContainer(
     color: color,
@@ -187,7 +187,7 @@ class Container extends SingleChildRenderObjectWidget {
     padding: padding,
     margin: margin,
   );
-  
+
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
     final container = renderObject as RenderContainer;
@@ -199,14 +199,14 @@ class Container extends SingleChildRenderObjectWidget {
   }
 }
 
-class RenderContainer extends RenderBox 
+class RenderContainer extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, ParentData> {
   Color? color;
   int? width;
   int? height;
   EdgeInsets? padding;
   EdgeInsets? margin;
-  
+
   RenderContainer({
     this.color,
     this.width,
@@ -214,16 +214,16 @@ class RenderContainer extends RenderBox
     this.padding,
     this.margin,
   });
-  
+
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints as BoxConstraints;
     final totalMargin = margin ?? EdgeInsets.all(0);
     final totalPadding = padding ?? EdgeInsets.all(0);
-    
+
     int containerWidth = width ?? boxConstraints.maxWidth;
     int containerHeight = height ?? 1;
-    
+
     if (children.isNotEmpty) {
       final child = children.first;
       final childConstraints = BoxConstraints(
@@ -231,35 +231,52 @@ class RenderContainer extends RenderBox
         maxHeight: containerHeight - totalPadding.top - totalPadding.bottom,
       );
       child.layout(childConstraints);
-      
-      if (width == null) containerWidth = child.size!.width + totalPadding.left + totalPadding.right;
-      if (height == null) containerHeight = child.size!.height + totalPadding.top + totalPadding.bottom;
+
+      if (width == null)
+        containerWidth =
+            child.size!.width + totalPadding.left + totalPadding.right;
+      if (height == null)
+        containerHeight =
+            child.size!.height + totalPadding.top + totalPadding.bottom;
     }
-    
+
     size = Size(
       containerWidth + totalMargin.left + totalMargin.right,
       containerHeight + totalMargin.top + totalMargin.bottom,
     );
-    
+
     AppLogger.log('RenderContainer.performLayout: size=$size');
   }
-  
+
   @override
   void paint(PaintingContext context, Offset offset) {
     final totalMargin = margin ?? EdgeInsets.all(0);
     final totalPadding = padding ?? EdgeInsets.all(0);
     final innerOffset = offset + Offset(totalMargin.left, totalMargin.top);
-    
+
     // Fill background if color is specified
     if (color != null) {
       final bgStyle = TextStyle(backgroundColor: color);
-      for (int y = 0; y < size!.height - totalMargin.top - totalMargin.bottom; y++) {
-        for (int x = 0; x < size!.width - totalMargin.left - totalMargin.right; x++) {
-          context.buffer.writeStyled(innerOffset.x + x, innerOffset.y + y, ' ', bgStyle);
+      for (
+        int y = 0;
+        y < size!.height - totalMargin.top - totalMargin.bottom;
+        y++
+      ) {
+        for (
+          int x = 0;
+          x < size!.width - totalMargin.left - totalMargin.right;
+          x++
+        ) {
+          context.buffer.writeStyled(
+            innerOffset.x + x,
+            innerOffset.y + y,
+            ' ',
+            bgStyle,
+          );
         }
       }
     }
-    
+
     // Paint child with padding offset
     if (children.isNotEmpty) {
       context.paintChild(
@@ -275,19 +292,24 @@ class SizedBox extends RenderObjectWidget {
   final int width;
   final int height;
   final Widget? child;
-  
+
   const SizedBox({this.width = 0, this.height = 0, this.child});
-  const SizedBox.square({required int dimension, this.child}) 
-      : width = dimension, height = dimension;
-  
+  const SizedBox.square({required int dimension, this.child})
+    : width = dimension,
+      height = dimension;
+
   @override
-  RenderObjectElement createElement() => child != null 
-      ? SingleChildRenderObjectElement(this as SingleChildRenderObjectWidget)
-      : RenderObjectElement(this);
-  
+  RenderObjectElement createElement() =>
+      child != null
+          ? SingleChildRenderObjectElement(
+            this as SingleChildRenderObjectWidget,
+          )
+          : RenderObjectElement(this);
+
   @override
-  RenderSizedBox createRenderObject(BuildContext context) => RenderSizedBox(width, height);
-  
+  RenderSizedBox createRenderObject(BuildContext context) =>
+      RenderSizedBox(width, height);
+
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
     final sizedBox = renderObject as RenderSizedBox;
@@ -299,15 +321,15 @@ class SizedBox extends RenderObjectWidget {
 class RenderSizedBox extends RenderBox {
   int width;
   int height;
-  
+
   RenderSizedBox(this.width, this.height);
-  
+
   @override
   void performLayout(Constraints constraints) {
     size = Size(width, height);
     AppLogger.log('RenderSizedBox.performLayout: size=$size');
   }
-  
+
   @override
   void paint(PaintingContext context, Offset offset) {
     // SizedBox doesn't paint anything
@@ -317,14 +339,13 @@ class RenderSizedBox extends RenderBox {
 // Center widget
 class Center extends SingleChildRenderObjectWidget {
   const Center({required Widget child}) : super(child: child);
-  
+
   @override
   RenderCenter createRenderObject(BuildContext context) => RenderCenter();
 }
 
 class RenderCenter extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, ParentData> {
-  
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints as BoxConstraints;
@@ -337,7 +358,7 @@ class RenderCenter extends RenderBox
     }
     AppLogger.log('RenderCenter.performLayout: size=$size');
   }
-  
+
   @override
   void paint(PaintingContext context, Offset offset) {
     if (children.isNotEmpty) {

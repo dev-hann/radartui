@@ -20,9 +20,6 @@ class SchedulerBinding {
   bool _frameScheduled = false;
 
   void runApp(Widget app) {
-    AppLogger.initialize(); // Initialize logger
-    AppLogger.log('App started.');
-
     keyboard.initialize(); // Initialize keyboard (handles stdin configuration)
     terminal.clear(); // Clear screen once at startup
     _rootElement = app.createElement();
@@ -31,9 +28,8 @@ class SchedulerBinding {
 
     // Register a shutdown hook to dispose logger and restore terminal
     ProcessSignal.sigint.watch().listen((signal) {
-      AppLogger.log('SIGINT received. Shutting down.');
+      AppLogger.log("End $signal");
       keyboard.dispose();
-      AppLogger.dispose();
       terminal.showCursor();
       exit(0);
     });
@@ -63,10 +59,9 @@ class SchedulerBinding {
   }
 
   void _layout(Element element) {
-    element.renderObject?.layout(BoxConstraints(
-      maxWidth: terminal.width,
-      maxHeight: terminal.height,
-    ));
+    element.renderObject?.layout(
+      BoxConstraints(maxWidth: terminal.width, maxHeight: terminal.height),
+    );
     element.visitChildren(_layout);
   }
 
@@ -83,35 +78,23 @@ class RawKeyboard {
   final _controller = StreamController<KeyEvent>();
 
   void initialize() {
-    AppLogger.log('RawKeyboard initializing, hasTerminal: ${stdin.hasTerminal}');
-    
     // Try to set terminal modes, but continue even if it fails
     try {
       stdin.lineMode = false;
-      AppLogger.log('Set lineMode = false');
-    } on StdinException catch (e) {
-      AppLogger.log('StdinException setting lineMode: $e');
-    }
+    } on StdinException catch (e) {}
     try {
       stdin.echoMode = false;
-      AppLogger.log('Set echoMode = false');
-    } on StdinException catch (e) {
-      AppLogger.log('StdinException setting echoMode: $e');
-    }
-    
+    } on StdinException catch (e) {}
+
     // Always try to listen to stdin, even if terminal mode setup failed
-    AppLogger.log('Setting up stdin listener...');
-    _stdinSubscription = stdin.listen((List<int> data) {
-      AppLogger.log('RawKeyboard received: ${data.map((e) => e.toRadixString(16)).join(' ')}');
-      final keyEvent = KeyParser.parse(data);
-      AppLogger.log('Parsed key event: $keyEvent');
-      _controller.add(keyEvent);
-    }, onError: (e) {
-      AppLogger.log('RawKeyboard listen error: $e');
-    }, onDone: () {
-      AppLogger.log('RawKeyboard listen done');
-    });
-    AppLogger.log('Stdin listener setup complete');
+    _stdinSubscription = stdin.listen(
+      (List<int> data) {
+        final keyEvent = KeyParser.parse(data);
+        _controller.add(keyEvent);
+      },
+      onError: (e) {},
+      onDone: () {},
+    );
   }
 
   Stream<KeyEvent> get keyEvents => _controller.stream;

@@ -28,7 +28,7 @@ class _GuessGameAppState extends State<GuessGameApp> {
     super.initState();
     _startNewGame();
     _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
-      _handleKeyInput(key);
+      _handleKeyInput(key.key);
     });
   }
 
@@ -45,7 +45,6 @@ class _GuessGameAppState extends State<GuessGameApp> {
     _attempts = 0;
     _gameWon = false;
     _feedback = 'I\'m thinking of a number between 1-100!';
-    AppLogger.log('New game started, target: \$_targetNumber');
   }
 
   void _handleKeyInput(String key) {
@@ -68,13 +67,13 @@ class _GuessGameAppState extends State<GuessGameApp> {
 
   void _submitGuess() {
     if (_currentGuess.isEmpty) return;
-    
+
     int guess = int.parse(_currentGuess);
     _attempts++;
-    
+
     String result;
     Color resultColor;
-    
+
     if (guess == _targetNumber) {
       result = 'CORRECT! 🎉';
       resultColor = Color.green;
@@ -103,10 +102,10 @@ class _GuessGameAppState extends State<GuessGameApp> {
         _feedback = 'Too high! Much lower!';
       }
     }
-    
+
     _guessHistory.add('\$_attempts. \$_currentGuess → \$result');
     _currentGuess = '';
-    
+
     if (_attempts >= 10 && !_gameWon) {
       _feedback = 'Game Over! The number was \$_targetNumber';
     }
@@ -119,16 +118,20 @@ class _GuessGameAppState extends State<GuessGameApp> {
         style: TextStyle(color: Color.brightBlack, italic: true),
       );
     }
-    
+
     return Column(
-      children: _guessHistory.reversed.take(5).map((guess) {
-        Color color = Color.white;
-        if (guess.contains('CORRECT')) color = Color.green;
-        else if (guess.contains('LOW')) color = Color.blue;
-        else if (guess.contains('HIGH')) color = Color.red;
-        
-        return Text(guess, style: TextStyle(color: color));
-      }).toList(),
+      children:
+          _guessHistory.reversed.take(5).map((guess) {
+            Color color = Color.white;
+            if (guess.contains('CORRECT'))
+              color = Color.green;
+            else if (guess.contains('LOW'))
+              color = Color.blue;
+            else if (guess.contains('HIGH'))
+              color = Color.red;
+
+            return Text(guess, style: TextStyle(color: color));
+          }).toList(),
     );
   }
 
@@ -145,20 +148,20 @@ class _GuessGameAppState extends State<GuessGameApp> {
             child: Center(
               child: Text(
                 '🎯 Number Guessing Game 🎯',
-                style: TextStyle(
-                  color: Color.white,
-                  bold: true,
-                ),
+                style: TextStyle(color: Color.white, bold: true),
               ),
             ),
           ),
-          
+
           SizedBox(height: 1),
-          
+
           // Game status
           Container(
             width: 60,
-            color: _gameWon ? Color.green : (_attempts >= 10 ? Color.red : Color.blue),
+            color:
+                _gameWon
+                    ? Color.green
+                    : (_attempts >= 10 ? Color.red : Color.blue),
             padding: EdgeInsets.all(1),
             child: Column(
               children: [
@@ -166,16 +169,13 @@ class _GuessGameAppState extends State<GuessGameApp> {
                   'Attempts: \$_attempts/10',
                   style: TextStyle(color: Color.white, bold: true),
                 ),
-                Text(
-                  _feedback,
-                  style: TextStyle(color: Color.white),
-                ),
+                Text(_feedback, style: TextStyle(color: Color.white)),
               ],
             ),
           ),
-          
+
           SizedBox(height: 1),
-          
+
           // Input area
           Container(
             width: 60,
@@ -183,16 +183,15 @@ class _GuessGameAppState extends State<GuessGameApp> {
             padding: EdgeInsets.all(1),
             child: Column(
               children: [
-                Row(children: [
-                  Text('Your guess: ', style: TextStyle(color: Color.yellow)),
-                  Text(
-                    _currentGuess.isEmpty ? '_' : _currentGuess,
-                    style: TextStyle(
-                      color: Color.brightYellow,
-                      bold: true,
+                Row(
+                  children: [
+                    Text('Your guess: ', style: TextStyle(color: Color.yellow)),
+                    Text(
+                      _currentGuess.isEmpty ? '_' : _currentGuess,
+                      style: TextStyle(color: Color.brightYellow, bold: true),
                     ),
-                  ),
-                ]),
+                  ],
+                ),
                 Text(
                   'Type numbers and press Enter',
                   style: TextStyle(color: Color.brightBlack, italic: true),
@@ -200,9 +199,9 @@ class _GuessGameAppState extends State<GuessGameApp> {
               ],
             ),
           ),
-          
+
           SizedBox(height: 1),
-          
+
           // History
           Container(
             width: 60,
@@ -219,9 +218,9 @@ class _GuessGameAppState extends State<GuessGameApp> {
               ],
             ),
           ),
-          
+
           SizedBox(height: 1),
-          
+
           // Controls
           Container(
             width: 60,
@@ -233,8 +232,14 @@ class _GuessGameAppState extends State<GuessGameApp> {
                   'Controls:',
                   style: TextStyle(color: Color.black, bold: true),
                 ),
-                Text('Numbers: Type your guess', style: TextStyle(color: Color.black)),
-                Text('Enter: Submit guess', style: TextStyle(color: Color.black)),
+                Text(
+                  'Numbers: Type your guess',
+                  style: TextStyle(color: Color.black),
+                ),
+                Text(
+                  'Enter: Submit guess',
+                  style: TextStyle(color: Color.black),
+                ),
                 Text('N: New game', style: TextStyle(color: Color.black)),
               ],
             ),
