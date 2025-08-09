@@ -250,15 +250,14 @@ class _NavigatorScope extends StatelessWidget {
   Widget build(BuildContext context) => child;
 }
 
-class _FocusControllerScope extends InheritedWidget {
-  const _FocusControllerScope({required this.controller, required super.child});
+class _FocusControllerScope extends StatelessWidget {
+  const _FocusControllerScope({required this.controller, required this.child});
 
   final FocusController controller;
+  final Widget child;
 
   @override
-  bool updateShouldNotify(_FocusControllerScope oldWidget) {
-    return controller != oldWidget.controller;
-  }
+  Widget build(BuildContext context) => child;
 }
 
 class FlutterError extends Error {
