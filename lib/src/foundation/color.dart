@@ -42,5 +42,23 @@ class TextStyle {
   });
   
   @override
+  bool operator ==(Object other) =>
+      other is TextStyle &&
+      color == other.color &&
+      backgroundColor == other.backgroundColor &&
+      bold == other.bold &&
+      italic == other.italic &&
+      underline == other.underline;
+
+  @override
+  int get hashCode => Object.hash(
+    color, 
+    backgroundColor, 
+    bold, 
+    italic, 
+    underline
+  );
+  
+  @override
   String toString() => 'TextStyle(color: $color, bg: $backgroundColor, bold: $bold)';
 }

@@ -1,11 +1,12 @@
 import 'dart:io';
+import 'package:radartui/src/foundation/constants.dart';
 
 class Terminal {
   int get width {
     try {
       return stdout.terminalColumns;
     } on StdoutException {
-      return 80;
+      return LayoutConstants.defaultTerminalWidth;
     }
   }
 
@@ -13,7 +14,7 @@ class Terminal {
     try {
       return stdout.terminalLines;
     } on StdoutException {
-      return 24;
+      return LayoutConstants.defaultTerminalHeight;
     }
   }
 

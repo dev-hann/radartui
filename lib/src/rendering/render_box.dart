@@ -1,19 +1,23 @@
 import 'package:radartui/src/foundation/edge_insets.dart';
 import 'package:radartui/src/foundation/offset.dart';
 import 'package:radartui/src/foundation/size.dart';
+import 'package:radartui/src/foundation/constants.dart';
 import 'package:radartui/src/rendering/render_object.dart';
 
 class BoxConstraints extends Constraints {
   final int maxWidth, maxHeight;
-  const BoxConstraints({this.maxWidth = 9999, this.maxHeight = 9999});
+  const BoxConstraints({
+    this.maxWidth = LayoutConstants.maxWidth, 
+    this.maxHeight = LayoutConstants.maxHeight
+  });
 
   Size get biggest => Size(maxWidth, maxHeight);
   BoxConstraints deflate(EdgeInsets edge) {
     final horizontal = edge.left + edge.right;
     final vertical = edge.top + edge.bottom;
     return BoxConstraints(
-      maxWidth: (maxWidth - horizontal).clamp(0, 9999),
-      maxHeight: (maxHeight - vertical).clamp(0, 9999),
+      maxWidth: (maxWidth - horizontal).clamp(0, LayoutConstants.maxWidth),
+      maxHeight: (maxHeight - vertical).clamp(0, LayoutConstants.maxHeight),
     );
   }
 }

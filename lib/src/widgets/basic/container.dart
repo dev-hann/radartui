@@ -3,6 +3,7 @@ import 'package:radartui/src/foundation/color.dart';
 import 'package:radartui/src/foundation/edge_insets.dart';
 import 'package:radartui/src/foundation/offset.dart';
 import 'package:radartui/src/foundation/size.dart';
+import 'package:radartui/src/foundation/constants.dart';
 import 'package:radartui/src/rendering/render_box.dart';
 import 'package:radartui/src/rendering/render_object.dart';
 import 'package:radartui/src/widgets/framework.dart';
@@ -68,7 +69,7 @@ class RenderContainer extends RenderBox
     final totalPadding = padding ?? EdgeInsets.all(0);
 
     int containerWidth = width ?? boxConstraints.maxWidth;
-    int containerHeight = height ?? 1;
+    int containerHeight = height ?? LayoutConstants.defaultContainerHeight;
 
     if (children.isNotEmpty) {
       final child = children.first;
@@ -103,20 +104,16 @@ class RenderContainer extends RenderBox
     // Fill background if color is specified
     if (color != null) {
       final bgStyle = TextStyle(backgroundColor: color);
-      for (
-        int y = 0;
-        y < size!.height - totalMargin.top - totalMargin.bottom;
-        y++
-      ) {
-        for (
-          int x = 0;
-          x < size!.width - totalMargin.left - totalMargin.right;
-          x++
-        ) {
+      final bgWidth = size!.width - totalMargin.left - totalMargin.right;
+      final bgHeight = size!.height - totalMargin.top - totalMargin.bottom;
+      final bgLine = ' ' * bgWidth;
+      
+      for (int y = 0; y < bgHeight; y++) {
+        for (int i = 0; i < bgLine.length; i++) {
           context.buffer.writeStyled(
-            innerOffset.x + x,
+            innerOffset.x + i,
             innerOffset.y + y,
-            ' ',
+            bgLine[i],
             bgStyle,
           );
         }

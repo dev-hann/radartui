@@ -3,6 +3,7 @@ export 'src/foundation/color.dart';
 export 'src/foundation/edge_insets.dart';
 export 'src/foundation/offset.dart';
 export 'src/foundation/size.dart';
+export 'src/foundation/constants.dart';
 
 export 'src/widgets/framework.dart';
 export 'src/widgets/basic.dart';

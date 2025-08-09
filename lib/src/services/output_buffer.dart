@@ -11,10 +11,16 @@ class Cell {
   bool operator ==(Object other) =>
       other is Cell &&
       char == other.char &&
-      style?.toString() == other.style?.toString();
+      _styleEquals(style, other.style);
 
   @override
-  int get hashCode => char.hashCode ^ (style?.toString().hashCode ?? 0);
+  int get hashCode => char.hashCode ^ (style?.hashCode ?? 0);
+
+  static bool _styleEquals(TextStyle? a, TextStyle? b) {
+    if (a == null && b == null) return true;
+    if (a == null || b == null) return false;
+    return a == b;
+  }
 }
 
 class OutputBuffer {

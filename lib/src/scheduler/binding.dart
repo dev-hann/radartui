@@ -93,17 +93,29 @@ class RawKeyboard {
     // Always try to listen to stdin, even if terminal mode setup failed
     _stdinSubscription = stdin.listen(
       (List<int> data) {
-        final keyEvent = KeyParser.parse(data);
-        _controller.add(keyEvent);
+        try {
+          final keyEvent = KeyParser.parse(data);
+          _controller.add(keyEvent);
+        } catch (e) {
+          AppLogger.log('Error parsing key event: $e');
+        }
       },
-      onError: (e) {},
-      onDone: () {},
+      onError: (e) {
+        AppLogger.log('Stdin error: $e');
+      },
+      onDone: () {
+        AppLogger.log('Stdin done');
+      },
     );
   }
 
   void updateStdinMode(bool value) {
-    stdin.lineMode = value;
-    stdin.echoMode = value;
+    try {
+      stdin.lineMode = value;
+      stdin.echoMode = value;
+    } catch (e) {
+      AppLogger.log('Failed to set terminal mode: $e');
+    }
   }
 
   Stream<KeyEvent> get keyEvents => _controller.stream;
@@ -111,6 +123,8 @@ class RawKeyboard {
   void dispose() {
     updateStdinMode(true);
     _stdinSubscription?.cancel();
-    _controller.close();
+    if (!_controller.isClosed) {
+      _controller.close();
+    }
   }
 }
