@@ -1,8 +1,11 @@
 
+import '../../services/key_parser.dart';
+
 class FocusNode {
   bool _hasFocus = false;
   FocusScope? _scope;
-  
+  Function(KeyEvent)? onKeyEvent;
+
   bool get hasFocus => _hasFocus;
   
   void requestFocus() {
