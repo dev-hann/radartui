@@ -7,6 +7,7 @@ import 'src/focus_example.dart';
 import 'src/guess_game_example.dart';
 import 'src/spinner_example.dart';
 import 'src/style_example.dart';
+import 'src/navigation_example.dart';
 
 void main() {
   runApp(const RadarTUIExamplesApp());
@@ -32,6 +33,7 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
     '로딩 스피너 (Spinner)',
     '포커스 예제 (Focus Example)',
     '스타일 데모 (Style Demo)',
+    '네비게이션 데모 (Navigation Demo)',
   ];
 
   @override
@@ -56,7 +58,7 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
     setState(() {
       if (KeyParser.isDigit(key.key)) {
         int value = int.parse(key.key);
-        if (value >= 1 && value <= 7) {
+        if (value >= 1 && value <= 8) {
           _selectedExample = value;
         }
       }
@@ -87,6 +89,8 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
       case 6:
         return FocusExample(onBack: _returnToMenu);
       case 7:
+        return const NavigationExample();
+      case 8:
         return StyleExample(onBack: _returnToMenu);
       default:
         return _buildMenu();
