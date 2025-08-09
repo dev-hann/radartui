@@ -1,32 +1,8 @@
 import 'dart:async';
 import 'package:radartui/radartui.dart';
-import 'package:radartui/src/scheduler/binding.dart';
 
-class NavigationExample extends StatefulWidget {
-  const NavigationExample();
-
-  @override
-  State<NavigationExample> createState() => _NavigationExampleState();
-}
-
-class _NavigationExampleState extends State<NavigationExample> {
-  StreamSubscription? _keySubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
-      if (key.key == 'Escape') {
-        Navigator.pop(context);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _keySubscription?.cancel();
-    super.dispose();
-  }
+class NavigationExample extends StatelessWidget {
+  const NavigationExample({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,39 +19,41 @@ class _NavigationExampleState extends State<NavigationExample> {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage();
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  StreamSubscription? _keySubscription;
-  int selectedIndex = 0;
+  final _focusNode = FocusNode();
   final List<String> menuItems = ['Profile', 'Settings', 'About', 'Exit'];
 
   @override
   void initState() {
     super.initState();
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
-      if (key.key == 'ArrowUp' && selectedIndex > 0) {
-        setState(() => selectedIndex--);
-      } else if (key.key == 'ArrowDown' && selectedIndex < menuItems.length - 1) {
-        setState(() => selectedIndex++);
-      } else if (key.key == 'Enter') {
-        _handleMenuSelection();
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.focusController.scope.addNode(_focusNode);
+      _focusNode.requestFocus();
+      _focusNode.onKeyEvent = _handleKeyEvent;
     });
   }
 
   @override
   void dispose() {
-    _keySubscription?.cancel();
+    _focusNode.dispose();
     super.dispose();
   }
 
-  void _handleMenuSelection() {
-    switch (selectedIndex) {
+  void _handleKeyEvent(KeyEvent event) {
+    if (event.key == 'Escape') {
+      // This is the root of the Navigator, so pop does nothing.
+      // In a real app, this might exit the app or pop the navigator itself.
+    }
+  }
+
+  void _handleMenuSelection(int index) {
+    switch (index) {
       case 0:
         Navigator.pushNamed(context, '/profile');
         break;
@@ -86,7 +64,7 @@ class _HomePageState extends State<HomePage> {
         Navigator.pushNamed(context, '/about');
         break;
       case 3:
-        // Exit - handled by parent
+        // In a real app, this would likely trigger an exit confirmation.
         break;
     }
   }
@@ -107,12 +85,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          
           const SizedBox(height: 2),
-          
           Container(
             width: 60,
-            height: 15,
             color: Color.brightBlack,
             padding: const EdgeInsets.all(1),
             child: Column(
@@ -121,43 +96,16 @@ class _HomePageState extends State<HomePage> {
                   'Main Menu',
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
-                
                 const SizedBox(height: 1),
-                
-                ...menuItems.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final item = entry.value;
-                  final isSelected = index == selectedIndex;
-                  
-                  return Container(
-                    width: 58,
-                    color: isSelected ? Color.yellow : Color.transparent,
-                    child: Row(
-                      children: [
-                        Text(
-                          isSelected ? '> ' : '  ',
-                          style: TextStyle(
-                            color: isSelected ? Color.black : Color.white,
-                            bold: true,
-                          ),
-                        ),
-                        Text(
-                          item,
-                          style: TextStyle(
-                            color: isSelected ? Color.black : Color.white,
-                            bold: isSelected,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
+                ListView(
+                  focusNode: _focusNode,
+                  items: menuItems,
+                  onItemSelected: (index, item) => _handleMenuSelection(index),
+                ),
               ],
             ),
           ),
-          
           const SizedBox(height: 2),
-          
           Container(
             width: 60,
             color: Color.green,
@@ -173,28 +121,32 @@ class _HomePageState extends State<HomePage> {
 }
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage();
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  StreamSubscription? _keySubscription;
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
-      if (key.key == 'Escape') {
-        Navigator.pop(context);
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.focusController.scope.addNode(_focusNode);
+      _focusNode.requestFocus();
+      _focusNode.onKeyEvent = (event) {
+        if (event.key == 'Escape') {
+          Navigator.pop(context);
+        }
+      };
     });
   }
 
   @override
   void dispose() {
-    _keySubscription?.cancel();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -214,9 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          
           const SizedBox(height: 2),
-          
           Container(
             width: 60,
             height: 12,
@@ -230,36 +180,28 @@ class _ProfilePageState extends State<ProfilePage> {
                     Text('John Doe', style: TextStyle(color: Color.white)),
                   ],
                 ),
-                
                 SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Text('Email: ', style: TextStyle(color: Color.cyan, bold: true)),
                     Text('john.doe@example.com', style: TextStyle(color: Color.white)),
                   ],
                 ),
-                
                 SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Text('Role: ', style: TextStyle(color: Color.cyan, bold: true)),
                     Text('Administrator', style: TextStyle(color: Color.yellow)),
                   ],
                 ),
-                
                 SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Text('Status: ', style: TextStyle(color: Color.cyan, bold: true)),
                     Text('Active', style: TextStyle(color: Color.green)),
                   ],
                 ),
-                
                 SizedBox(height: 2),
-                
                 Text(
                   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                   style: TextStyle(color: Color.brightBlack),
@@ -267,9 +209,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
-          
           const SizedBox(height: 2),
-          
           Container(
             width: 60,
             color: Color.yellow,
@@ -285,14 +225,14 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage();
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  StreamSubscription? _keySubscription;
+  final _focusNode = FocusNode();
   bool darkMode = true;
   bool notifications = false;
   int selectedIndex = 0;
@@ -300,29 +240,39 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
-      if (key.key == 'Escape') {
-        Navigator.pop(context);
-      } else if (key.key == 'ArrowUp' && selectedIndex > 0) {
-        setState(() => selectedIndex--);
-      } else if (key.key == 'ArrowDown' && selectedIndex < 1) {
-        setState(() => selectedIndex++);
-      } else if (key.key == 'Enter' || key.key == ' ') {
-        setState(() {
-          if (selectedIndex == 0) {
-            darkMode = !darkMode;
-          } else {
-            notifications = !notifications;
-          }
-        });
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.focusController.scope.addNode(_focusNode);
+      _focusNode.requestFocus();
+      _focusNode.onKeyEvent = _handleKeyEvent;
     });
   }
 
   @override
   void dispose() {
-    _keySubscription?.cancel();
+    _focusNode.dispose();
     super.dispose();
+  }
+
+  void _handleKeyEvent(KeyEvent event) {
+    final items = ['Dark Mode', 'Notifications'];
+    setState(() {
+      switch (event.key) {
+        case 'Escape':
+          Navigator.pop(context);
+          break;
+        case 'ArrowUp':
+          if (selectedIndex > 0) selectedIndex--;
+          break;
+        case 'ArrowDown':
+          if (selectedIndex < items.length - 1) selectedIndex++;
+          break;
+        case 'Enter':
+        case ' ':
+          if (selectedIndex == 0) darkMode = !darkMode;
+          if (selectedIndex == 1) notifications = !notifications;
+          break;
+      }
+    });
   }
 
   @override
@@ -341,9 +291,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
           ),
-          
           const SizedBox(height: 2),
-          
           Container(
             width: 60,
             height: 10,
@@ -355,9 +303,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   'Application Settings',
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
-                
                 const SizedBox(height: 2),
-                
+                // Using a manual list here to show a different style
                 Container(
                   width: 58,
                   color: selectedIndex == 0 ? Color.yellow : Color.transparent,
@@ -379,18 +326,16 @@ class _SettingsPageState extends State<SettingsPage> {
                       Text(
                         darkMode ? '[ON]' : '[OFF]',
                         style: TextStyle(
-                          color: selectedIndex == 0 
-                            ? Color.black 
-                            : (darkMode ? Color.green : Color.red),
+                          color: selectedIndex == 0
+                              ? Color.black
+                              : (darkMode ? Color.green : Color.red),
                           bold: true,
                         ),
                       ),
                     ],
                   ),
                 ),
-                
                 const SizedBox(height: 1),
-                
                 Container(
                   width: 58,
                   color: selectedIndex == 1 ? Color.yellow : Color.transparent,
@@ -412,9 +357,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       Text(
                         notifications ? '[ON]' : '[OFF]',
                         style: TextStyle(
-                          color: selectedIndex == 1 
-                            ? Color.black 
-                            : (notifications ? Color.green : Color.red),
+                          color: selectedIndex == 1
+                              ? Color.black
+                              : (notifications ? Color.green : Color.red),
                           bold: true,
                         ),
                       ),
@@ -424,9 +369,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
-          
           const SizedBox(height: 2),
-          
           Container(
             width: 60,
             color: Color.yellow,
@@ -442,28 +385,32 @@ class _SettingsPageState extends State<SettingsPage> {
 }
 
 class AboutPage extends StatefulWidget {
-  const AboutPage();
+  const AboutPage({super.key});
 
   @override
   State<AboutPage> createState() => _AboutPageState();
 }
 
 class _AboutPageState extends State<AboutPage> {
-  StreamSubscription? _keySubscription;
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
-      if (key.key == 'Escape') {
-        Navigator.pop(context);
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.focusController.scope.addNode(_focusNode);
+      _focusNode.requestFocus();
+      _focusNode.onKeyEvent = (event) {
+        if (event.key == 'Escape') {
+          Navigator.pop(context);
+        }
+      };
     });
   }
 
   @override
   void dispose() {
-    _keySubscription?.cancel();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -483,9 +430,7 @@ class _AboutPageState extends State<AboutPage> {
               ),
             ),
           ),
-          
           const SizedBox(height: 2),
-          
           Container(
             width: 60,
             height: 15,
@@ -497,27 +442,21 @@ class _AboutPageState extends State<AboutPage> {
                   'RadarTUI Framework',
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
-                
                 SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Text('Version: ', style: TextStyle(color: Color.yellow)),
                     Text('1.0.0', style: TextStyle(color: Color.white)),
                   ],
                 ),
-                
                 SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Text('Framework: ', style: TextStyle(color: Color.yellow)),
                     Text('Flutter-like TUI for Dart', style: TextStyle(color: Color.white)),
                   ],
                 ),
-                
                 SizedBox(height: 2),
-                
                 Text(
                   'Features:',
                   style: TextStyle(color: Color.magenta, bold: true),
@@ -527,9 +466,7 @@ class _AboutPageState extends State<AboutPage> {
                 Text('• Efficient Terminal Rendering', style: TextStyle(color: Color.white)),
                 Text('• Keyboard Input Handling', style: TextStyle(color: Color.white)),
                 Text('• Navigation & Routing', style: TextStyle(color: Color.white)),
-                
                 SizedBox(height: 1),
-                
                 Text(
                   'Built with ❤️ for terminal applications',
                   style: TextStyle(color: Color.brightBlack),
@@ -537,9 +474,7 @@ class _AboutPageState extends State<AboutPage> {
               ],
             ),
           ),
-          
           const SizedBox(height: 2),
-          
           Container(
             width: 60,
             color: Color.yellow,
