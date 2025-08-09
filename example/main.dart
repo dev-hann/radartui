@@ -6,6 +6,7 @@ import 'src/dashboard_example.dart';
 import 'src/guess_game_example.dart';
 import 'src/spinner_example.dart';
 import 'src/style_example.dart';
+import 'src/navigation_example.dart';
 
 void main() {
   runApp(const RadarTUIExamplesApp());
@@ -30,6 +31,7 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
     '숫자 맞추기 (Guess Game)',
     '로딩 스피너 (Spinner)',
     '스타일 데모 (Style Demo)',
+    '네비게이션 데모 (Navigation Demo)',
   ];
 
   @override
@@ -54,7 +56,7 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
     setState(() {
       if (KeyParser.isDigit(key.key)) {
         int num = int.parse(key.key);
-        if (num >= 1 && num <= 6) {
+        if (num >= 1 && num <= 7) {
           _selectedExample = num;
         }
       }
@@ -84,6 +86,8 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
         return SpinnerExample(onBack: _returnToMenu);
       case 6:
         return StyleExample(onBack: _returnToMenu);
+      case 7:
+        return const NavigationExample();
       default:
         return _buildMenu();
     }

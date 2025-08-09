@@ -22,6 +22,9 @@ class Color {
   static const Color brightCyan = Color(14);
   static const Color brightWhite = Color(15);
   
+  // Special colors
+  static const Color transparent = Color(-1);
+  
   @override
   String toString() => 'Color($value)';
 }

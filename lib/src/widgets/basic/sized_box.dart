@@ -12,17 +12,13 @@ class SizedBox extends RenderObjectWidget {
   final Widget? child;
 
   const SizedBox({this.width = 0, this.height = 0, this.child});
+  const SizedBox.shrink({this.child}) : width = 0, height = 0;
   const SizedBox.square({required int dimension, this.child})
     : width = dimension,
       height = dimension;
 
   @override
-  RenderObjectElement createElement() =>
-      child != null
-          ? SingleChildRenderObjectElement(
-            this as SingleChildRenderObjectWidget,
-          )
-          : RenderObjectElement(this);
+  RenderObjectElement createElement() => RenderObjectElement(this);
 
   @override
   RenderSizedBox createRenderObject(BuildContext context) =>

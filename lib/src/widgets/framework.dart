@@ -37,7 +37,9 @@ abstract class Element {
   }
 }
 
-abstract class BuildContext {}
+abstract class BuildContext {
+  T? findAncestorWidgetOfExactType<T extends Widget>();
+}
 
 abstract class StatelessWidget extends Widget {
   const StatelessWidget();
@@ -57,6 +59,8 @@ abstract class State<T extends StatefulWidget> {
   T get widget => _widget!;
   T? _widget;
   StatefulElement? _element;
+  
+  BuildContext get context => _element!;
 
   void initState() {}
   void dispose() {}
@@ -100,8 +104,11 @@ class StatefulElement extends ComponentElement {
 abstract class ComponentElement extends Element implements BuildContext {
   ComponentElement(super.widget);
   Element? _child;
+  Element? _parent;
+  
   @override
   void mount(Element? parent) {
+    _parent = parent;
     super.mount(parent);
     rebuild();
   }
@@ -121,6 +128,28 @@ abstract class ComponentElement extends Element implements BuildContext {
     if (_child != null) visitor(_child!);
   }
 
+  @override
+  T? findAncestorWidgetOfExactType<T extends Widget>() {
+    Element? current = _parent;
+    while (current != null) {
+      if (current.widget.runtimeType == T) {
+        return current.widget as T;
+      }
+      if (current is ComponentElement) {
+        current = current._parent;
+      } else if (current is RenderObjectElement) {
+        current = current._parent;
+      } else if (current is SingleChildRenderObjectElement) {
+        current = current._parent;
+      } else if (current is MultiChildRenderObjectElement) {
+        current = current._parent;
+      } else {
+        break;
+      }
+    }
+    return null;
+  }
+
   Widget build();
 }
 
@@ -134,8 +163,11 @@ abstract class RenderObjectWidget extends Widget {
 
 class RenderObjectElement extends Element implements BuildContext {
   RenderObjectElement(RenderObjectWidget super.widget);
+  Element? _parent;
+  
   @override
   void mount(Element? parent) {
+    _parent = parent;
     super.mount(parent);
     _renderObject = (widget as RenderObjectWidget).createRenderObject(this);
   }
@@ -145,6 +177,28 @@ class RenderObjectElement extends Element implements BuildContext {
     super.update(newWidget);
     (widget as RenderObjectWidget).updateRenderObject(this, renderObject!);
     renderObject!.markNeedsLayout();
+  }
+  
+  @override
+  T? findAncestorWidgetOfExactType<T extends Widget>() {
+    Element? current = _parent;
+    while (current != null) {
+      if (current.widget.runtimeType == T) {
+        return current.widget as T;
+      }
+      if (current is ComponentElement) {
+        current = current._parent;
+      } else if (current is RenderObjectElement) {
+        current = current._parent;
+      } else if (current is SingleChildRenderObjectElement) {
+        current = current._parent;
+      } else if (current is MultiChildRenderObjectElement) {
+        current = current._parent;
+      } else {
+        break;
+      }
+    }
+    return null;
   }
 }
 
@@ -159,6 +213,7 @@ abstract class SingleChildRenderObjectWidget extends RenderObjectWidget {
 class SingleChildRenderObjectElement extends RenderObjectElement {
   SingleChildRenderObjectElement(SingleChildRenderObjectWidget super.widget);
   Element? _child;
+  
   @override
   void mount(Element? parent) {
     super.mount(parent);
@@ -199,6 +254,7 @@ abstract class MultiChildRenderObjectWidget extends RenderObjectWidget {
 class MultiChildRenderObjectElement extends RenderObjectElement {
   MultiChildRenderObjectElement(MultiChildRenderObjectWidget super.widget);
   List<Element> _children = [];
+  
   @override
   void mount(Element? parent) {
     super.mount(parent);
