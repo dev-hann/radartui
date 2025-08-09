@@ -41,12 +41,15 @@ class _ListViewState extends State<ListView> {
   @override
   void initState() {
     super.initState();
-    selectedIndex = widget.initialSelectedIndex.clamp(0, widget.items.length - 1);
+    selectedIndex = widget.initialSelectedIndex.clamp(
+      0,
+      widget.items.length - 1,
+    );
     _focusNode = widget.focusNode ?? FocusNode();
-    
+
     _setupKeyboardListener();
     _focusNode?.addListener(_onFocusChanged);
-    
+
     // 짧은 지연 후 focus scope에 등록 (위젯 트리 구성 완료 후)
     Future.microtask(() => _registerWithFocusScope());
   }
@@ -57,7 +60,7 @@ class _ListViewState extends State<ListView> {
     final focusNode = _focusNode;
     if (focusNode != null) {
       scope?.addNode(focusNode);
-      
+
       if (widget.autofocus) {
         focusNode.requestFocus();
       }
@@ -65,7 +68,9 @@ class _ListViewState extends State<ListView> {
   }
 
   void _setupKeyboardListener() {
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((event) {
+    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((
+      event,
+    ) {
       // 포커스가 있을 때만 키보드 이벤트 처리
       if (_focusNode?.hasFocus == true && event is KeyEvent) {
         _handleKeyEvent(event);
@@ -86,7 +91,10 @@ class _ListViewState extends State<ListView> {
       case 'Enter':
       case ' ':
         if (selectedIndex >= 0 && selectedIndex < widget.items.length) {
-          widget.onItemSelected?.call(selectedIndex, widget.items[selectedIndex]);
+          widget.onItemSelected?.call(
+            selectedIndex,
+            widget.items[selectedIndex],
+          );
         }
         break;
     }
@@ -94,7 +102,10 @@ class _ListViewState extends State<ListView> {
 
   void _moveSelection(int direction) {
     setState(() {
-      selectedIndex = (selectedIndex + direction).clamp(0, widget.items.length - 1);
+      selectedIndex = (selectedIndex + direction).clamp(
+        0,
+        widget.items.length - 1,
+      );
     });
   }
 
@@ -115,27 +126,29 @@ class _ListViewState extends State<ListView> {
   @override
   Widget build(BuildContext context) {
     final hasFocus = _focusNode?.hasFocus ?? false;
-    final borderPrefix = hasFocus ? widget.focusedBorder : widget.unfocusedBorder;
-    
+    final borderPrefix =
+        hasFocus ? widget.focusedBorder : widget.unfocusedBorder;
+
     final children = <Widget>[];
-    
+
     if (borderPrefix != null) {
       children.add(Text(borderPrefix) as Widget);
     }
-    
+
     for (final entry in widget.items.asMap().entries) {
       final index = entry.key;
       final item = entry.value;
       final isSelected = index == selectedIndex && hasFocus;
-      final prefix = isSelected ? widget.selectedPrefix : widget.unselectedPrefix;
-      
+      final prefix =
+          isSelected ? widget.selectedPrefix : widget.unselectedPrefix;
+
       children.add(Text('$prefix$item') as Widget);
     }
-    
+
     if (borderPrefix != null) {
       children.add(Text(borderPrefix) as Widget);
     }
-    
+
     return Column(children: children) as Widget;
   }
 }

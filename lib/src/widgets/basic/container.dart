@@ -91,8 +91,6 @@ class RenderContainer extends RenderBox
       containerWidth + totalMargin.left + totalMargin.right,
       containerHeight + totalMargin.top + totalMargin.bottom,
     );
-
-    AppLogger.log('RenderContainer.performLayout: size=\$size');
   }
 
   @override
@@ -107,7 +105,7 @@ class RenderContainer extends RenderBox
       final bgWidth = size!.width - totalMargin.left - totalMargin.right;
       final bgHeight = size!.height - totalMargin.top - totalMargin.bottom;
       final bgLine = ' ' * bgWidth;
-      
+
       for (int y = 0; y < bgHeight; y++) {
         for (int i = 0; i < bgLine.length; i++) {
           context.buffer.writeStyled(

@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:radartui/radartui.dart';
+import 'package:radartui/src/scheduler/binding.dart';
 
 class FocusExample extends StatefulWidget {
-  final Function() onBack;
-  const FocusExample({required this.onBack});
+  const FocusExample();
 
   @override
   State<FocusExample> createState() => _FocusExampleState();
@@ -12,6 +14,23 @@ class _FocusExampleState extends State<FocusExample> {
   String selectedAction = '';
   String selectedFile = '';
   String selectedOption = '';
+  StreamSubscription? _keySubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+      if (key.key == 'Escape') {
+        Navigator.of(context).pop();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

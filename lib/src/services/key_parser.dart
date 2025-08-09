@@ -8,10 +8,6 @@ class KeyEvent {
   @override
   String toString() =>
       'KeyEvent($key, special: $isSpecial, type: $specialType)';
-
-  bool get isNumber {
-    return int.tryParse(key) != null;
-  }
 }
 
 class KeyParser {
@@ -25,17 +21,41 @@ class KeyParser {
       // ESC [
       switch (rawData[2]) {
         case 65: // Up arrow
-          return const KeyEvent('ArrowUp', isSpecial: true, specialType: 'arrow');
+          return const KeyEvent(
+            'ArrowUp',
+            isSpecial: true,
+            specialType: 'arrow',
+          );
         case 66: // Down arrow
-          return const KeyEvent('ArrowDown', isSpecial: true, specialType: 'arrow');
+          return const KeyEvent(
+            'ArrowDown',
+            isSpecial: true,
+            specialType: 'arrow',
+          );
         case 67: // Right arrow
-          return const KeyEvent('ArrowRight', isSpecial: true, specialType: 'arrow');
+          return const KeyEvent(
+            'ArrowRight',
+            isSpecial: true,
+            specialType: 'arrow',
+          );
         case 68: // Left arrow
-          return const KeyEvent('ArrowLeft', isSpecial: true, specialType: 'arrow');
+          return const KeyEvent(
+            'ArrowLeft',
+            isSpecial: true,
+            specialType: 'arrow',
+          );
         case 72: // Home
-          return const KeyEvent('Home', isSpecial: true, specialType: 'navigation');
+          return const KeyEvent(
+            'Home',
+            isSpecial: true,
+            specialType: 'navigation',
+          );
         case 70: // End
-          return const KeyEvent('End', isSpecial: true, specialType: 'navigation');
+          return const KeyEvent(
+            'End',
+            isSpecial: true,
+            specialType: 'navigation',
+          );
       }
     }
 
@@ -45,13 +65,23 @@ class KeyParser {
         // ESC [ n ~
         switch (rawData[2]) {
           case 51: // Delete
-            return const KeyEvent('Delete', isSpecial: true, specialType: 'edit');
+            return const KeyEvent(
+              'Delete',
+              isSpecial: true,
+              specialType: 'edit',
+            );
           case 53: // Page Up
-            return const KeyEvent('PageUp',
-                isSpecial: true, specialType: 'navigation');
+            return const KeyEvent(
+              'PageUp',
+              isSpecial: true,
+              specialType: 'navigation',
+            );
           case 54: // Page Down
-            return const KeyEvent('PageDown',
-                isSpecial: true, specialType: 'navigation');
+            return const KeyEvent(
+              'PageDown',
+              isSpecial: true,
+              specialType: 'navigation',
+            );
         }
       }
     }
@@ -60,25 +90,44 @@ class KeyParser {
     if (rawData.length == 1) {
       switch (rawData[0]) {
         case 27: // Escape
-          return const KeyEvent('Escape', isSpecial: true, specialType: 'control');
+          return const KeyEvent(
+            'Escape',
+            isSpecial: true,
+            specialType: 'control',
+          );
         case 9: // Tab
           return const KeyEvent('Tab', isSpecial: true, specialType: 'control');
         case 10: // Enter (LF)
         case 13: // Enter (CR)
-          return const KeyEvent('Enter', isSpecial: true, specialType: 'control');
+          return const KeyEvent(
+            'Enter',
+            isSpecial: true,
+            specialType: 'control',
+          );
         case 127: // Backspace (DEL)
         case 8: // Backspace (BS)
-          return const KeyEvent('Backspace', isSpecial: true, specialType: 'edit');
+          return const KeyEvent(
+            'Backspace',
+            isSpecial: true,
+            specialType: 'edit',
+          );
         case 32: // Space
-          return const KeyEvent('Space', isSpecial: true, specialType: 'printable');
+          return const KeyEvent(
+            'Space',
+            isSpecial: true,
+            specialType: 'printable',
+          );
       }
     }
 
     // Handle Ctrl combinations
     if (rawData.length == 1 && rawData[0] < 32) {
       final ctrlChar = String.fromCharCode(rawData[0] + 64);
-      return KeyEvent('Ctrl+$ctrlChar',
-          isSpecial: true, specialType: 'control');
+      return KeyEvent(
+        'Ctrl+$ctrlChar',
+        isSpecial: true,
+        specialType: 'control',
+      );
     }
 
     // Handle regular printable characters
@@ -93,17 +142,18 @@ class KeyParser {
 
     // Unknown key
     return KeyEvent(
-        'Unknown(${rawData.map((e) => e.toRadixString(16)).join(' ')})',
-        isSpecial: true,
-        specialType: 'unknown');
+      'Unknown(${rawData.map((e) => e.toRadixString(16)).join(' ')})',
+      isSpecial: true,
+      specialType: 'unknown',
+    );
   }
 
   static bool isDigit(String key) {
-    return !key.isEmpty && '0123456789'.contains(key);
+    return '0123456789'.contains(key);
   }
 
   static bool isLetter(String key) {
-    return !key.isEmpty && RegExp(r'[a-zA-Z]').hasMatch(key);
+    return RegExp(r'[a-zA-Z]').hasMatch(key);
   }
 
   static bool isAlphaNumeric(String key) {

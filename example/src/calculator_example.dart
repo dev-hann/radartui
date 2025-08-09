@@ -3,8 +3,7 @@ import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
 
 class CalculatorExample extends StatefulWidget {
-  final Function() onBack;
-  const CalculatorExample({required this.onBack});
+  const CalculatorExample();
 
   @override
   State<CalculatorExample> createState() => _CalculatorExampleState();
@@ -22,7 +21,7 @@ class _CalculatorExampleState extends State<CalculatorExample> {
     super.initState();
     _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
       if (key.key == 'Escape') {
-        widget.onBack();
+        Navigator.of(context).pop();
         return;
       }
       _handleKeyInput(key);
@@ -37,7 +36,7 @@ class _CalculatorExampleState extends State<CalculatorExample> {
 
   void _handleKeyInput(KeyEvent key) {
     setState(() {
-      if (key.isNumber) {
+      if (KeyParser.isDigit(key.key)) {
         _inputNumber(key.key);
       } else if (key.key == '+') {
         _inputOperation('+');

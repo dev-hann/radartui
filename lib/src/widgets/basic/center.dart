@@ -25,7 +25,6 @@ class RenderCenter extends RenderBox
     } else {
       size = Size(boxConstraints.maxWidth, boxConstraints.maxHeight);
     }
-    AppLogger.log('RenderCenter.performLayout: size=\$size');
   }
 
   @override

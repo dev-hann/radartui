@@ -41,7 +41,6 @@ class RenderSizedBox extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     size = Size(width, height);
-    AppLogger.log('RenderSizedBox.performLayout: size=\$size');
   }
 
   @override

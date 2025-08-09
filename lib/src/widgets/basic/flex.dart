@@ -29,22 +29,23 @@ class RenderFlex extends RenderBox
       if (direction == Axis.vertical) {
         childParentData.offset = Offset(0, mainAxisExtent);
         mainAxisExtent += child.size!.height;
-        crossAxisExtent = crossAxisExtent > child.size!.width
-            ? crossAxisExtent
-            : child.size!.width;
+        crossAxisExtent =
+            crossAxisExtent > child.size!.width
+                ? crossAxisExtent
+                : child.size!.width;
       } else {
         childParentData.offset = Offset(mainAxisExtent, 0);
         mainAxisExtent += child.size!.width;
-        crossAxisExtent = crossAxisExtent > child.size!.height
-            ? crossAxisExtent
-            : child.size!.height;
+        crossAxisExtent =
+            crossAxisExtent > child.size!.height
+                ? crossAxisExtent
+                : child.size!.height;
       }
     }
-    size = direction == Axis.vertical
-        ? Size(crossAxisExtent, mainAxisExtent)
-        : Size(mainAxisExtent, crossAxisExtent);
-    AppLogger.log(
-        'RenderFlex.performLayout: direction=\$direction, size=\$size');
+    size =
+        direction == Axis.vertical
+            ? Size(crossAxisExtent, mainAxisExtent)
+            : Size(mainAxisExtent, crossAxisExtent);
   }
 
   @override

@@ -4,8 +4,7 @@ import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
 
 class GuessGameExample extends StatefulWidget {
-  final Function() onBack;
-  const GuessGameExample({required this.onBack});
+  const GuessGameExample();
 
   @override
   State<GuessGameExample> createState() => _GuessGameExampleState();
@@ -26,7 +25,7 @@ class _GuessGameExampleState extends State<GuessGameExample> {
     _startNewGame();
     _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
       if (key.key == 'Escape') {
-        widget.onBack();
+        Navigator.of(context).pop();
         return;
       }
       _handleKeyInput(key);

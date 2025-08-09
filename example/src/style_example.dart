@@ -3,8 +3,7 @@ import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
 
 class StyleExample extends StatefulWidget {
-  final Function() onBack;
-  const StyleExample({required this.onBack});
+  const StyleExample();
 
   @override
   State<StyleExample> createState() => _StyleExampleState();
@@ -20,7 +19,7 @@ class _StyleExampleState extends State<StyleExample> {
       key,
     ) {
       if (key.key == 'Escape') {
-        widget.onBack();
+        Navigator.of(context).pop();
       }
     });
   }

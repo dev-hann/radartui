@@ -3,8 +3,7 @@ import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
 
 class SpinnerExample extends StatefulWidget {
-  final Function() onBack;
-  const SpinnerExample({required this.onBack});
+  const SpinnerExample();
 
   @override
   State<SpinnerExample> createState() => _SpinnerExampleState();
@@ -43,7 +42,7 @@ class _SpinnerExampleState extends State<SpinnerExample> {
       key,
     ) {
       if (key.key == 'Escape') {
-        widget.onBack();
+        Navigator.of(context).pop();
         return;
       }
       if (key.key == 's' || key.key == 'S') {

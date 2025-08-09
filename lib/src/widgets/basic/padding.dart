@@ -35,12 +35,10 @@ class RenderPadding extends RenderBox
     } else {
       size = Size(padding.left + padding.right, padding.top + padding.bottom);
     }
-    AppLogger.log('RenderPadding.performLayout: padding=\$padding, size=\$size');
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    AppLogger.log('RenderPadding.paint: offset=\$offset');
     if (children.isNotEmpty) {
       context.paintChild(
         children.first,
