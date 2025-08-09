@@ -84,7 +84,7 @@ class SchedulerBinding {
 
 class RawKeyboard {
   StreamSubscription<List<int>>? _stdinSubscription;
-  final _controller = StreamController<KeyEvent>();
+  final _controller = StreamController<KeyEvent>.broadcast();
 
   void initialize() {
     // Try to set terminal modes, but continue even if it fails
