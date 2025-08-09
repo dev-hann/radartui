@@ -11,14 +11,14 @@ class SpinnerExample extends StatefulWidget {
 }
 
 class _SpinnerExampleState extends State<SpinnerExample> {
-  int _spinnerIndex = 0;
   int _progress = 0;
   bool _isLoading = true;
   String _status = 'Initializing...';
   Timer? _timer;
   StreamSubscription? _keySubscription;
+  IndicatorType _currentIndicator = IndicatorType.spinner;
+  int _animationFrame = 0;
 
-  final List<String> _spinnerFrames = ['|', '/', '-', '\\\\'];
   final List<String> _statusMessages = [
     'Initializing...',
     'Loading components...',
@@ -26,6 +26,14 @@ class _SpinnerExampleState extends State<SpinnerExample> {
     'Preparing interface...',
     'Almost done...',
     'Complete!',
+  ];
+
+  final List<IndicatorType> _indicatorTypes = [
+    IndicatorType.spinner,
+    IndicatorType.dots,
+    IndicatorType.bounce,
+    IndicatorType.pulse,
+    IndicatorType.wave,
   ];
 
   @override
@@ -37,6 +45,10 @@ class _SpinnerExampleState extends State<SpinnerExample> {
     ) {
       if (key.key == 'Escape') {
         widget.onBack();
+        return;
+      }
+      if (key.key == 's' || key.key == 'S') {
+        _switchIndicator();
         return;
       }
       _restart();
@@ -53,7 +65,8 @@ class _SpinnerExampleState extends State<SpinnerExample> {
   void _startAnimation() {
     _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
       setState(() {
-        _spinnerIndex = (_spinnerIndex + 1) % _spinnerFrames.length;
+        // Update animation frame
+        _animationFrame++;
 
         if (_progress < 100) {
           _progress += 2;
@@ -70,45 +83,37 @@ class _SpinnerExampleState extends State<SpinnerExample> {
     });
   }
 
+  void _switchIndicator() {
+    setState(() {
+      final currentIndex = _indicatorTypes.indexOf(_currentIndicator);
+      _currentIndicator = _indicatorTypes[(currentIndex + 1) % _indicatorTypes.length];
+    });
+  }
+
   void _restart() {
     setState(() {
-      _spinnerIndex = 0;
       _progress = 0;
       _isLoading = true;
       _status = 'Initializing...';
+      _animationFrame = 0;
     });
     _timer?.cancel();
     _startAnimation();
   }
 
-  Widget _buildProgressBar() {
-    final filled = (_progress / 5).floor();
-    final empty = 20 - filled;
-
-    return Row(
-      children: [
-        const Text('[', style: TextStyle(color: Color.white)),
-        ...List.generate(
-          filled,
-          (_) => const Text('█', style: TextStyle(color: Color.green)),
-        ),
-        ...List.generate(
-          empty,
-          (_) => const Text('░', style: TextStyle(color: Color.brightBlack)),
-        ),
-        Text('] $_progress%', style: const TextStyle(color: Color.white)),
-      ],
-    );
-  }
-
-  Widget _buildSpinner() {
-    return Text(
-      _spinnerFrames[_spinnerIndex],
-      style: TextStyle(
-        color: _isLoading ? Color.cyan : Color.green,
-        bold: true,
-      ),
-    );
+  String _getIndicatorName() {
+    switch (_currentIndicator) {
+      case IndicatorType.spinner:
+        return 'Spinner';
+      case IndicatorType.dots:
+        return 'Dots';
+      case IndicatorType.bounce:
+        return 'Bounce';
+      case IndicatorType.pulse:
+        return 'Pulse';
+      case IndicatorType.wave:
+        return 'Wave';
+    }
   }
 
   @override
@@ -139,7 +144,11 @@ class _SpinnerExampleState extends State<SpinnerExample> {
               children: [
                 Row(
                   children: [
-                    _buildSpinner(),
+                    LoadingIndicator(
+                      type: _currentIndicator,
+                      color: _isLoading ? Color.cyan : Color.green,
+                      animationFrame: _animationFrame,
+                    ),
                     const SizedBox(width: 2),
                     Text(
                       _status,
@@ -153,7 +162,19 @@ class _SpinnerExampleState extends State<SpinnerExample> {
 
                 const SizedBox(height: 1),
 
-                _buildProgressBar(),
+                ProgressIndicator(
+                  progress: _progress,
+                  width: 20,
+                  fillColor: Color.green,
+                  backgroundColor: Color.brightBlack,
+                ),
+
+                const SizedBox(height: 1),
+
+                Text(
+                  'Current: ${_getIndicatorName()}',
+                  style: const TextStyle(color: Color.cyan, italic: true),
+                ),
 
                 const SizedBox(height: 1),
 
@@ -164,12 +185,12 @@ class _SpinnerExampleState extends State<SpinnerExample> {
                   ),
                   const SizedBox(height: 1),
                   const Text(
-                    'Press any key to restart',
+                    'Any key: restart | S: switch indicator',
                     style: TextStyle(color: Color.brightYellow, italic: true),
                   ),
                 ] else ...[
                   const Text(
-                    'Please wait...',
+                    'Please wait... (S: switch indicator)',
                     style: TextStyle(color: Color.brightWhite),
                   ),
                 ],
@@ -190,13 +211,13 @@ class _SpinnerExampleState extends State<SpinnerExample> {
                   style: TextStyle(color: Color.white, bold: true),
                 ),
                 Text(
-                  '• Animated spinner',
+                  '• Multiple indicator types',
                   style: TextStyle(color: Color.white),
                 ),
-                Text('• Progress bar', style: TextStyle(color: Color.white)),
+                Text('• Animated progress bar', style: TextStyle(color: Color.white)),
                 Text('• Status updates', style: TextStyle(color: Color.white)),
                 Text(
-                  '• Interactive restart | ESC: Return',
+                  '• S: Switch indicators | ESC: Return',
                   style: TextStyle(color: Color.white),
                 ),
               ],

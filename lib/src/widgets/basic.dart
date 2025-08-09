@@ -2,6 +2,7 @@ export 'basic/center.dart';
 export 'basic/column.dart';
 export 'basic/container.dart';
 export 'basic/flex.dart';
+export 'basic/indicator.dart';
 export 'basic/padding.dart';
 export 'basic/row.dart';
 export 'basic/sized_box.dart';
