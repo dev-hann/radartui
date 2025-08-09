@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
-import 'examples/calculator_example.dart';
-import 'examples/dashboard_example.dart';
-import 'examples/guess_game_example.dart';
-import 'examples/spinner_example.dart';
-import 'examples/style_example.dart';
+import 'src/calculator_example.dart';
+import 'src/dashboard_example.dart';
+import 'src/guess_game_example.dart';
+import 'src/spinner_example.dart';
+import 'src/style_example.dart';
 
 void main() {
   runApp(const RadarTUIExamplesApp());
