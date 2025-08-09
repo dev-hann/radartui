@@ -63,6 +63,9 @@ abstract class State<T extends StatefulWidget> {
   BuildContext get context => _element!;
 
   void initState() {}
+
+  void didUpdateWidget(T oldWidget) {}
+
   void dispose() {}
 
   void setState(void Function() fn) {
@@ -96,8 +99,10 @@ class StatefulElement extends ComponentElement {
 
   @override
   void update(Widget newWidget) {
+    final oldWidget = widget;
     super.update(newWidget);
     _state._widget = newWidget as StatefulWidget;
+    _state.didUpdateWidget(oldWidget as StatefulWidget);
   }
 }
 

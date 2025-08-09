@@ -44,6 +44,8 @@ class _ListViewState extends State<ListView> {
 
   @override
   void dispose() {
+    // The widget owns the focus node, so it should not dispose it here.
+    // The owner of the node is responsible for disposing it.
     _focusNode.removeListener(_onFocusChanged);
     super.dispose();
   }
@@ -52,9 +54,11 @@ class _ListViewState extends State<ListView> {
   void didUpdateWidget(ListView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
+      // Clean up listeners from the old node
       _focusNode.removeListener(_onFocusChanged);
       _focusNode.onKeyEvent = null;
 
+      // Set up the new node
       _focusNode = widget.focusNode;
       _focusNode.onKeyEvent = _handleKeyEvent;
       _focusNode.addListener(_onFocusChanged);
@@ -92,7 +96,7 @@ class _ListViewState extends State<ListView> {
 
   @override
   Widget build(BuildContext context) {
-    final hasFocus = _focusNode?.hasFocus ?? false;
+    final hasFocus = _focusNode.hasFocus;
     final borderPrefix = hasFocus ? widget.focusedBorder : widget.unfocusedBorder;
 
     final children = <Widget>[];
