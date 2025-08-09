@@ -1,6 +1,9 @@
 import 'package:radartui/radartui.dart';
 
 class FocusExample extends StatefulWidget {
+  final Function() onBack;
+  const FocusExample({required this.onBack});
+
   @override
   State<FocusExample> createState() => _FocusExampleState();
 }
@@ -19,7 +22,7 @@ class _FocusExampleState extends State<FocusExample> {
           children: [
             Text('Focus Example - Use Tab/Shift+Tab to switch between lists'),
             SizedBox(height: 1),
-            
+
             Row(
               children: [
                 // 첫 번째 ListView: Actions
@@ -42,9 +45,9 @@ class _FocusExampleState extends State<FocusExample> {
                     ],
                   ),
                 ),
-                
+
                 SizedBox(width: 2),
-                
+
                 // 두 번째 ListView: Files
                 Container(
                   padding: EdgeInsets.all(1),
@@ -52,7 +55,12 @@ class _FocusExampleState extends State<FocusExample> {
                     children: [
                       Text('Files:'),
                       ListView(
-                        items: ['main.dart', 'config.json', 'README.md', 'test.dart'],
+                        items: [
+                          'main.dart',
+                          'config.json',
+                          'README.md',
+                          'test.dart',
+                        ],
                         focusedBorder: '[====== Files ========]',
                         unfocusedBorder: '                       ',
                         onItemSelected: (index, item) {
@@ -64,9 +72,9 @@ class _FocusExampleState extends State<FocusExample> {
                     ],
                   ),
                 ),
-                
+
                 SizedBox(width: 2),
-                
+
                 // 세 번째 ListView: Options
                 Container(
                   padding: EdgeInsets.all(1),
@@ -88,9 +96,9 @@ class _FocusExampleState extends State<FocusExample> {
                 ),
               ],
             ),
-            
+
             SizedBox(height: 2),
-            
+
             // 선택된 항목들 표시
             Container(
               padding: EdgeInsets.all(1),

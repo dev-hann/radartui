@@ -3,6 +3,7 @@ import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
 import 'src/calculator_example.dart';
 import 'src/dashboard_example.dart';
+import 'src/focus_example.dart';
 import 'src/guess_game_example.dart';
 import 'src/spinner_example.dart';
 import 'src/style_example.dart';
@@ -29,6 +30,7 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
     '대시보드 (Dashboard)',
     '숫자 맞추기 (Guess Game)',
     '로딩 스피너 (Spinner)',
+    '포커스 예제 (Focus Example)',
     '스타일 데모 (Style Demo)',
   ];
 
@@ -53,9 +55,9 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
   void _handleMenuKey(KeyEvent key) {
     setState(() {
       if (KeyParser.isDigit(key.key)) {
-        int num = int.parse(key.key);
-        if (num >= 1 && num <= 6) {
-          _selectedExample = num;
+        int value = int.parse(key.key);
+        if (value >= 1 && value <= 7) {
+          _selectedExample = value;
         }
       }
     });
@@ -83,6 +85,8 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
       case 5:
         return SpinnerExample(onBack: _returnToMenu);
       case 6:
+        return FocusExample(onBack: _returnToMenu);
+      case 7:
         return StyleExample(onBack: _returnToMenu);
       default:
         return _buildMenu();
