@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:radartui/src/scheduler/binding.dart';
@@ -11,8 +10,9 @@ class FocusController {
 
   void activate() {
     FocusManager.setCurrentScope(_focusScope);
-    _keySubscription ??=
-        SchedulerBinding.instance.keyboard.keyEvents.listen(_handleKeyEvent);
+    _keySubscription ??= SchedulerBinding.instance.keyboard.keyEvents.listen(
+      _handleKeyEvent,
+    );
   }
 
   void deactivate() {

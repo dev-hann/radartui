@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'package:radartui/radartui.dart';
-import 'package:radartui/src/scheduler/binding.dart';
 import 'src/calculator_example.dart';
 import 'src/counter_example.dart';
 import 'src/dashboard_example.dart';
@@ -103,7 +101,6 @@ class _MenuScreenState extends State<MenuScreen> {
                   ListView(
                     initialSelectedIndex: 0,
                     items: _exampleTitles,
-                    autofocus: true,
                     onItemSelected: _onExampleSelected,
                   ),
                   const SizedBox(height: 2),
