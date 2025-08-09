@@ -1,6 +1,7 @@
-import 'package:radartui/radartui.dart';
-import 'package:radartui/src/widgets/basic/focus.dart';
-import 'package:radartui/src/services/key_parser.dart';
+import '../framework.dart';
+import 'focus.dart';
+import '../../services/key_parser.dart';
+import '../../scheduler/binding.dart';
 import 'dart:async';
 
 class FocusScopeWidget extends StatefulWidget {
@@ -25,6 +26,9 @@ class _FocusScopeWidgetState extends State<FocusScopeWidget> {
     super.initState();
     _focusScope = FocusScope();
     
+    // 전역 FocusManager에 등록
+    FocusManager.setCurrentScope(_focusScope);
+    
     if (widget.handleKeyboard) {
       _setupKeyboardListener();
     }
@@ -32,7 +36,9 @@ class _FocusScopeWidgetState extends State<FocusScopeWidget> {
   
   void _setupKeyboardListener() {
     _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((event) {
-      _handleKeyEvent(event);
+      if (event is KeyEvent) {
+        _handleKeyEvent(event);
+      }
     });
   }
   
@@ -56,9 +62,6 @@ class _FocusScopeWidgetState extends State<FocusScopeWidget> {
   
   @override
   Widget build(BuildContext context) {
-    return FocusScopeProvider(
-      focusScope: _focusScope,
-      child: widget.child,
-    );
+    return widget.child;
   }
 }

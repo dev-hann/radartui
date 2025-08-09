@@ -1,6 +1,9 @@
-import 'package:radartui/radartui.dart';
-import 'package:radartui/src/widgets/basic/focus.dart';
-import 'package:radartui/src/services/key_parser.dart';
+import '../framework.dart';
+import 'focus.dart';
+import 'text.dart';
+import 'column.dart';
+import '../../services/key_parser.dart';
+import '../../scheduler/binding.dart';
 import 'dart:async';
 
 class ListView extends StatefulWidget {
@@ -43,15 +46,15 @@ class _ListViewState extends State<ListView> {
     
     _setupKeyboardListener();
     _focusNode.addListener(_onFocusChanged);
+    
+    // 짧은 지연 후 focus scope에 등록 (위젯 트리 구성 완료 후)
+    Future.microtask(() => _registerWithFocusScope());
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    
-    // FocusScope에 등록 - didChangeDependencies에서 context 안전하게 접근
-    final scope = FocusScopeProvider.of(context);
-    scope?._addNode(_focusNode);
+  void _registerWithFocusScope() {
+    // FocusManager를 통해 현재 scope에 등록
+    final scope = FocusManager.currentScope;
+    scope?.addNode(_focusNode);
     
     if (widget.autofocus) {
       _focusNode.requestFocus();
@@ -61,7 +64,7 @@ class _ListViewState extends State<ListView> {
   void _setupKeyboardListener() {
     _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((event) {
       // 포커스가 있을 때만 키보드 이벤트 처리
-      if (_focusNode.hasFocus) {
+      if (_focusNode.hasFocus && event is KeyEvent) {
         _handleKeyEvent(event);
       }
     });
@@ -111,19 +114,25 @@ class _ListViewState extends State<ListView> {
     final hasFocus = _focusNode.hasFocus;
     final borderPrefix = hasFocus ? widget.focusedBorder : widget.unfocusedBorder;
     
-    return Column(
-      children: [
-        if (borderPrefix != null) Text(borderPrefix),
-        ...widget.items.asMap().entries.map((entry) {
-          final index = entry.key;
-          final item = entry.value;
-          final isSelected = index == selectedIndex && hasFocus;
-          final prefix = isSelected ? widget.selectedPrefix : widget.unselectedPrefix;
-          
-          return Text('$prefix$item');
-        }).toList(),
-        if (borderPrefix != null) Text(borderPrefix),
-      ],
-    );
+    final children = <Widget>[];
+    
+    if (borderPrefix != null) {
+      children.add(Text(borderPrefix) as Widget);
+    }
+    
+    for (final entry in widget.items.asMap().entries) {
+      final index = entry.key;
+      final item = entry.value;
+      final isSelected = index == selectedIndex && hasFocus;
+      final prefix = isSelected ? widget.selectedPrefix : widget.unselectedPrefix;
+      
+      children.add(Text('$prefix$item') as Widget);
+    }
+    
+    if (borderPrefix != null) {
+      children.add(Text(borderPrefix) as Widget);
+    }
+    
+    return Column(children: children) as Widget;
   }
 }

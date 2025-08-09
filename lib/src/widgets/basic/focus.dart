@@ -1,4 +1,3 @@
-import 'package:radartui/radartui.dart';
 
 class FocusNode {
   bool _hasFocus = false;
@@ -50,7 +49,7 @@ class FocusScope {
   final List<FocusNode> _nodes = [];
   int _currentIndex = 0;
   
-  void _addNode(FocusNode node) {
+  void addNode(FocusNode node) {
     if (!_nodes.contains(node)) {
       _nodes.add(node);
       node._scope = this;
@@ -116,71 +115,14 @@ class FocusScope {
   }
 }
 
-class FocusableWidget extends StatefulWidget {
-  final Widget child;
-  final FocusNode? focusNode;
-  final bool autofocus;
+// 간단한 전역 FocusScope 관리자
+class FocusManager {
+  static FocusScope? _currentScope;
   
-  const FocusableWidget({
-    required this.child,
-    this.focusNode,
-    this.autofocus = false,
-  });
-  
-  @override
-  State<FocusableWidget> createState() => _FocusableWidgetState();
-}
-
-class _FocusableWidgetState extends State<FocusableWidget> {
-  late FocusNode _focusNode;
-  
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = widget.focusNode ?? FocusNode();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    
-    // FocusScope에 등록 - didChangeDependencies에서 context 안전하게 접근
-    final scope = FocusScopeProvider.of(context);
-    scope?._addNode(_focusNode);
-    
-    if (widget.autofocus) {
-      _focusNode.requestFocus();
-    }
+  static void setCurrentScope(FocusScope scope) {
+    _currentScope = scope;
   }
   
-  @override
-  void dispose() {
-    if (widget.focusNode == null) {
-      _focusNode.dispose();
-    }
-    super.dispose();
-  }
-  
-  @override
-  Widget build(BuildContext context) {
-    return widget.child;
-  }
-}
-
-// FocusScope를 제공하는 InheritedWidget
-class FocusScopeProvider extends InheritedWidget {
-  final FocusScope focusScope;
-  
-  const FocusScopeProvider({
-    required this.focusScope,
-    required Widget child,
-  }) : super(child: child);
-  
-  static FocusScope? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<FocusScopeProvider>()?.focusScope;
-  }
-  
-  @override
-  bool updateShouldNotify(FocusScopeProvider oldWidget) => false;
+  static FocusScope? get currentScope => _currentScope;
 }
 
