@@ -24,13 +24,13 @@ class FocusNode {
     }
   }
   
-  final List<VoidCallback> _listeners = [];
+  final List<Function()> _listeners = [];
   
-  void addListener(VoidCallback listener) {
+  void addListener(Function() listener) {
     _listeners.add(listener);
   }
   
-  void removeListener(VoidCallback listener) {
+  void removeListener(Function() listener) {
     _listeners.remove(listener);
   }
   
