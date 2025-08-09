@@ -17,7 +17,6 @@ class _SpinnerExampleState extends State<SpinnerExample> {
   Timer? _timer;
   StreamSubscription? _keySubscription;
   IndicatorType _currentIndicator = IndicatorType.spinner;
-  int _animationFrame = 0;
 
   final List<String> _statusMessages = [
     'Initializing...',
@@ -63,11 +62,8 @@ class _SpinnerExampleState extends State<SpinnerExample> {
   }
 
   void _startAnimation() {
-    _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       setState(() {
-        // Update animation frame
-        _animationFrame++;
-
         if (_progress < 100) {
           _progress += 2;
           _status =
@@ -95,7 +91,6 @@ class _SpinnerExampleState extends State<SpinnerExample> {
       _progress = 0;
       _isLoading = true;
       _status = 'Initializing...';
-      _animationFrame = 0;
     });
     _timer?.cancel();
     _startAnimation();
@@ -147,7 +142,6 @@ class _SpinnerExampleState extends State<SpinnerExample> {
                     LoadingIndicator(
                       type: _currentIndicator,
                       color: _isLoading ? Color.cyan : Color.green,
-                      animationFrame: _animationFrame,
                     ),
                     const SizedBox(width: 2),
                     Text(
@@ -164,7 +158,6 @@ class _SpinnerExampleState extends State<SpinnerExample> {
 
                 ProgressIndicator(
                   progress: _progress,
-                  width: 20,
                   fillColor: Color.green,
                   backgroundColor: Color.brightBlack,
                 ),

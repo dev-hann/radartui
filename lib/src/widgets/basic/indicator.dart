@@ -1,22 +1,52 @@
+import 'dart:async';
 import 'package:radartui/src/foundation/color.dart';
 import 'package:radartui/src/widgets/framework.dart';
 import 'package:radartui/src/widgets/basic/text.dart';
 import 'package:radartui/src/widgets/basic/row.dart';
 
 /// A widget that displays animated loading indicators
-class LoadingIndicator extends StatelessWidget {
+class LoadingIndicator extends StatefulWidget {
   final IndicatorType type;
   final Color? color;
-  final int animationFrame;
+  final Duration? speed;
 
   const LoadingIndicator({
     this.type = IndicatorType.spinner,
     this.color,
-    this.animationFrame = 0,
+    this.speed,
   });
 
+  @override
+  State<LoadingIndicator> createState() => _LoadingIndicatorState();
+}
+
+class _LoadingIndicatorState extends State<LoadingIndicator> {
+  int _frameIndex = 0;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAnimation();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startAnimation() {
+    final duration = widget.speed ?? const Duration(milliseconds: 200);
+    _timer = Timer.periodic(duration, (timer) {
+      setState(() {
+        _frameIndex = (_frameIndex + 1) % _getCurrentFrames().length;
+      });
+    });
+  }
+
   List<String> _getCurrentFrames() {
-    switch (type) {
+    switch (widget.type) {
       case IndicatorType.spinner:
         return ['|', '/', '-', '\\'];
       case IndicatorType.dots:
@@ -33,12 +63,12 @@ class LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final frames = _getCurrentFrames();
-    final currentFrame = frames[animationFrame % frames.length];
+    final currentFrame = frames[_frameIndex];
 
     return Text(
       currentFrame,
       style: TextStyle(
-        color: color ?? Color.cyan,
+        color: widget.color ?? Color.cyan,
         bold: true,
       ),
     );
@@ -49,14 +79,12 @@ class LoadingIndicator extends StatelessWidget {
 /// A progress indicator that shows completion percentage
 class ProgressIndicator extends StatelessWidget {
   final int progress; // 0-100
-  final int width;
   final Color? fillColor;
   final Color? backgroundColor;
   final bool showPercentage;
 
   const ProgressIndicator({
     required this.progress,
-    this.width = 20,
     this.fillColor,
     this.backgroundColor,
     this.showPercentage = true,
@@ -65,8 +93,12 @@ class ProgressIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final clampedProgress = progress.clamp(0, 100);
-    final filled = (clampedProgress * width / 100).round();
-    final empty = width - filled;
+    
+    // Calculate available width based on parent constraints
+    // Assume a default reasonable width for terminal UI
+    final availableWidth = showPercentage ? 16 : 20; // Reserve space for percentage text
+    final filled = (clampedProgress * availableWidth / 100).round();
+    final empty = availableWidth - filled;
 
     final fillChar = '█';
     final emptyChar = '░';
