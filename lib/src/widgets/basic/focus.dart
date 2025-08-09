@@ -138,9 +138,14 @@ class _FocusableWidgetState extends State<FocusableWidget> {
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     
-    // FocusScope에 등록
-    final scope = FocusScope.of(context);
+    // FocusScope에 등록 - didChangeDependencies에서 context 안전하게 접근
+    final scope = FocusScopeProvider.of(context);
     scope?._addNode(_focusNode);
     
     if (widget.autofocus) {
@@ -179,8 +184,3 @@ class FocusScopeProvider extends InheritedWidget {
   bool updateShouldNotify(FocusScopeProvider oldWidget) => false;
 }
 
-extension FocusScopeExtension on FocusScope {
-  static FocusScope? of(BuildContext context) {
-    return FocusScopeProvider.of(context);
-  }
-}

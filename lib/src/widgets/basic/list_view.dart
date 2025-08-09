@@ -41,16 +41,21 @@ class _ListViewState extends State<ListView> {
     selectedIndex = widget.initialSelectedIndex.clamp(0, widget.items.length - 1);
     _focusNode = widget.focusNode ?? FocusNode();
     
-    // FocusScope에 등록
-    final scope = FocusScope.of(context);
+    _setupKeyboardListener();
+    _focusNode.addListener(_onFocusChanged);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // FocusScope에 등록 - didChangeDependencies에서 context 안전하게 접근
+    final scope = FocusScopeProvider.of(context);
     scope?._addNode(_focusNode);
     
     if (widget.autofocus) {
       _focusNode.requestFocus();
     }
-    
-    _setupKeyboardListener();
-    _focusNode.addListener(_onFocusChanged);
   }
 
   void _setupKeyboardListener() {
