@@ -3,8 +3,6 @@ import 'focus.dart';
 import 'text.dart';
 import 'column.dart';
 import '../../services/key_parser.dart';
-import '../../scheduler/binding.dart';
-import 'dart:async';
 
 class ListView extends StatefulWidget {
   final List<String> items;
@@ -14,19 +12,17 @@ class ListView extends StatefulWidget {
   final String? unfocusedBorder;
   final int initialSelectedIndex;
   final void Function(int index, String item)? onItemSelected;
-  final FocusNode? focusNode;
-  final bool autofocus;
+  final FocusNode focusNode;
 
   const ListView({
     required this.items,
+    required this.focusNode,
     this.selectedPrefix = '> ',
     this.unselectedPrefix = '  ',
     this.focusedBorder = '[ ]',
     this.unfocusedBorder = '   ',
     this.initialSelectedIndex = 0,
     this.onItemSelected,
-    this.focusNode,
-    this.autofocus = false,
   });
 
   @override
@@ -35,8 +31,7 @@ class ListView extends StatefulWidget {
 
 class _ListViewState extends State<ListView> {
   int selectedIndex = 0;
-  FocusNode? _focusNode;
-  StreamSubscription<KeyEvent>? _keySubscription;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
@@ -45,37 +40,28 @@ class _ListViewState extends State<ListView> {
       0,
       widget.items.length - 1,
     );
-    _focusNode = widget.focusNode ?? FocusNode();
-
-    _setupKeyboardListener();
-    _focusNode?.addListener(_onFocusChanged);
-
-    // 짧은 지연 후 focus scope에 등록 (위젯 트리 구성 완료 후)
-    Future.microtask(() => _registerWithFocusScope());
+    _focusNode = widget.focusNode;
+    _focusNode.onKeyEvent = _handleKeyEvent;
+    _focusNode.addListener(_onFocusChanged);
   }
 
-  void _registerWithFocusScope() {
-    // FocusManager를 통해 현재 scope에 등록
-    final scope = FocusManager.currentScope;
-    final focusNode = _focusNode;
-    if (focusNode != null) {
-      scope?.addNode(focusNode);
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusChanged);
+    super.dispose();
+  }
 
-      if (widget.autofocus) {
-        focusNode.requestFocus();
-      }
+  @override
+  void didUpdateWidget(ListView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.focusNode != oldWidget.focusNode) {
+      _focusNode.removeListener(_onFocusChanged);
+      _focusNode.onKeyEvent = null;
+
+      _focusNode = widget.focusNode;
+      _focusNode.onKeyEvent = _handleKeyEvent;
+      _focusNode.addListener(_onFocusChanged);
     }
-  }
-
-  void _setupKeyboardListener() {
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((
-      event,
-    ) {
-      // 포커스가 있을 때만 키보드 이벤트 처리
-      if (_focusNode?.hasFocus == true && event is KeyEvent) {
-        _handleKeyEvent(event);
-      }
-    });
   }
 
   void _handleKeyEvent(KeyEvent event) {
@@ -110,17 +96,7 @@ class _ListViewState extends State<ListView> {
   }
 
   void _onFocusChanged() {
-    setState(() {}); // 포커스 상태 변경 시 다시 그리기
-  }
-
-  @override
-  void dispose() {
-    _keySubscription?.cancel();
-    _focusNode?.removeListener(_onFocusChanged);
-    if (widget.focusNode == null) {
-      _focusNode?.dispose();
-    }
-    super.dispose();
+    setState(() {}); // Re-render on focus change.
   }
 
   @override
@@ -132,7 +108,7 @@ class _ListViewState extends State<ListView> {
     final children = <Widget>[];
 
     if (borderPrefix != null) {
-      children.add(Text(borderPrefix) as Widget);
+      children.add(Text(borderPrefix));
     }
 
     for (final entry in widget.items.asMap().entries) {
@@ -142,13 +118,13 @@ class _ListViewState extends State<ListView> {
       final prefix =
           isSelected ? widget.selectedPrefix : widget.unselectedPrefix;
 
-      children.add(Text('$prefix$item') as Widget);
+      children.add(Text('$prefix$item'));
     }
 
     if (borderPrefix != null) {
-      children.add(Text(borderPrefix) as Widget);
+      children.add(Text(borderPrefix));
     }
 
-    return Column(children: children) as Widget;
+    return Column(children: children);
   }
 }

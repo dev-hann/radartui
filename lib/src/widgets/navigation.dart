@@ -1,4 +1,6 @@
-import 'package:radartui/radartui.dart';
+import 'package:radartui/src/widgets/framework.dart';
+import 'package:radartui/src/widgets/basic/empty_widget.dart';
+import 'package:radartui/src/widgets/focus_controller.dart';
 
 typedef RouteBuilder = Widget Function(BuildContext context);
 typedef RoutePredicate = bool Function(Route route);
@@ -31,21 +33,63 @@ class PageRoute extends Route {
 
 class NavigatorState extends State<Navigator> {
   final List<Route> _history = [];
+  final List<FocusController> _focusControllers = [];
 
   List<Route> get history => List.unmodifiable(_history);
 
   Route? get currentRoute => _history.isNotEmpty ? _history.last : null;
+  FocusController? get currentController =>
+      _focusControllers.isNotEmpty ? _focusControllers.last : null;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialRoute != null && widget.routes != null) {
+      final initialBuilder = widget.routes![widget.initialRoute!];
+      if (initialBuilder != null) {
+        _addRoute(
+          PageRoute(
+            builder: initialBuilder,
+            settings: RouteSettings(name: widget.initialRoute!),
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final controller in _focusControllers) {
+      controller.dispose();
+    }
+    _focusControllers.clear();
+    super.dispose();
+  }
+
+  void _addRoute(Route route) {
+    currentController?.deactivate();
+    final newController = FocusController();
+    _history.add(route);
+    _focusControllers.add(newController);
+    newController.activate();
+  }
+
+  void _removeLast() {
+    _focusControllers.removeLast().dispose();
+    _history.removeLast();
+    currentController?.activate();
+  }
 
   void push(Route route) {
     setState(() {
-      _history.add(route);
+      _addRoute(route);
     });
   }
 
   void pop() {
     if (_history.length > 1) {
       setState(() {
-        _history.removeLast();
+        _removeLast();
       });
     }
   }
@@ -53,7 +97,7 @@ class NavigatorState extends State<Navigator> {
   void popUntil(RoutePredicate predicate) {
     setState(() {
       while (_history.length > 1 && !predicate(_history.last)) {
-        _history.removeLast();
+        _removeLast();
       }
     });
   }
@@ -61,19 +105,26 @@ class NavigatorState extends State<Navigator> {
   void pushReplacement(Route route) {
     setState(() {
       if (_history.isNotEmpty) {
-        _history.removeLast();
+        _removeLast();
       }
-      _history.add(route);
+      _addRoute(route);
     });
   }
 
   void pushNamedAndClearStack(String routeName) {
-    final route = widget.routes?[routeName];
-    if (route != null) {
+    final routeBuilder = widget.routes?[routeName];
+    if (routeBuilder != null) {
       setState(() {
+        for (final controller in _focusControllers) {
+          controller.dispose();
+        }
         _history.clear();
-        _history.add(
-          PageRoute(builder: route, settings: RouteSettings(name: routeName)),
+        _focusControllers.clear();
+        _addRoute(
+          PageRoute(
+            builder: routeBuilder,
+            settings: RouteSettings(name: routeName),
+          ),
         );
       });
     }
@@ -106,26 +157,15 @@ class NavigatorState extends State<Navigator> {
   @override
   Widget build(BuildContext context) {
     if (_history.isEmpty) {
-      if (widget.initialRoute != null && widget.routes != null) {
-        final initialBuilder = widget.routes![widget.initialRoute!];
-        if (initialBuilder != null) {
-          _history.add(
-            PageRoute(
-              builder: initialBuilder,
-              settings: RouteSettings(name: widget.initialRoute!),
-            ),
-          );
-        }
-      }
-    }
-
-    if (_history.isEmpty) {
       return widget.home ?? const EmptyWidget();
     }
 
-    return _NavigatorScope(
-      navigator: this,
-      child: currentRoute!.buildPage(context),
+    return _FocusControllerScope(
+      controller: currentController!,
+      child: _NavigatorScope(
+        navigator: this,
+        child: currentRoute!.buildPage(context),
+      ),
     );
   }
 }
@@ -150,6 +190,17 @@ class Navigator extends StatefulWidget {
       );
     }
     return scope.navigator;
+  }
+
+  static FocusController focusControllerOf(BuildContext context) {
+    final scope =
+        context.findAncestorWidgetOfExactType<_FocusControllerScope>();
+    if (scope == null) {
+      throw FlutterError(
+        'FocusController requested with a context that does not include a Navigator.',
+      );
+    }
+    return scope.controller;
   }
 
   static void push(BuildContext context, Route route) {
@@ -199,6 +250,17 @@ class _NavigatorScope extends StatelessWidget {
   Widget build(BuildContext context) => child;
 }
 
+class _FocusControllerScope extends InheritedWidget {
+  const _FocusControllerScope({required this.controller, required super.child});
+
+  final FocusController controller;
+
+  @override
+  bool updateShouldNotify(_FocusControllerScope oldWidget) {
+    return controller != oldWidget.controller;
+  }
+}
+
 class FlutterError extends Error {
   FlutterError(this.message);
   final String message;
@@ -209,4 +271,5 @@ class FlutterError extends Error {
 
 extension BuildContextNavigation on BuildContext {
   NavigatorState get navigator => Navigator.of(this);
+  FocusController get focusController => Navigator.focusControllerOf(this);
 }
