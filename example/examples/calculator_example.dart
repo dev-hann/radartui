@@ -3,7 +3,7 @@ import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
 
 class CalculatorExample extends StatefulWidget {
-  final VoidCallback onBack;
+  final Function() onBack;
   const CalculatorExample({required this.onBack});
 
   @override
@@ -115,10 +115,7 @@ class _CalculatorExampleState extends State<CalculatorExample> {
             child: Center(
               child: Text(
                 '🧮 RadarTUI Calculator 🧮',
-                style: TextStyle(
-                  color: Color.white,
-                  bold: true,
-                ),
+                style: TextStyle(color: Color.white, bold: true),
               ),
             ),
           ),
@@ -132,9 +129,11 @@ class _CalculatorExampleState extends State<CalculatorExample> {
             padding: const EdgeInsets.all(1),
             child: Column(
               children: [
-                const Row(children: [
-                  Text('Display:', style: TextStyle(color: Color.green)),
-                ]),
+                const Row(
+                  children: [
+                    Text('Display:', style: TextStyle(color: Color.green)),
+                  ],
+                ),
                 Container(
                   width: 36,
                   color: Color.brightBlack,
@@ -166,36 +165,39 @@ class _CalculatorExampleState extends State<CalculatorExample> {
                   style: TextStyle(color: Color.black, bold: true),
                 ),
                 Text('Numbers: 0-9', style: TextStyle(color: Color.black)),
-                Text('Operators: + - * /',
-                    style: TextStyle(color: Color.black)),
-                Text('Calculate: = or Enter',
-                    style: TextStyle(color: Color.black)),
-                Text('Clear: C | Back: ESC', style: TextStyle(color: Color.black)),
+                Text(
+                  'Operators: + - * /',
+                  style: TextStyle(color: Color.black),
+                ),
+                Text(
+                  'Calculate: = or Enter',
+                  style: TextStyle(color: Color.black),
+                ),
+                Text(
+                  'Clear: C | Back: ESC',
+                  style: TextStyle(color: Color.black),
+                ),
               ],
             ),
           ),
 
           const SizedBox(height: 1),
 
-          Row(children: [
-            const Text('Current Operation: '),
-            Text(
-              _operation.isEmpty ? 'None' : '$_firstNumber $_operation',
-              style: const TextStyle(
-                color: Color.cyan,
-                bold: true,
+          Row(
+            children: [
+              const Text('Current Operation: '),
+              Text(
+                _operation.isEmpty ? 'None' : '$_firstNumber $_operation',
+                style: const TextStyle(color: Color.cyan, bold: true),
               ),
-            ),
-          ]),
+            ],
+          ),
 
           const SizedBox(height: 1),
 
           const Text(
             'Start typing numbers and operators!',
-            style: TextStyle(
-              color: Color.magenta,
-              italic: true,
-            ),
+            style: TextStyle(color: Color.magenta, italic: true),
           ),
         ],
       ),

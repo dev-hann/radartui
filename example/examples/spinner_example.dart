@@ -3,7 +3,7 @@ import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
 
 class SpinnerExample extends StatefulWidget {
-  final VoidCallback onBack;
+  final Function() onBack;
   const SpinnerExample({required this.onBack});
 
   @override
@@ -17,7 +17,7 @@ class _SpinnerExampleState extends State<SpinnerExample> {
   String _status = 'Initializing...';
   Timer? _timer;
   StreamSubscription? _keySubscription;
-  
+
   final List<String> _spinnerFrames = ['|', '/', '-', '\\\\'];
   final List<String> _statusMessages = [
     'Initializing...',
@@ -25,14 +25,16 @@ class _SpinnerExampleState extends State<SpinnerExample> {
     'Connecting to services...',
     'Preparing interface...',
     'Almost done...',
-    'Complete!'
+    'Complete!',
   ];
 
   @override
   void initState() {
     super.initState();
     _startAnimation();
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       if (key.key == 'Escape') {
         widget.onBack();
         return;
@@ -52,10 +54,14 @@ class _SpinnerExampleState extends State<SpinnerExample> {
     _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
       setState(() {
         _spinnerIndex = (_spinnerIndex + 1) % _spinnerFrames.length;
-        
+
         if (_progress < 100) {
           _progress += 2;
-          _status = _statusMessages[(_progress / 20).floor().clamp(0, _statusMessages.length - 1)];
+          _status =
+              _statusMessages[(_progress / 20).floor().clamp(
+                0,
+                _statusMessages.length - 1,
+              )];
         } else {
           _isLoading = false;
           _timer?.cancel();
@@ -78,13 +84,21 @@ class _SpinnerExampleState extends State<SpinnerExample> {
   Widget _buildProgressBar() {
     final filled = (_progress / 5).floor();
     final empty = 20 - filled;
-    
-    return Row(children: [
-      const Text('[', style: TextStyle(color: Color.white)),
-      ...List.generate(filled, (_) => const Text('█', style: TextStyle(color: Color.green))),
-      ...List.generate(empty, (_) => const Text('░', style: TextStyle(color: Color.brightBlack))),
-      Text('] $_progress%', style: const TextStyle(color: Color.white)),
-    ]);
+
+    return Row(
+      children: [
+        const Text('[', style: TextStyle(color: Color.white)),
+        ...List.generate(
+          filled,
+          (_) => const Text('█', style: TextStyle(color: Color.green)),
+        ),
+        ...List.generate(
+          empty,
+          (_) => const Text('░', style: TextStyle(color: Color.brightBlack)),
+        ),
+        Text('] $_progress%', style: const TextStyle(color: Color.white)),
+      ],
+    );
   }
 
   Widget _buildSpinner() {
@@ -109,16 +123,13 @@ class _SpinnerExampleState extends State<SpinnerExample> {
             child: Center(
               child: Text(
                 '⏳ RadarTUI Loading Demo ⏳',
-                style: TextStyle(
-                  color: Color.white,
-                  bold: true,
-                ),
+                style: TextStyle(color: Color.white, bold: true),
               ),
             ),
           ),
-          
+
           const SizedBox(height: 2),
-          
+
           Container(
             width: 50,
             height: 8,
@@ -126,39 +137,35 @@ class _SpinnerExampleState extends State<SpinnerExample> {
             padding: const EdgeInsets.all(2),
             child: Column(
               children: [
-                Row(children: [
-                  _buildSpinner(),
-                  const SizedBox(width: 2),
-                  Text(
-                    _status,
-                    style: TextStyle(
-                      color: _isLoading ? Color.yellow : Color.green,
-                      bold: true,
+                Row(
+                  children: [
+                    _buildSpinner(),
+                    const SizedBox(width: 2),
+                    Text(
+                      _status,
+                      style: TextStyle(
+                        color: _isLoading ? Color.yellow : Color.green,
+                        bold: true,
+                      ),
                     ),
-                  ),
-                ]),
-                
+                  ],
+                ),
+
                 const SizedBox(height: 1),
-                
+
                 _buildProgressBar(),
-                
+
                 const SizedBox(height: 1),
-                
+
                 if (!_isLoading) ...[
                   const Text(
                     '✓ Loading Complete!',
-                    style: TextStyle(
-                      color: Color.brightGreen,
-                      bold: true,
-                    ),
+                    style: TextStyle(color: Color.brightGreen, bold: true),
                   ),
                   const SizedBox(height: 1),
                   const Text(
                     'Press any key to restart',
-                    style: TextStyle(
-                      color: Color.brightYellow,
-                      italic: true,
-                    ),
+                    style: TextStyle(color: Color.brightYellow, italic: true),
                   ),
                 ] else ...[
                   const Text(
@@ -169,9 +176,9 @@ class _SpinnerExampleState extends State<SpinnerExample> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 2),
-          
+
           const Container(
             width: 50,
             color: Color.blue,
@@ -182,10 +189,16 @@ class _SpinnerExampleState extends State<SpinnerExample> {
                   'Demo Features:',
                   style: TextStyle(color: Color.white, bold: true),
                 ),
-                Text('• Animated spinner', style: TextStyle(color: Color.white)),
+                Text(
+                  '• Animated spinner',
+                  style: TextStyle(color: Color.white),
+                ),
                 Text('• Progress bar', style: TextStyle(color: Color.white)),
                 Text('• Status updates', style: TextStyle(color: Color.white)),
-                Text('• Interactive restart | ESC: Return', style: TextStyle(color: Color.white)),
+                Text(
+                  '• Interactive restart | ESC: Return',
+                  style: TextStyle(color: Color.white),
+                ),
               ],
             ),
           ),

@@ -25,7 +25,7 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
 
   final List<String> _exampleTitles = [
     '메뉴 (Menu)',
-    '카운터 (Counter)', 
+    '카운터 (Counter)',
     '계산기 (Calculator)',
     '대시보드 (Dashboard)',
     '숫자 맞추기 (Guess Game)',
@@ -102,16 +102,13 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
             child: const Center(
               child: Text(
                 '🚀 RadarTUI Examples Collection 🚀',
-                style: TextStyle(
-                  color: Color.white,
-                  bold: true,
-                ),
+                style: TextStyle(color: Color.white, bold: true),
               ),
             ),
           ),
-          
+
           const SizedBox(height: 2),
-          
+
           Container(
             width: 60,
             color: Color.brightBlack,
@@ -123,20 +120,20 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
                 const SizedBox(height: 1),
-                
+
                 for (int i = 1; i < _exampleTitles.length; i++)
                   Text(
                     '$i. ${_exampleTitles[i]}',
                     style: const TextStyle(color: Color.white),
                   ),
-                
+
                 const SizedBox(height: 2),
-                
+
                 const Text(
                   '숫자 키를 눌러서 예제를 선택하세요',
                   style: TextStyle(color: Color.yellow, italic: true),
                 ),
-                
+
                 const Text(
                   'Press number keys to select examples',
                   style: TextStyle(color: Color.brightYellow, italic: true),
@@ -144,14 +141,14 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 2),
-          
-          Container(
+
+          const Container(
             width: 60,
             color: Color.green,
-            padding: const EdgeInsets.all(1),
-            child: const Column(
+            padding: EdgeInsets.all(1),
+            child: Column(
               children: [
                 Text(
                   '💡 각 예제에서 ESC키를 누르면 메뉴로 돌아옵니다',
@@ -172,7 +169,7 @@ class _RadarTUIExamplesAppState extends State<RadarTUIExamplesApp> {
 
 // Counter Example
 class CounterExample extends StatefulWidget {
-  final VoidCallback onBack;
+  final Function() onBack;
   const CounterExample({required this.onBack});
 
   @override
@@ -211,10 +208,7 @@ class _CounterExampleState extends State<CounterExample> {
       children: [
         const Text('Welcome to the Radartui Counter!'),
         Padding(
-          padding: const EdgeInsets.symmetric(
-            v: 1,
-            h: 0,
-          ),
+          padding: const EdgeInsets.symmetric(v: 1, h: 0),
           child: Text('Counter: $_counter'),
         ),
         const Text('(Press any key to increment, ESC to return)'),

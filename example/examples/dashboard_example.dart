@@ -4,7 +4,7 @@ import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
 
 class DashboardExample extends StatefulWidget {
-  final VoidCallback onBack;
+  final Function() onBack;
   const DashboardExample({required this.onBack});
 
   @override
@@ -30,7 +30,9 @@ class _DashboardExampleState extends State<DashboardExample> {
   void initState() {
     super.initState();
     _startMonitoring();
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       if (key.key == 'Escape') {
         widget.onBack();
         return;

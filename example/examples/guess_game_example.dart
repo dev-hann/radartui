@@ -4,7 +4,7 @@ import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
 
 class GuessGameExample extends StatefulWidget {
-  final VoidCallback onBack;
+  final Function() onBack;
   const GuessGameExample({required this.onBack});
 
   @override
@@ -117,16 +117,18 @@ class _GuessGameExampleState extends State<GuessGameExample> {
     }
 
     return Column(
-      children: guessHistory.reversed.take(5).map((guess) {
-        Color color = Color.white;
-        if (guess.contains('CORRECT'))
-          color = Color.green;
-        else if (guess.contains('LOW'))
-          color = Color.blue;
-        else if (guess.contains('HIGH')) color = Color.red;
+      children:
+          guessHistory.reversed.take(5).map((guess) {
+            Color color = Color.white;
+            if (guess.contains('CORRECT'))
+              color = Color.green;
+            else if (guess.contains('LOW'))
+              color = Color.blue;
+            else if (guess.contains('HIGH'))
+              color = Color.red;
 
-        return Text(guess, style: TextStyle(color: color));
-      }).toList(),
+            return Text(guess, style: TextStyle(color: color));
+          }).toList(),
     );
   }
 
@@ -151,9 +153,10 @@ class _GuessGameExampleState extends State<GuessGameExample> {
 
           Container(
             width: 60,
-            color: _gameWon
-                ? Color.green
-                : (_attempts >= 10 ? Color.red : Color.blue),
+            color:
+                _gameWon
+                    ? Color.green
+                    : (_attempts >= 10 ? Color.red : Color.blue),
             padding: const EdgeInsets.all(1),
             child: Column(
               children: [
@@ -176,12 +179,16 @@ class _GuessGameExampleState extends State<GuessGameExample> {
               children: [
                 Row(
                   children: [
-                    const Text('Your guess: ',
-                        style: TextStyle(color: Color.yellow)),
+                    const Text(
+                      'Your guess: ',
+                      style: TextStyle(color: Color.yellow),
+                    ),
                     Text(
                       _currentGuess.isEmpty ? '_' : _currentGuess,
                       style: const TextStyle(
-                          color: Color.brightYellow, bold: true),
+                        color: Color.brightYellow,
+                        bold: true,
+                      ),
                     ),
                   ],
                 ),
