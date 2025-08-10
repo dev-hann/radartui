@@ -1,10 +1,8 @@
-import 'package:radartui/radartui.dart';
 import 'package:radartui/src/foundation/offset.dart';
 import 'package:radartui/src/foundation/size.dart';
 import 'package:radartui/src/rendering/render_box.dart';
 import 'package:radartui/src/rendering/render_object.dart';
 import 'package:radartui/src/widgets/framework.dart';
-import 'package:radartui/src/services/logger.dart';
 
 class Center extends SingleChildRenderObjectWidget {
   const Center({required Widget child}) : super(child: child);

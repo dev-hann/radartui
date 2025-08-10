@@ -85,7 +85,7 @@ class StatelessElement extends ComponentElement {
 class StatefulElement extends ComponentElement {
   StatefulElement(StatefulWidget super.widget) {
     _state = (widget as StatefulWidget).createState();
-    _state._widget = widget as StatefulWidget; // Corrected type cast
+    _state._widget = widget as StatefulWidget;
     _state._element = this;
   }
   late final State _state;

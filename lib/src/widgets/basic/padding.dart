@@ -1,11 +1,9 @@
-import 'package:radartui/radartui.dart';
 import 'package:radartui/src/foundation/edge_insets.dart';
 import 'package:radartui/src/foundation/offset.dart';
 import 'package:radartui/src/foundation/size.dart';
 import 'package:radartui/src/rendering/render_box.dart';
 import 'package:radartui/src/rendering/render_object.dart';
 import 'package:radartui/src/widgets/framework.dart';
-import 'package:radartui/src/services/logger.dart';
 
 class Padding extends SingleChildRenderObjectWidget {
   final EdgeInsets padding;

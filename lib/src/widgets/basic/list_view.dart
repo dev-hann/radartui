@@ -106,21 +106,21 @@ class _ListViewState extends State<ListView> {
 
   @override
   Widget build(BuildContext context) {
-    // Navigator pop 후 FocusNode가 제대로 등록되도록 보장
+    // Ensure FocusNode is properly registered after Navigator pop
     _focusNode.ensureRegistered();
 
-    // 포커스 상태를 확인하되, 스코프가 최근에 변경되었다면 강제로 true로 처리
+    // Check focus status, but force to true if scope has recently changed
     bool hasFocus = _focusNode.hasFocus;
     final currentScope = FocusManager.instance.currentScope;
 
-    // Navigator pop 후 포커스가 유실된 경우를 감지하고 강제로 복구
+    // Detect and forcibly restore focus if lost after Navigator pop
     if (!hasFocus && currentScope != null && selectedIndex == 0) {
       final currentFocus = currentScope.currentFocus;
 
-      // 현재 포커스가 있지만 이 리스트뷰의 노드가 포커스를 잃은 경우 (Navigator pop 후 상황)
+      // If there's a current focus but this ListView's node lost focus (e.g., after Navigator pop)
       if (currentFocus != null && currentFocus != _focusNode) {
         hasFocus = true;
-        // 실제 포커스도 요청
+        // Request actual focus
         _focusNode.requestFocus();
       }
     }
