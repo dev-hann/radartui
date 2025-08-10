@@ -50,6 +50,15 @@ class FocusManager extends NavigatorObserver {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         final previousScope = _getOrCreateScope(previousRoute);
         _activateScope(previousScope);
+        
+        // If no nodes are registered yet, schedule another frame to wait for widget rebuilds
+        if (previousScope.nodes.isEmpty) {
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            if (previousScope.nodes.isNotEmpty) {
+              previousScope.notifyAllNodes();
+            }
+          });
+        }
       });
     } else {
       _currentScope = null;
