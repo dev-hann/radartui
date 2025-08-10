@@ -105,6 +105,9 @@ class _ListViewState extends State<ListView> {
 
   @override
   Widget build(BuildContext context) {
+    // Navigator pop 후 FocusNode가 제대로 등록되도록 보장
+    _focusNode.ensureRegistered();
+    
     final hasFocus = _focusNode.hasFocus;
     final borderPrefix =
         hasFocus ? widget.focusedBorder : widget.unfocusedBorder;

@@ -73,6 +73,14 @@ class FocusManager extends NavigatorObserver {
     // 스코프가 재활성화될 때 모든 노드의 리스너들을 트리거하여 UI 갱신
     // 이렇게 하면 포커스 상태가 올바르게 표시됨
     scope.notifyAllNodes();
+    // 프레임 스케줄링을 통해 UI가 다시 빌드되도록 함
+    // 이렇게 하면 FocusNode들이 새로운 scope에 재등록될 수 있음
+    scheduleMicrotask(() {
+      // 현재 스코프가 여전히 활성화되어 있으면 프레임을 다시 스케줄링
+      if (_currentScope == scope) {
+        SchedulerBinding.instance.scheduleFrame();
+      }
+    });
   }
 
   void _handleKeyEvent(KeyEvent event) {

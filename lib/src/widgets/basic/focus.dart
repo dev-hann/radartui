@@ -49,7 +49,20 @@ class FocusNode {
 
   void _autoRegister() {
     final currentScope = FocusManager.instance.currentScope;
-    currentScope?.addNode(this);
+    if (currentScope != null) {
+      // 이미 다른 scope에 등록되어 있다면 제거
+      if (_scope != null && _scope != currentScope) {
+        _scope!._removeNode(this);
+      }
+      currentScope.addNode(this);
+    }
+  }
+
+  void ensureRegistered() {
+    final currentScope = FocusManager.instance.currentScope;
+    if (currentScope != null && _scope != currentScope) {
+      _autoRegister();
+    }
   }
 
   void dispose() {
