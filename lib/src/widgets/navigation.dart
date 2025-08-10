@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:radartui/src/widgets/framework.dart';
-import 'package:radartui/src/widgets/basic/empty_widget.dart';
 import 'package:radartui/src/widgets/focus_manager.dart';
 import 'package:radartui/src/widgets/navigator_observer.dart';
+import 'package:radartui/src/rendering/render_object.dart';
+import 'package:radartui/src/foundation/offset.dart';
 
 typedef RouteBuilder = Widget Function(BuildContext context);
 typedef RoutePredicate = bool Function(Route route);
@@ -179,7 +180,7 @@ class NavigatorState extends State<Navigator> {
   @override
   Widget build(BuildContext context) {
     if (_history.isEmpty) {
-      return widget.home ?? const EmptyWidget();
+      return widget.home ?? const _EmptyWidget();
     }
 
     return _NavigatorScope(
@@ -279,4 +280,36 @@ class FlutterError extends Error {
 extension BuildContextNavigation on BuildContext {
   NavigatorState get navigator => Navigator.of(this);
   FocusManager get focusManager => Navigator.focusManager;
+}
+
+class _EmptyWidget extends StatelessWidget {
+  const _EmptyWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return const _EmptyRenderWidget();
+  }
+}
+
+class _EmptyRenderWidget extends RenderObjectWidget {
+  const _EmptyRenderWidget();
+
+  @override
+  RenderObjectElement createElement() => RenderObjectElement(this);
+
+  @override
+  _EmptyRenderObject createRenderObject(BuildContext context) =>
+      _EmptyRenderObject();
+}
+
+class _EmptyRenderObject extends RenderObject {
+  @override
+  void performLayout(Constraints constraints) {
+    // Empty widget has zero size
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    // Empty widget paints nothing
+  }
 }

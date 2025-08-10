@@ -9,6 +9,5 @@ export 'basic/padding.dart';
 export 'basic/row.dart';
 export 'basic/sized_box.dart';
 export 'basic/text.dart';
-export 'basic/empty_widget.dart';
 export 'navigation.dart';
 export 'focus_manager.dart';

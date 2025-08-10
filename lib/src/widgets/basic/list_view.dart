@@ -1,5 +1,4 @@
 import '../framework.dart';
-import '../focus_manager.dart';
 import 'focus.dart';
 import 'text.dart';
 import 'column.dart';
@@ -33,6 +32,7 @@ class ListView extends StatefulWidget {
 class _ListViewState extends State<ListView> {
   int selectedIndex = 0;
   late FocusNode _focusNode;
+  bool _hasFocus = false;
 
   @override
   void initState() {
@@ -43,6 +43,8 @@ class _ListViewState extends State<ListView> {
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChanged);
+    // 초기 focus 상태 동기화
+    _hasFocus = _focusNode.hasFocus;
     super.initState();
   }
 
@@ -66,6 +68,8 @@ class _ListViewState extends State<ListView> {
       _focusNode = widget.focusNode ?? FocusNode();
       _focusNode.onKeyEvent = _handleKeyEvent;
       _focusNode.addListener(_onFocusChanged);
+      // 새로운 focus node의 상태로 동기화
+      _hasFocus = _focusNode.hasFocus;
     }
   }
 
@@ -101,32 +105,16 @@ class _ListViewState extends State<ListView> {
   }
 
   void _onFocusChanged() {
-    setState(() {}); // Re-render on focus change.
+    setState(() {
+      // focus 상태 동기화 및 UI 갱신
+      _hasFocus = _focusNode.hasFocus;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Navigator pop 후 FocusNode가 제대로 등록되도록 보장
-    _focusNode.ensureRegistered();
-
-    // 포커스 상태를 확인하되, 스코프가 최근에 변경되었다면 강제로 true로 처리
-    bool hasFocus = _focusNode.hasFocus;
-    final currentScope = FocusManager.instance.currentScope;
-
-    // Navigator pop 후 포커스가 유실된 경우를 감지하고 강제로 복구
-    if (!hasFocus && currentScope != null && selectedIndex == 0) {
-      final currentFocus = currentScope.currentFocus;
-
-      // 현재 포커스가 있지만 이 리스트뷰의 노드가 포커스를 잃은 경우 (Navigator pop 후 상황)
-      if (currentFocus != null && currentFocus != _focusNode) {
-        hasFocus = true;
-        // 실제 포커스도 요청
-        _focusNode.requestFocus();
-      }
-    }
-
     final borderPrefix =
-        hasFocus ? widget.focusedBorder : widget.unfocusedBorder;
+        _hasFocus ? widget.focusedBorder : widget.unfocusedBorder;
 
     final children = <Widget>[];
 
@@ -137,7 +125,7 @@ class _ListViewState extends State<ListView> {
     for (final entry in widget.items.asMap().entries) {
       final index = entry.key;
       final item = entry.value;
-      final isSelected = index == selectedIndex && hasFocus;
+      final isSelected = index == selectedIndex && _hasFocus;
       final prefix =
           isSelected ? widget.selectedPrefix : widget.unselectedPrefix;
 
