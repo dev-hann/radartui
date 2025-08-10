@@ -153,6 +153,10 @@ class FocusScope {
     for (final node in _nodes) {
       node.notifyListeners();
     }
+    // scope 재활성화시 현재 인덱스의 노드에 포커스 재설정
+    if (_nodes.isNotEmpty) {
+      _setFocusAtIndex(_currentIndex.clamp(0, _nodes.length - 1));
+    }
   }
 
   void dispose() {
