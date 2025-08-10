@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/src/widgets/framework.dart';
 import 'package:radartui/src/widgets/basic/empty_widget.dart';
 import 'package:radartui/src/widgets/focus_controller.dart';
@@ -34,6 +35,7 @@ class PageRoute extends Route {
 class NavigatorState extends State<Navigator> {
   final List<Route> _history = [];
   final List<FocusController> _focusControllers = [];
+  final List<Completer<Object?>> _completers = [];
 
   List<Route> get history => List.unmodifiable(_history);
 
@@ -52,6 +54,7 @@ class NavigatorState extends State<Navigator> {
             builder: initialBuilder,
             settings: RouteSettings(name: widget.initialRoute!),
           ),
+          null,
         );
       }
     }
@@ -62,96 +65,124 @@ class NavigatorState extends State<Navigator> {
     for (final controller in _focusControllers) {
       controller.dispose();
     }
+    for (final completer in _completers) {
+      if (!completer.isCompleted) {
+        completer.complete();
+      }
+    }
     _focusControllers.clear();
+    _completers.clear();
     super.dispose();
   }
 
-  void _addRoute(Route route) {
+  void _addRoute(Route route, Completer<Object?>? completer) {
     currentController?.deactivate();
     final newController = FocusController();
     _history.add(route);
     _focusControllers.add(newController);
+    _completers.add(completer ?? Completer<Object?>());
     newController.activate();
   }
 
-  void _removeLast() {
+  void _removeLast([Object? result]) {
     _focusControllers.removeLast().dispose();
     _history.removeLast();
+    final completer = _completers.removeLast();
+    if (!completer.isCompleted) {
+      completer.complete(result);
+    }
     currentController?.activate();
   }
 
-  void push(Route route) {
+  Future<Object?> push(Route route) {
+    final completer = Completer<Object?>();
     setState(() {
-      _addRoute(route);
+      _addRoute(route, completer);
     });
+    return completer.future;
   }
 
-  void pop() {
+  void pop([Object? result]) {
     if (_history.length > 1) {
       setState(() {
-        _removeLast();
+        _removeLast(result);
       });
     }
   }
 
-  void popUntil(RoutePredicate predicate) {
+  void popUntil(RoutePredicate predicate, [Object? result]) {
     setState(() {
       while (_history.length > 1 && !predicate(_history.last)) {
-        _removeLast();
+        _removeLast(result);
       }
     });
   }
 
-  void pushReplacement(Route route) {
+  Future<Object?> pushReplacement(Route route, [Object? result]) {
+    final completer = Completer<Object?>();
     setState(() {
       if (_history.isNotEmpty) {
-        _removeLast();
+        _removeLast(result);
       }
-      _addRoute(route);
+      _addRoute(route, completer);
     });
+    return completer.future;
   }
 
-  void pushNamedAndClearStack(String routeName) {
+  Future<Object?> pushNamedAndClearStack(String routeName) {
     final routeBuilder = widget.routes?[routeName];
     if (routeBuilder != null) {
+      final completer = Completer<Object?>();
       setState(() {
         for (final controller in _focusControllers) {
           controller.dispose();
         }
+        for (final comp in _completers) {
+          if (!comp.isCompleted) {
+            comp.complete();
+          }
+        }
         _history.clear();
         _focusControllers.clear();
+        _completers.clear();
         _addRoute(
           PageRoute(
             builder: routeBuilder,
             settings: RouteSettings(name: routeName),
           ),
+          completer,
         );
       });
+      return completer.future;
     }
+    return Future.value();
   }
 
-  void pushNamed(String routeName, {Object? arguments}) {
+  Future<Object?> pushNamed(String routeName, {Object? arguments}) {
     final routeBuilder = widget.routes?[routeName];
     if (routeBuilder != null) {
-      push(
+      return push(
         PageRoute(
           builder: routeBuilder,
           settings: RouteSettings(name: routeName, arguments: arguments),
         ),
       );
     }
+    return Future.value();
   }
 
-  void pushReplacementNamed(String routeName, {Object? arguments}) {
+  Future<Object?> pushReplacementNamed(String routeName, {Object? arguments, Object? result}) {
     final routeBuilder = widget.routes?[routeName];
     if (routeBuilder != null) {
-      pushReplacement(
+      return pushReplacement(
         PageRoute(
           builder: routeBuilder,
           settings: RouteSettings(name: routeName, arguments: arguments),
         ),
+        result,
       );
     }
+    return Future.value();
   }
 
   @override
@@ -203,40 +234,41 @@ class Navigator extends StatefulWidget {
     return scope.controller;
   }
 
-  static void push(BuildContext context, Route route) {
-    of(context).push(route);
+  static Future<Object?> push(BuildContext context, Route route) {
+    return of(context).push(route);
   }
 
-  static void pop(BuildContext context) {
-    of(context).pop();
+  static void pop(BuildContext context, [Object? result]) {
+    of(context).pop(result);
   }
 
-  static void popUntil(BuildContext context, RoutePredicate predicate) {
-    of(context).popUntil(predicate);
+  static void popUntil(BuildContext context, RoutePredicate predicate, [Object? result]) {
+    of(context).popUntil(predicate, result);
   }
 
-  static void pushReplacement(BuildContext context, Route route) {
-    of(context).pushReplacement(route);
+  static Future<Object?> pushReplacement(BuildContext context, Route route, [Object? result]) {
+    return of(context).pushReplacement(route, result);
   }
 
-  static void pushNamed(
+  static Future<Object?> pushNamed(
     BuildContext context,
     String routeName, {
     Object? arguments,
   }) {
-    of(context).pushNamed(routeName, arguments: arguments);
+    return of(context).pushNamed(routeName, arguments: arguments);
   }
 
-  static void pushReplacementNamed(
+  static Future<Object?> pushReplacementNamed(
     BuildContext context,
     String routeName, {
     Object? arguments,
+    Object? result,
   }) {
-    of(context).pushReplacementNamed(routeName, arguments: arguments);
+    return of(context).pushReplacementNamed(routeName, arguments: arguments, result: result);
   }
 
-  static void pushNamedAndClearStack(BuildContext context, String routeName) {
-    of(context).pushNamedAndClearStack(routeName);
+  static Future<Object?> pushNamedAndClearStack(BuildContext context, String routeName) {
+    return of(context).pushNamedAndClearStack(routeName);
   }
 }
 
