@@ -93,8 +93,8 @@ class StatefulElement extends ComponentElement {
   Widget build() => _state.build(this);
   @override
   void mount(Element? parent) {
-    super.mount(parent);
     _state.initState();
+    super.mount(parent);
   }
 
   @override
