@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:radartui/src/scheduler/binding.dart';
 import 'package:radartui/src/services/key_parser.dart';
+import 'package:radartui/src/services/logger.dart';
 import 'package:radartui/src/widgets/basic/focus.dart';
 import 'package:radartui/src/widgets/navigation.dart';
 import 'package:radartui/src/widgets/navigator_observer.dart';
@@ -99,16 +100,23 @@ class FocusManager extends NavigatorObserver {
 
   void _handleKeyEvent(KeyEvent event) {
     final scope = _currentScope;
-    if (scope == null) return;
+    AppLogger.log('🔑 FocusManager._handleKeyEvent() - key: "${event.key}", scope: ${scope?.hashCode}, currentFocus: ${scope?.currentFocus?.hashCode}');
+    if (scope == null) {
+      AppLogger.log('❌ No current scope for key event');
+      return;
+    }
 
     switch (event.key) {
       case 'Tab':
+        AppLogger.log('🔄 Tab: nextFocus()');
         scope.nextFocus();
         break;
       case 'Shift+Tab':
+        AppLogger.log('🔄 Shift+Tab: previousFocus()');
         scope.previousFocus();
         break;
       default:
+        AppLogger.log('🎯 Forwarding key to currentFocus: ${scope.currentFocus?.hashCode}');
         scope.currentFocus?.onKeyEvent?.call(event);
         break;
     }

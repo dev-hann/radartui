@@ -1,4 +1,5 @@
 import '../../services/key_parser.dart';
+import '../../services/logger.dart';
 import '../focus_manager.dart';
 
 class FocusNode {
@@ -7,6 +8,7 @@ class FocusNode {
   Function(KeyEvent)? onKeyEvent;
 
   FocusNode() {
+    AppLogger.log('🔍 FocusNode created: ${hashCode}');
     // Automatically register with the currently active FocusScope
     _autoRegister();
   }

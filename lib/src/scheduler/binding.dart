@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:radartui/src/foundation/offset.dart';
 import 'package:radartui/src/rendering/render_box.dart';
@@ -106,38 +107,89 @@ class SchedulerBinding {
 }
 
 class RawKeyboard {
-  StreamSubscription<List<int>>? _stdinSubscription;
+  StreamSubscription? _stdinSubscription;
   final _controller = StreamController<KeyEvent>.broadcast();
+  bool _rawModeSupported = false;
 
   void initialize() {
-    // Try to set terminal modes, but continue even if it fails
-    updateStdinMode(false);
+    // Try to set terminal modes and track if it's supported
+    _rawModeSupported = updateStdinMode(false);
 
-    // Always try to listen to stdin, even if terminal mode setup failed
-    _stdinSubscription = stdin.listen(
-      (List<int> data) {
-        try {
-          final keyEvent = KeyParser.parse(data);
-          _controller.add(keyEvent);
-        } catch (e) {
-          AppLogger.log('Error parsing key event: $e');
-        }
+    if (_rawModeSupported) {
+      // Raw mode: listen for individual key events
+      _stdinSubscription = stdin.listen(
+        (List<int> data) {
+          try {
+            final keyEvent = KeyParser.parse(data);
+            _controller.add(keyEvent);
+          } catch (e) {
+            AppLogger.log('Error parsing key event: $e');
+          }
+        },
+        onError: (e) {
+          AppLogger.log('Stdin error: $e');
+        },
+        onDone: () {
+          AppLogger.log('Stdin done - raw mode');
+        },
+      );
+    } else {
+      // Fallback: use line mode and parse line-based input
+      AppLogger.log('Raw mode not supported, using line mode fallback');
+      _initializeLineMode();
+    }
+  }
+
+  void _initializeLineMode() {
+    // In line mode, we read complete lines and simulate key events
+    _stdinSubscription = stdin
+        .transform(utf8.decoder)
+        .transform(LineSplitter())
+        .listen(
+      (String line) {
+        AppLogger.log('Line mode input: "$line"');
+        _processLineInput(line);
       },
       onError: (e) {
-        AppLogger.log('Stdin error: $e');
+        AppLogger.log('Line mode stdin error: $e');
       },
       onDone: () {
-        AppLogger.log('Stdin done');
+        AppLogger.log('Line mode stdin done');
       },
     );
   }
 
-  void updateStdinMode(bool value) {
+  void _processLineInput(String line) {
+    // Process line-based input and generate key events
+    // For navigation, we can support simple commands:
+    // "j" -> down, "k" -> up, "enter" or "" -> select
+    final trimmed = line.trim().toLowerCase();
+    
+    if (trimmed.isEmpty) {
+      // Empty line = Enter key
+      _controller.add(const KeyEvent('Enter'));
+    } else if (trimmed == 'j') {
+      _controller.add(const KeyEvent('j'));
+    } else if (trimmed == 'k') {
+      _controller.add(const KeyEvent('k'));
+    } else if (trimmed == 'q') {
+      _controller.add(const KeyEvent('q'));
+    } else {
+      // For other input, treat as text
+      for (final char in trimmed.split('')) {
+        _controller.add(KeyEvent(char));
+      }
+    }
+  }
+
+  bool updateStdinMode(bool value) {
     try {
       stdin.lineMode = value;
       stdin.echoMode = value;
+      return true;
     } catch (e) {
       AppLogger.log('Failed to set terminal mode: $e');
+      return false;
     }
   }
 
