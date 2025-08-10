@@ -69,6 +69,8 @@ class FocusManager extends NavigatorObserver {
 
   void _activateScope(FocusScope scope) {
     _currentScope = scope;
+    // 스코프가 재활성화될 때 현재 포커스된 노드의 리스너들을 트리거하여 UI 갱신
+    scope.currentFocus?._notifyListeners();
   }
 
   void _handleKeyEvent(KeyEvent event) {
