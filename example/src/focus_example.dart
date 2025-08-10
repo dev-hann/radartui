@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:radartui/radartui.dart';
 import 'package:radartui/src/scheduler/binding.dart';
 
@@ -14,36 +12,16 @@ class _FocusExampleState extends State<FocusExample> {
   String selectedAction = '';
   String selectedFile = '';
   String selectedOption = '';
-  StreamSubscription? _keySubscription;
-
-  final _focusController = FocusController();
-  final _node1 = FocusNode();
-  final _node2 = FocusNode();
-  final _node3 = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    _focusController.activate();
-    _focusController.scope.addNode(_node1);
-    _focusController.scope.addNode(_node2);
-    _focusController.scope.addNode(_node3);
-    
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+
+    SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
       if (key.key == 'Escape') {
         Navigator.of(context).pop();
       }
     });
-  }
-
-  @override
-  void dispose() {
-    _keySubscription?.cancel();
-    _node1.dispose();
-    _node2.dispose();
-    _node3.dispose();
-    _focusController.dispose();
-    super.dispose();
   }
 
   @override
@@ -63,7 +41,6 @@ class _FocusExampleState extends State<FocusExample> {
                   children: [
                     Text('Actions:'),
                     ListView(
-                      focusNode: _node1,
                       items: ['Create', 'Edit', 'Delete', 'Copy', 'Move'],
                       focusedBorder: '[====== Actions ======]',
                       unfocusedBorder: '                       ',
@@ -86,7 +63,6 @@ class _FocusExampleState extends State<FocusExample> {
                   children: [
                     Text('Files:'),
                     ListView(
-                      focusNode: _node2,
                       items: [
                         'main.dart',
                         'config.json',
@@ -114,7 +90,6 @@ class _FocusExampleState extends State<FocusExample> {
                   children: [
                     Text('Options:'),
                     ListView(
-                      focusNode: _node3,
                       items: ['Confirm', 'Preview', 'Backup', 'Skip'],
                       focusedBorder: '[====== Options ======]',
                       unfocusedBorder: '                       ',

@@ -45,16 +45,16 @@ class NavigatorState extends State<Navigator> {
   @override
   void initState() {
     super.initState();
-    
+
     // Initialize FocusManager and add it as observer
     FocusManager.instance.initialize();
     _observers.add(FocusManager.instance);
-    
+
     // Add observers from widget
     if (widget.observers != null) {
       _observers.addAll(widget.observers!);
     }
-    
+
     if (widget.initialRoute != null && widget.routes != null) {
       final initialBuilder = widget.routes![widget.initialRoute!];
       if (initialBuilder != null) {
@@ -91,9 +91,11 @@ class NavigatorState extends State<Navigator> {
     if (!completer.isCompleted) {
       completer.complete(result);
     }
-    
+
     final previousRoute = _history.isNotEmpty ? _history.last : null;
-    _notifyObservers((observer) => observer.didPop(removedRoute, previousRoute));
+    _notifyObservers(
+      (observer) => observer.didPop(removedRoute, previousRoute),
+    );
   }
 
   void _notifyObservers(void Function(NavigatorObserver observer) callback) {
@@ -137,37 +139,10 @@ class NavigatorState extends State<Navigator> {
       }
       _addRoute(route, completer);
     });
-    _notifyObservers((observer) => observer.didReplace(newRoute: route, oldRoute: oldRoute));
+    _notifyObservers(
+      (observer) => observer.didReplace(newRoute: route, oldRoute: oldRoute),
+    );
     return completer.future;
-  }
-
-  Future<Object?> pushNamedAndClearStack(String routeName) {
-    final routeBuilder = widget.routes?[routeName];
-    if (routeBuilder != null) {
-      final completer = Completer<Object?>();
-      setState(() {
-        for (final controller in _focusControllers) {
-          controller.dispose();
-        }
-        for (final comp in _completers) {
-          if (!comp.isCompleted) {
-            comp.complete();
-          }
-        }
-        _history.clear();
-        _focusControllers.clear();
-        _completers.clear();
-        _addRoute(
-          PageRoute(
-            builder: routeBuilder,
-            settings: RouteSettings(name: routeName),
-          ),
-          completer,
-        );
-      });
-      return completer.future;
-    }
-    return Future.value();
   }
 
   Future<Object?> pushNamed(String routeName, {Object? arguments}) {
@@ -183,7 +158,11 @@ class NavigatorState extends State<Navigator> {
     return Future.value();
   }
 
-  Future<Object?> pushReplacementNamed(String routeName, {Object? arguments, Object? result}) {
+  Future<Object?> pushReplacementNamed(
+    String routeName, {
+    Object? arguments,
+    Object? result,
+  }) {
     final routeBuilder = widget.routes?[routeName];
     if (routeBuilder != null) {
       return pushReplacement(
@@ -243,11 +222,19 @@ class Navigator extends StatefulWidget {
     of(context).pop(result);
   }
 
-  static void popUntil(BuildContext context, RoutePredicate predicate, [Object? result]) {
+  static void popUntil(
+    BuildContext context,
+    RoutePredicate predicate, [
+    Object? result,
+  ]) {
     of(context).popUntil(predicate, result);
   }
 
-  static Future<Object?> pushReplacement(BuildContext context, Route route, [Object? result]) {
+  static Future<Object?> pushReplacement(
+    BuildContext context,
+    Route route, [
+    Object? result,
+  ]) {
     return of(context).pushReplacement(route, result);
   }
 
@@ -265,11 +252,9 @@ class Navigator extends StatefulWidget {
     Object? arguments,
     Object? result,
   }) {
-    return of(context).pushReplacementNamed(routeName, arguments: arguments, result: result);
-  }
-
-  static Future<Object?> pushNamedAndClearStack(BuildContext context, String routeName) {
-    return of(context).pushNamedAndClearStack(routeName);
+    return of(
+      context,
+    ).pushReplacementNamed(routeName, arguments: arguments, result: result);
   }
 }
 
@@ -282,7 +267,6 @@ class _NavigatorScope extends StatelessWidget {
   @override
   Widget build(BuildContext context) => child;
 }
-
 
 class FlutterError extends Error {
   FlutterError(this.message);

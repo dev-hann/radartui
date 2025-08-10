@@ -48,7 +48,7 @@ class FocusNode {
   }
 
   void _autoRegister() {
-    final currentScope = FocusManager.currentScope;
+    final currentScope = FocusManager.instance.currentScope;
     currentScope?.addNode(this);
   }
 

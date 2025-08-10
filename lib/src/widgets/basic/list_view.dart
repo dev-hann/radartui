@@ -12,11 +12,11 @@ class ListView extends StatefulWidget {
   final String? unfocusedBorder;
   final int initialSelectedIndex;
   final void Function(int index, String item)? onItemSelected;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   const ListView({
     required this.items,
-    required this.focusNode,
+    this.focusNode,
     this.selectedPrefix = '> ',
     this.unselectedPrefix = '  ',
     this.focusedBorder = '[ ]',
@@ -35,14 +35,14 @@ class _ListViewState extends State<ListView> {
 
   @override
   void initState() {
-    super.initState();
     selectedIndex = widget.initialSelectedIndex.clamp(
       0,
       widget.items.length - 1,
     );
-    _focusNode = widget.focusNode;
+    _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChanged);
+    super.initState();
   }
 
   @override
@@ -62,7 +62,7 @@ class _ListViewState extends State<ListView> {
       _focusNode.onKeyEvent = null;
 
       // Set up the new node
-      _focusNode = widget.focusNode;
+      _focusNode = widget.focusNode ?? FocusNode();
       _focusNode.onKeyEvent = _handleKeyEvent;
       _focusNode.addListener(_onFocusChanged);
     }
