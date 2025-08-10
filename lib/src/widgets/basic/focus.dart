@@ -1,9 +1,15 @@
 import '../../services/key_parser.dart';
+import '../focus_manager.dart';
 
 class FocusNode {
   bool _hasFocus = false;
   FocusScope? _scope;
   Function(KeyEvent)? onKeyEvent;
+
+  FocusNode() {
+    // 자동으로 현재 활성화된 FocusScope에 등록
+    _autoRegister();
+  }
 
   bool get hasFocus => _hasFocus;
 
@@ -39,6 +45,11 @@ class FocusNode {
     for (final listener in _listeners) {
       listener();
     }
+  }
+
+  void _autoRegister() {
+    final currentScope = FocusManager.currentScope;
+    currentScope?.addNode(this);
   }
 
   void dispose() {
@@ -115,15 +126,22 @@ class FocusScope {
   FocusNode? get currentFocus {
     return _nodes.isNotEmpty ? _nodes[_currentIndex] : null;
   }
-}
 
-// 간단한 전역 FocusScope 관리자
-class FocusManager {
-  static FocusScope? _currentScope;
-
-  static void setCurrentScope(FocusScope? scope) {
-    _currentScope = scope;
+  void removeNode(FocusNode node) {
+    _removeNode(node);
   }
 
-  static FocusScope? get currentScope => _currentScope;
+  void requestFocus(FocusNode node) {
+    setFocus(node);
+  }
+
+  void dispose() {
+    for (final node in _nodes) {
+      node._scope = null;
+    }
+    _nodes.clear();
+  }
 }
+
+// FocusManager는 focus_manager.dart에서 import됨
+// 이 파일에서는 기본적인 FocusScope만 관리

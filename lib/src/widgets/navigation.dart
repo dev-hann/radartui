@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:radartui/src/widgets/framework.dart';
 import 'package:radartui/src/widgets/basic/empty_widget.dart';
-import 'package:radartui/src/widgets/focus_controller.dart';
+import 'package:radartui/src/widgets/focus_manager.dart';
+import 'package:radartui/src/widgets/navigator_observer.dart';
 
 typedef RouteBuilder = Widget Function(BuildContext context);
 typedef RoutePredicate = bool Function(Route route);
@@ -34,71 +35,80 @@ class PageRoute extends Route {
 
 class NavigatorState extends State<Navigator> {
   final List<Route> _history = [];
-  final List<FocusController> _focusControllers = [];
   final List<Completer<Object?>> _completers = [];
+  final List<NavigatorObserver> _observers = [];
 
   List<Route> get history => List.unmodifiable(_history);
 
   Route? get currentRoute => _history.isNotEmpty ? _history.last : null;
-  FocusController? get currentController =>
-      _focusControllers.isNotEmpty ? _focusControllers.last : null;
 
   @override
   void initState() {
     super.initState();
+    
+    // Initialize FocusManager and add it as observer
+    FocusManager.instance.initialize();
+    _observers.add(FocusManager.instance);
+    
+    // Add observers from widget
+    if (widget.observers != null) {
+      _observers.addAll(widget.observers!);
+    }
+    
     if (widget.initialRoute != null && widget.routes != null) {
       final initialBuilder = widget.routes![widget.initialRoute!];
       if (initialBuilder != null) {
-        _addRoute(
-          PageRoute(
-            builder: initialBuilder,
-            settings: RouteSettings(name: widget.initialRoute!),
-          ),
-          null,
+        final route = PageRoute(
+          builder: initialBuilder,
+          settings: RouteSettings(name: widget.initialRoute!),
         );
+        _addRoute(route, null);
+        _notifyObservers((observer) => observer.didPush(route, null));
       }
     }
   }
 
   @override
   void dispose() {
-    for (final controller in _focusControllers) {
-      controller.dispose();
-    }
     for (final completer in _completers) {
       if (!completer.isCompleted) {
         completer.complete();
       }
     }
-    _focusControllers.clear();
     _completers.clear();
+    FocusManager.instance.dispose();
     super.dispose();
   }
 
   void _addRoute(Route route, Completer<Object?>? completer) {
-    currentController?.deactivate();
-    final newController = FocusController();
     _history.add(route);
-    _focusControllers.add(newController);
     _completers.add(completer ?? Completer<Object?>());
-    newController.activate();
   }
 
   void _removeLast([Object? result]) {
-    _focusControllers.removeLast().dispose();
-    _history.removeLast();
+    final removedRoute = _history.removeLast();
     final completer = _completers.removeLast();
     if (!completer.isCompleted) {
       completer.complete(result);
     }
-    currentController?.activate();
+    
+    final previousRoute = _history.isNotEmpty ? _history.last : null;
+    _notifyObservers((observer) => observer.didPop(removedRoute, previousRoute));
+  }
+
+  void _notifyObservers(void Function(NavigatorObserver observer) callback) {
+    for (final observer in _observers) {
+      callback(observer);
+    }
   }
 
   Future<Object?> push(Route route) {
     final completer = Completer<Object?>();
+    final previousRoute = currentRoute;
     setState(() {
       _addRoute(route, completer);
     });
+    _notifyObservers((observer) => observer.didPush(route, previousRoute));
     return completer.future;
   }
 
@@ -120,12 +130,14 @@ class NavigatorState extends State<Navigator> {
 
   Future<Object?> pushReplacement(Route route, [Object? result]) {
     final completer = Completer<Object?>();
+    final oldRoute = currentRoute;
     setState(() {
       if (_history.isNotEmpty) {
         _removeLast(result);
       }
       _addRoute(route, completer);
     });
+    _notifyObservers((observer) => observer.didReplace(newRoute: route, oldRoute: oldRoute));
     return completer.future;
   }
 
@@ -191,22 +203,20 @@ class NavigatorState extends State<Navigator> {
       return widget.home ?? const EmptyWidget();
     }
 
-    return _FocusControllerScope(
-      controller: currentController!,
-      child: _NavigatorScope(
-        navigator: this,
-        child: currentRoute!.buildPage(context),
-      ),
+    return _NavigatorScope(
+      navigator: this,
+      child: currentRoute!.buildPage(context),
     );
   }
 }
 
 class Navigator extends StatefulWidget {
-  const Navigator({this.home, this.routes, this.initialRoute});
+  const Navigator({this.home, this.routes, this.initialRoute, this.observers});
 
   final Widget? home;
   final Map<String, RouteBuilder>? routes;
   final String? initialRoute;
+  final List<NavigatorObserver>? observers;
 
   @override
   NavigatorState createState() => NavigatorState();
@@ -223,16 +233,7 @@ class Navigator extends StatefulWidget {
     return scope.navigator;
   }
 
-  static FocusController focusControllerOf(BuildContext context) {
-    final scope =
-        context.findAncestorWidgetOfExactType<_FocusControllerScope>();
-    if (scope == null) {
-      throw FlutterError(
-        'FocusController requested with a context that does not include a Navigator.',
-      );
-    }
-    return scope.controller;
-  }
+  static FocusManager get focusManager => FocusManager.instance;
 
   static Future<Object?> push(BuildContext context, Route route) {
     return of(context).push(route);
@@ -282,15 +283,6 @@ class _NavigatorScope extends StatelessWidget {
   Widget build(BuildContext context) => child;
 }
 
-class _FocusControllerScope extends StatelessWidget {
-  const _FocusControllerScope({required this.controller, required this.child});
-
-  final FocusController controller;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) => child;
-}
 
 class FlutterError extends Error {
   FlutterError(this.message);
@@ -302,5 +294,5 @@ class FlutterError extends Error {
 
 extension BuildContextNavigation on BuildContext {
   NavigatorState get navigator => Navigator.of(this);
-  FocusController get focusController => Navigator.focusControllerOf(this);
+  FocusManager get focusManager => Navigator.focusManager;
 }
