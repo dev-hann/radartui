@@ -79,8 +79,18 @@ class FocusManager extends NavigatorObserver {
       // 현재 스코프가 여전히 활성화되어 있으면 프레임을 다시 스케줄링
       if (_currentScope == scope) {
         SchedulerBinding.instance.scheduleFrame();
+        // 스코프 재활성화 시 모든 노드가 현재 스코프에 올바르게 등록되도록 보장
+        _ensureNodesRegistered(scope);
       }
     });
+  }
+  
+  void _ensureNodesRegistered(FocusScope scope) {
+    // 모든 FocusNode가 현재 활성화된 스코프에 등록되도록 보장
+    // 이는 Navigator.pop() 후 노드들이 올바른 스코프에 연결되도록 함
+    for (final node in List<FocusNode>.from(scope.nodes)) {
+      node.ensureRegistered();
+    }
   }
 
   void _handleKeyEvent(KeyEvent event) {

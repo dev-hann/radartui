@@ -62,8 +62,6 @@ class FocusNode {
     final currentScope = FocusManager.instance.currentScope;
     if (currentScope != null && _scope != currentScope) {
       _autoRegister();
-      // 등록 후 바로 포커스 요청
-      requestFocus();
     }
   }
 
