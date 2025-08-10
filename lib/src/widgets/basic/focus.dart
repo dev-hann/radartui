@@ -62,6 +62,8 @@ class FocusNode {
     final currentScope = FocusManager.instance.currentScope;
     if (currentScope != null && _scope != currentScope) {
       _autoRegister();
+      // 등록 후 바로 포커스 요청
+      requestFocus();
     }
   }
 
@@ -140,6 +142,8 @@ class FocusScope {
     return _nodes.isNotEmpty ? _nodes[_currentIndex] : null;
   }
 
+  List<FocusNode> get nodes => _nodes;
+
   void removeNode(FocusNode node) {
     _removeNode(node);
   }
@@ -149,13 +153,17 @@ class FocusScope {
   }
 
   void notifyAllNodes() {
-    // 모든 노드의 리스너들을 트리거하여 UI 재렌더링
+    // scope 재활성화시 모든 노드를 false로 먼저 설정
     for (final node in _nodes) {
-      node.notifyListeners();
+      if (node._hasFocus) {
+        node._setFocus(false);
+      }
     }
-    // scope 재활성화시 현재 인덱스의 노드에 포커스 재설정
+    // 그 다음 현재 인덱스의 노드에만 포커스 설정
     if (_nodes.isNotEmpty) {
-      _setFocusAtIndex(_currentIndex.clamp(0, _nodes.length - 1));
+      final index = _currentIndex.clamp(0, _nodes.length - 1);
+      _nodes[index]._setFocus(true);
+      _currentIndex = index;
     }
   }
 

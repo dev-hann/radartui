@@ -40,6 +40,8 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  int _testStep = 1;
+  
   final List<String> _exampleTitles = [
     'Counter',
     'Calculator',

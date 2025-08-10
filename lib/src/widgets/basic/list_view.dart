@@ -1,4 +1,5 @@
 import '../framework.dart';
+import '../focus_manager.dart';
 import 'focus.dart';
 import 'text.dart';
 import 'column.dart';
@@ -108,7 +109,22 @@ class _ListViewState extends State<ListView> {
     // Navigator pop 후 FocusNode가 제대로 등록되도록 보장
     _focusNode.ensureRegistered();
     
-    final hasFocus = _focusNode.hasFocus;
+    // 포커스 상태를 확인하되, 스코프가 최근에 변경되었다면 강제로 true로 처리
+    var hasFocus = _focusNode.hasFocus;
+    final currentScope = FocusManager.instance.currentScope;
+    
+    // Navigator pop 후 포커스가 유실된 경우를 감지하고 강제로 복구
+    if (!hasFocus && currentScope != null && selectedIndex == 0) {
+      final currentFocus = currentScope.currentFocus;
+      
+      // 현재 포커스가 있지만 이 리스트뷰의 노드가 포커스를 잃은 경우 (Navigator pop 후 상황)
+      if (currentFocus != null && currentFocus != _focusNode) {
+        hasFocus = true;
+        // 실제 포커스도 요청
+        _focusNode.requestFocus();
+      }
+    }
+    
     final borderPrefix =
         hasFocus ? widget.focusedBorder : widget.unfocusedBorder;
 
