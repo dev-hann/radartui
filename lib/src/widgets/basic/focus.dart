@@ -20,14 +20,14 @@ class FocusNode {
   void unfocus() {
     if (_hasFocus) {
       _hasFocus = false;
-      _notifyListeners();
+      notifyListeners();
     }
   }
 
   void _setFocus(bool value) {
     if (_hasFocus != value) {
       _hasFocus = value;
-      _notifyListeners();
+      notifyListeners();
     }
   }
 
@@ -41,7 +41,7 @@ class FocusNode {
     _listeners.remove(listener);
   }
 
-  void _notifyListeners() {
+  void notifyListeners() {
     for (final listener in _listeners) {
       listener();
     }

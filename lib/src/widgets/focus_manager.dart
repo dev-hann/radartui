@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:radartui/src/scheduler/binding.dart';
 import 'package:radartui/src/services/key_parser.dart';
+import 'package:radartui/src/services/logger.dart';
 import 'package:radartui/src/widgets/basic/focus.dart';
 import 'package:radartui/src/widgets/navigation.dart';
 import 'package:radartui/src/widgets/navigator_observer.dart';
@@ -8,7 +9,7 @@ import 'package:radartui/src/widgets/navigator_observer.dart';
 class FocusManager extends NavigatorObserver {
   static FocusManager? _instance;
   static FocusManager get instance => _instance ??= FocusManager._();
-  
+
   FocusManager._();
 
   final Map<Route, FocusScope> _routeScopes = {};
@@ -16,7 +17,7 @@ class FocusManager extends NavigatorObserver {
   StreamSubscription<KeyEvent>? _keySubscription;
 
   FocusScope? get currentScope => _currentScope;
-  
+
   void initialize() {
     _keySubscription ??= SchedulerBinding.instance.keyboard.keyEvents.listen(
       _handleKeyEvent,
@@ -42,7 +43,7 @@ class FocusManager extends NavigatorObserver {
   @override
   void didPop(Route route, Route? previousRoute) {
     _routeScopes.remove(route)?.dispose();
-    
+
     if (previousRoute != null) {
       final previousScope = _getOrCreateScope(previousRoute);
       _activateScope(previousScope);
@@ -56,7 +57,7 @@ class FocusManager extends NavigatorObserver {
     if (oldRoute != null) {
       _routeScopes.remove(oldRoute)?.dispose();
     }
-    
+
     if (newRoute != null) {
       final newScope = _getOrCreateScope(newRoute);
       _activateScope(newScope);
@@ -70,7 +71,7 @@ class FocusManager extends NavigatorObserver {
   void _activateScope(FocusScope scope) {
     _currentScope = scope;
     // 스코프가 재활성화될 때 현재 포커스된 노드의 리스너들을 트리거하여 UI 갱신
-    scope.currentFocus?._notifyListeners();
+    scope.currentFocus?.notifyListeners();
   }
 
   void _handleKeyEvent(KeyEvent event) {

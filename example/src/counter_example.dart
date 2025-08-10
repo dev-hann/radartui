@@ -25,9 +25,6 @@ class _CounterExampleState extends State<CounterExample> {
         return;
       }
       setState(() {
-        AppLogger.log('###################');
-        AppLogger.log('CounterExample counter: $_counter');
-        AppLogger.log('###################');
         _counter++;
       });
     });
@@ -36,9 +33,6 @@ class _CounterExampleState extends State<CounterExample> {
   @override
   void dispose() {
     _sub?.cancel();
-    AppLogger.log('###################');
-    AppLogger.log('CounterExample dispose');
-    AppLogger.log('###################');
     super.dispose();
   }
 
