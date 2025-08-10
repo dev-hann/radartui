@@ -135,6 +135,13 @@ class FocusScope {
     setFocus(node);
   }
 
+  void notifyAllNodes() {
+    // 모든 노드의 리스너들을 트리거하여 UI 재렌더링
+    for (final node in _nodes) {
+      node.notifyListeners();
+    }
+  }
+
   void dispose() {
     for (final node in _nodes) {
       node._scope = null;
