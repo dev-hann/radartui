@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:radartui/src/scheduler/binding.dart';
 import 'package:radartui/src/services/key_parser.dart';
-import 'package:radartui/src/services/logger.dart';
 import 'package:radartui/src/widgets/basic/focus.dart';
 import 'package:radartui/src/widgets/navigation.dart';
 import 'package:radartui/src/widgets/navigator_observer.dart';

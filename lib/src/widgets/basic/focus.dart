@@ -7,7 +7,7 @@ class FocusNode {
   Function(KeyEvent)? onKeyEvent;
 
   FocusNode() {
-    // 자동으로 현재 활성화된 FocusScope에 등록
+    // Automatically register with the currently active FocusScope
     _autoRegister();
   }
 
@@ -80,7 +80,7 @@ class FocusScope {
       _nodes.add(node);
       node._scope = this;
 
-      // 첫 번째 노드에 자동으로 포커스 설정
+      // Automatically set focus to the first node
       if (_nodes.length == 1) {
         node._setFocus(true);
       }
@@ -156,14 +156,14 @@ class FocusScope {
       final index = _currentIndex.clamp(0, _nodes.length - 1);
       _currentIndex = index;
       final focusedNode = _nodes[index];
-      
+
       // 다른 노드들의 포커스 해제
       for (int i = 0; i < _nodes.length; i++) {
         if (i != index) {
           _nodes[i]._setFocus(false);
         }
       }
-      
+
       // 현재 노드에 포커스 설정 (이미 true였어도 리스너 호출)
       focusedNode._setFocus(true);
     }
@@ -177,5 +177,5 @@ class FocusScope {
   }
 }
 
-// FocusManager는 focus_manager.dart에서 import됨
-// 이 파일에서는 기본적인 FocusScope만 관리
+// FocusManager is imported from focus_manager.dart
+// This file only manages the basic FocusScope

@@ -1,6 +1,7 @@
-import 'package:radartui/radartui.dart';
+import 'package:radartui/src/foundation/axis.dart';
 import 'package:radartui/src/rendering/render_box.dart';
 import 'package:radartui/src/rendering/render_object.dart';
+import 'package:radartui/src/widgets/framework.dart';
 
 abstract class Flex extends MultiChildRenderObjectWidget {
   final Axis direction;
