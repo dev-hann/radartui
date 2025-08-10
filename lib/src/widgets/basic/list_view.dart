@@ -1,3 +1,5 @@
+import 'package:radartui/radartui.dart';
+
 import '../framework.dart';
 import 'focus.dart';
 import 'text.dart';

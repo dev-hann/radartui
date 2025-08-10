@@ -9,6 +9,9 @@ import 'package:radartui/src/services/terminal.dart';
 import 'package:radartui/src/widgets/framework.dart';
 import 'package:radartui/src/services/logger.dart';
 
+typedef VoidCallback = void Function();
+typedef FrameCallback = void Function(Duration timeStamp);
+
 class SchedulerBinding {
   static final instance = SchedulerBinding._();
   SchedulerBinding._();
@@ -18,6 +21,7 @@ class SchedulerBinding {
   final RawKeyboard keyboard = RawKeyboard(); // Added RawKeyboard
   Element? _rootElement;
   bool _frameScheduled = false;
+  final List<FrameCallback> _postFrameCallbacks = [];
 
   void runApp(Widget app) {
     AppLogger.initialize();
@@ -50,11 +54,30 @@ class SchedulerBinding {
     scheduleMicrotask(handleFrame);
   }
 
+  void addPostFrameCallback(FrameCallback callback) {
+    _postFrameCallbacks.add(callback);
+    scheduleFrame();
+  }
+
   void handleFrame() {
     _build(_rootElement!);
     _layout(_rootElement!);
     _paint(_rootElement!);
     _frameScheduled = false;
+    
+    // 프레임 처리가 완료된 후 post-frame 콜백들을 실행
+    if (_postFrameCallbacks.isNotEmpty) {
+      final callbacks = List<FrameCallback>.from(_postFrameCallbacks);
+      _postFrameCallbacks.clear();
+      final timeStamp = Duration.zero; // 간단한 구현을 위해 더미 타임스탬프 사용
+      for (final callback in callbacks) {
+        try {
+          callback(timeStamp);
+        } catch (e) {
+          AppLogger.log('Error in post-frame callback: $e');
+        }
+      }
+    }
   }
 
   void _build(Element element) {
