@@ -64,16 +64,32 @@ class _MenuScreenState extends State<MenuScreen> {
     '/navigation',
   ];
 
+  final _focusController = FocusController();
+  final _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusController.activate();
+    _focusController.scope.addNode(_focusNode);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _focusController.dispose();
+    super.dispose();
+  }
+
   void _onExampleSelected(int index, String item) {
     Navigator.of(context).pushNamed(_exampleRoutes[index]);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FocusScopeWidget(
-      child: Padding(
-        padding: const EdgeInsets.all(1),
-        child: Column(
+    return Padding(
+      padding: const EdgeInsets.all(1),
+      child: Column(
           children: [
             const Container(
               width: 60,
@@ -99,6 +115,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                   const SizedBox(height: 1),
                   ListView(
+                    focusNode: _focusNode,
                     initialSelectedIndex: 0,
                     items: _exampleTitles,
                     onItemSelected: _onExampleSelected,

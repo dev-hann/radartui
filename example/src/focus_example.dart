@@ -16,9 +16,19 @@ class _FocusExampleState extends State<FocusExample> {
   String selectedOption = '';
   StreamSubscription? _keySubscription;
 
+  final _focusController = FocusController();
+  final _node1 = FocusNode();
+  final _node2 = FocusNode();
+  final _node3 = FocusNode();
+
   @override
   void initState() {
     super.initState();
+    _focusController.activate();
+    _focusController.scope.addNode(_node1);
+    _focusController.scope.addNode(_node2);
+    _focusController.scope.addNode(_node3);
+    
     _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
       if (key.key == 'Escape') {
         Navigator.of(context).pop();
@@ -29,34 +39,10 @@ class _FocusExampleState extends State<FocusExample> {
   @override
   void dispose() {
     _keySubscription?.cancel();
-    super.dispose();
-  }
-
-  final _node1 = FocusNode();
-  final _node2 = FocusNode();
-  final _node3 = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    // Using a post-frame callback to ensure the context is available.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final scope = context.focusController.scope;
-      scope.addNode(_node1);
-      scope.addNode(_node2);
-      scope.addNode(_node3);
-      // Request focus for the first node initially.
-      _node1.requestFocus();
-    });
-  }
-
-  @override
-  void dispose() {
-    // The FocusController will dispose the scope, but nodes created
-    // here should be disposed here.
     _node1.dispose();
     _node2.dispose();
     _node3.dispose();
+    _focusController.dispose();
     super.dispose();
   }
 
