@@ -1,5 +1,6 @@
 import '../../services/key_parser.dart';
 import '../focus_manager.dart';
+import '../framework.dart';
 
 class FocusNode {
   FocusNode() {
@@ -169,5 +170,64 @@ class FocusScope {
       node._scope = null;
     }
     _nodes.clear();
+  }
+}
+
+class Focus extends StatefulWidget {
+  final FocusNode? focusNode;
+  final Widget child;
+
+  const Focus({this.focusNode, required this.child});
+
+  @override
+  State<Focus> createState() => _FocusState();
+}
+
+class _FocusState extends State<Focus> {
+  late FocusNode _focusNode;
+  bool _isNodeOwned = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.focusNode != null) {
+      _focusNode = widget.focusNode!;
+    } else {
+      _focusNode = FocusNode();
+      _isNodeOwned = true;
+    }
+  }
+
+  @override
+  void didUpdateWidget(Focus oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.focusNode != oldWidget.focusNode) {
+      if (_isNodeOwned) {
+        _focusNode.dispose();
+      }
+
+      if (widget.focusNode != null) {
+        _focusNode = widget.focusNode!;
+        _isNodeOwned = false;
+      } else {
+        _focusNode = FocusNode();
+        _isNodeOwned = true;
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_isNodeOwned) {
+      _focusNode.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }
