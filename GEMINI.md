@@ -91,6 +91,10 @@ example/ ([설명](./example/README.md))
 - **`color.dart`**
 - **`size.dart`**, **`offset.dart`**, **`edge_insets.dart`**
 
+- **`alignment.dart`**: Defines alignment values for positioning.
+
+- **`box_constraints.dart`**: Defines constraints for `RenderBox` widgets.
+
 ### Services Layer (`lib/src/services/`)
 
 **Purpose**: Handles system-level interactions and I/O.
@@ -142,10 +146,10 @@ example/ ([설명](./example/README.md))
 1.  **코드 변경**: 특정 폴더 내의 파일을 수정, 추가 또는 삭제합니다.
 2.  **관련 `README.md` 확인**: 변경이 발생한 폴더의 `README.md` 파일을 엽니다.
 3.  **문서 내용 수정**:
-    *   파일의 역할이 변경되었으면 설명을 수정합니다.
-    *   새로운 파일이 추가되었으면 목록에 추가하고 간단한 설명을 덧붙입니다.
-    *   파일이 삭제되었으면 목록에서 제거합니다.
-    *   폴더의 전반적인 역할이 변경되었다면, `README.md` 상단의 폴더 설명도 함께 수정합니다.
+    - 파일의 역할이 변경되었으면 설명을 수정합니다.
+    - 새로운 파일이 추가되었으면 목록에 추가하고 간단한 설명을 덧붙입니다.
+    - 파일이 삭제되었으면 목록에서 제거합니다.
+    - 폴더의 전반적인 역할이 변경되었다면, `README.md` 상단의 폴더 설명도 함께 수정합니다.
 4.  **변경사항 함께 커밋**: 코드 변경사항과 문서 변경사항을 하나의 원자적(atomic) 커밋으로 묶어 제출합니다. 커밋 메시지에 `docs:` 와 같이 문서 변경이 포함되었음을 명시하면 좋습니다.
 
 **예시 커밋 메시지:**
@@ -160,9 +164,11 @@ feat(widgets): Add ListView widget and update docs
 이 가이드를 통해 프로젝트의 모든 문서가 항상 최신 상태로 유지될 수 있도록 협조해 주시기 바랍니다.
 
 ---
+
 (The rest of the original file content follows)
 ...
 ''' + '''
+
 ## 🔗 Dependencies & Import Graph
 
 ### Import Rules & Dependencies
@@ -463,13 +469,7 @@ AppLogger.log('''Operation took: ${stopwatch.elapsedMilliseconds}ms''');
    - Integration with frame scheduler
    - Smooth transitions between states
 
-2. **Focus Management**:
-
-   - Tab navigation between widgets
-   - Focus highlighting and indicators
-   - Keyboard accessibility
-
-3. **Theme System**:
+2. **Theme System**:
    - Centralized color/style configuration
    - Light/dark theme support
    - Custom theme definitions
@@ -523,6 +523,8 @@ As the framework grows, consider these architectural improvements:
 - Text rendering and styling
 - Simple layouts (Row, Column, Container)
 - Keyboard input handling
+- Focus Management
+- Navigation and Routing
 
 ### Future Versions:
 
@@ -553,10 +555,10 @@ This document is a living guide - keep it updated as the framework evolves! 🚀
 1.  **코드 변경**: 특정 폴더 내의 파일을 수정, 추가 또는 삭제합니다.
 2.  **관련 `README.md` 확인**: 변경이 발생한 폴더의 `README.md` 파일을 엽니다.
 3.  **문서 내용 수정**:
-    *   파일의 역할이 변경되었으면 설명을 수정합니다.
-    *   새로운 파일이 추가되었으면 목록에 추가하고 간단한 설명을 덧붙입니다.
-    *   파일이 삭제되었으면 목록에서 제거합니다.
-    *   폴더의 전반적인 역할이 변경되었다면, `README.md` 상단의 폴더 설명도 함께 수정합니다.
+    - 파일의 역할이 변경되었으면 설명을 수정합니다.
+    - 새로운 파일이 추가되었으면 목록에 추가하고 간단한 설명을 덧붙입니다.
+    - 파일이 삭제되었으면 목록에서 제거합니다.
+    - 폴더의 전반적인 역할이 변경되었다면, `README.md` 상단의 폴더 설명도 함께 수정합니다.
 4.  **변경사항 함께 커밋**: 코드 변경사항과 문서 변경사항을 하나의 원자적(atomic) 커밋으로 묶어 제출합니다. 커밋 메시지에 `docs:` 와 같이 문서 변경이 포함되었음을 명시하면 좋습니다.
 
 **예시 커밋 메시지:**
