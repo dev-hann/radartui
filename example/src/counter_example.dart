@@ -20,7 +20,7 @@ class _CounterExampleState extends State<CounterExample> {
     _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((
       KeyEvent keyEvent,
     ) {
-      if (keyEvent.key == 'Escape') {
+      if (keyEvent.code == KeyCode.escape) {
         Navigator.of(context).pop();
         return;
       }

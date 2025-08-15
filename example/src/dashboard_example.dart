@@ -32,11 +32,11 @@ class _DashboardExampleState extends State<DashboardExample> {
     _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((
       key,
     ) {
-      if (key.key == 'Escape') {
+      if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
         return;
       }
-      if (key.key == 'p' || key.key == 'P') {
+      if (key.code == KeyCode.char && (key.char == 'p' || key.char == 'P')) {
         setState(() {
           _paused = !_paused;
           if (_paused) {

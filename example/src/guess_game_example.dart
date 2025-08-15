@@ -24,7 +24,7 @@ class _GuessGameExampleState extends State<GuessGameExample> {
     super.initState();
     _startNewGame();
     _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
-      if (key.key == 'Escape') {
+      if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
         return;
       }
@@ -49,15 +49,15 @@ class _GuessGameExampleState extends State<GuessGameExample> {
 
   void _handleKeyInput(KeyEvent key) {
     setState(() {
-      if (KeyParser.isDigit(key.key)) {
+      if (key.code == KeyCode.char && KeyParser.isDigit(key.char)) {
         if (_currentGuess.length < 3) {
-          _currentGuess += key.key;
+          _currentGuess += key.char!;
         }
-      } else if (key.key == 'Enter') {
+      } else if (key.code == KeyCode.enter) {
         _submitGuess();
-      } else if (key.key == 'n' || key.key == 'N') {
+      } else if (key.code == KeyCode.char && (key.char == 'n' || key.char == 'N')) {
         _startNewGame();
-      } else if (key.key == 'Backspace') {
+      } else if (key.code == KeyCode.backspace) {
         if (_currentGuess.isNotEmpty) {
           _currentGuess = _currentGuess.substring(0, _currentGuess.length - 1);
         }

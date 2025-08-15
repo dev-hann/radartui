@@ -79,31 +79,23 @@ class _ListViewState extends State<ListView> {
   }
 
   void _handleKeyEvent(KeyEvent event) {
-    AppLogger.log('🎯 ListView._handleKeyEvent() - key: "${event.key}", focus: $_hasFocus, selectedIndex: $selectedIndex');
-    switch (event.key) {
-      case 'ArrowUp':
-      case 'k':
-        AppLogger.log('🔼 Moving selection UP');
-        _moveSelection(-1);
-        break;
-      case 'ArrowDown':
-      case 'j':
-        AppLogger.log('🔽 Moving selection DOWN');
-        _moveSelection(1);
-        break;
-      case 'Enter':
-      case ' ':
-        AppLogger.log('✅ Selecting item $selectedIndex');
-        if (selectedIndex >= 0 && selectedIndex < widget.items.length) {
-          widget.onItemSelected?.call(
-            selectedIndex,
-            widget.items[selectedIndex],
-          );
-        }
-        break;
-      default:
-        AppLogger.log('❓ Unhandled key: "${event.key}"');
-        break;
+    AppLogger.log('🎯 ListView._handleKeyEvent() - key: "${event.toString()}", focus: $_hasFocus, selectedIndex: $selectedIndex');
+    if (event.code == KeyCode.arrowUp || (event.code == KeyCode.char && event.char == 'k')) {
+      AppLogger.log('🔼 Moving selection UP');
+      _moveSelection(-1);
+    } else if (event.code == KeyCode.arrowDown || (event.code == KeyCode.char && event.char == 'j')) {
+      AppLogger.log('🔽 Moving selection DOWN');
+      _moveSelection(1);
+    } else if (event.code == KeyCode.enter || (event.code == KeyCode.char && event.char == ' ')) {
+      AppLogger.log('✅ Selecting item $selectedIndex');
+      if (selectedIndex >= 0 && selectedIndex < widget.items.length) {
+        widget.onItemSelected?.call(
+          selectedIndex,
+          widget.items[selectedIndex],
+        );
+      }
+    } else {
+      AppLogger.log('❓ Unhandled key: "${event.toString()}"');
     }
   }
 

@@ -41,11 +41,11 @@ class _SpinnerExampleState extends State<SpinnerExample> {
     _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((
       key,
     ) {
-      if (key.key == 'Escape') {
+      if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
         return;
       }
-      if (key.key == 's' || key.key == 'S') {
+      if (key.code == KeyCode.char && (key.char == 's' || key.char == 'S')) {
         _switchIndicator();
         return;
       }
