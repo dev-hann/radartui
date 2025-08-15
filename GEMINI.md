@@ -249,6 +249,12 @@ scheduler/binding.dart ← rendering/render_*.dart ← services/*.dart ← found
 - **Use package imports** for cross-layer dependencies
 - **Avoid circular dependencies** between layers
 
+## 🎨 코딩 스타일 및 규칙 (Coding Style & Rules)
+
+RadarTUI 프로젝트의 모든 코드는 일관된 스타일과 품질을 유지하기 위해 엄격한 가이드라인을 따릅니다.
+
+자세한 Dart 코딩 스타일, 린트 규칙, 네이밍 컨벤션 및 코드 품질 검증 절차는 **[CLAUDE.md](CLAUDE.md)** 문서를 참고해 주시기 바랍니다.
+
 ## 🔧 Refactoring Guidelines
 
 ### Recently Completed Refactoring (2024)
