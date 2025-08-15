@@ -27,6 +27,8 @@ class SchedulerBinding {
   Element? _rootElement;
   bool _frameScheduled = false;
   final List<FrameCallback> _postFrameCallbacks = [];
+  final List<Widget> _overlayWidgets = [];
+  final List<Element> _overlayElements = [];
 
   void runApp(Widget app) {
     AppLogger.initialize();
@@ -53,6 +55,24 @@ class SchedulerBinding {
     exit(0);
   }
 
+  void addOverlay(Widget overlay) {
+    _overlayWidgets.add(overlay);
+    final element = overlay.createElement();
+    element.mount(null);
+    _overlayElements.add(element);
+    scheduleFrame();
+  }
+
+  void removeOverlay(Widget overlay) {
+    final index = _overlayWidgets.indexOf(overlay);
+    if (index != -1) {
+      _overlayWidgets.removeAt(index);
+      final element = _overlayElements.removeAt(index);
+      element.unmount();
+      scheduleFrame();
+    }
+  }
+
   void scheduleFrame() {
     if (_frameScheduled) return;
     _frameScheduled = true;
@@ -68,6 +88,14 @@ class SchedulerBinding {
     _build(_rootElement!);
     _layout(_rootElement!);
     _paint(_rootElement!);
+    
+    // Build, layout, and paint overlay elements
+    for (final element in _overlayElements) {
+      _build(element);
+      _layout(element);
+      _paintOverlay(element);
+    }
+    
     _frameScheduled = false;
 
     // 프레임 처리가 완료된 후 post-frame 콜백들을 실행
@@ -104,6 +132,13 @@ class SchedulerBinding {
 
   void _paint(Element element) {
     outputBuffer.clear(); // Clear buffer before painting new frame
+    final context = PaintingContext(outputBuffer);
+    element.renderObject?.paint(context, Offset.zero);
+    outputBuffer.flush();
+  }
+
+  void _paintOverlay(Element element) {
+    // Don't clear buffer for overlays, paint on top of existing content
     final context = PaintingContext(outputBuffer);
     element.renderObject?.paint(context, Offset.zero);
     outputBuffer.flush();
