@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:radartui/radartui.dart';
-import 'package:radartui/src/scheduler/binding.dart';
 
 class CounterExample extends StatefulWidget {
   const CounterExample();
@@ -12,28 +9,30 @@ class CounterExample extends StatefulWidget {
 
 class _CounterExampleState extends State<CounterExample> {
   int _counter = 0;
-  StreamSubscription? _sub;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
-    _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((
-      KeyEvent keyEvent,
-    ) {
-      if (keyEvent.key == 'Escape') {
-        Navigator.of(context).pop();
-        return;
-      }
-      setState(() {
-        _counter++;
-      });
-    });
+    _focusNode = FocusNode();
+    _focusNode.onKeyEvent = _handleKeyEvent;
+    _focusNode.requestFocus();
   }
 
   @override
   void dispose() {
-    _sub?.cancel();
+    _focusNode.dispose();
     super.dispose();
+  }
+
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.key == 'Escape') {
+      Navigator.of(context).pop();
+      return;
+    }
+    setState(() {
+      _counter++;
+    });
   }
 
   @override
