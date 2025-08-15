@@ -29,13 +29,14 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   final List<String> _items = [
     'Option 1',
-    'Option 2', 
+    'Option 2',
     'Option 3',
     'Go to Page 2',
   ];
 
   void _onItemSelected(int index, String item) async {
-    if (index == 3) { // "Go to Page 2"
+    if (index == 3) {
+      // "Go to Page 2"
       await Navigator.of(context).pushNamed('/page2');
     }
   }
@@ -55,7 +56,9 @@ class _MenuScreenState extends State<MenuScreen> {
             onItemSelected: _onItemSelected,
           ),
           const SizedBox(height: 1),
-          const Text('Problem: After going to Page 2 and coming back, j/k keys don\'t work'),
+          const Text(
+            'Problem: After going to Page 2 and coming back, j/k keys don\'t work',
+          ),
         ],
       ),
     );
@@ -87,7 +90,7 @@ class _Page2ScreenState extends State<Page2Screen> {
   }
 
   void _handleKeyEvent(KeyEvent event) {
-    if (event.key == 'Escape') {
+    if (event.code == KeyCode.escape) {
       Navigator.of(context).pop();
     }
   }
@@ -103,8 +106,12 @@ class _Page2ScreenState extends State<Page2Screen> {
           const Text('This is the second page.'),
           const Text('Press ESC to go back to menu.'),
           const SizedBox(height: 1),
-          const Text('Expected: When you go back, j/k should still work in ListView'),
-          const Text('Actual: j/k keys don\'t move the selection arrow anymore'),
+          const Text(
+            'Expected: When you go back, j/k should still work in ListView',
+          ),
+          const Text(
+            'Actual: j/k keys don\'t move the selection arrow anymore',
+          ),
         ],
       ),
     );
