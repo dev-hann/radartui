@@ -7,6 +7,7 @@ import 'src/guess_game_example.dart';
 import 'src/manual_test.dart';
 import 'src/spinner_example.dart';
 import 'src/style_example.dart';
+import 'src/textfield_example.dart';
 
 void main() {
   runApp(const RadarTUIExamplesApp());
@@ -28,6 +29,7 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/spinner': (context) => const SpinnerExample(),
         '/style': (context) => const StyleExample(),
         '/focus': (context) => const FocusExample(),
+        '/textfield': (context) => const TextFieldExample(),
         '/manual_test': (context) => const ManualTest(),
       },
     );
@@ -50,6 +52,7 @@ class _MenuScreenState extends State<MenuScreen> {
     'Spinner',
     'Style Demo',
     'Focus Example',
+    'TextField Example',
     'Manual Test',
   ];
 
@@ -61,6 +64,7 @@ class _MenuScreenState extends State<MenuScreen> {
     '/spinner',
     '/style',
     '/focus',
+    '/textfield',
     '/manual_test',
   ];
 
