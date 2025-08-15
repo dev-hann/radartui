@@ -1,6 +1,5 @@
 import '../../services/key_parser.dart';
 import '../focus_manager.dart';
-import 'package:collection/collection.dart';
 
 class FocusNode {
   FocusNode() {
@@ -150,20 +149,17 @@ class FocusScope {
   }
 
   void notifyAllNodes() {
-    // scope 재활성화시 현재 포커스된 노드의 리스너들을 호출하여 UI 업데이트 트리거
     if (_nodes.isNotEmpty) {
       final index = _currentIndex.clamp(0, _nodes.length - 1);
       _currentIndex = index;
       final focusedNode = _nodes[index];
 
-      // 다른 노드들의 포커스 해제
       for (int i = 0; i < _nodes.length; i++) {
         if (i != index) {
           _nodes[i]._setFocus(false);
         }
       }
 
-      // 현재 노드에 포커스 설정 (이미 true였어도 리스너 호출)
       focusedNode._setFocus(true);
     }
   }

@@ -38,7 +38,6 @@ class _ListViewState extends State<ListView> {
     _focusNode.addListener(_onFocusChanged);
     // 초기 focus 상태 동기화
     _hasFocus = _focusNode.hasFocus;
-
     super.initState();
   }
 
@@ -78,7 +77,6 @@ class _ListViewState extends State<ListView> {
 
   void _onFocusChanged() {
     setState(() {
-      // focus 상태 동기화 및 UI 갱신
       _hasFocus = _focusNode.hasFocus;
     });
   }

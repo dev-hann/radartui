@@ -60,11 +60,6 @@ class KeyParser {
       return const KeyEvent(code: KeyCode.unknown);
     }
 
-    // Debug logging for key input analysis
-    final hex = rawData.map((e) => e.toRadixString(16).padLeft(2, '0')).join(' ');
-    final ascii = rawData.map((e) => e >= 32 && e <= 126 ? String.fromCharCode(e) : '·').join('');
-    AppLogger.log('🔑 KeyParser.parse() - raw: [$hex] ascii: [$ascii]');
-
     bool isShift = false;
     bool isAlt = false;
     bool isCtrl = false;
@@ -199,18 +194,4 @@ class KeyParser {
     return const KeyEvent(code: KeyCode.unknown);
   }
 
-  static bool isDigit(String? keyChar) {
-    if (keyChar == null) return false;
-    return '0123456789'.contains(keyChar);
-  }
-
-  static bool isLetter(String? keyChar) {
-    if (keyChar == null) return false;
-    return RegExp(r'[a-zA-Z]').hasMatch(keyChar);
-  }
-
-  static bool isAlphaNumeric(String? keyChar) {
-    if (keyChar == null) return false;
-    return isDigit(keyChar) || isLetter(keyChar);
-  }
 }

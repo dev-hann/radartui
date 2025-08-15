@@ -107,3 +107,41 @@ All Dart code in RadarTUI must follow the style guide and lint rules below.
 - Follow the test case list provided by Gemini CLI
 - Test names must describe the exact behavior being tested
 - Use `testWidgets` for UI-related tests
+
+## 📌 Code Quality Verification
+
+**MANDATORY:** After writing or modifying any code, always run static analysis to ensure code quality:
+
+```bash
+dart analyze
+```
+
+### 🚧 Development Phase Guidelines
+
+**Current Status:** RadarTUI framework is in active development. Some analysis errors are expected due to:
+- Incomplete class hierarchies and missing foundation classes
+- Framework architecture still being built
+- Dependencies not yet fully implemented
+
+### ✅ What to Focus On During Analysis:
+
+**Always Fix These Issues:**
+- Unused imports, variables, or parameters
+- Missing return type annotations on new code
+- Syntax errors and typos
+- Logic errors in your specific changes
+
+**Expected Issues to Ignore (for now):**
+- Missing foundation classes (Size, Offset, etc.)
+- "Target of URI doesn't exist" errors for incomplete framework parts
+- Override warnings for framework methods still being designed
+- Missing superclass definitions
+
+### 🎯 Verification Strategy:
+
+1. **Run analysis:** `dart analyze lib/`
+2. **Focus on your changes:** Only worry about errors in files you modified
+3. **Fix real issues:** Address syntax errors, unused code, missing types
+4. **Document framework TODOs:** Note missing pieces for future implementation
+
+**Goal:** Keep your code clean while acknowledging framework completion is ongoing.

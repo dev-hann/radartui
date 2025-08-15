@@ -74,7 +74,7 @@ class SchedulerBinding {
     if (_postFrameCallbacks.isNotEmpty) {
       final callbacks = List<FrameCallback>.from(_postFrameCallbacks);
       _postFrameCallbacks.clear();
-      final timeStamp = Duration.zero; // 간단한 구현을 위해 더미 타임스탬프 사용
+      final timeStamp = Duration.zero;
       for (final callback in callbacks) {
         try {
           callback(timeStamp);
@@ -137,9 +137,7 @@ class RawKeyboard {
         onError: (e) {
           AppLogger.log('Stdin error: $e');
         },
-        onDone: () {
-          AppLogger.log('Stdin done - raw mode');
-        },
+        onDone: () {},
       );
     } else {
       // Fallback: use line mode and parse line-based input
@@ -149,7 +147,6 @@ class RawKeyboard {
   }
 
   void _initializeLineMode() {
-    // In line mode, we read complete lines and simulate key events
     _stdinSubscription = stdin
         .transform(utf8.decoder)
         .transform(LineSplitter())
