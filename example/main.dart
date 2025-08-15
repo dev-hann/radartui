@@ -1,4 +1,5 @@
 import 'package:radartui/radartui.dart';
+import 'src/button_example.dart';
 import 'src/calculator_example.dart';
 import 'src/counter_example.dart';
 import 'src/dashboard_example.dart';
@@ -21,6 +22,7 @@ class RadarTUIExamplesApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const MenuScreen(),
+        '/button': (context) => ButtonExample(),
         '/counter': (context) => const CounterExample(),
         '/calculator': (context) => const CalculatorExample(),
         '/dashboard': (context) => const DashboardExample(),
@@ -43,6 +45,7 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   final List<String> _exampleTitles = [
+    'Button',
     'Counter',
     'Calculator',
     'Dashboard',
@@ -54,6 +57,7 @@ class _MenuScreenState extends State<MenuScreen> {
   ];
 
   final List<String> _exampleRoutes = [
+    '/button',
     '/counter',
     '/calculator',
     '/dashboard',
