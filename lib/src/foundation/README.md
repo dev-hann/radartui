@@ -1,14 +1,14 @@
 ## 📁 lib/src/foundation
 
-이 디렉토리는 RadarTUI 프레임워크의 가장 기본적인 구성 요소를 담고 있습니다. 다른 모든 레이어에서 공통적으로 사용되는 핵심 데이터 타입, 상수, 유틸리티 클래스를 정의합니다.
+This directory contains the most basic components of the RadarTUI framework. It defines core data types, constants, and utility classes that are used in common by all other layers.
 
-### 주요 파일
+### Key Files
 
-- **`alignment.dart`**: 정렬 방향을 지정하는 데 사용됩니다.
-- **`axis.dart`**: `Row`나 `Column` 같은 위젯의 주축(가로/세로)을 정의합니다.
-- **`box_constraints.dart`**: 위젯이 가질 수 있는 최소/최대 크기를 제한하는 제약 조건을 정의합니다.
-- **`color.dart`**: 터미널에서 사용할 수 있는 ANSI 색상과 텍스트 스타일을 정의합니다.
-- **`constants.dart`**: 프레임워크 전반에서 사용되는 레이아웃 관련 상수 값을 중앙에서 관리합니다.
-- **`edge_insets.dart`**: `Padding` 위젯 등에서 사용되는 안쪽 여백 값을 정의합니다.
-- **`offset.dart`**: 2D 좌표 시스템에서의 위치(x, y)를 나타냅니다.
-- **`size.dart`**: 2D 공간에서의 크기(너비, 높이)를 나타냅니다.
+- **`alignment.dart`**: Used to specify the alignment direction.
+- **`axis.dart`**: Defines the main axis (horizontal/vertical) of widgets like `Row` or `Column`.
+- **`box_constraints.dart`**: Defines the constraints that limit the minimum/maximum size a widget can have.
+- **`color.dart`**: Defines ANSI colors and text styles that can be used in the terminal.
+- **`constants.dart`**: Centrally manages layout-related constant values used throughout the framework.
+- **`edge_insets.dart`**: Defines the inner padding values used in widgets like `Padding`.
+- **`offset.dart`**: Represents a location (x, y) in a 2D coordinate system.
+- **`size.dart`**: Represents a size (width, height) in a 2D space.

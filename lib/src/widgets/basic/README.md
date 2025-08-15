@@ -1,12 +1,12 @@
 ## 📁 lib/src/widgets/basic
 
-이 디렉토리는 UI를 구성하는 데 사용되는 기본적인 위젯들의 구체적인 구현체를 포함합니다. 개발자는 이 위젯들을 조합하여 복잡한 UI를 만듭니다.
+This directory contains the concrete implementations of the basic widgets used to compose the UI. Developers combine these widgets to create complex UIs.
 
-### 주요 위젯
+### Key Widgets
 
-- **`Text`**, **`TextField`**: 텍스트를 표시하고 입력받는 위젯
-- **`Container`**, **`Padding`**, **`SizedBox`**, **`Center`**: 단일 자식 위젯의 레이아웃, 스타일, 크기를 제어하는 위젯
-- **`Row`**, **`Column`**, **`Flex`**: 여러 자식 위젯을 가로 또는 세로로 배치하는 플렉스 기반 레이아웃 위젯
-- **`Button`**, **`Dialog`**, **`Indicator`**: 사용자 상호작용 및 상태 표시를 위한 위젯
-- **`ListView`**: 스크롤 가능한 목록을 표시하는 위젯
-- **`Focus`**: 위젯에 포커스 기능을 부여하는 위젯
+- **`Text`**, **`TextField`**: Widgets for displaying and inputting text.
+- **`Container`**, **`Padding`**, **`SizedBox`**, **`Center`**: Widgets for controlling the layout, style, and size of a single child widget.
+- **`Row`**, **`Column`**, **`Flex`**: Flex-based layout widgets for arranging multiple child widgets horizontally or vertically.
+- **`Button`**, **`Dialog`**, **`Indicator`**: Widgets for user interaction and state display.
+- **`ListView`**: A widget for displaying a scrollable list.
+- **`Focus`**: A widget that gives a widget focus capability.

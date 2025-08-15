@@ -1,8 +1,8 @@
 ## 📁 lib/src/rendering
 
-이 디렉토리는 위젯 트리를 실제 화면에 어떻게 배치하고 그릴지 결정하는 렌더링 엔진의 핵심 로직을 담고 있습니다. 레이아웃 계산과 페인팅 추상화를 담당합니다.
+This directory contains the core logic of the rendering engine, which determines how to place and draw the widget tree on the actual screen. It is responsible for layout calculation and painting abstraction.
 
-### 주요 파일
+### Key Files
 
-- **`render_object.dart`**: 모든 렌더 객체의 기본 클래스인 `RenderObject`를 정의합니다. `performLayout()` (레이아웃 계산)과 `paint()` (그리기) 프로토콜을 포함하는 렌더링 파이프라인의 핵심입니다.
-- **`render_box.dart`**: CSS의 박스 모델과 유사한 2D 박스 제약 조건(`BoxConstraints`) 시스템을 기반으로 하는 렌더 객체를 정의합니다. 대부분의 위젯이 사용하는 표준 레이아웃 모델입니다.
+- **`render_object.dart`**: Defines `RenderObject`, the base class for all render objects. It is the core of the rendering pipeline, containing the `performLayout()` (layout calculation) and `paint()` (drawing) protocols.
+- **`render_box.dart`**: Defines a render object based on a 2D box constraints (`BoxConstraints`) system, similar to the box model in CSS. This is the standard layout model used by most widgets.

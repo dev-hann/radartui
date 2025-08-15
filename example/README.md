@@ -1,9 +1,9 @@
 ## 📁 example
 
-이 디렉토리는 RadarTUI 프레임워크의 다양한 기능과 위젯을 사용하는 방법을 보여주는 예제 애플리케이션들을 포함합니다.
+This directory contains example applications that demonstrate how to use the various features and widgets of the RadarTUI framework.
 
-### 주요 파일 및 디렉토리
+### Main Files and Directories
 
-- **`main.dart`**: 예제 애플리케이션을 실행하는 메인 진입점입니다. 실행할 예제를 선택할 수 있습니다.
-- **`pubspec.yaml`**: 예제 프로젝트의 의존성을 정의합니다.
-- **`src/`**: 각 기능별로 분리된 구체적인 예제 코드 파일들이 위치한 디렉토리입니다.
+- **`main.dart`**: The main entry point for running the example applications. It allows you to select which example to run.
+- **`pubspec.yaml`**: Defines the dependencies for the example project.
+- **`src/`**: A directory containing specific example code files, separated by feature.

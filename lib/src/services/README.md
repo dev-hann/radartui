@@ -1,10 +1,10 @@
 ## 📁 lib/src/services
 
-이 디렉토리는 운영체제나 터미널과 직접 상호작용하는 서비스들을 관리합니다. 키보드 입력, 터미널 출력, 로깅 등 저수준(low-level) I/O 처리를 담당합니다.
+This directory manages services that interact directly with the operating system or terminal. It is responsible for low-level I/O processing such as keyboard input, terminal output, and logging.
 
-### 주요 파일
+### Key Files
 
-- **`key_parser.dart`**: 터미널로부터 들어온 원시(raw) 키보드 입력 스트림을 구조화된 `KeyEvent` 객체로 파싱합니다.
-- **`logger.dart`**: 디버깅을 위한 파일 기반 로깅 시스템을 제공하여, 터미널 UI를 방해하지 않고 로그를 기록할 수 있게 합니다.
-- **`output_buffer.dart`**: 터미널 화면에 그려질 내용을 관리하는 더블 버퍼입니다. 이전 프레임과 현재 프레임을 비교하여 변경된 부분만 효율적으로 업데이트합니다.
-- **`terminal.dart`**: ANSI 이스케이프 시퀀스를 사용하여 커서 위치 제어, 색상 및 스타일 지정, 터미널 크기 감지 등 터미널을 직접 제어하는 기능을 제공합니다.
+- **`key_parser.dart`**: Parses the raw keyboard input stream from the terminal into structured `KeyEvent` objects.
+- **`logger.dart`**: Provides a file-based logging system for debugging, allowing logs to be recorded without interfering with the terminal UI.
+- **`output_buffer.dart`**: A double buffer that manages the content to be drawn on the terminal screen. It efficiently updates only the changed parts by comparing the previous frame with the current frame.
+- **`terminal.dart`**: Provides functions to directly control the terminal using ANSI escape sequences, such as cursor position control, color and style specification, and terminal size detection.

@@ -1,7 +1,7 @@
 ## 📁 lib/src/scheduler
 
-이 디렉토리는 RadarTUI 애플리케이션의 생명주기와 프레임 스케줄링을 관리합니다. '엔진'과 '프레임워크'를 연결하는 접착제 역할을 합니다.
+This directory manages the lifecycle and frame scheduling of the RadarTUI application. It acts as the glue that connects the 'engine' and the 'framework'.
 
-### 주요 파일
+### Key Files
 
-- **`binding.dart`**: 프레임워크의 심장 역할을 하는 `SchedulerBinding` 싱글톤을 포함합니다. 키보드 입력 수신, 프레임 요청(build → layout → paint 파이프라인), 터미널 리사이즈 신호 처리 등 앱의 메인 이벤트 루프를 관리합니다.
+- **`binding.dart`**: Contains the `SchedulerBinding` singleton, which acts as the heart of the framework. It manages the app's main event loop, including receiving keyboard input, requesting frames (the build → layout → paint pipeline), and handling terminal resize signals.
