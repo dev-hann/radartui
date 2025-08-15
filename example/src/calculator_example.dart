@@ -20,7 +20,7 @@ class _CalculatorExampleState extends State<CalculatorExample> {
   void initState() {
     super.initState();
     _sub = SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
-      if (key.key == 'Escape') {
+      if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
         return;
       }
@@ -36,19 +36,19 @@ class _CalculatorExampleState extends State<CalculatorExample> {
 
   void _handleKeyInput(KeyEvent key) {
     setState(() {
-      if (KeyParser.isDigit(key.key)) {
-        _inputNumber(key.key);
-      } else if (key.key == '+') {
+      if (key.code == KeyCode.char && KeyParser.isDigit(key.char)) {
+        _inputNumber(key.char!);
+      } else if (key.code == KeyCode.char && key.char == '+') {
         _inputOperation('+');
-      } else if (key.key == '-') {
+      } else if (key.code == KeyCode.char && key.char == '-') {
         _inputOperation('-');
-      } else if (key.key == '*') {
+      } else if (key.code == KeyCode.char && key.char == '*') {
         _inputOperation('*');
-      } else if (key.key == '/') {
+      } else if (key.code == KeyCode.char && key.char == '/') {
         _inputOperation('/');
-      } else if (key.key == '=' || key.key == 'Enter') {
+      } else if ((key.code == KeyCode.char && key.char == '=') || key.code == KeyCode.enter) {
         _calculate();
-      } else if (key.key == 'c' || key.key == 'C') {
+      } else if (key.code == KeyCode.char && (key.char == 'c' || key.char == 'C')) {
         _clear();
       }
     });

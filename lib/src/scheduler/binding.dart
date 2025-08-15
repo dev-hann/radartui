@@ -167,17 +167,17 @@ class RawKeyboard {
     
     if (trimmed.isEmpty) {
       // Empty line = Enter key
-      _controller.add(const KeyEvent('Enter'));
+      _controller.add(const KeyEvent(code: KeyCode.enter));
     } else if (trimmed == 'j') {
-      _controller.add(const KeyEvent('j'));
+      _controller.add(const KeyEvent(code: KeyCode.char, char: 'j'));
     } else if (trimmed == 'k') {
-      _controller.add(const KeyEvent('k'));
+      _controller.add(const KeyEvent(code: KeyCode.char, char: 'k'));
     } else if (trimmed == 'q') {
-      _controller.add(const KeyEvent('q'));
+      _controller.add(const KeyEvent(code: KeyCode.char, char: 'q'));
     } else {
       // For other input, treat as text
       for (final char in trimmed.split('')) {
-        _controller.add(KeyEvent(char));
+        _controller.add(KeyEvent(code: KeyCode.char, char: char));
       }
     }
   }

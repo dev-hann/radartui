@@ -100,25 +100,23 @@ class FocusManager extends NavigatorObserver {
 
   void _handleKeyEvent(KeyEvent event) {
     final scope = _currentScope;
-    AppLogger.log('🔑 FocusManager._handleKeyEvent() - key: "${event.key}", scope: ${scope?.hashCode}, currentFocus: ${scope?.currentFocus?.hashCode}');
+    AppLogger.log('🔑 FocusManager._handleKeyEvent() - key: "${event.toString()}", scope: ${scope?.hashCode}, currentFocus: ${scope?.currentFocus?.hashCode}');
     if (scope == null) {
       AppLogger.log('❌ No current scope for key event');
       return;
     }
 
-    switch (event.key) {
-      case 'Tab':
-        AppLogger.log('🔄 Tab: nextFocus()');
-        scope.nextFocus();
-        break;
-      case 'Shift+Tab':
+    if (event.code == KeyCode.tab) {
+      if (event.isShiftPressed) {
         AppLogger.log('🔄 Shift+Tab: previousFocus()');
         scope.previousFocus();
-        break;
-      default:
-        AppLogger.log('🎯 Forwarding key to currentFocus: ${scope.currentFocus?.hashCode}');
-        scope.currentFocus?.onKeyEvent?.call(event);
-        break;
+      } else {
+        AppLogger.log('🔄 Tab: nextFocus()');
+        scope.nextFocus();
+      }
+    } else {
+      AppLogger.log('🎯 Forwarding key to currentFocus: ${scope.currentFocus?.hashCode}');
+      scope.currentFocus?.onKeyEvent?.call(event);
     }
   }
 
