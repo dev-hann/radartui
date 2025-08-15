@@ -10,6 +10,21 @@ class _ButtonExampleState extends State<ButtonExample> {
   int _counter = 0;
 
   @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+      _handleKeyEvent(key);
+    });
+  }
+
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      Navigator.of(context).pop();
+      return;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -70,7 +85,7 @@ class _ButtonExampleState extends State<ButtonExample> {
             foregroundColor: Color.black,
             focusColor: Color.white,
             bold: true,
-            padding: EdgeInsets.symmetric(h: 3, v: 1),
+            padding: EdgeInsets.symmetric(horizontal: 3, vertical: 1),
           ),
         ),
       ],

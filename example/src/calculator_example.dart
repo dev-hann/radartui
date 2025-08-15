@@ -34,9 +34,14 @@ class _CalculatorExampleState extends State<CalculatorExample> {
     super.dispose();
   }
 
+  bool isDigit(String? char) {
+    if (char == null) return false;
+    return '0123456789'.contains(char);
+  }
+
   void _handleKeyInput(KeyEvent key) {
     setState(() {
-      if (key.code == KeyCode.char && KeyParser.isDigit(key.char)) {
+      if (key.code == KeyCode.char && isDigit(key.char)) {
         _inputNumber(key.char!);
       } else if (key.code == KeyCode.char && key.char == '+') {
         _inputOperation('+');
@@ -46,9 +51,11 @@ class _CalculatorExampleState extends State<CalculatorExample> {
         _inputOperation('*');
       } else if (key.code == KeyCode.char && key.char == '/') {
         _inputOperation('/');
-      } else if ((key.code == KeyCode.char && key.char == '=') || key.code == KeyCode.enter) {
+      } else if ((key.code == KeyCode.char && key.char == '=') ||
+          key.code == KeyCode.enter) {
         _calculate();
-      } else if (key.code == KeyCode.char && (key.char == 'c' || key.char == 'C')) {
+      } else if (key.code == KeyCode.char &&
+          (key.char == 'c' || key.char == 'C')) {
         _clear();
       }
     });
@@ -137,7 +144,7 @@ class _CalculatorExampleState extends State<CalculatorExample> {
                   width: 36,
                   color: Color.brightBlack,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(h: 1),
+                    padding: const EdgeInsets.symmetric(horizontal: 1),
                     child: Text(
                       _display,
                       style: const TextStyle(

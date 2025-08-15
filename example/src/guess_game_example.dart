@@ -47,15 +47,21 @@ class _GuessGameExampleState extends State<GuessGameExample> {
     _feedback = 'I\'m thinking of a number between 1-100!';
   }
 
+  bool isDigit(String? char) {
+    if (char == null) return false;
+    return '0123456789'.contains(char);
+  }
+
   void _handleKeyInput(KeyEvent key) {
     setState(() {
-      if (key.code == KeyCode.char && KeyParser.isDigit(key.char)) {
+      if (key.code == KeyCode.char && isDigit(key.char)) {
         if (_currentGuess.length < 3) {
           _currentGuess += key.char!;
         }
       } else if (key.code == KeyCode.enter) {
         _submitGuess();
-      } else if (key.code == KeyCode.char && (key.char == 'n' || key.char == 'N')) {
+      } else if (key.code == KeyCode.char &&
+          (key.char == 'n' || key.char == 'N')) {
         _startNewGame();
       } else if (key.code == KeyCode.backspace) {
         if (_currentGuess.isNotEmpty) {

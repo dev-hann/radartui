@@ -4,11 +4,10 @@ import 'package:radartui/src/foundation/offset.dart';
 import 'package:radartui/src/foundation/size.dart';
 import 'package:radartui/src/rendering/render_box.dart';
 import 'package:radartui/src/rendering/render_object.dart';
+import 'package:radartui/src/scheduler/binding.dart';
 import 'package:radartui/src/services/key_parser.dart';
 import 'package:radartui/src/widgets/basic/focus.dart';
 import 'package:radartui/src/widgets/framework.dart';
-
-typedef VoidCallback = void Function();
 
 class Button extends StatefulWidget {
   final String text;
@@ -31,7 +30,6 @@ class Button extends StatefulWidget {
 
 class _ButtonState extends State<Button> {
   late final FocusNode _focusNode;
-  bool _isPressed = false;
 
   @override
   void initState() {
@@ -57,18 +55,9 @@ class _ButtonState extends State<Button> {
 
   void _handleKeyEvent(KeyEvent event) {
     if (!widget.enabled) return;
-    
-    if (event.key == 'Enter' || event.key == ' ') {
-      if (event.type == KeyEventType.down) {
-        setState(() {
-          _isPressed = true;
-        });
-      } else if (event.type == KeyEventType.up) {
-        setState(() {
-          _isPressed = false;
-        });
-        widget.onPressed?.call();
-      }
+
+    if (event.code == KeyCode.enter || event.code == KeyCode.space) {
+      widget.onPressed?.call();
     }
   }
 
@@ -83,7 +72,6 @@ class _ButtonState extends State<Button> {
       text: widget.text,
       enabled: widget.enabled,
       focused: _focusNode.hasFocus,
-      pressed: _isPressed,
       style: widget.style ?? const ButtonStyle(),
       onTap: _onTap,
     );
@@ -94,7 +82,6 @@ class _ButtonRenderWidget extends RenderObjectWidget {
   final String text;
   final bool enabled;
   final bool focused;
-  final bool pressed;
   final ButtonStyle style;
   final VoidCallback? onTap;
 
@@ -102,7 +89,6 @@ class _ButtonRenderWidget extends RenderObjectWidget {
     required this.text,
     required this.enabled,
     required this.focused,
-    required this.pressed,
     required this.style,
     this.onTap,
   });
@@ -112,13 +98,12 @@ class _ButtonRenderWidget extends RenderObjectWidget {
 
   @override
   RenderButton createRenderObject(BuildContext context) => RenderButton(
-        text: text,
-        enabled: enabled,
-        focused: focused,
-        pressed: pressed,
-        style: style,
-        onTap: onTap,
-      );
+    text: text,
+    enabled: enabled,
+    focused: focused,
+    style: style,
+    onTap: onTap,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -126,7 +111,6 @@ class _ButtonRenderWidget extends RenderObjectWidget {
     renderButton.text = text;
     renderButton.enabled = enabled;
     renderButton.focused = focused;
-    renderButton.pressed = pressed;
     renderButton.style = style;
     renderButton.onTap = onTap;
   }
@@ -136,7 +120,6 @@ class RenderButton extends RenderBox {
   String text;
   bool enabled;
   bool focused;
-  bool pressed;
   ButtonStyle style;
   VoidCallback? onTap;
 
@@ -144,7 +127,6 @@ class RenderButton extends RenderBox {
     required this.text,
     required this.enabled,
     required this.focused,
-    required this.pressed,
     required this.style,
     this.onTap,
   });
@@ -164,8 +146,8 @@ class RenderButton extends RenderBox {
     final backgroundColor = _getBackgroundColor();
 
     // Draw background
-    for (int y = 0; y < size.height; y++) {
-      for (int x = 0; x < size.width; x++) {
+    for (int y = 0; y < size!.height; y++) {
+      for (int x = 0; x < size!.width; x++) {
         context.buffer.writeStyled(
           offset.x + x,
           offset.y + y,
@@ -184,12 +166,7 @@ class RenderButton extends RenderBox {
     final textX = offset.x + padding.left;
     final textY = offset.y + padding.top;
     for (int i = 0; i < text.length; i++) {
-      context.buffer.writeStyled(
-        textX + i,
-        textY,
-        text[i],
-        textStyle,
-      );
+      context.buffer.writeStyled(textX + i, textY, text[i], textStyle);
     }
   }
 
@@ -200,35 +177,53 @@ class RenderButton extends RenderBox {
     );
 
     // Top and bottom borders
-    for (int x = 0; x < size.width; x++) {
+    for (int x = 0; x < size!.width; x++) {
       context.buffer.writeStyled(offset.x + x, offset.y, '─', borderStyle);
       context.buffer.writeStyled(
-          offset.x + x, offset.y + size.height - 1, '─', borderStyle);
+        offset.x + x,
+        offset.y + size!.height - 1,
+        '─',
+        borderStyle,
+      );
     }
 
     // Left and right borders
-    for (int y = 0; y < size.height; y++) {
+    for (int y = 0; y < size!.height; y++) {
       context.buffer.writeStyled(offset.x, offset.y + y, '│', borderStyle);
       context.buffer.writeStyled(
-          offset.x + size.width - 1, offset.y + y, '│', borderStyle);
+        offset.x + size!.width - 1,
+        offset.y + y,
+        '│',
+        borderStyle,
+      );
     }
 
     // Corners
     context.buffer.writeStyled(offset.x, offset.y, '┌', borderStyle);
-    context.buffer.writeStyleed(
-        offset.x + size.width - 1, offset.y, '┐', borderStyle);
     context.buffer.writeStyled(
-        offset.x, offset.y + size.height - 1, '└', borderStyle);
+      offset.x + size!.width - 1,
+      offset.y,
+      '┐',
+      borderStyle,
+    );
     context.buffer.writeStyled(
-        offset.x + size.width - 1, offset.y + size.height - 1, '┘', borderStyle);
+      offset.x,
+      offset.y + size!.height - 1,
+      '└',
+      borderStyle,
+    );
+    context.buffer.writeStyled(
+      offset.x + size!.width - 1,
+      offset.y + size!.height - 1,
+      '┘',
+      borderStyle,
+    );
   }
 
   TextStyle _getTextStyle() {
     Color textColor;
     if (!enabled) {
       textColor = style.disabledColor;
-    } else if (pressed) {
-      textColor = style.pressedColor;
     } else if (focused) {
       textColor = style.focusColor;
     } else {
@@ -245,8 +240,6 @@ class RenderButton extends RenderBox {
   Color _getBackgroundColor() {
     if (!enabled) {
       return style.disabledBackgroundColor;
-    } else if (pressed) {
-      return style.pressedBackgroundColor;
     } else if (focused) {
       return style.focusBackgroundColor;
     } else {
@@ -260,8 +253,6 @@ class ButtonStyle {
   final Color backgroundColor;
   final Color focusColor;
   final Color focusBackgroundColor;
-  final Color pressedColor;
-  final Color pressedBackgroundColor;
   final Color disabledColor;
   final Color disabledBackgroundColor;
   final EdgeInsets padding;
@@ -272,12 +263,9 @@ class ButtonStyle {
     this.backgroundColor = Color.blue,
     this.focusColor = Color.brightWhite,
     this.focusBackgroundColor = Color.brightBlue,
-    this.pressedColor = Color.black,
-    this.pressedBackgroundColor = Color.cyan,
     this.disabledColor = Color.brightBlack,
     this.disabledBackgroundColor = Color.black,
-    this.padding = const EdgeInsets.symmetric(h: 2, v: 0),
+    this.padding = const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
     this.bold = false,
   });
 }
-

@@ -11,25 +11,23 @@ class BoxConstraints {
     this.maxHeight = 999999,
   });
 
-  const BoxConstraints.tight(Size size)
-      : minWidth = size.width,
-        maxWidth = size.width,
-        minHeight = size.height,
-        maxHeight = size.height;
+  BoxConstraints.tight(Size size)
+    : minWidth = size.width,
+      maxWidth = size.width,
+      minHeight = size.height,
+      maxHeight = size.height;
 
-  const BoxConstraints.loose(Size size)
-      : minWidth = 0,
-        maxWidth = size.width,
-        minHeight = 0,
-        maxHeight = size.height;
+  BoxConstraints.loose(Size size)
+    : minWidth = 0,
+      maxWidth = size.width,
+      minHeight = 0,
+      maxHeight = size.height;
 
-  const BoxConstraints.expand({
-    int? width,
-    int? height,
-  }) : minWidth = width ?? 999999,
-       maxWidth = width ?? 999999,
-       minHeight = height ?? 999999,
-       maxHeight = height ?? 999999;
+  const BoxConstraints.expand({int? width, int? height})
+    : minWidth = width ?? 999999,
+      maxWidth = width ?? 999999,
+      minHeight = height ?? 999999,
+      maxHeight = height ?? 999999;
 
   bool get isTight => minWidth >= maxWidth && minHeight >= maxHeight;
 
@@ -60,7 +58,8 @@ class BoxConstraints {
   int get hashCode => Object.hash(minWidth, maxWidth, minHeight, maxHeight);
 
   @override
-  String toString() => 'BoxConstraints(w: $minWidth-$maxWidth, h: $minHeight-$maxHeight)';
+  String toString() =>
+      'BoxConstraints(w: $minWidth-$maxWidth, h: $minHeight-$maxHeight)';
 }
 
 class Size {

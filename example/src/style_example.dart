@@ -115,7 +115,7 @@ class _StyleExampleState extends State<StyleExample> {
 
         Container(
           margin: EdgeInsets.all(2),
-          padding: EdgeInsets.symmetric(h: 4, v: 1),
+          padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
           color: Color.cyan,
           child: Text(
             'This is inside a styled container!',
