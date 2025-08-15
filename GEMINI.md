@@ -67,7 +67,9 @@ lib/
 ├── radartui.dart                    # Public API exports
 └── src/
     ├── foundation/                  # Basic data types & constants
+    │   ├── alignment.dart          # Alignment options for layouts
     │   ├── axis.dart               # Axis enum (horizontal/vertical)
+    │   ├── box_constraints.dart    # Constraints for box layouts
     │   ├── color.dart              # Color & TextStyle classes
     │   ├── constants.dart          # Layout constants & magic numbers
     │   ├── edge_insets.dart        # Spacing/padding utilities
@@ -90,15 +92,24 @@ lib/
     └── widgets/                     # User-facing widget API
         ├── framework.dart          # Core widget system (Widget, Element, State)
         ├── basic.dart              # Widget exports
+        ├── focus_manager.dart      # Manages widget focus state
+        ├── navigation.dart         # Navigator and routing system
+        ├── navigator_observer.dart # Observer for navigator events
         └── basic/                  # Concrete widget implementations
+            ├── button.dart         # Clickable button widget
             ├── center.dart         # Centering layout widget
             ├── column.dart         # Vertical flex layout
             ├── container.dart      # Box model widget with styling
+            ├── dialog.dart         # Dialog box widget
             ├── flex.dart           # Base flex layout widget
+            ├── focus.dart          # Widget to manage focus
+            ├── indicator.dart      # Loading indicator widget
+            ├── list_view.dart      # Scrollable list of widgets
             ├── padding.dart        # Spacing widget
             ├── row.dart            # Horizontal flex layout
             ├── sized_box.dart      # Fixed-size constraints
-            └── text.dart           # Styled text rendering
+            ├── text.dart           # Styled text rendering
+            └── textfield.dart      # Text input field widget
 ```
 
 ## 🧩 Core Components
@@ -125,6 +136,10 @@ lib/
   - Basic geometry types
   - Used extensively in layout calculations
   - Immutable value objects
+
+- **`alignment.dart`**: Defines alignment values for positioning.
+
+- **`box_constraints.dart`**: Defines constraints for `RenderBox` widgets.
 
 ### Services Layer (`lib/src/services/`)
 
@@ -198,6 +213,12 @@ lib/
   - Element tree management and updateChild() logic
   - StatefulWidget/StatelessWidget patterns
 
+- **`focus_manager.dart`**: Manages the focus tree and handles focus changes.
+
+- **`navigation.dart`**: Provides a `Navigator` for routing and screen management.
+
+- **`navigator_observer.dart`**: Listens to navigator events.
+
 #### Widget Implementations (`lib/src/widgets/basic/`):
 
 - **`text.dart`**: Text rendering with styles
@@ -206,6 +227,12 @@ lib/
 - **`center.dart`**: Centers child within available space
 - **`padding.dart`**: Adds spacing around child
 - **`sized_box.dart`**: Fixed dimensions and spacing
+- **`button.dart`**: A pressable button widget.
+- **`dialog.dart`**: A widget for creating dialog boxes.
+- **`focus.dart`**: A widget for managing focus for its descendants.
+- **`indicator.dart`**: A widget to show a loading indicator.
+- **`list_view.dart`**: A scrollable list of widgets.
+- **`textfield.dart`**: A text input field.
 
 ## 🔗 Dependencies & Import Graph
 
@@ -501,13 +528,7 @@ AppLogger.log('Operation took: ${stopwatch.elapsedMilliseconds}ms');
    - Integration with frame scheduler
    - Smooth transitions between states
 
-2. **Focus Management**:
-
-   - Tab navigation between widgets
-   - Focus highlighting and indicators
-   - Keyboard accessibility
-
-3. **Theme System**:
+2. **Theme System**:
    - Centralized color/style configuration
    - Light/dark theme support
    - Custom theme definitions
@@ -561,6 +582,8 @@ As the framework grows, consider these architectural improvements:
 - Text rendering and styling
 - Simple layouts (Row, Column, Container)
 - Keyboard input handling
+- Focus Management
+- Navigation and Routing
 
 ### Future Versions:
 
