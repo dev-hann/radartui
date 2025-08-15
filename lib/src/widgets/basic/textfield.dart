@@ -1,11 +1,11 @@
-import 'package:radartui/src/foundation/color.dart';
-import 'package:radartui/src/foundation/offset.dart';
-import 'package:radartui/src/foundation/size.dart';
-import 'package:radartui/src/rendering/render_box.dart';
-import 'package:radartui/src/rendering/render_object.dart';
-import 'package:radartui/src/services/key_parser.dart';
-import 'package:radartui/src/widgets/basic/focus.dart';
-import 'package:radartui/src/widgets/framework.dart';
+import '../../foundation/color.dart';
+import '../../foundation/offset.dart';
+import '../../foundation/size.dart';
+import '../../rendering/render_box.dart';
+import '../../rendering/render_object.dart';
+import '../../services/key_parser.dart';
+import 'focus.dart';
+import '../framework.dart';
 
 class TextEditingController {
   String _text = '';
