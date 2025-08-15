@@ -4,6 +4,7 @@ import 'src/counter_example.dart';
 import 'src/dashboard_example.dart';
 import 'src/focus_example.dart';
 import 'src/guess_game_example.dart';
+import 'src/manual_test.dart';
 import 'src/spinner_example.dart';
 import 'src/style_example.dart';
 
@@ -27,6 +28,7 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/spinner': (context) => const SpinnerExample(),
         '/style': (context) => const StyleExample(),
         '/focus': (context) => const FocusExample(),
+        '/manual_test': (context) => const ManualTest(),
       },
     );
   }
@@ -48,6 +50,7 @@ class _MenuScreenState extends State<MenuScreen> {
     'Spinner',
     'Style Demo',
     'Focus Example',
+    'Manual Test',
   ];
 
   final List<String> _exampleRoutes = [
@@ -58,10 +61,15 @@ class _MenuScreenState extends State<MenuScreen> {
     '/spinner',
     '/style',
     '/focus',
+    '/manual_test',
   ];
 
   void _onExampleSelected(int index, String item) async {
+    SchedulerBinding.instance.keyboard.inputTest('j');
+    await Future.delayed(const Duration(seconds: 1));
     await Navigator.of(context).pushNamed(_exampleRoutes[index]);
+    await Future.delayed(const Duration(seconds: 1));
+    SchedulerBinding.instance.keyboard.inputTest('j');
   }
 
   @override

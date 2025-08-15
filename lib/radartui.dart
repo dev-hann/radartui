@@ -9,6 +9,7 @@ export 'src/widgets/framework.dart';
 export 'src/widgets/basic.dart';
 export 'src/services/key_parser.dart';
 export 'src/services/logger.dart';
+export 'src/scheduler/binding.dart';
 
 import 'package:radartui/src/scheduler/binding.dart';
 import 'package:radartui/src/widgets/framework.dart';

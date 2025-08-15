@@ -20,6 +20,10 @@ class SchedulerBinding {
   final terminal = Terminal();
   late final outputBuffer = OutputBuffer(terminal);
   final RawKeyboard keyboard = RawKeyboard(); // Added RawKeyboard
+  void inputTest(String input) {
+    keyboard.inputTest(input);
+  }
+
   Element? _rootElement;
   bool _frameScheduled = false;
   final List<FrameCallback> _postFrameCallbacks = [];
@@ -65,7 +69,7 @@ class SchedulerBinding {
     _layout(_rootElement!);
     _paint(_rootElement!);
     _frameScheduled = false;
-    
+
     // 프레임 처리가 완료된 후 post-frame 콜백들을 실행
     if (_postFrameCallbacks.isNotEmpty) {
       final callbacks = List<FrameCallback>.from(_postFrameCallbacks);
@@ -111,6 +115,10 @@ class RawKeyboard {
   final _controller = StreamController<KeyEvent>.broadcast();
   bool _rawModeSupported = false;
 
+  void inputTest(String input) {
+    _controller.add(KeyEvent(code: KeyCode.char, char: input));
+  }
+
   void initialize() {
     // Try to set terminal modes and track if it's supported
     _rawModeSupported = updateStdinMode(false);
@@ -146,17 +154,17 @@ class RawKeyboard {
         .transform(utf8.decoder)
         .transform(LineSplitter())
         .listen(
-      (String line) {
-        AppLogger.log('Line mode input: "$line"');
-        _processLineInput(line);
-      },
-      onError: (e) {
-        AppLogger.log('Line mode stdin error: $e');
-      },
-      onDone: () {
-        AppLogger.log('Line mode stdin done');
-      },
-    );
+          (String line) {
+            AppLogger.log('Line mode input: "$line"');
+            _processLineInput(line);
+          },
+          onError: (e) {
+            AppLogger.log('Line mode stdin error: $e');
+          },
+          onDone: () {
+            AppLogger.log('Line mode stdin done');
+          },
+        );
   }
 
   void _processLineInput(String line) {
@@ -164,7 +172,7 @@ class RawKeyboard {
     // For navigation, we can support simple commands:
     // "j" -> down, "k" -> up, "enter" or "" -> select
     final trimmed = line.trim().toLowerCase();
-    
+
     if (trimmed.isEmpty) {
       // Empty line = Enter key
       _controller.add(const KeyEvent(code: KeyCode.enter));
