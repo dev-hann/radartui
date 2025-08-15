@@ -45,22 +45,25 @@ class FocusManager extends NavigatorObserver {
     _routeScopes.remove(route)?.dispose();
 
     if (previousRoute != null) {
-      // 다음 프레임이 완료된 후 포커스 복원을 예약합니다.
-      // 이렇게 하면 위젯 트리가 완전히 재구성되고 새로운 FocusNode들이
-      // FocusScope에 등록된 후에 포커스 복원이 실행됩니다.
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        final previousScope = _getOrCreateScope(previousRoute);
-        _activateScope(previousScope);
-        
-        // If no nodes are registered yet, schedule another frame to wait for widget rebuilds
-        if (previousScope.nodes.isEmpty) {
+      // 🔧 FIX: 기존 스코프를 복원 (새로 생성하지 않음)
+      final previousScope = _routeScopes[previousRoute];
+      if (previousScope != null) {
+        // 다음 프레임에서 포커스 복원
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          _activateScope(previousScope);
+          
+          // 위젯들이 rebuild되기를 기다린 후 한번 더 시도
           SchedulerBinding.instance.addPostFrameCallback((_) {
-            if (previousScope.nodes.isNotEmpty) {
-              previousScope.notifyAllNodes();
-            }
+            // 모든 노드들이 올바른 스코프에 재등록되었는지 확인
+            _ensureNodesRegistered(previousScope);
+            previousScope.notifyAllNodes();
           });
-        }
-      });
+        });
+      } else {
+        // 기존 스코프가 없다면 새로 생성 (fallback)
+        final newScope = _getOrCreateScope(previousRoute);
+        _activateScope(newScope);
+      }
     } else {
       _currentScope = null;
     }
