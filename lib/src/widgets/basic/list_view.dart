@@ -76,6 +76,9 @@ class _ListViewState extends State<ListView> {
       // 새로운 focus node의 상태로 동기화
       _hasFocus = _focusNode.hasFocus;
     }
+    
+    // 🔧 FIX: 네비게이션 후 올바른 스코프에 재등록 보장
+    _focusNode.ensureRegistered();
   }
 
   void _handleKeyEvent(KeyEvent event) {
