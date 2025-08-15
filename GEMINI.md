@@ -14,6 +14,7 @@ This document provides comprehensive architectural information and development g
 - [Performance Considerations](#-performance-considerations)
 - [Testing Strategy](#-testing-strategy)
 - [Future Improvements](#-future-improvements)
+- [Documentation Guide](#-documentation-guide)
 
 ## 🎯 Project Overview
 
@@ -62,43 +63,20 @@ RadarTUI follows a layered architecture inspired by Flutter:
 
 ## 📁 Directory Structure
 
+This directory structure provides a high-level overview. For more details on the role of each directory, please refer to the `README.md` file within it.
+
 ```
 lib/
-├── radartui.dart                    # Public API exports
+├── radartui.dart
 └── src/
-    ├── foundation/                  # Basic data types & constants
-    │   ├── axis.dart               # Axis enum (horizontal/vertical)
-    │   ├── color.dart              # Color & TextStyle classes
-    │   ├── constants.dart          # Layout constants & magic numbers
-    │   ├── edge_insets.dart        # Spacing/padding utilities
-    │   ├── offset.dart             # 2D position representation
-    │   └── size.dart               # 2D dimensions
-    │
-    ├── services/                    # System interaction layer
-    │   ├── key_parser.dart         # Keyboard input parsing
-    │   ├── logger.dart             # Debug logging system
-    │   ├── output_buffer.dart      # Terminal output buffering
-    │   └── terminal.dart           # Terminal control (cursor, colors)
-    │
-    ├── rendering/                   # Layout & painting engine
-    │   ├── render_object.dart      # Base rendering primitives
-    │   └── render_box.dart         # Box layout model & constraints
-    │
-    ├── scheduler/                   # Frame scheduling & lifecycle
-    │   └── binding.dart            # Main app lifecycle & frame pump
-    │
-    └── widgets/                     # User-facing widget API
-        ├── framework.dart          # Core widget system (Widget, Element, State)
-        ├── basic.dart              # Widget exports
-        └── basic/                  # Concrete widget implementations
-            ├── center.dart         # Centering layout widget
-            ├── column.dart         # Vertical flex layout
-            ├── container.dart      # Box model widget with styling
-            ├── flex.dart           # Base flex layout widget
-            ├── padding.dart        # Spacing widget
-            ├── row.dart            # Horizontal flex layout
-            ├── sized_box.dart      # Fixed-size constraints
-            └── text.dart           # Styled text rendering
+    ├── foundation/ ([설명](./lib/src/foundation/README.md))
+    ├── services/ ([설명](./lib/src/services/README.md))
+    ├── rendering/ ([설명](./lib/src/rendering/README.md))
+    ├── scheduler/ ([설명](./lib/src/scheduler/README.md))
+    └── widgets/ ([설명](./lib/src/widgets/README.md))
+        └── basic/ ([설명](./lib/src/widgets/basic/README.md))
+example/ ([설명](./example/README.md))
+└── src/ ([설명](./example/src/README.md))
 ```
 
 ## 🧩 Core Components
@@ -110,21 +88,8 @@ lib/
 #### Key Files:
 
 - **`constants.dart`** ⭐ CENTRAL CONFIG
-
-  - Layout constants (max dimensions, defaults)
-  - Prevents magic numbers scattered throughout codebase
-  - Import this whenever using layout calculations
-
 - **`color.dart`**
-
-  - 16 ANSI terminal colors + bright variants
-  - TextStyle class with equals/hashCode implementation
-  - Used by: output_buffer, container, text widgets
-
 - **`size.dart`**, **`offset.dart`**, **`edge_insets.dart`**
-  - Basic geometry types
-  - Used extensively in layout calculations
-  - Immutable value objects
 
 ### Services Layer (`lib/src/services/`)
 
@@ -133,28 +98,9 @@ lib/
 #### Key Files:
 
 - **`terminal.dart`** 🖥️ TERMINAL CONTROL
-
-  - ANSI escape sequences for cursor positioning
-  - Terminal size detection with fallbacks
-  - Color/style output formatting
-
 - **`output_buffer.dart`** ⚡ RENDERING OPTIMIZATION
-
-  - Double-buffered terminal output
-  - Only updates changed cells (diff-based)
-  - Cell equality optimization with proper hashCode
-  - Critical for performance at large terminal sizes
-
 - **`key_parser.dart`** ⌨️ INPUT HANDLING
-
-  - Raw keyboard input → structured KeyEvent objects
-  - Handles special keys, arrow keys, Ctrl combinations
-  - ANSI escape sequence parsing
-  - const constructors for performance
-
 - **`logger.dart`** 🐛 DEBUG SUPPORT
-  - File-based logging (avoids terminal interference)
-  - Can be extended to override print() function
 
 ### Rendering Layer (`lib/src/rendering/`)
 
@@ -163,15 +109,7 @@ lib/
 #### Key Files:
 
 - **`render_object.dart`** 🎨 PAINTING ABSTRACTION
-
-  - Base classes: RenderObject, PaintingContext, Constraints
-  - Layout protocol: performLayout() → paint()
-  - Parent-child relationships and tree traversal
-
 - **`render_box.dart`** 📐 BOX LAYOUT MODEL
-  - BoxConstraints system (like CSS box model)
-  - FlexParentData for flex layouts
-  - ContainerRenderObjectMixin for multi-child containers
 
 ### Scheduler Layer (`lib/src/scheduler/`)
 
@@ -180,11 +118,6 @@ lib/
 #### Key Files:
 
 - **`binding.dart`** ⚙️ MAIN APP CONTROLLER
-  - SchedulerBinding singleton: the heart of the framework
-  - Frame scheduling: build → layout → paint pipeline
-  - Keyboard input stream management
-  - Signal handling (Ctrl+C, terminal resize)
-  - App initialization and cleanup
 
 ### Widgets Layer (`lib/src/widgets/`)
 
@@ -193,20 +126,43 @@ lib/
 #### Key Files:
 
 - **`framework.dart`** 🏛️ WIDGET SYSTEM CORE
-  - Widget, Element, State base classes
-  - Widget lifecycle: createElement() → mount() → build() → update()
-  - Element tree management and updateChild() logic
-  - StatefulWidget/StatelessWidget patterns
+- **`basic/` & `basic.dart`**
 
-#### Widget Implementations (`lib/src/widgets/basic/`):
+## 🔗 Dependencies & Import Graph
 
-- **`text.dart`**: Text rendering with styles
-- **`container.dart`**: Box model with padding, margin, colors
-- **`row.dart`/`column.dart`**: Flex layouts (horizontal/vertical)
-- **`center.dart`**: Centers child within available space
-- **`padding.dart`**: Adds spacing around child
-- **`sized_box.dart`**: Fixed dimensions and spacing
+(Sections on Dependencies, Refactoring, Common Patterns, etc. remain unchanged)
+...
 
+## 📖 문서화 가이드 (Documentation Guide)
+
+이 프로젝트는 코드의 가독성과 유지보수성을 높이기 위해 폴더별 문서화를 지향합니다. 코드를 변경할 때는 반드시 관련 문서를 함께 업데이트해야 합니다.
+
+### 🔄 문서 업데이트 프로세스
+
+1.  **코드 변경**: 특정 폴더 내의 파일을 수정, 추가 또는 삭제합니다.
+2.  **관련 `README.md` 확인**: 변경이 발생한 폴더의 `README.md` 파일을 엽니다.
+3.  **문서 내용 수정**:
+    *   파일의 역할이 변경되었으면 설명을 수정합니다.
+    *   새로운 파일이 추가되었으면 목록에 추가하고 간단한 설명을 덧붙입니다.
+    *   파일이 삭제되었으면 목록에서 제거합니다.
+    *   폴더의 전반적인 역할이 변경되었다면, `README.md` 상단의 폴더 설명도 함께 수정합니다.
+4.  **변경사항 함께 커밋**: 코드 변경사항과 문서 변경사항을 하나의 원자적(atomic) 커밋으로 묶어 제출합니다. 커밋 메시지에 `docs:` 와 같이 문서 변경이 포함되었음을 명시하면 좋습니다.
+
+**예시 커밋 메시지:**
+
+```
+feat(widgets): Add ListView widget and update docs
+
+- Add new ListView widget for scrollable lists.
+- Update `lib/src/widgets/basic/README.md` to include ListView.
+```
+
+이 가이드를 통해 프로젝트의 모든 문서가 항상 최신 상태로 유지될 수 있도록 협조해 주시기 바랍니다.
+
+---
+(The rest of the original file content follows)
+...
+''' + '''
 ## 🔗 Dependencies & Import Graph
 
 ### Import Rules & Dependencies
@@ -403,7 +359,7 @@ class _StatefulExampleState extends State<StatefulExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Counter: $_counter');
+    return Text('''Counter: $_counter''');
   }
 }
 ```
@@ -417,7 +373,7 @@ void updateTerminalMode(bool value) {
     stdin.lineMode = value;
     stdin.echoMode = value;
   } catch (e) {
-    AppLogger.log('Failed to set terminal mode: $e');
+    AppLogger.log('''Failed to set terminal mode: $e''');
     // Continue execution - don't break the app
   }
 }
@@ -428,7 +384,7 @@ static KeyEvent parseInput(List<int> data) {
     // Parse input
     return KeyEvent(parsedKey);
   } catch (e) {
-    AppLogger.log('Input parsing error: $e');
+    AppLogger.log('''Input parsing error: $e''');
     return const KeyEvent('Unknown');
   }
 }
@@ -466,7 +422,7 @@ static KeyEvent parseInput(List<int> data) {
 // Add performance logging to hot paths:
 final stopwatch = Stopwatch()..start();
 // ... expensive operation ...
-AppLogger.log('Operation took: ${stopwatch.elapsedMilliseconds}ms');
+AppLogger.log('''Operation took: ${stopwatch.elapsedMilliseconds}ms''');
 ```
 
 ## 🧪 Testing Strategy
@@ -587,3 +543,29 @@ When contributing to RadarTUI:
 5. **Consider performance implications** of your changes
 
 This document is a living guide - keep it updated as the framework evolves! 🚀
+
+## 📖 문서화 가이드 (Documentation Guide)
+
+이 프로젝트는 코드의 가독성과 유지보수성을 높이기 위해 폴더별 문서화를 지향합니다. 코드를 변경할 때는 반드시 관련 문서를 함께 업데이트해야 합니다.
+
+### 🔄 문서 업데이트 프로세스
+
+1.  **코드 변경**: 특정 폴더 내의 파일을 수정, 추가 또는 삭제합니다.
+2.  **관련 `README.md` 확인**: 변경이 발생한 폴더의 `README.md` 파일을 엽니다.
+3.  **문서 내용 수정**:
+    *   파일의 역할이 변경되었으면 설명을 수정합니다.
+    *   새로운 파일이 추가되었으면 목록에 추가하고 간단한 설명을 덧붙입니다.
+    *   파일이 삭제되었으면 목록에서 제거합니다.
+    *   폴더의 전반적인 역할이 변경되었다면, `README.md` 상단의 폴더 설명도 함께 수정합니다.
+4.  **변경사항 함께 커밋**: 코드 변경사항과 문서 변경사항을 하나의 원자적(atomic) 커밋으로 묶어 제출합니다. 커밋 메시지에 `docs:` 와 같이 문서 변경이 포함되었음을 명시하면 좋습니다.
+
+**예시 커밋 메시지:**
+
+```
+feat(widgets): Add ListView widget and update docs
+
+- Add new ListView widget for scrollable lists.
+- Update `lib/src/widgets/basic/README.md` to include ListView.
+```
+
+이 가이드를 통해 프로젝트의 모든 문서가 항상 최신 상태로 유지될 수 있도록 협조해 주시기 바랍니다.
