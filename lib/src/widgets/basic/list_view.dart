@@ -8,11 +8,9 @@ class ListView extends StatefulWidget {
   final String? unfocusedBorder;
   final int initialSelectedIndex;
   final void Function(int index, String item)? onItemSelected;
-  final FocusNode? focusNode;
 
   const ListView({
     required this.items,
-    this.focusNode,
     this.selectedPrefix = '> ',
     this.unselectedPrefix = '  ',
     this.focusedBorder = '[ ]',
@@ -27,75 +25,41 @@ class ListView extends StatefulWidget {
 
 class _ListViewState extends State<ListView> {
   int selectedIndex = 0;
-  late FocusNode _focusNode;
+  final FocusNode _focusNode = FocusNode();
   bool _hasFocus = false;
 
   @override
   void initState() {
-    AppLogger.log('🔵 ListView.initState() - ${hashCode}');
     selectedIndex = widget.initialSelectedIndex.clamp(
       0,
       widget.items.length - 1,
     );
-    _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChanged);
     // 초기 focus 상태 동기화
     _hasFocus = _focusNode.hasFocus;
-    AppLogger.log(
-      '🔵 ListView.initState() - focus: $_hasFocus, focusNode: ${_focusNode.hashCode}',
-    );
+
     super.initState();
   }
 
   @override
   void dispose() {
-    // The widget owns the focus node, so it should not dispose it here.
-    // The owner of the node is responsible for disposing it.
     _focusNode.removeListener(_onFocusChanged);
     super.dispose();
   }
 
-  @override
-  void didUpdateWidget(ListView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.focusNode != oldWidget.focusNode) {
-      // Clean up listeners from the old node
-      _focusNode.removeListener(_onFocusChanged);
-      _focusNode.onKeyEvent = null;
-
-      // Set up the new node
-      _focusNode = widget.focusNode ?? FocusNode();
-      _focusNode.onKeyEvent = _handleKeyEvent;
-      _focusNode.addListener(_onFocusChanged);
-      // 새로운 focus node의 상태로 동기화
-      _hasFocus = _focusNode.hasFocus;
-    }
-
-    // 🔧 FIX: 네비게이션 후 올바른 스코프에 재등록 보장
-    _focusNode.ensureRegistered();
-  }
-
   void _handleKeyEvent(KeyEvent event) {
-    AppLogger.log(
-      '🎯 ListView._handleKeyEvent() - key: "${event.toString()}", focus: $_hasFocus, selectedIndex: $selectedIndex',
-    );
     if (event.code == KeyCode.arrowUp ||
         (event.code == KeyCode.char && event.char == 'k')) {
-      AppLogger.log('🔼 Moving selection UP');
       _moveSelection(-1);
     } else if (event.code == KeyCode.arrowDown ||
         (event.code == KeyCode.char && event.char == 'j')) {
-      AppLogger.log('🔽 Moving selection DOWN');
       _moveSelection(1);
     } else if (event.code == KeyCode.enter ||
         (event.code == KeyCode.char && event.char == ' ')) {
-      AppLogger.log('✅ Selecting item $selectedIndex');
       if (selectedIndex >= 0 && selectedIndex < widget.items.length) {
         widget.onItemSelected?.call(selectedIndex, widget.items[selectedIndex]);
       }
-    } else {
-      AppLogger.log('❓ Unhandled key: "${event.toString()}"');
     }
   }
 
@@ -113,9 +77,6 @@ class _ListViewState extends State<ListView> {
   }
 
   void _onFocusChanged() {
-    AppLogger.log(
-      '🔄 ListView._onFocusChanged() - hasFocus: ${_focusNode.hasFocus}',
-    );
     setState(() {
       // focus 상태 동기화 및 UI 갱신
       _hasFocus = _focusNode.hasFocus;
@@ -124,9 +85,6 @@ class _ListViewState extends State<ListView> {
 
   @override
   Widget build(BuildContext context) {
-    AppLogger.log(
-      '🎨 ListView.build() - selectedIndex: $selectedIndex, hasFocus: $_hasFocus',
-    );
     final borderPrefix =
         _hasFocus ? widget.focusedBorder : widget.unfocusedBorder;
 
@@ -142,10 +100,6 @@ class _ListViewState extends State<ListView> {
       final isSelected = index == selectedIndex && _hasFocus;
       final prefix =
           isSelected ? widget.selectedPrefix : widget.unselectedPrefix;
-
-      AppLogger.log(
-        '🔍 Item $index: $item - selected: $isSelected, prefix: "$prefix"',
-      );
       children.add(Text('$prefix$item'));
     }
 

@@ -1,17 +1,14 @@
 import '../../services/key_parser.dart';
-import '../../services/logger.dart';
 import '../focus_manager.dart';
+import 'package:collection/collection.dart';
 
 class FocusNode {
+  FocusNode() {
+    _autoRegister();
+  }
   bool _hasFocus = false;
   FocusScope? _scope;
   Function(KeyEvent)? onKeyEvent;
-
-  FocusNode() {
-    AppLogger.log('🔍 FocusNode created: ${hashCode}');
-    // Automatically register with the currently active FocusScope
-    _autoRegister();
-  }
 
   bool get hasFocus => _hasFocus;
 
@@ -178,6 +175,3 @@ class FocusScope {
     _nodes.clear();
   }
 }
-
-// FocusManager is imported from focus_manager.dart
-// This file only manages the basic FocusScope

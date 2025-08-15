@@ -65,11 +65,7 @@ class _MenuScreenState extends State<MenuScreen> {
   ];
 
   void _onExampleSelected(int index, String item) async {
-    SchedulerBinding.instance.keyboard.inputTest('j');
-    await Future.delayed(const Duration(seconds: 1));
     await Navigator.of(context).pushNamed(_exampleRoutes[index]);
-    await Future.delayed(const Duration(seconds: 1));
-    SchedulerBinding.instance.keyboard.inputTest('j');
   }
 
   @override
