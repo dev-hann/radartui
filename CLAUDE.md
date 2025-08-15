@@ -65,6 +65,26 @@ Each tool has a **clear and strictly separated role**, ensuring there is no conf
 
 ---
 
+## 📁 Directory Structure
+
+This directory structure provides a high-level overview. For more details on the role of each directory and its files, **please refer to the `README.md` file within each directory.**
+
+```
+lib/
+├── radartui.dart
+└── src/
+    ├── foundation/ (-> see lib/src/foundation/README.md)
+    ├── services/   (-> see lib/src/services/README.md)
+    ├── rendering/  (-> see lib/src/rendering/README.md)
+    ├── scheduler/  (-> see lib/src/scheduler/README.md)
+    └── widgets/    (-> see lib/src/widgets/README.md)
+        └── basic/  (-> see lib/src/widgets/basic/README.md)
+example/            (-> see example/README.md)
+└── src/            (-> see example/src/README.md)
+```
+
+---
+
 # Dart Style & Lint Rules
 
 All Dart code in RadarTUI must follow the style guide and lint rules below.
