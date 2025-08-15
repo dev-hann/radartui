@@ -1,3 +1,5 @@
+import 'logger.dart';
+
 enum KeyCode {
   unknown,
   arrowUp,
@@ -58,6 +60,11 @@ class KeyParser {
       return const KeyEvent(code: KeyCode.unknown);
     }
 
+    // Debug logging for key input analysis
+    final hex = rawData.map((e) => e.toRadixString(16).padLeft(2, '0')).join(' ');
+    final ascii = rawData.map((e) => e >= 32 && e <= 126 ? String.fromCharCode(e) : '·').join('');
+    AppLogger.log('🔑 KeyParser.parse() - raw: [$hex] ascii: [$ascii]');
+
     bool isShift = false;
     bool isAlt = false;
     bool isCtrl = false;
@@ -104,6 +111,8 @@ class KeyParser {
           return const KeyEvent(code: KeyCode.home);
         case 70: // End
           return const KeyEvent(code: KeyCode.end);
+        case 90: // Shift+Tab (ESC [ Z)
+          return const KeyEvent(code: KeyCode.tab, isShiftPressed: true);
       }
     }
 
