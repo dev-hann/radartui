@@ -1,5 +1,3 @@
-import 'package:radartui/radartui.dart';
-
 import '../framework.dart';
 import 'focus.dart';
 import 'text.dart';
@@ -39,7 +37,6 @@ class _ListViewState extends State<ListView> {
 
   @override
   void initState() {
-    AppLogger.log('🔵 ListView.initState() - ${hashCode}');
     selectedIndex = widget.initialSelectedIndex.clamp(
       0,
       widget.items.length - 1,
@@ -49,7 +46,6 @@ class _ListViewState extends State<ListView> {
     _focusNode.addListener(_onFocusChanged);
     // 초기 focus 상태 동기화
     _hasFocus = _focusNode.hasFocus;
-    AppLogger.log('🔵 ListView.initState() - focus: $_hasFocus, focusNode: ${_focusNode.hashCode}');
     super.initState();
   }
 
@@ -77,20 +73,15 @@ class _ListViewState extends State<ListView> {
       _hasFocus = _focusNode.hasFocus;
     }
     
-    // 🔧 FIX: 네비게이션 후 올바른 스코프에 재등록 보장
     _focusNode.ensureRegistered();
   }
 
   void _handleKeyEvent(KeyEvent event) {
-    AppLogger.log('🎯 ListView._handleKeyEvent() - key: "${event.toString()}", focus: $_hasFocus, selectedIndex: $selectedIndex');
     if (event.code == KeyCode.arrowUp || (event.code == KeyCode.char && event.char == 'k')) {
-      AppLogger.log('🔼 Moving selection UP');
       _moveSelection(-1);
     } else if (event.code == KeyCode.arrowDown || (event.code == KeyCode.char && event.char == 'j')) {
-      AppLogger.log('🔽 Moving selection DOWN');
       _moveSelection(1);
     } else if (event.code == KeyCode.enter || (event.code == KeyCode.char && event.char == ' ')) {
-      AppLogger.log('✅ Selecting item $selectedIndex');
       if (selectedIndex >= 0 && selectedIndex < widget.items.length) {
         widget.onItemSelected?.call(
           selectedIndex,
@@ -98,7 +89,6 @@ class _ListViewState extends State<ListView> {
         );
       }
     } else {
-      AppLogger.log('❓ Unhandled key: "${event.toString()}"');
     }
   }
 
@@ -110,20 +100,16 @@ class _ListViewState extends State<ListView> {
         widget.items.length - 1,
       );
     });
-    AppLogger.log('📍 Selection moved: $oldIndex -> $selectedIndex (direction: $direction)');
   }
 
   void _onFocusChanged() {
-    AppLogger.log('🔄 ListView._onFocusChanged() - hasFocus: ${_focusNode.hasFocus}');
     setState(() {
-      // focus 상태 동기화 및 UI 갱신
       _hasFocus = _focusNode.hasFocus;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    AppLogger.log('🎨 ListView.build() - selectedIndex: $selectedIndex, hasFocus: $_hasFocus');
     final borderPrefix =
         _hasFocus ? widget.focusedBorder : widget.unfocusedBorder;
 
@@ -140,7 +126,6 @@ class _ListViewState extends State<ListView> {
       final prefix =
           isSelected ? widget.selectedPrefix : widget.unselectedPrefix;
 
-      AppLogger.log('🔍 Item $index: $item - selected: $isSelected, prefix: "$prefix"');
       children.add(Text('$prefix$item'));
     }
 

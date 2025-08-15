@@ -19,7 +19,7 @@ class SchedulerBinding {
 
   final terminal = Terminal();
   late final outputBuffer = OutputBuffer(terminal);
-  final RawKeyboard keyboard = RawKeyboard(); // Added RawKeyboard
+  final RawKeyboard keyboard = RawKeyboard();
   Element? _rootElement;
   bool _frameScheduled = false;
   final List<FrameCallback> _postFrameCallbacks = [];
@@ -66,11 +66,10 @@ class SchedulerBinding {
     _paint(_rootElement!);
     _frameScheduled = false;
     
-    // 프레임 처리가 완료된 후 post-frame 콜백들을 실행
     if (_postFrameCallbacks.isNotEmpty) {
       final callbacks = List<FrameCallback>.from(_postFrameCallbacks);
       _postFrameCallbacks.clear();
-      final timeStamp = Duration.zero; // 간단한 구현을 위해 더미 타임스탬프 사용
+      final timeStamp = Duration.zero;
       for (final callback in callbacks) {
         try {
           callback(timeStamp);
@@ -130,7 +129,6 @@ class RawKeyboard {
           AppLogger.log('Stdin error: $e');
         },
         onDone: () {
-          AppLogger.log('Stdin done - raw mode');
         },
       );
     } else {
@@ -141,13 +139,11 @@ class RawKeyboard {
   }
 
   void _initializeLineMode() {
-    // In line mode, we read complete lines and simulate key events
     _stdinSubscription = stdin
         .transform(utf8.decoder)
         .transform(LineSplitter())
         .listen(
       (String line) {
-        AppLogger.log('Line mode input: "$line"');
         _processLineInput(line);
       },
       onError: (e) {
