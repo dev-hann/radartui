@@ -6,6 +6,7 @@ import '../../rendering/render_object.dart';
 import '../../services/key_parser.dart';
 import 'focus.dart';
 import '../framework.dart';
+import '../focus_manager.dart';
 
 class TextEditingController {
   String _text = '';
@@ -147,6 +148,9 @@ class _TextFieldState extends State<TextField> {
     _focusNode = FocusNode();
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChanged);
+    
+    // Register with FocusManager directly like ListView does
+    FocusManager.instance.registerNode(_focusNode);
   }
 
   @override
@@ -178,6 +182,9 @@ class _TextFieldState extends State<TextField> {
     if (_isControllerOwned) {
       _controller.dispose();
     }
+    
+    // Unregister from FocusManager before disposing
+    FocusManager.instance.unregisterNode(_focusNode);
     _focusNode.dispose();
     super.dispose();
   }
@@ -204,6 +211,11 @@ class _TextFieldState extends State<TextField> {
   void _onFocusChanged() {
     // Use immediate setState to prevent interference with rapid text input
     setState(() {});
+  }
+
+  // Public method to request focus like ListView pattern
+  void requestFocus() {
+    FocusManager.instance.requestFocus(_focusNode);
   }
 
   void _handleKeyEvent(KeyEvent event) {
@@ -245,15 +257,13 @@ class _TextFieldState extends State<TextField> {
 
   @override
   Widget build(BuildContext context) {
-    return Focus(
-      focusNode: _focusNode,
-      child: _TextField(
-        text: _controller.text,
-        cursorPosition: _controller.cursorPosition,
-        placeholder: widget.placeholder,
-        style: widget.style,
-        hasFocus: _focusNode.hasFocus,
-      ),
+    // Build directly without Focus wrapper - like ListView does
+    return _TextField(
+      text: _controller.text,
+      cursorPosition: _controller.cursorPosition,
+      placeholder: widget.placeholder,
+      style: widget.style,
+      hasFocus: _focusNode.hasFocus,
     );
   }
 }
