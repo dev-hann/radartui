@@ -57,7 +57,7 @@ class OutputBuffer {
   void clear() {
     for (var y = 0; y < terminal.height; y++) {
       for (var x = 0; x < terminal.width; x++) {
-        _grid[y][x] = Cell(' ');
+        _grid[y][x] = Cell(' ', null); // Clear with null style
       }
     }
   }
@@ -69,8 +69,8 @@ class OutputBuffer {
     // Clear both current and previous grids to force complete redraw
     for (var y = 0; y < terminal.height; y++) {
       for (var x = 0; x < terminal.width; x++) {
-        _grid[y][x] = Cell(' ');
-        _previousGrid[y][x] = Cell(''); // Make different from current to force redraw
+        _grid[y][x] = Cell(' ', null); // Clear with null style
+        _previousGrid[y][x] = Cell('', null); // Make different from current to force redraw
       }
     }
   }
@@ -80,7 +80,7 @@ class OutputBuffer {
     // This avoids terminal flicker while ensuring clean content
     for (var y = 0; y < terminal.height; y++) {
       for (var x = 0; x < terminal.width; x++) {
-        _grid[y][x] = Cell(' ');
+        _grid[y][x] = Cell(' ', null); // Clear with null style
       }
     }
   }
@@ -113,10 +113,15 @@ class OutputBuffer {
   }
 
   String _buildAnsiEscapeCode(TextStyle? style) {
-    if (style == null) return '\x1b[0m'; // Reset
+    if (style == null) {
+      // Complete reset to clear all previous styles
+      return '\x1b[0m';
+    }
 
-    List<String> codes = [];
+    // Always start with reset to ensure clean style application
+    List<String> codes = ['0'];
 
+    // Apply new styles
     if (style.bold) codes.add('1');
     if (style.italic) codes.add('3');
     if (style.underline) codes.add('4');
@@ -129,7 +134,7 @@ class OutputBuffer {
       codes.add('4${style.backgroundColor!.value}');
     }
 
-    return codes.isEmpty ? '\x1b[0m' : '\x1b[${codes.join(';')}m';
+    return '\x1b[${codes.join(';')}m';
   }
 
   void flush() {
@@ -141,9 +146,11 @@ class OutputBuffer {
         if (_grid[y][x] != _previousGrid[y][x]) {
           terminal.setCursorPosition(x, y);
 
-          // Apply style if different from current
-          if (_grid[y][x].style != currentStyle) {
-            currentStyle = _grid[y][x].style;
+          // Always apply style to ensure proper overrides
+          // This ensures that style changes are properly rendered
+          final newStyle = _grid[y][x].style;
+          if (newStyle != currentStyle) {
+            currentStyle = newStyle;
             stdout.write(_buildAnsiEscapeCode(currentStyle));
           }
 
@@ -153,7 +160,7 @@ class OutputBuffer {
       }
     }
 
-    // Reset style at the end
+    // Reset style at the end to ensure clean state
     stdout.write('\x1b[0m');
     terminal.setCursorPosition(0, 0);
     terminal.showCursor();
