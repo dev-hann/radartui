@@ -87,6 +87,10 @@ class SchedulerBinding {
   void handleFrame() {
     _build(_rootElement!);
     _layout(_rootElement!);
+    
+    // Clear the entire screen buffer before painting any content
+    outputBuffer.clear();
+    
     _paint(_rootElement!);
     
     // Build, layout, and paint overlay elements
@@ -131,7 +135,6 @@ class SchedulerBinding {
   }
 
   void _paint(Element element) {
-    outputBuffer.clear(); // Clear buffer before painting new frame
     final context = PaintingContext(outputBuffer);
     element.renderObject?.paint(context, Offset.zero);
     outputBuffer.flush();
