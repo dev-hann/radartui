@@ -76,16 +76,12 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                   style: TextStyle(color: Color.cyan),
                 ),
                 const SizedBox(height: 1),
-                Container(
-                  color: Color.black,
-                  padding: const EdgeInsets.symmetric(horizontal: 1),
-                  child: TextField(
-                    controller: _controller1,
-                    placeholder: 'Enter text here...',
-                    style: const TextStyle(color: Color.white),
-                    onChanged: _onTextChanged,
-                    onSubmitted: _onTextSubmitted,
-                  ),
+                TextField(
+                  controller: _controller1,
+                  placeholder: 'Enter text here...',
+                  style: const TextStyle(color: Color.white),
+                  onChanged: _onTextChanged,
+                  onSubmitted: _onTextSubmitted,
                 ),
                 const SizedBox(height: 2),
                 const Text(
@@ -93,15 +89,11 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                   style: TextStyle(color: Color.cyan),
                 ),
                 const SizedBox(height: 1),
-                Container(
-                  color: Color.black,
-                  padding: const EdgeInsets.symmetric(horizontal: 1),
-                  child: TextField(
-                    controller: _controller2,
-                    placeholder: 'Max 10 chars',
-                    maxLength: 10,
-                    style: const TextStyle(color: Color.yellow),
-                  ),
+                TextField(
+                  controller: _controller2,
+                  placeholder: 'Max 10 chars',
+                  maxLength: 10,
+                  style: const TextStyle(color: Color.yellow),
                 ),
                 const SizedBox(height: 2),
                 const Text(

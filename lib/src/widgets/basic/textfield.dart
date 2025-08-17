@@ -308,64 +308,99 @@ class RenderTextField extends RenderBox {
 
   void paint(PaintingContext context, Offset offset) {
     final displayText = text.isEmpty && placeholder != null ? placeholder! : text;
-    final displayStyle = text.isEmpty && placeholder != null 
-        ? (style != null 
-            ? TextStyle(
-                color: Color.brightBlack,
-                backgroundColor: style!.backgroundColor,
-                bold: style!.bold,
-                italic: style!.italic,
-                underline: style!.underline,
-              )
-            : const TextStyle(color: Color.brightBlack))
-        : style;
+    
+    // Enhanced styling for better TUI appearance
+    final baseStyle = style ?? const TextStyle(color: Color.white);
+    final placeholderStyle = TextStyle(
+      color: Color.brightBlack,
+      backgroundColor: baseStyle.backgroundColor,
+      bold: false,
+      italic: true,
+      underline: false,
+    );
+    final displayStyle = text.isEmpty && placeholder != null ? placeholderStyle : baseStyle;
+    
+    // Draw border if focused
+    if (hasFocus) {
+      _drawBorder(context, offset, size!);
+    }
 
     final availableWidth = size!.width;
     final textLength = displayText.length;
     
     // Calculate scroll offset to keep cursor visible
     int scrollOffset = 0;
-    if (textLength > availableWidth - 1) {
+    if (textLength >= availableWidth) {
       // Ensure cursor is visible within the available width
-      if (cursorPosition >= availableWidth - 1) {
-        scrollOffset = cursorPosition - availableWidth + 2;
+      if (cursorPosition >= availableWidth) {
+        scrollOffset = cursorPosition - availableWidth + 1;
       }
     }
     
     // Render visible portion of text
     final visibleStart = scrollOffset;
-    final visibleEnd = (scrollOffset + availableWidth - 1).clamp(0, textLength);
+    final visibleEnd = (scrollOffset + availableWidth).clamp(0, textLength);
     
     for (int i = visibleStart; i < visibleEnd; i++) {
       final screenX = offset.x + i - scrollOffset;
       context.buffer.writeStyled(screenX, offset.y, displayText[i], displayStyle);
     }
 
-    // Render cursor
+    // Render enhanced cursor
     if (hasFocus) {
       final cursorScreenX = offset.x + cursorPosition - scrollOffset;
       
       // Only render cursor if it's within visible area
       if (cursorScreenX >= offset.x && cursorScreenX < offset.x + availableWidth) {
-        const cursorStyle = TextStyle(backgroundColor: Color.white);
-        
         if (cursorPosition < text.length) {
-          // Cursor on existing character - show character with cursor background
-          final charStyle = displayStyle != null
-              ? TextStyle(
-                  color: displayStyle.color,
-                  backgroundColor: Color.white,
-                  bold: displayStyle.bold,
-                  italic: displayStyle.italic,
-                  underline: displayStyle.underline,
-                )
-              : cursorStyle;
-          context.buffer.writeStyled(cursorScreenX, offset.y, text[cursorPosition], charStyle);
+          // Cursor on existing character - use reverse video effect
+          const cursorStyle = TextStyle(
+            color: Color.black,
+            backgroundColor: Color.cyan,
+            bold: true,
+          );
+          context.buffer.writeStyled(cursorScreenX, offset.y, text[cursorPosition], cursorStyle);
         } else {
-          // Cursor at end of text - show space with cursor background
-          context.buffer.writeStyled(cursorScreenX, offset.y, ' ', cursorStyle);
+          // Cursor at end of text - show block cursor
+          const cursorStyle = TextStyle(
+            color: Color.black,
+            backgroundColor: Color.cyan,
+            bold: true,
+          );
+          context.buffer.writeStyled(cursorScreenX, offset.y, '█', cursorStyle);
         }
       }
     }
+  }
+  
+  void _drawBorder(PaintingContext context, Offset offset, Size size) {
+    const borderStyle = TextStyle(color: Color.cyan, bold: true);
+    final width = size.width.toInt();
+    
+    // Draw simple focused border (underline)
+    for (int x = 0; x < width; x++) {
+      context.buffer.writeStyled(
+        offset.x + x, 
+        offset.y - 1, 
+        '─', 
+        borderStyle
+      );
+      context.buffer.writeStyled(
+        offset.x + x, 
+        offset.y + 1, 
+        '─', 
+        borderStyle
+      );
+    }
+    
+    // Draw side borders
+    context.buffer.writeStyled(offset.x - 1, offset.y, '│', borderStyle);
+    context.buffer.writeStyled(offset.x + width, offset.y, '│', borderStyle);
+    
+    // Draw corners
+    context.buffer.writeStyled(offset.x - 1, offset.y - 1, '┌', borderStyle);
+    context.buffer.writeStyled(offset.x + width, offset.y - 1, '┐', borderStyle);
+    context.buffer.writeStyled(offset.x - 1, offset.y + 1, '└', borderStyle);
+    context.buffer.writeStyled(offset.x + width, offset.y + 1, '┘', borderStyle);
   }
 }
