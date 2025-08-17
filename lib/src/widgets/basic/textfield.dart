@@ -289,6 +289,7 @@ class RenderTextField extends RenderBox {
   String? placeholder;
   TextStyle? style;
   bool hasFocus;
+  Size? size;
 
   RenderTextField({
     required this.text,
@@ -298,43 +299,72 @@ class RenderTextField extends RenderBox {
     required this.hasFocus,
   });
 
-  @override
   void performLayout(Constraints constraints) {
     final displayText = text.isEmpty && placeholder != null ? placeholder! : text;
-    size = Size(displayText.length + 1, 1);
+    final desiredWidth = displayText.length + 1;
+    final boxConstraints = constraints as BoxConstraints;
+    size = boxConstraints.constrain(Size(desiredWidth, 1));
   }
 
-  @override
   void paint(PaintingContext context, Offset offset) {
     final displayText = text.isEmpty && placeholder != null ? placeholder! : text;
     final displayStyle = text.isEmpty && placeholder != null 
-        ? TextStyle(color: Color.brightBlack)
+        ? (style != null 
+            ? TextStyle(
+                color: Color.brightBlack,
+                backgroundColor: style!.backgroundColor,
+                bold: style!.bold,
+                italic: style!.italic,
+                underline: style!.underline,
+              )
+            : const TextStyle(color: Color.brightBlack))
         : style;
 
-    for (int i = 0; i < displayText.length; i++) {
-      context.buffer.writeStyled(offset.x + i, offset.y, displayText[i], displayStyle);
+    final availableWidth = size!.width;
+    final textLength = displayText.length;
+    
+    // Calculate scroll offset to keep cursor visible
+    int scrollOffset = 0;
+    if (textLength > availableWidth - 1) {
+      // Ensure cursor is visible within the available width
+      if (cursorPosition >= availableWidth - 1) {
+        scrollOffset = cursorPosition - availableWidth + 2;
+      }
+    }
+    
+    // Render visible portion of text
+    final visibleStart = scrollOffset;
+    final visibleEnd = (scrollOffset + availableWidth - 1).clamp(0, textLength);
+    
+    for (int i = visibleStart; i < visibleEnd; i++) {
+      final screenX = offset.x + i - scrollOffset;
+      context.buffer.writeStyled(screenX, offset.y, displayText[i], displayStyle);
     }
 
+    // Render cursor
     if (hasFocus) {
-      final cursorStyle = TextStyle(
-        backgroundColor: Color.white,
-        color: Color.black,
-      );
+      final cursorScreenX = offset.x + cursorPosition - scrollOffset;
       
-      if (cursorPosition < text.length) {
-        context.buffer.writeStyled(
-          offset.x + cursorPosition, 
-          offset.y, 
-          text[cursorPosition], 
-          cursorStyle
-        );
-      } else {
-        context.buffer.writeStyled(
-          offset.x + cursorPosition, 
-          offset.y, 
-          ' ', 
-          cursorStyle
-        );
+      // Only render cursor if it's within visible area
+      if (cursorScreenX >= offset.x && cursorScreenX < offset.x + availableWidth) {
+        const cursorStyle = TextStyle(backgroundColor: Color.white);
+        
+        if (cursorPosition < text.length) {
+          // Cursor on existing character - show character with cursor background
+          final charStyle = displayStyle != null
+              ? TextStyle(
+                  color: displayStyle.color,
+                  backgroundColor: Color.white,
+                  bold: displayStyle.bold,
+                  italic: displayStyle.italic,
+                  underline: displayStyle.underline,
+                )
+              : cursorStyle;
+          context.buffer.writeStyled(cursorScreenX, offset.y, text[cursorPosition], charStyle);
+        } else {
+          // Cursor at end of text - show space with cursor background
+          context.buffer.writeStyled(cursorScreenX, offset.y, ' ', cursorStyle);
+        }
       }
     }
   }

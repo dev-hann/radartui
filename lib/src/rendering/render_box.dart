@@ -12,6 +12,14 @@ class BoxConstraints extends Constraints {
   });
 
   Size get biggest => Size(maxWidth, maxHeight);
+  
+  Size constrain(Size size) {
+    return Size(
+      size.width.clamp(0, maxWidth).toInt(),
+      size.height.clamp(0, maxHeight).toInt(),
+    );
+  }
+  
   BoxConstraints deflate(EdgeInsets edge) {
     final horizontal = edge.left + edge.right;
     final vertical = edge.top + edge.bottom;
