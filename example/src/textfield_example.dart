@@ -10,8 +10,6 @@ class TextFieldExample extends StatefulWidget {
 class _TextFieldExampleState extends State<TextFieldExample> {
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController _controller2 = TextEditingController();
-  String _submittedText = '';
-  String _changedText = '';
 
   @override
   void initState() {
@@ -24,27 +22,6 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     _controller1.dispose();
     _controller2.dispose();
     super.dispose();
-  }
-
-  void _onTextChanged(String text) {
-    setState(() {
-      _changedText = text;
-    });
-  }
-
-  void _onTextSubmitted(String text) {
-    setState(() {
-      _submittedText = text;
-    });
-  }
-
-  void _clearFields() {
-    _controller1.clear();
-    _controller2.clear();
-    setState(() {
-      _submittedText = '';
-      _changedText = '';
-    });
   }
 
   @override
@@ -80,8 +57,12 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                   controller: _controller1,
                   placeholder: 'Enter text here...',
                   style: const TextStyle(color: Color.white),
-                  onChanged: _onTextChanged,
-                  onSubmitted: _onTextSubmitted,
+                  onChanged: (text) {
+                    setState(() {});
+                  },
+                  onSubmitted: (text) {
+                    setState(() {});
+                  },
                 ),
                 const SizedBox(height: 2),
                 const Text(
@@ -93,20 +74,18 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                   controller: _controller2,
                   placeholder: 'Max 10 chars',
                   maxLength: 10,
+                  onChanged: (text) {
+                    setState(() {});
+                  },
+                  onSubmitted: (text) {
+                    setState(() {});
+                  },
                   style: const TextStyle(color: Color.yellow),
                 ),
                 const SizedBox(height: 2),
                 const Text(
                   'Status:',
                   style: TextStyle(color: Color.magenta, bold: true),
-                ),
-                Text(
-                  'Text changed: $_changedText',
-                  style: const TextStyle(color: Color.white),
-                ),
-                Text(
-                  'Text submitted: $_submittedText',
-                  style: const TextStyle(color: Color.white),
                 ),
                 Text(
                   'Controller 1: ${_controller1.text}',
