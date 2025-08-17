@@ -62,6 +62,19 @@ class OutputBuffer {
     }
   }
 
+  void clearAll() {
+    // Clear the terminal completely
+    terminal.clear();
+    
+    // Clear both current and previous grids to force complete redraw
+    for (var y = 0; y < terminal.height; y++) {
+      for (var x = 0; x < terminal.width; x++) {
+        _grid[y][x] = Cell(' ');
+        _previousGrid[y][x] = Cell(''); // Make different from current to force redraw
+      }
+    }
+  }
+
   String _buildAnsiEscapeCode(TextStyle? style) {
     if (style == null) return '\x1b[0m'; // Reset
 

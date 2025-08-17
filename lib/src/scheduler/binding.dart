@@ -79,6 +79,12 @@ class SchedulerBinding {
     scheduleMicrotask(handleFrame);
   }
 
+  void scheduleFrameWithClear() {
+    // Force immediate clear and then schedule frame
+    outputBuffer.clearAll();
+    scheduleFrame();
+  }
+
   void addPostFrameCallback(FrameCallback callback) {
     _postFrameCallbacks.add(callback);
     scheduleFrame();
@@ -88,8 +94,8 @@ class SchedulerBinding {
     _build(_rootElement!);
     _layout(_rootElement!);
     
-    // Clear the entire screen buffer before painting any content
-    outputBuffer.clear();
+    // Clear both terminal and buffer completely to ensure no remnants
+    outputBuffer.clearAll();
     
     _paint(_rootElement!);
     

@@ -4,6 +4,7 @@ import 'package:radartui/src/widgets/focus_manager.dart';
 import 'package:radartui/src/widgets/navigator_observer.dart';
 import 'package:radartui/src/rendering/render_object.dart';
 import 'package:radartui/src/foundation/offset.dart';
+import 'package:radartui/src/scheduler/binding.dart';
 
 typedef RouteBuilder = Widget Function(BuildContext context);
 typedef RoutePredicate = bool Function(Route route);
@@ -111,6 +112,8 @@ class NavigatorState extends State<Navigator> {
     setState(() {
       _addRoute(route, completer);
     });
+    // Force complete screen clear during navigation
+    SchedulerBinding.instance.scheduleFrameWithClear();
     _notifyObservers((observer) => observer.didPush(route, previousRoute));
     return completer.future;
   }
@@ -120,6 +123,8 @@ class NavigatorState extends State<Navigator> {
       setState(() {
         _removeLast(result);
       });
+      // Force complete screen clear during navigation
+      SchedulerBinding.instance.scheduleFrameWithClear();
     }
   }
 
@@ -140,6 +145,8 @@ class NavigatorState extends State<Navigator> {
       }
       _addRoute(route, completer);
     });
+    // Force complete screen clear during navigation
+    SchedulerBinding.instance.scheduleFrameWithClear();
     _notifyObservers(
       (observer) => observer.didReplace(newRoute: route, oldRoute: oldRoute),
     );
