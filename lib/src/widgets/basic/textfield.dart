@@ -183,20 +183,30 @@ class _TextFieldState extends State<TextField> {
     super.dispose();
   }
 
+  bool _isProcessingChange = false;
+  
   void _onControllerChanged() {
-    // Immediately update the UI
-    setState(() {});
+    if (_isProcessingChange) return;
     
-    // Use microtask to call onChanged in the same frame but avoid reentrancy
-    if (widget.onChanged != null) {
-      scheduleMicrotask(() {
+    _isProcessingChange = true;
+    try {
+      // Immediately update the UI
+      setState(() {});
+      
+      // Call onChanged immediately to avoid timing issues
+      if (widget.onChanged != null) {
         widget.onChanged!(_controller.text);
-      });
+      }
+    } finally {
+      _isProcessingChange = false;
     }
   }
 
   void _onFocusChanged() {
-    setState(() {});
+    // Use microtask to avoid conflicts with other focus changes happening simultaneously
+    scheduleMicrotask(() {
+      setState(() {});
+    });
   }
 
   void _handleKeyEvent(KeyEvent event) {
