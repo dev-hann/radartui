@@ -14,9 +14,11 @@ class BoxConstraints extends Constraints {
   Size get biggest => Size(maxWidth, maxHeight);
   
   Size constrain(Size size) {
+    final constrainedWidth = maxWidth > 0 ? size.width.clamp(0, maxWidth) : size.width.clamp(0, 1000);
+    final constrainedHeight = maxHeight > 0 ? size.height.clamp(0, maxHeight) : size.height.clamp(0, 1000);
     return Size(
-      size.width.clamp(0, maxWidth).toInt(),
-      size.height.clamp(0, maxHeight).toInt(),
+      constrainedWidth.toInt(),
+      constrainedHeight.toInt(),
     );
   }
   
