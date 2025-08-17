@@ -80,9 +80,43 @@ class SchedulerBinding {
   }
 
   void scheduleFrameWithClear() {
-    // Force immediate clear and then schedule frame
-    outputBuffer.clearAll();
-    scheduleFrame();
+    // Schedule frame with navigation flag for selective clearing
+    if (_frameScheduled) return;
+    _frameScheduled = true;
+    scheduleMicrotask(_handleFrameWithNavigation);
+  }
+
+  void _handleFrameWithNavigation() {
+    _build(_rootElement!);
+    _layout(_rootElement!);
+    
+    // Use conditional clearing during navigation - aggressive only when needed
+    outputBuffer.conditionalClear();
+    
+    _paint(_rootElement!);
+    
+    // Build, layout, and paint overlay elements
+    for (final element in _overlayElements) {
+      _build(element);
+      _layout(element);
+      _paintOverlay(element);
+    }
+    
+    _frameScheduled = false;
+
+    // Post-frame callbacks
+    if (_postFrameCallbacks.isNotEmpty) {
+      final callbacks = List<FrameCallback>.from(_postFrameCallbacks);
+      _postFrameCallbacks.clear();
+      final timeStamp = Duration.zero;
+      for (final callback in callbacks) {
+        try {
+          callback(timeStamp);
+        } catch (e) {
+          AppLogger.log('Error in post-frame callback: $e');
+        }
+      }
+    }
   }
 
   void addPostFrameCallback(FrameCallback callback) {
@@ -94,8 +128,8 @@ class SchedulerBinding {
     _build(_rootElement!);
     _layout(_rootElement!);
     
-    // Clear both terminal and buffer completely to ensure no remnants
-    outputBuffer.clearAll();
+    // Use conditional clearing - smart for most cases, aggressive only when needed
+    outputBuffer.conditionalClear();
     
     _paint(_rootElement!);
     

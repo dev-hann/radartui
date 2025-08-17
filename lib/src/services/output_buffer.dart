@@ -75,6 +75,43 @@ class OutputBuffer {
     }
   }
 
+  void smartClear() {
+    // Clear only the grid, preserve previous grid for diff-based rendering
+    // This avoids terminal flicker while ensuring clean content
+    for (var y = 0; y < terminal.height; y++) {
+      for (var x = 0; x < terminal.width; x++) {
+        _grid[y][x] = Cell(' ');
+      }
+    }
+  }
+
+  bool needsFullClear() {
+    // Check if current content footprint is smaller than previous
+    // This indicates we might need to clear remnants
+    int currentContent = 0;
+    int previousContent = 0;
+    
+    for (var y = 0; y < terminal.height; y++) {
+      for (var x = 0; x < terminal.width; x++) {
+        if (_grid[y][x].char != ' ') currentContent++;
+        if (_previousGrid[y][x].char != ' ') previousContent++;
+      }
+    }
+    
+    // If previous frame had significantly more content, we might have remnants
+    return previousContent > currentContent + 10; // Threshold to avoid false positives
+  }
+
+  void conditionalClear() {
+    if (needsFullClear()) {
+      // Use aggressive clearing only when remnants are likely
+      clearAll();
+    } else {
+      // Use smart clearing for smooth rendering
+      smartClear();
+    }
+  }
+
   String _buildAnsiEscapeCode(TextStyle? style) {
     if (style == null) return '\x1b[0m'; // Reset
 
