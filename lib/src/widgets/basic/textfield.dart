@@ -183,10 +183,10 @@ class _TextFieldState extends State<TextField> {
   }
 
   void _onControllerChanged() {
-    setState(() {});
     if (widget.onChanged != null) {
       widget.onChanged!(_controller.text);
     }
+    setState(() {});
   }
 
   void _onFocusChanged() {
