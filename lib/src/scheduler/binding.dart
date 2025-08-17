@@ -90,8 +90,8 @@ class SchedulerBinding {
     _build(_rootElement!);
     _layout(_rootElement!);
     
-    // Use conditional clearing during navigation - aggressive only when needed
-    outputBuffer.conditionalClear();
+    // ALWAYS clear screen completely during navigation to ensure clean transitions
+    outputBuffer.clearAll();
     
     _paint(_rootElement!);
     
@@ -128,8 +128,8 @@ class SchedulerBinding {
     _build(_rootElement!);
     _layout(_rootElement!);
     
-    // Use conditional clearing - smart for most cases, aggressive only when needed
-    outputBuffer.conditionalClear();
+    // Use smart clearing for regular frames to prevent flickering
+    outputBuffer.smartClear();
     
     _paint(_rootElement!);
     

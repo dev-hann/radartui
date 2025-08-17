@@ -3,40 +3,40 @@
 ## Problem
 The initial aggressive screen clearing solution caused visible flickering during every rerender.
 
-## Solution Implemented
+## Final Solution Implemented
 
-### 1. Smart Clearing Strategy
+### 1. Balanced Clearing Strategy
 - **`smartClear()`**: Clears only the grid buffer, preserves previous grid for diff-based rendering
-- **`clearAll()`**: Aggressive clearing with terminal.clear() - used only when necessary
-- **`conditionalClear()`**: Intelligently chooses between smart and aggressive clearing
+- **`clearAll()`**: Complete screen clearing with terminal.clear() + grid reset
+- **Strategic application**: Navigation always clears completely, regular frames use smart clearing
 
-### 2. Content-Based Detection
-- **`needsFullClear()`**: Analyzes content footprint to detect when remnants are likely
-- Compares current vs previous content density
-- Uses threshold to avoid false positives
-- Only triggers aggressive clearing when previous frame had significantly more content
+### 2. Frame-Type Based Clearing
+- **Regular frames** (`handleFrame()`): Use `smartClear()` for flicker-free updates
+- **Navigation frames** (`_handleFrameWithNavigation()`): Always use `clearAll()` for clean transitions
+- **Differential rendering**: Existing flush() method provides efficient cell-by-cell updates
 
-### 3. Optimized Frame Handling
-- **Regular frames**: Use `conditionalClear()` for smooth rendering
-- **Navigation frames**: Use `conditionalClear()` with intelligent detection
-- **Differential rendering**: Existing flush() method already uses efficient cell-by-cell updates
-
-### 4. Key Benefits
-- ✅ **No flickering** during regular updates and animations
-- ✅ **Clean navigation** with remnants cleared only when needed
-- ✅ **Performance optimized** with minimal terminal operations
-- ✅ **Double buffering** preserves smooth user experience
+### 3. Optimized User Experience
+- **No flickering** during animations, typing, and regular UI updates
+- **Guaranteed clean navigation** - every page change starts with a fresh screen
+- **Minimal performance impact** - aggressive clearing only when actually navigating
+- **Double buffering** maintained for smooth differential rendering
 
 ## Implementation Details
 
 ### Files Modified:
 - `lib/src/services/output_buffer.dart`: Added smart clearing methods
-- `lib/src/scheduler/binding.dart`: Updated frame handling with conditional clearing
-- `lib/src/widgets/navigation.dart`: Navigation still uses enhanced clearing but now conditionally
+- `lib/src/scheduler/binding.dart`: Separate handling for navigation vs regular frames
+- `lib/src/widgets/navigation.dart`: All navigation methods trigger navigation frame handler
 
-### Clearing Strategy:
-1. **Smart Clear**: Default for most frames (no terminal.clear())
-2. **Conditional Clear**: Detects when aggressive clearing is needed
-3. **Aggressive Clear**: Only when content shrinkage suggests remnants
+### Final Clearing Strategy:
+1. **Regular Updates**: `smartClear()` - no terminal flashing, smooth experience
+2. **Navigation**: `clearAll()` - guaranteed clean screen, complete terminal reset
+3. **Differential Rendering**: Preserved for maximum efficiency
 
-This solution eliminates flickering while maintaining clean screen transitions during navigation.
+### Key Benefits:
+- ✅ **Zero flickering** during normal UI interactions
+- ✅ **Clean navigation** - previous page content never persists
+- ✅ **Best of both worlds** - smooth updates + clean transitions
+- ✅ **Performance optimized** - aggressive clearing only when needed
+
+This solution provides the clean navigation experience you requested while eliminating flickering during regular frame updates.
