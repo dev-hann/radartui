@@ -1,4 +1,3 @@
-import 'dart:async';
 import '../../foundation/color.dart';
 import '../../foundation/offset.dart';
 import '../../foundation/size.dart';
@@ -203,10 +202,8 @@ class _TextFieldState extends State<TextField> {
   }
 
   void _onFocusChanged() {
-    // Use microtask to avoid conflicts with other focus changes happening simultaneously
-    scheduleMicrotask(() {
-      setState(() {});
-    });
+    // Use immediate setState to prevent interference with rapid text input
+    setState(() {});
   }
 
   void _handleKeyEvent(KeyEvent event) {
