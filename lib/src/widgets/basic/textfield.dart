@@ -1,3 +1,4 @@
+import 'dart:async';
 import '../../foundation/color.dart';
 import '../../foundation/offset.dart';
 import '../../foundation/size.dart';
@@ -183,10 +184,15 @@ class _TextFieldState extends State<TextField> {
   }
 
   void _onControllerChanged() {
-    if (widget.onChanged != null) {
-      widget.onChanged!(_controller.text);
-    }
+    // Immediately update the UI
     setState(() {});
+    
+    // Use microtask to call onChanged in the same frame but avoid reentrancy
+    if (widget.onChanged != null) {
+      scheduleMicrotask(() {
+        widget.onChanged!(_controller.text);
+      });
+    }
   }
 
   void _onFocusChanged() {
