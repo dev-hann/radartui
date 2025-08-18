@@ -46,7 +46,6 @@ class Dialog extends StatefulWidget {
 }
 
 class _DialogState extends State<Dialog> {
-
   @override
   Widget build(BuildContext context) {
     final List<Widget> columnChildren = <Widget>[];
@@ -55,9 +54,12 @@ class _DialogState extends State<Dialog> {
     if (widget.title != null) {
       columnChildren.add(
         Text(
-          widget.title!,
-          style: widget.titleStyle ?? const TextStyle(color: Color.white, bold: true),
-        ) as Widget,
+              widget.title!,
+              style:
+                  widget.titleStyle ??
+                  const TextStyle(color: Color.white, bold: true),
+            )
+            as Widget,
       );
       // Add spacing after title
       columnChildren.add(const Container(height: 1) as Widget);
@@ -70,12 +72,14 @@ class _DialogState extends State<Dialog> {
     if (widget.actions != null && widget.actions!.isNotEmpty) {
       // Add spacing before actions
       columnChildren.add(const Container(height: 1) as Widget);
-      
+
       // Create actions row with proper spacing
       final actionWidgets = <Widget>[];
       for (int i = 0; i < widget.actions!.length; i++) {
         if (i > 0) {
-          actionWidgets.add(const Container(width: 2) as Widget); // Space between buttons
+          actionWidgets.add(
+            const Container(width: 2) as Widget,
+          ); // Space between buttons
         }
         actionWidgets.add(widget.actions![i]);
       }
@@ -87,18 +91,17 @@ class _DialogState extends State<Dialog> {
 
     // Apply padding
     final padding = widget.padding ?? const EdgeInsets.all(2);
-    dialogContent = Padding(
-      padding: padding,
-      child: dialogContent,
-    ) as Widget;
+    dialogContent = Padding(padding: padding, child: dialogContent) as Widget;
 
     // Apply background and size constraints
-    dialogContent = Container(
-      color: widget.backgroundColor ?? Color.black,
-      width: widget.constraints?.maxWidth.toInt(),
-      height: widget.constraints?.maxHeight.toInt(),
-      child: dialogContent,
-    ) as Widget;
+    dialogContent =
+        Container(
+              color: widget.backgroundColor ?? Color.black,
+              width: widget.constraints?.maxWidth.toInt(),
+              height: widget.constraints?.maxHeight.toInt(),
+              child: dialogContent,
+            )
+            as Widget;
 
     return dialogContent;
   }
@@ -110,7 +113,7 @@ class _DialogRoute<T> {
   final Completer<T?> completer;
   final bool barrierDismissible;
   final Color? barrierColor;
-  
+
   _DialogRoute({
     required this.dialog,
     required this.completer,
@@ -130,7 +133,7 @@ Future<T?> showDialog<T>({
   Alignment alignment = Alignment.center,
 }) {
   final dialog = builder(context);
-  
+
   if (dialog is! Dialog) {
     throw ArgumentError('The widget returned by builder must be a Dialog');
   }
@@ -142,10 +145,10 @@ Future<T?> showDialog<T>({
     barrierColor: barrierColor,
     onDismiss: () => dismissTopDialog(),
   );
-  
+
   // Add to overlay system
   SchedulerBinding.instance.addOverlay(enhancedDialog);
-  
+
   // Create route for management
   final completer = Completer<T?>();
   final route = _DialogRoute<T>(
@@ -155,7 +158,7 @@ Future<T?> showDialog<T>({
     barrierColor: barrierColor,
   );
   _dialogRoutes[enhancedDialog] = route;
-  
+
   return completer.future;
 }
 
@@ -164,12 +167,12 @@ void dismissDialog<T>([T? result]) {
     final entry = _dialogRoutes.entries.last;
     final dialog = entry.key;
     final route = entry.value;
-    
+
     // Safely cast and check if the route matches the expected type
     if (route is _DialogRoute<T>) {
       SchedulerBinding.instance.removeOverlay(dialog);
       _dialogRoutes.remove(dialog);
-      
+
       if (!route.completer.isCompleted) {
         route.completer.complete(result);
       }
@@ -177,7 +180,7 @@ void dismissDialog<T>([T? result]) {
       // Fallback: remove the dialog but complete with null result
       SchedulerBinding.instance.removeOverlay(dialog);
       _dialogRoutes.remove(dialog);
-      
+
       if (route.completer is Completer<T?> && !route.completer.isCompleted) {
         (route.completer as Completer<T?>).complete(result);
       }
@@ -191,10 +194,10 @@ void dismissTopDialog() {
     final entry = _dialogRoutes.entries.last;
     final dialog = entry.key;
     final route = entry.value;
-    
+
     SchedulerBinding.instance.removeOverlay(dialog);
     _dialogRoutes.remove(dialog);
-    
+
     if (!route.completer.isCompleted) {
       route.completer.complete(null);
     }
@@ -207,14 +210,14 @@ class _DialogWrapper extends StatefulWidget {
   final bool barrierDismissible;
   final Color? barrierColor;
   final VoidCallback onDismiss;
-  
+
   const _DialogWrapper({
     required this.dialog,
     required this.barrierDismissible,
     this.barrierColor,
     required this.onDismiss,
   });
-  
+
   @override
   State<_DialogWrapper> createState() => _DialogWrapperState();
 }
@@ -237,19 +240,19 @@ class _DialogWrapperState extends State<_DialogWrapper> {
   }
 
   void _setupDialogFocus() {
-    // Navigation-style approach: completely clear existing focus and create new scope
-    FocusManager.instance.pushDialogScope();
+    FocusManager.instance.createNewScope();
   }
 
   void _restorePreviousFocus() {
-    // Navigation-style approach: dispose dialog focus and restore previous scope
-    FocusManager.instance.popDialogScope();
+    FocusManager.instance.createNewScope();
   }
-  
+
   void _setupKeyboardListener() {
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen(_handleKeyEvent);
+    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen(
+      _handleKeyEvent,
+    );
   }
-  
+
   void _teardownKeyboardListener() {
     _keySubscription?.cancel();
     _keySubscription = null;
@@ -271,21 +274,23 @@ class _DialogWrapperState extends State<_DialogWrapper> {
   Widget build(BuildContext context) {
     // Pure UI rendering - no focus logic here
     Widget content = widget.dialog as Widget;
-    
+
     // Create modal barrier that fills the entire screen
     if (widget.barrierColor != null) {
       // Full-screen barrier with dialog centered on top
-      content = Container(
-        width: SchedulerBinding.instance.terminal.width,
-        height: SchedulerBinding.instance.terminal.height,
-        color: widget.barrierColor,
-        child: Center(child: content) as Widget,
-      ) as Widget;
+      content =
+          Container(
+                width: SchedulerBinding.instance.terminal.width,
+                height: SchedulerBinding.instance.terminal.height,
+                color: widget.barrierColor,
+                child: Center(child: content) as Widget,
+              )
+              as Widget;
     } else {
       // No barrier, just center the dialog
       content = Center(child: content) as Widget;
     }
-    
+
     return content;
   }
 }

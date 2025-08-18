@@ -14,7 +14,6 @@ class FocusManager extends NavigatorObserver {
   FocusScope? _currentScope;
   FocusScope? get currentScope => _currentScope;
   StreamSubscription<KeyEvent>? _keySubscription;
-  final List<FocusScope> _scopeStack = [];
 
   void initialize() {
     _keySubscription ??= SchedulerBinding.instance.keyboard.keyEvents.listen(
@@ -30,28 +29,25 @@ class FocusManager extends NavigatorObserver {
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    _createNewScope();
+    createNewScope();
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    _createNewScope();
+    createNewScope();
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
-    _createNewScope();
+    createNewScope();
   }
 
   void createNewScope() {
-    // Create completely new scope (like page navigation)
     _clearCurrentScope();
     _currentScope = FocusScope();
     _currentScope!.activate();
     SchedulerBinding.instance.scheduleFrame();
   }
-
-  void _createNewScope() => createNewScope();
 
   void _clearCurrentScope() {
     if (_currentScope != null) {
@@ -89,45 +85,12 @@ class FocusManager extends NavigatorObserver {
     _currentScope?.requestFocus(node);
   }
 
-  // Dialog-specific methods: clean navigation-style approach
   void pushDialogScope() {
-    // Save current scope to stack
-    if (_currentScope != null) {
-      _currentScope!.deactivate(); // Deactivate but don't dispose yet
-      _scopeStack.add(_currentScope!);
-    }
-
-    // Create completely new scope for dialog (clean slate)
-    _currentScope = FocusScope();
-    _currentScope!.activate();
-    
-    // Schedule frame to trigger widget rebuilds
-    SchedulerBinding.instance.scheduleFrame();
+    createNewScope();
   }
 
   void popDialogScope() {
-    // Completely dispose current dialog scope
-    if (_currentScope != null) {
-      _currentScope!.dispose();
-      _currentScope = null;
-    }
-
-    // Restore previous scope if exists
-    if (_scopeStack.isNotEmpty) {
-      _currentScope = _scopeStack.removeLast();
-      _currentScope!.activate();
-    } else {
-      // No previous scope, create new one
-      _currentScope = FocusScope();
-      _currentScope!.activate();
-    }
-
-    // Force complete UI rebuild (like navigation)
-    SchedulerBinding.instance.scheduleFrame();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      // Trigger another frame to ensure widgets re-register their focus nodes
-      SchedulerBinding.instance.scheduleFrame();
-    });
+    _clearCurrentScope();
   }
 
   FocusNode? get currentFocus => _currentScope?.currentFocus;

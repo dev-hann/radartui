@@ -89,19 +89,19 @@ class SchedulerBinding {
   void _handleFrameWithNavigation() {
     _build(_rootElement!);
     _layout(_rootElement!);
-    
+
     // ALWAYS clear screen completely during navigation to ensure clean transitions
     outputBuffer.clearAll();
-    
+
     _paint(_rootElement!);
-    
+
     // Build, layout, and paint overlay elements
     for (final element in _overlayElements) {
       _build(element);
       _layout(element);
       _paintOverlay(element);
     }
-    
+
     _frameScheduled = false;
 
     // Post-frame callbacks
@@ -127,19 +127,19 @@ class SchedulerBinding {
   void handleFrame() {
     _build(_rootElement!);
     _layout(_rootElement!);
-    
+
     // Use smart clearing for regular frames to prevent flickering
     outputBuffer.smartClear();
-    
+
     _paint(_rootElement!);
-    
+
     // Build, layout, and paint overlay elements
     for (final element in _overlayElements) {
       _build(element);
       _layout(element);
       _paintOverlay(element);
     }
-    
+
     _frameScheduled = false;
 
     // 프레임 처리가 완료된 후 post-frame 콜백들을 실행
