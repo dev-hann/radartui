@@ -1,8 +1,7 @@
-import 'package:radartui/src/foundation/offset.dart';
-import 'package:radartui/src/foundation/size.dart';
-import 'package:radartui/src/rendering/render_box.dart';
-import 'package:radartui/src/rendering/render_object.dart';
-import 'package:radartui/src/widgets/framework.dart';
+import '../../foundation/offset.dart';
+import '../../foundation/size.dart';
+import '../../rendering/single_child_render_box.dart';
+import '../framework.dart';
 
 class Center extends SingleChildRenderObjectWidget {
   const Center({required Widget child}) : super(child: child);
@@ -11,29 +10,16 @@ class Center extends SingleChildRenderObjectWidget {
   RenderCenter createRenderObject(BuildContext context) => RenderCenter();
 }
 
-class RenderCenter extends RenderBox
-    with ContainerRenderObjectMixin<RenderBox, ParentData> {
+class RenderCenter extends SingleChildRenderBox {
   @override
-  void performLayout(Constraints constraints) {
-    final boxConstraints = constraints as BoxConstraints;
-    if (children.isNotEmpty) {
-      final child = children.first;
-      child.layout(constraints);
-      size = Size(boxConstraints.maxWidth, boxConstraints.maxHeight);
-    } else {
-      size = Size(boxConstraints.maxWidth, boxConstraints.maxHeight);
-    }
-  }
+  Size computeSizeFromChild(BoxConstraints constraints, Size childSize) =>
+      Size(constraints.maxWidth, constraints.maxHeight);
 
   @override
-  void paint(PaintingContext context, Offset offset) {
-    if (children.isNotEmpty) {
-      final child = children.first;
-      final childOffset = Offset(
-        offset.x + (size!.width - child.size!.width) ~/ 2,
-        offset.y + (size!.height - child.size!.height) ~/ 2,
-      );
-      context.paintChild(child, childOffset);
-    }
+  Offset computeChildOffset(Offset parentOffset, Size childSize) {
+    return Offset(
+      parentOffset.x + (size!.width - childSize.width) ~/ 2,
+      parentOffset.y + (size!.height - childSize.height) ~/ 2,
+    );
   }
 }

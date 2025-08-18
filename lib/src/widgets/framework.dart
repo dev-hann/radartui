@@ -13,8 +13,12 @@ abstract class Element {
   RenderObject? _renderObject;
   RenderObject? get renderObject => _renderObject;
   bool dirty = true;
+  Element? _parent;
 
-  void mount(Element? parent) {}
+  void mount(Element? parent) {
+    _parent = parent;
+  }
+  
   void update(Widget newWidget) => widget = newWidget;
   void unmount() {}
   void visitChildren(void Function(Element e) visitor) {}
@@ -34,6 +38,17 @@ abstract class Element {
       newChild.mount(this);
       return newChild;
     }
+  }
+
+  T? findAncestorWidgetOfExactType<T extends Widget>() {
+    Element? current = _parent;
+    while (current != null) {
+      if (current.widget.runtimeType == T) {
+        return current.widget as T;
+      }
+      current = current._parent;
+    }
+    return null;
   }
 }
 
@@ -109,11 +124,9 @@ class StatefulElement extends ComponentElement {
 abstract class ComponentElement extends Element implements BuildContext {
   ComponentElement(super.widget);
   Element? _child;
-  Element? _parent;
   
   @override
   void mount(Element? parent) {
-    _parent = parent;
     super.mount(parent);
     rebuild();
   }
@@ -133,28 +146,6 @@ abstract class ComponentElement extends Element implements BuildContext {
     if (_child != null) visitor(_child!);
   }
 
-  @override
-  T? findAncestorWidgetOfExactType<T extends Widget>() {
-    Element? current = _parent;
-    while (current != null) {
-      if (current.widget.runtimeType == T) {
-        return current.widget as T;
-      }
-      if (current is ComponentElement) {
-        current = current._parent;
-      } else if (current is RenderObjectElement) {
-        current = current._parent;
-      } else if (current is SingleChildRenderObjectElement) {
-        current = current._parent;
-      } else if (current is MultiChildRenderObjectElement) {
-        current = current._parent;
-      } else {
-        break;
-      }
-    }
-    return null;
-  }
-
   Widget build();
 }
 
@@ -168,11 +159,9 @@ abstract class RenderObjectWidget extends Widget {
 
 class RenderObjectElement extends Element implements BuildContext {
   RenderObjectElement(RenderObjectWidget super.widget);
-  Element? _parent;
   
   @override
   void mount(Element? parent) {
-    _parent = parent;
     super.mount(parent);
     _renderObject = (widget as RenderObjectWidget).createRenderObject(this);
   }
@@ -182,28 +171,6 @@ class RenderObjectElement extends Element implements BuildContext {
     super.update(newWidget);
     (widget as RenderObjectWidget).updateRenderObject(this, renderObject!);
     renderObject!.markNeedsLayout();
-  }
-  
-  @override
-  T? findAncestorWidgetOfExactType<T extends Widget>() {
-    Element? current = _parent;
-    while (current != null) {
-      if (current.widget.runtimeType == T) {
-        return current.widget as T;
-      }
-      if (current is ComponentElement) {
-        current = current._parent;
-      } else if (current is RenderObjectElement) {
-        current = current._parent;
-      } else if (current is SingleChildRenderObjectElement) {
-        current = current._parent;
-      } else if (current is MultiChildRenderObjectElement) {
-        current = current._parent;
-      } else {
-        break;
-      }
-    }
-    return null;
   }
 }
 

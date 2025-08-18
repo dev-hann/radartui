@@ -4,6 +4,7 @@ import 'package:radartui/src/widgets/focus_manager.dart';
 import 'package:radartui/src/widgets/navigator_observer.dart';
 import 'package:radartui/src/rendering/render_object.dart';
 import 'package:radartui/src/foundation/offset.dart';
+import 'package:radartui/src/foundation/errors.dart';
 import 'package:radartui/src/scheduler/binding.dart';
 
 typedef RouteBuilder = Widget Function(BuildContext context);
@@ -228,7 +229,7 @@ class Navigator extends StatefulWidget {
   static NavigatorState of(BuildContext context) {
     final scope = context.findAncestorWidgetOfExactType<_NavigatorScope>();
     if (scope == null) {
-      throw FlutterError(
+      throw RadartuiError(
         'Navigator operation requested with a context that does not include a Navigator.\n'
         'The context used to push or pop routes from the Navigator must be that of a '
         'widget that is a descendant of a Navigator widget.',
@@ -293,13 +294,6 @@ class _NavigatorScope extends StatelessWidget {
   Widget build(BuildContext context) => child;
 }
 
-class FlutterError extends Error {
-  FlutterError(this.message);
-  final String message;
-
-  @override
-  String toString() => 'FlutterError: $message';
-}
 
 extension BuildContextNavigation on BuildContext {
   NavigatorState get navigator => Navigator.of(this);

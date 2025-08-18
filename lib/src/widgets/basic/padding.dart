@@ -1,9 +1,10 @@
-import 'package:radartui/src/foundation/edge_insets.dart';
-import 'package:radartui/src/foundation/offset.dart';
-import 'package:radartui/src/foundation/size.dart';
-import 'package:radartui/src/rendering/render_box.dart';
-import 'package:radartui/src/rendering/render_object.dart';
-import 'package:radartui/src/widgets/framework.dart';
+import '../../foundation/edge_insets.dart';
+import '../../foundation/offset.dart';
+import '../../foundation/size.dart';
+import '../../rendering/render_box.dart';
+import '../../rendering/render_object.dart';
+import '../../rendering/single_child_render_box.dart';
+import '../framework.dart';
 
 class Padding extends SingleChildRenderObjectWidget {
   final EdgeInsets padding;
@@ -17,31 +18,27 @@ class Padding extends SingleChildRenderObjectWidget {
   }
 }
 
-class RenderPadding extends RenderBox
-    with ContainerRenderObjectMixin<RenderBox, ParentData> {
+class RenderPadding extends SingleChildRenderBox {
   EdgeInsets padding;
   RenderPadding({required this.padding});
+
   @override
-  void performLayout(Constraints constraints) {
-    if (children.isNotEmpty) {
-      final child = children.first;
-      child.layout((constraints as BoxConstraints).deflate(padding));
-      size = Size(
-        child.size!.width + padding.left + padding.right,
-        child.size!.height + padding.top + padding.bottom,
-      );
-    } else {
-      size = Size(padding.left + padding.right, padding.top + padding.bottom);
-    }
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) =>
+      constraints.deflate(padding);
+
+  @override
+  Size computeSizeFromChild(BoxConstraints constraints, Size childSize) {
+    return Size(
+      childSize.width + padding.left + padding.right,
+      childSize.height + padding.top + padding.bottom,
+    );
   }
 
   @override
-  void paint(PaintingContext context, Offset offset) {
-    if (children.isNotEmpty) {
-      context.paintChild(
-        children.first,
-        offset + Offset(padding.left, padding.top),
-      );
-    }
-  }
+  Size computeSizeWithoutChild(BoxConstraints constraints) =>
+      Size(padding.left + padding.right, padding.top + padding.bottom);
+
+  @override
+  Offset computeChildOffset(Offset parentOffset, Size childSize) =>
+      parentOffset + Offset(padding.left, padding.top);
 }
