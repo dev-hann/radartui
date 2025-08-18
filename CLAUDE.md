@@ -128,6 +128,17 @@ All Dart code in RadarTUI must follow the style guide and lint rules below.
 - Test names must describe the exact behavior being tested
 - Use `testWidgets` for UI-related tests
 
+### 🖥️ Terminal Example Testing
+
+For testing terminal UI examples and interactive components, use the **`inputTest`** method provided by **SchedulerBinding**:
+
+```dart
+// Use SchedulerBinding.instance.inputTest() for terminal interaction testing
+SchedulerBinding.instance.inputTest(/* test parameters */);
+```
+
+This method allows proper simulation of user input and keyboard events in terminal environments, ensuring accurate testing of TUI components like dialogs, buttons, and navigation.
+
 ## 📌 Code Quality Verification
 
 **MANDATORY:** After writing or modifying any code, always run static analysis to ensure code quality:

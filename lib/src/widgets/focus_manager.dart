@@ -14,6 +14,7 @@ class FocusManager extends NavigatorObserver {
   FocusScope? _currentScope;
   FocusScope? get currentScope => _currentScope;
   StreamSubscription<KeyEvent>? _keySubscription;
+  final List<FocusScope> _scopeStack = [];
 
   void initialize() {
     _keySubscription ??= SchedulerBinding.instance.keyboard.keyEvents.listen(
@@ -78,11 +79,19 @@ class FocusManager extends NavigatorObserver {
   }
 
   void pushScope(FocusScope scope) {
+    // Push current scope to stack before activating new one
+    if (_currentScope != null) {
+      _scopeStack.add(_currentScope!);
+    }
     _activateScope(scope);
   }
 
-  void popScope(FocusScope scope) {
-    _activateScope(scope);
+  void popScope() {
+    // Pop the most recent scope from stack and activate it
+    if (_scopeStack.isNotEmpty) {
+      final previousScope = _scopeStack.removeLast();
+      _activateScope(previousScope);
+    }
   }
 
   FocusNode? get currentFocus => _currentScope?.currentFocus;
