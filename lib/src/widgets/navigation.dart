@@ -17,6 +17,9 @@ abstract class Route {
   Widget buildPage(BuildContext context);
 
   bool get isFirst => settings?.name == '/';
+
+  // Whether this route should clear the entire screen when rendered
+  bool get fullScreenRender => true;
 }
 
 class RouteSettings {
@@ -106,25 +109,35 @@ class NavigatorState extends State<Navigator> {
     }
   }
 
-  Future<Object?> push(Route route) {
-    final completer = Completer<Object?>();
+  Future<T?> push<T>(Route route) {
+    final completer = Completer<T?>();
     final previousRoute = currentRoute;
     setState(() {
       _addRoute(route, completer);
     });
-    // Force complete screen clear during navigation
-    SchedulerBinding.instance.scheduleFrameWithClear();
+    // Only clear screen for full-screen routes (like page navigation)
+    // Modal routes (like dialogs) don't need full screen clear
+    if (route.fullScreenRender) {
+      SchedulerBinding.instance.scheduleFrameWithClear();
+    } else {
+      SchedulerBinding.instance.scheduleFrame();
+    }
     _notifyObservers((observer) => observer.didPush(route, previousRoute));
     return completer.future;
   }
 
   void pop([Object? result]) {
     if (_history.length > 1) {
+      final currentRoute = _history.last;
       setState(() {
         _removeLast(result);
       });
-      // Force complete screen clear during navigation
-      SchedulerBinding.instance.scheduleFrameWithClear();
+      // Only clear screen for full-screen routes
+      if (currentRoute.fullScreenRender) {
+        SchedulerBinding.instance.scheduleFrameWithClear();
+      } else {
+        SchedulerBinding.instance.scheduleFrame();
+      }
     }
   }
 
@@ -136,8 +149,8 @@ class NavigatorState extends State<Navigator> {
     });
   }
 
-  Future<Object?> pushReplacement(Route route, [Object? result]) {
-    final completer = Completer<Object?>();
+  Future<T?> pushReplacement<T>(Route route, [Object? result]) {
+    final completer = Completer<T?>();
     final oldRoute = currentRoute;
     setState(() {
       if (_history.isNotEmpty) {
@@ -145,18 +158,22 @@ class NavigatorState extends State<Navigator> {
       }
       _addRoute(route, completer);
     });
-    // Force complete screen clear during navigation
-    SchedulerBinding.instance.scheduleFrameWithClear();
+    // Only clear screen for full-screen routes
+    if (route.fullScreenRender) {
+      SchedulerBinding.instance.scheduleFrameWithClear();
+    } else {
+      SchedulerBinding.instance.scheduleFrame();
+    }
     _notifyObservers(
       (observer) => observer.didReplace(newRoute: route, oldRoute: oldRoute),
     );
     return completer.future;
   }
 
-  Future<Object?> pushNamed(String routeName, {Object? arguments}) {
+  Future<T?> pushNamed<T>(String routeName, {Object? arguments}) {
     final routeBuilder = widget.routes?[routeName];
     if (routeBuilder != null) {
-      return push(
+      return push<T>(
         PageRoute(
           builder: routeBuilder,
           settings: RouteSettings(name: routeName, arguments: arguments),
@@ -166,14 +183,14 @@ class NavigatorState extends State<Navigator> {
     return Future.value();
   }
 
-  Future<Object?> pushReplacementNamed(
+  Future<T?> pushReplacementNamed<T>(
     String routeName, {
     Object? arguments,
     Object? result,
   }) {
     final routeBuilder = widget.routes?[routeName];
     if (routeBuilder != null) {
-      return pushReplacement(
+      return pushReplacement<T>(
         PageRoute(
           builder: routeBuilder,
           settings: RouteSettings(name: routeName, arguments: arguments),
@@ -222,7 +239,7 @@ class Navigator extends StatefulWidget {
 
   static FocusManager get focusManager => FocusManager.instance;
 
-  static Future<Object?> push(BuildContext context, Route route) {
+  static Future<T?> push<T>(BuildContext context, Route route) {
     return of(context).push(route);
   }
 
@@ -238,23 +255,23 @@ class Navigator extends StatefulWidget {
     of(context).popUntil(predicate, result);
   }
 
-  static Future<Object?> pushReplacement(
+  static Future<T?> pushReplacement<T>(
     BuildContext context,
     Route route, [
     Object? result,
   ]) {
-    return of(context).pushReplacement(route, result);
+    return of(context).pushReplacement<T>(route, result);
   }
 
-  static Future<Object?> pushNamed(
+  static Future<T?> pushNamed<T>(
     BuildContext context,
     String routeName, {
     Object? arguments,
   }) {
-    return of(context).pushNamed(routeName, arguments: arguments);
+    return of(context).pushNamed<T>(routeName, arguments: arguments);
   }
 
-  static Future<Object?> pushReplacementNamed(
+  static Future<T?> pushReplacementNamed<T>(
     BuildContext context,
     String routeName, {
     Object? arguments,
@@ -262,7 +279,7 @@ class Navigator extends StatefulWidget {
   }) {
     return of(
       context,
-    ).pushReplacementNamed(routeName, arguments: arguments, result: result);
+    ).pushReplacementNamed<T>(routeName, arguments: arguments, result: result);
   }
 }
 

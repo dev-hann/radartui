@@ -4,13 +4,13 @@ import '../../foundation/edge_insets.dart';
 import '../../foundation/alignment.dart';
 import '../../foundation/box_constraints.dart';
 import '../framework.dart';
+import '../navigation.dart';
 import 'container.dart';
 import 'column.dart';
 import 'row.dart';
 import 'center.dart';
 import 'text.dart';
 import 'padding.dart';
-import '../focus_manager.dart';
 import '../../scheduler/binding.dart';
 import '../../services/key_parser.dart';
 
@@ -107,23 +107,40 @@ class _DialogState extends State<Dialog> {
   }
 }
 
-// Dialog route for overlay management
-class _DialogRoute<T> {
-  final _DialogWrapper dialog;
-  final Completer<T?> completer;
+// Modal route for Navigator-based dialog management
+class ModalRoute<T> extends Route {
+  final WidgetBuilder builder;
   final bool barrierDismissible;
   final Color? barrierColor;
+  final Alignment alignment;
 
-  _DialogRoute({
-    required this.dialog,
-    required this.completer,
-    required this.barrierDismissible,
+  const ModalRoute({
+    required this.builder,
+    this.barrierDismissible = true,
     this.barrierColor,
+    this.alignment = Alignment.center,
+    super.settings,
   });
-}
 
-// Global registry for dialog management
-final Map<_DialogWrapper, _DialogRoute> _dialogRoutes = {};
+  @override
+  bool get fullScreenRender => false; // Don't clear screen for dialogs
+
+  @override
+  Widget buildPage(BuildContext context) {
+    final dialog = builder(context);
+
+    if (dialog is! Dialog) {
+      throw ArgumentError('The widget returned by builder must be a Dialog');
+    }
+
+    return _ModalBarrier(
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+      alignment: alignment,
+      child: dialog,
+    );
+  }
+}
 
 Future<T?> showDialog<T>({
   required BuildContext context,
@@ -132,119 +149,48 @@ Future<T?> showDialog<T>({
   Color? barrierColor,
   Alignment alignment = Alignment.center,
 }) {
-  final dialog = builder(context);
-
-  if (dialog is! Dialog) {
-    throw ArgumentError('The widget returned by builder must be a Dialog');
-  }
-
-  // Create enhanced dialog with barrier
-  final enhancedDialog = _DialogWrapper(
-    dialog: dialog,
-    barrierDismissible: barrierDismissible,
-    barrierColor: barrierColor,
-    onDismiss: () => dismissTopDialog(),
+  return Navigator.push<T>(
+    context,
+    ModalRoute<T>(
+      builder: builder,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+      alignment: alignment,
+    ),
   );
-
-  // Add to overlay system
-  SchedulerBinding.instance.addOverlay(enhancedDialog);
-
-  // Create route for management
-  final completer = Completer<T?>();
-  final route = _DialogRoute<T>(
-    dialog: enhancedDialog,
-    completer: completer,
-    barrierDismissible: barrierDismissible,
-    barrierColor: barrierColor,
-  );
-  _dialogRoutes[enhancedDialog] = route;
-
-  return completer.future;
 }
 
-void dismissDialog<T>([T? result]) {
-  if (_dialogRoutes.isNotEmpty) {
-    final entry = _dialogRoutes.entries.last;
-    final dialog = entry.key;
-    final route = entry.value;
-
-    // Safely cast and check if the route matches the expected type
-    if (route is _DialogRoute<T>) {
-      SchedulerBinding.instance.removeOverlay(dialog);
-      _dialogRoutes.remove(dialog);
-
-      if (!route.completer.isCompleted) {
-        route.completer.complete(result);
-      }
-    } else {
-      // Fallback: remove the dialog but complete with null result
-      SchedulerBinding.instance.removeOverlay(dialog);
-      _dialogRoutes.remove(dialog);
-
-      if (route.completer is Completer<T?> && !route.completer.isCompleted) {
-        (route.completer as Completer<T?>).complete(result);
-      }
-    }
-  }
-}
-
-// Helper function to dismiss the topmost dialog without type constraints
-void dismissTopDialog() {
-  if (_dialogRoutes.isNotEmpty) {
-    final entry = _dialogRoutes.entries.last;
-    final dialog = entry.key;
-    final route = entry.value;
-
-    SchedulerBinding.instance.removeOverlay(dialog);
-    _dialogRoutes.remove(dialog);
-
-    if (!route.completer.isCompleted) {
-      route.completer.complete(null);
-    }
-  }
-}
-
-// Wrapper widget to handle barriers and keyboard events
-class _DialogWrapper extends StatefulWidget {
-  final Dialog dialog;
+// Modal barrier widget to handle background and keyboard events
+class _ModalBarrier extends StatefulWidget {
+  final Widget child;
   final bool barrierDismissible;
   final Color? barrierColor;
-  final VoidCallback onDismiss;
+  final Alignment alignment;
 
-  const _DialogWrapper({
-    required this.dialog,
+  const _ModalBarrier({
+    required this.child,
     required this.barrierDismissible,
     this.barrierColor,
-    required this.onDismiss,
+    this.alignment = Alignment.center,
   });
 
   @override
-  State<_DialogWrapper> createState() => _DialogWrapperState();
+  State<_ModalBarrier> createState() => _ModalBarrierState();
 }
 
-class _DialogWrapperState extends State<_DialogWrapper> {
+class _ModalBarrierState extends State<_ModalBarrier> {
   StreamSubscription<KeyEvent>? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    _setupDialogFocus();
     _setupKeyboardListener();
   }
 
   @override
   void dispose() {
-    _restorePreviousFocus();
     _teardownKeyboardListener();
     super.dispose();
-  }
-
-  void _setupDialogFocus() {
-    FocusManager.instance.createNewScope();
-  }
-
-  void _restorePreviousFocus() {
-    FocusManager.instance.createNewScope();
   }
 
   void _setupKeyboardListener() {
@@ -259,36 +205,25 @@ class _DialogWrapperState extends State<_DialogWrapper> {
   }
 
   void _handleKeyEvent(KeyEvent keyEvent) {
-    if (keyEvent.code == KeyCode.escape) {
-      _handleEscapeKey();
-    }
-  }
-
-  void _handleEscapeKey() {
-    if (widget.barrierDismissible) {
-      widget.onDismiss();
+    if (keyEvent.code == KeyCode.escape && widget.barrierDismissible) {
+      Navigator.pop(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Pure UI rendering - no focus logic here
-    Widget content = widget.dialog as Widget;
+    Widget content = Center(child: widget.child) as Widget;
 
     // Create modal barrier that fills the entire screen
     if (widget.barrierColor != null) {
-      // Full-screen barrier with dialog centered on top
       content =
           Container(
                 width: SchedulerBinding.instance.terminal.width,
                 height: SchedulerBinding.instance.terminal.height,
                 color: widget.barrierColor,
-                child: Center(child: content) as Widget,
+                child: content,
               )
               as Widget;
-    } else {
-      // No barrier, just center the dialog
-      content = Center(child: content) as Widget;
     }
 
     return content;

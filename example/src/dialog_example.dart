@@ -37,10 +37,13 @@ class _DialogExampleState extends State<DialogExample> {
               ],
             ),
             actions: [
-              Button(text: 'OK', onPressed: () => dismissDialog('OK pressed')),
+              Button(
+                text: 'OK',
+                onPressed: () => Navigator.pop(context, 'OK pressed'),
+              ),
               Button(
                 text: 'Cancel',
-                onPressed: () => dismissDialog('Cancel pressed'),
+                onPressed: () => Navigator.pop(context, 'Cancel pressed'),
                 style: const ButtonStyle(
                   backgroundColor: Color.red,
                   focusBackgroundColor: Color.brightRed,
@@ -62,7 +65,7 @@ class _DialogExampleState extends State<DialogExample> {
       builder:
           (BuildContext context) => Dialog(
             title: 'Colored Dialog',
-            titleStyle: TextStyle(color: Color.cyan, bold: true),
+            titleStyle: const TextStyle(color: Color.cyan, bold: true),
             backgroundColor: Color.blue,
             child: Column(
               children: [
@@ -79,7 +82,8 @@ class _DialogExampleState extends State<DialogExample> {
             actions: [
               Button(
                 text: 'Close',
-                onPressed: () => dismissDialog('Colored dialog closed'),
+                onPressed:
+                    () => Navigator.pop(context, 'Colored dialog closed'),
                 style: const ButtonStyle(
                   backgroundColor: Color.green,
                   focusBackgroundColor: Color.brightGreen,
@@ -101,8 +105,7 @@ class _DialogExampleState extends State<DialogExample> {
       builder:
           (BuildContext context) => Dialog(
             title: 'Constrained Dialog',
-            constraints: BoxConstraints(maxWidth: 40, maxHeight: 8),
-            padding: EdgeInsets.all(1),
+            padding: const EdgeInsets.all(1),
             child: Column(
               children: [
                 Text('Size constrained dialog.'),
@@ -112,14 +115,17 @@ class _DialogExampleState extends State<DialogExample> {
             actions: [
               Button(
                 text: 'Return 42',
-                onPressed: () => dismissDialog(42),
+                onPressed: () => Navigator.pop(context, 42),
                 style: const ButtonStyle(
                   backgroundColor: Color.yellow,
                   focusBackgroundColor: Color.brightYellow,
                   foregroundColor: Color.black,
                 ),
               ),
-              Button(text: 'Return Nothing', onPressed: () => dismissDialog()),
+              Button(
+                text: 'Return Nothing',
+                onPressed: () => Navigator.pop(context),
+              ),
             ],
           ),
     );
@@ -137,7 +143,7 @@ class _DialogExampleState extends State<DialogExample> {
       builder:
           (BuildContext context) => Dialog(
             title: 'Non-Dismissible Dialog',
-            titleStyle: TextStyle(color: Color.red, bold: true),
+            titleStyle: const TextStyle(color: Color.red, bold: true),
             child: Column(
               children: [
                 Text('This dialog cannot be dismissed'),
@@ -148,7 +154,7 @@ class _DialogExampleState extends State<DialogExample> {
             actions: [
               Button(
                 text: 'Must Click This',
-                onPressed: () => dismissDialog('Explicitly closed'),
+                onPressed: () => Navigator.pop(context, 'Explicitly closed'),
                 style: const ButtonStyle(
                   backgroundColor: Color.magenta,
                   focusBackgroundColor: Color.brightMagenta,
