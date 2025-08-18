@@ -9,9 +9,7 @@ class Cell {
 
   @override
   bool operator ==(Object other) =>
-      other is Cell &&
-      char == other.char &&
-      _styleEquals(style, other.style);
+      other is Cell && char == other.char && _styleEquals(style, other.style);
 
   @override
   int get hashCode => char.hashCode ^ (style?.hashCode ?? 0);
@@ -65,12 +63,15 @@ class OutputBuffer {
   void clearAll() {
     // Clear the terminal completely
     terminal.clear();
-    
+
     // Clear both current and previous grids to force complete redraw
     for (var y = 0; y < terminal.height; y++) {
       for (var x = 0; x < terminal.width; x++) {
         _grid[y][x] = Cell(' ', null); // Clear with null style
-        _previousGrid[y][x] = Cell('', null); // Make different from current to force redraw
+        _previousGrid[y][x] = Cell(
+          '',
+          null,
+        ); // Make different from current to force redraw
       }
     }
   }
@@ -90,16 +91,17 @@ class OutputBuffer {
     // This indicates we might need to clear remnants
     int currentContent = 0;
     int previousContent = 0;
-    
+
     for (var y = 0; y < terminal.height; y++) {
       for (var x = 0; x < terminal.width; x++) {
         if (_grid[y][x].char != ' ') currentContent++;
         if (_previousGrid[y][x].char != ' ') previousContent++;
       }
     }
-    
+
     // If previous frame had significantly more content, we might have remnants
-    return previousContent > currentContent + 10; // Threshold to avoid false positives
+    return previousContent >
+        currentContent + 10; // Threshold to avoid false positives
   }
 
   void conditionalClear() {

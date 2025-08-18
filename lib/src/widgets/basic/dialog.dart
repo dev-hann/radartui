@@ -53,12 +53,11 @@ class _DialogState extends State<Dialog> {
     if (widget.title != null) {
       columnChildren.add(
         Text(
-              widget.title!,
-              style:
-                  widget.titleStyle ??
-                  const TextStyle(color: Color.white, bold: true),
-            )
-            as Widget,
+          widget.title!,
+          style:
+              widget.titleStyle ??
+              const TextStyle(color: Color.white, bold: true),
+        ),
       );
       // Add spacing after title
       columnChildren.add(const Container(height: 1) as Widget);
@@ -82,25 +81,23 @@ class _DialogState extends State<Dialog> {
         }
         actionWidgets.add(widget.actions![i]);
       }
-      columnChildren.add(Row(children: actionWidgets) as Widget);
+      columnChildren.add(Row(children: actionWidgets));
     }
 
     // Build the main dialog content
-    Widget dialogContent = Column(children: columnChildren) as Widget;
+    Widget dialogContent = Column(children: columnChildren);
 
     // Apply padding
     final padding = widget.padding ?? const EdgeInsets.all(2);
-    dialogContent = Padding(padding: padding, child: dialogContent) as Widget;
+    dialogContent = Padding(padding: padding, child: dialogContent);
 
     // Apply background and size constraints
-    dialogContent =
-        Container(
-              color: widget.backgroundColor ?? Color.black,
-              width: widget.constraints?.maxWidth.toInt(),
-              height: widget.constraints?.maxHeight.toInt(),
-              child: dialogContent,
-            )
-            as Widget;
+    dialogContent = Container(
+      color: widget.backgroundColor ?? Color.black,
+      width: widget.constraints?.maxWidth.toInt(),
+      height: widget.constraints?.maxHeight.toInt(),
+      child: dialogContent,
+    );
 
     return dialogContent;
   }
@@ -134,7 +131,9 @@ class ModalRoute<T> extends Route {
         builder: (BuildContext context) {
           final dialog = builder(context);
           if (dialog is! Dialog) {
-            throw ArgumentError('The widget returned by builder must be a Dialog');
+            throw ArgumentError(
+              'The widget returned by builder must be a Dialog',
+            );
           }
           return dialog;
         },
@@ -213,18 +212,16 @@ class _ModalBarrierState extends State<_ModalBarrier> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = Center(child: widget.child) as Widget;
+    Widget content = Center(child: widget.child);
 
     // Create modal barrier that fills the entire screen
     if (widget.barrierColor != null) {
-      content =
-          Container(
-                width: SchedulerBinding.instance.terminal.width,
-                height: SchedulerBinding.instance.terminal.height,
-                color: widget.barrierColor,
-                child: content,
-              )
-              as Widget;
+      content = Container(
+        width: SchedulerBinding.instance.terminal.width,
+        height: SchedulerBinding.instance.terminal.height,
+        color: widget.barrierColor,
+        child: content,
+      );
     }
 
     return content;
