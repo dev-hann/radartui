@@ -17,6 +17,9 @@ abstract class Route {
   Widget buildPage(BuildContext context);
 
   bool get isFirst => settings?.name == '/';
+  
+  // Whether this route should clear the entire screen when rendered
+  bool get fullScreenRender => true;
 }
 
 class RouteSettings {
@@ -112,19 +115,29 @@ class NavigatorState extends State<Navigator> {
     setState(() {
       _addRoute(route, completer);
     });
-    // Force complete screen clear during navigation
-    SchedulerBinding.instance.scheduleFrameWithClear();
+    // Only clear screen for full-screen routes (like page navigation)
+    // Modal routes (like dialogs) don't need full screen clear
+    if (route.fullScreenRender) {
+      SchedulerBinding.instance.scheduleFrameWithClear();
+    } else {
+      SchedulerBinding.instance.scheduleFrame();
+    }
     _notifyObservers((observer) => observer.didPush(route, previousRoute));
     return completer.future;
   }
 
   void pop([Object? result]) {
     if (_history.length > 1) {
+      final currentRoute = _history.last;
       setState(() {
         _removeLast(result);
       });
-      // Force complete screen clear during navigation
-      SchedulerBinding.instance.scheduleFrameWithClear();
+      // Only clear screen for full-screen routes
+      if (currentRoute.fullScreenRender) {
+        SchedulerBinding.instance.scheduleFrameWithClear();
+      } else {
+        SchedulerBinding.instance.scheduleFrame();
+      }
     }
   }
 
@@ -145,8 +158,12 @@ class NavigatorState extends State<Navigator> {
       }
       _addRoute(route, completer);
     });
-    // Force complete screen clear during navigation
-    SchedulerBinding.instance.scheduleFrameWithClear();
+    // Only clear screen for full-screen routes
+    if (route.fullScreenRender) {
+      SchedulerBinding.instance.scheduleFrameWithClear();
+    } else {
+      SchedulerBinding.instance.scheduleFrame();
+    }
     _notifyObservers(
       (observer) => observer.didReplace(newRoute: route, oldRoute: oldRoute),
     );

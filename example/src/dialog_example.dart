@@ -38,11 +38,11 @@ class _DialogExampleState extends State<DialogExample> {
         actions: [
           Button(
             text: 'OK',
-            onPressed: () => dismissDialog('OK pressed'),
+            onPressed: () => Navigator.pop(context, 'OK pressed'),
           ),
           Button(
             text: 'Cancel',
-            onPressed: () => dismissDialog('Cancel pressed'),
+            onPressed: () => Navigator.pop(context, 'Cancel pressed'),
             style: const ButtonStyle(
               backgroundColor: Color.red,
               focusBackgroundColor: Color.brightRed,
@@ -74,7 +74,7 @@ class _DialogExampleState extends State<DialogExample> {
         actions: [
           Button(
             text: 'Close',
-            onPressed: () => dismissDialog('Colored dialog closed'),
+            onPressed: () => Navigator.pop(context, 'Colored dialog closed'),
             style: const ButtonStyle(
               backgroundColor: Color.green,
               focusBackgroundColor: Color.brightGreen,
@@ -105,7 +105,7 @@ class _DialogExampleState extends State<DialogExample> {
         actions: [
           Button(
             text: 'Return 42',
-            onPressed: () => dismissDialog(42),
+            onPressed: () => Navigator.pop(context, 42),
             style: const ButtonStyle(
               backgroundColor: Color.yellow,
               focusBackgroundColor: Color.brightYellow,
@@ -114,7 +114,7 @@ class _DialogExampleState extends State<DialogExample> {
           ),
           Button(
             text: 'Return Nothing',
-            onPressed: () => dismissDialog(),
+            onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
@@ -142,7 +142,7 @@ class _DialogExampleState extends State<DialogExample> {
         actions: [
           Button(
             text: 'Must Click This',
-            onPressed: () => dismissDialog('Explicitly closed'),
+            onPressed: () => Navigator.pop(context, 'Explicitly closed'),
             style: const ButtonStyle(
               backgroundColor: Color.magenta,
               focusBackgroundColor: Color.brightMagenta,
