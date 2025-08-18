@@ -7,7 +7,7 @@ class DialogExample extends StatefulWidget {
 
 class _DialogExampleState extends State<DialogExample> {
   String _lastResult = 'Press buttons to show dialogs!';
-  final String _instruction = 'Use Tab to navigate, Enter to select, Escape to exit';
+  String _instruction = 'Use Tab to navigate, Enter to select, Escape to exit';
 
   @override
   void initState() {
@@ -27,31 +27,29 @@ class _DialogExampleState extends State<DialogExample> {
   Future<void> _showSimpleDialog() async {
     final result = await showDialog<String>(
       context: context,
-      builder: (BuildContext context) => Dialog(
-        title: 'Simple Dialog',
-        child: Column(
-          children: [
-            Text('This is a simple dialog with a title.'),
-            Text('It demonstrates basic dialog functionality.'),
-          ],
-        ),
-        actions: [
-          Button(
-            text: 'OK',
-            onPressed: () => dismissDialog('OK pressed'),
-          ),
-          Button(
-            text: 'Cancel',
-            onPressed: () => dismissDialog('Cancel pressed'),
-            style: const ButtonStyle(
-              backgroundColor: Color.red,
-              focusBackgroundColor: Color.brightRed,
+      builder:
+          (BuildContext context) => Dialog(
+            title: 'Simple Dialog',
+            child: Column(
+              children: [
+                Text('This is a simple dialog with a title.'),
+                Text('It demonstrates basic dialog functionality.'),
+              ],
             ),
+            actions: [
+              Button(text: 'OK', onPressed: () => dismissDialog('OK pressed')),
+              Button(
+                text: 'Cancel',
+                onPressed: () => dismissDialog('Cancel pressed'),
+                style: const ButtonStyle(
+                  backgroundColor: Color.red,
+                  focusBackgroundColor: Color.brightRed,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
     );
-    
+
     setState(() {
       _lastResult = result ?? 'Dialog dismissed without result';
     });
@@ -61,30 +59,37 @@ class _DialogExampleState extends State<DialogExample> {
     final result = await showDialog<String>(
       context: context,
       barrierColor: Color.brightBlack,
-      builder: (BuildContext context) => Dialog(
-        title: 'Colored Dialog',
-        titleStyle: const TextStyle(color: Color.cyan, bold: true),
-        backgroundColor: Color.blue,
-        child: Column(
-          children: [
-            Text('This dialog has custom colors.', style: TextStyle(color: Color.white)),
-            Text('Notice the blue background!', style: TextStyle(color: Color.yellow)),
-          ],
-        ),
-        actions: [
-          Button(
-            text: 'Close',
-            onPressed: () => dismissDialog('Colored dialog closed'),
-            style: const ButtonStyle(
-              backgroundColor: Color.green,
-              focusBackgroundColor: Color.brightGreen,
-              foregroundColor: Color.black,
+      builder:
+          (BuildContext context) => Dialog(
+            title: 'Colored Dialog',
+            titleStyle: TextStyle(color: Color.cyan, bold: true),
+            backgroundColor: Color.blue,
+            child: Column(
+              children: [
+                Text(
+                  'This dialog has custom colors.',
+                  style: TextStyle(color: Color.white),
+                ),
+                Text(
+                  'Notice the blue background!',
+                  style: TextStyle(color: Color.yellow),
+                ),
+              ],
             ),
+            actions: [
+              Button(
+                text: 'Close',
+                onPressed: () => dismissDialog('Colored dialog closed'),
+                style: const ButtonStyle(
+                  backgroundColor: Color.green,
+                  focusBackgroundColor: Color.brightGreen,
+                  foregroundColor: Color.black,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
     );
-    
+
     setState(() {
       _lastResult = result ?? 'Colored dialog dismissed';
     });
@@ -93,35 +98,35 @@ class _DialogExampleState extends State<DialogExample> {
   Future<void> _showConstrainedDialog() async {
     final result = await showDialog<int>(
       context: context,
-      builder: (BuildContext context) => Dialog(
-        title: 'Constrained Dialog',
-        padding: const EdgeInsets.all(1),
-        child: Column(
-          children: [
-            Text('Size constrained dialog.'),
-            Text('Max width: 40, height: 8'),
-          ],
-        ),
-        actions: [
-          Button(
-            text: 'Return 42',
-            onPressed: () => dismissDialog(42),
-            style: const ButtonStyle(
-              backgroundColor: Color.yellow,
-              focusBackgroundColor: Color.brightYellow,
-              foregroundColor: Color.black,
+      builder:
+          (BuildContext context) => Dialog(
+            title: 'Constrained Dialog',
+            constraints: BoxConstraints(maxWidth: 40, maxHeight: 8),
+            padding: EdgeInsets.all(1),
+            child: Column(
+              children: [
+                Text('Size constrained dialog.'),
+                Text('Max width: 40, height: 8'),
+              ],
             ),
+            actions: [
+              Button(
+                text: 'Return 42',
+                onPressed: () => dismissDialog(42),
+                style: const ButtonStyle(
+                  backgroundColor: Color.yellow,
+                  focusBackgroundColor: Color.brightYellow,
+                  foregroundColor: Color.black,
+                ),
+              ),
+              Button(text: 'Return Nothing', onPressed: () => dismissDialog()),
+            ],
           ),
-          Button(
-            text: 'Return Nothing',
-            onPressed: () => dismissDialog(),
-          ),
-        ],
-      ),
     );
-    
+
     setState(() {
-      _lastResult = result != null ? 'Number returned: $result' : 'No number returned';
+      _lastResult =
+          result != null ? 'Number returned: $result' : 'No number returned';
     });
   }
 
@@ -129,29 +134,30 @@ class _DialogExampleState extends State<DialogExample> {
     final result = await showDialog<String>(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) => Dialog(
-        title: 'Non-Dismissible Dialog',
-        titleStyle: const TextStyle(color: Color.red, bold: true),
-        child: Column(
-          children: [
-            Text('This dialog cannot be dismissed'),
-            Text('with the Escape key.'),
-            Text('You must click the button!'),
-          ],
-        ),
-        actions: [
-          Button(
-            text: 'Must Click This',
-            onPressed: () => dismissDialog('Explicitly closed'),
-            style: const ButtonStyle(
-              backgroundColor: Color.magenta,
-              focusBackgroundColor: Color.brightMagenta,
+      builder:
+          (BuildContext context) => Dialog(
+            title: 'Non-Dismissible Dialog',
+            titleStyle: TextStyle(color: Color.red, bold: true),
+            child: Column(
+              children: [
+                Text('This dialog cannot be dismissed'),
+                Text('with the Escape key.'),
+                Text('You must click the button!'),
+              ],
             ),
+            actions: [
+              Button(
+                text: 'Must Click This',
+                onPressed: () => dismissDialog('Explicitly closed'),
+                style: const ButtonStyle(
+                  backgroundColor: Color.magenta,
+                  focusBackgroundColor: Color.brightMagenta,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
     );
-    
+
     setState(() {
       _lastResult = result ?? 'Non-dismissible dialog closed';
     });
@@ -161,19 +167,25 @@ class _DialogExampleState extends State<DialogExample> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('Dialog Widget Examples', style: TextStyle(color: Color.cyan, bold: true)),
-        SizedBox(height: 1),
-        Text('Last Result: $_lastResult', style: TextStyle(color: Color.yellow)),
-        SizedBox(height: 1),
-        Text(_instruction, style: TextStyle(color: Color.brightBlack, italic: true)),
-        SizedBox(height: 2),
-        
-        Button(
-          text: 'Show Simple Dialog',
-          onPressed: _showSimpleDialog,
+        Text(
+          'Dialog Widget Examples',
+          style: TextStyle(color: Color.cyan, bold: true),
         ),
         SizedBox(height: 1),
-        
+        Text(
+          'Last Result: $_lastResult',
+          style: TextStyle(color: Color.yellow),
+        ),
+        SizedBox(height: 1),
+        Text(
+          _instruction,
+          style: TextStyle(color: Color.brightBlack, italic: true),
+        ),
+        SizedBox(height: 2),
+
+        Button(text: 'Show Simple Dialog', onPressed: _showSimpleDialog),
+        SizedBox(height: 1),
+
         Button(
           text: 'Show Colored Dialog',
           onPressed: _showColoredDialog,
@@ -183,7 +195,7 @@ class _DialogExampleState extends State<DialogExample> {
           ),
         ),
         SizedBox(height: 1),
-        
+
         Button(
           text: 'Show Constrained Dialog',
           onPressed: _showConstrainedDialog,
@@ -194,7 +206,7 @@ class _DialogExampleState extends State<DialogExample> {
           ),
         ),
         SizedBox(height: 1),
-        
+
         Button(
           text: 'Show Non-Dismissible Dialog',
           onPressed: _showNonDismissibleDialog,
@@ -203,9 +215,12 @@ class _DialogExampleState extends State<DialogExample> {
             focusBackgroundColor: Color.brightRed,
           ),
         ),
-        
+
         SizedBox(height: 2),
-        Text('Features Demonstrated:', style: TextStyle(color: Color.green, bold: true)),
+        Text(
+          'Features Demonstrated:',
+          style: TextStyle(color: Color.green, bold: true),
+        ),
         SizedBox(height: 1),
         Text('• Title and actions support'),
         Text('• Barrier color customization'),
