@@ -1,41 +1,52 @@
 import 'package:radartui/radartui.dart';
 
-void main() {
-  runApp(DialogExampleApp());
+class DialogExample extends StatefulWidget {
+  @override
+  State<DialogExample> createState() => _DialogExampleState();
 }
 
-class DialogExampleApp extends StatelessWidget {
+class _DialogExampleState extends State<DialogExample> {
+  String _lastResult = 'Press buttons to show dialogs!';
+  String _instruction = 'Use Tab to navigate, Enter to select, Escape to exit';
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dialog Example',
-      home: DialogExampleScreen(),
-    );
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+      _handleKeyEvent(key);
+    });
   }
-}
 
-class DialogExampleScreen extends StatefulWidget {
-  @override
-  State<DialogExampleScreen> createState() => _DialogExampleScreenState();
-}
-
-class _DialogExampleScreenState extends State<DialogExampleScreen> {
-  String _lastResult = 'No dialog shown yet';
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      Navigator.of(context).pop();
+      return;
+    }
+  }
 
   Future<void> _showSimpleDialog() async {
     final result = await showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog(
         title: 'Simple Dialog',
-        child: Text('This is a simple dialog with a title.'),
+        child: Column(
+          children: [
+            Text('This is a simple dialog with a title.'),
+            Text('It demonstrates basic dialog functionality.'),
+          ],
+        ),
         actions: [
-          TextButton(
+          Button(
+            text: 'OK',
             onPressed: () => dismissDialog('OK pressed'),
-            child: Text('OK'),
           ),
-          TextButton(
+          Button(
+            text: 'Cancel',
             onPressed: () => dismissDialog('Cancel pressed'),
-            child: Text('Cancel'),
+            style: const ButtonStyle(
+              backgroundColor: Color.red,
+              focusBackgroundColor: Color.brightRed,
+            ),
           ),
         ],
       ),
@@ -49,16 +60,26 @@ class _DialogExampleScreenState extends State<DialogExampleScreen> {
   Future<void> _showColoredDialog() async {
     final result = await showDialog<String>(
       context: context,
-      barrierColor: Colors.black54,
+      barrierColor: Color.brightBlack,
       builder: (BuildContext context) => Dialog(
         title: 'Colored Dialog',
-        titleStyle: TextStyle(color: Colors.blue),
-        backgroundColor: Colors.lightBlue,
-        child: Text('This dialog has custom colors and a barrier.'),
+        titleStyle: TextStyle(color: Color.cyan, bold: true),
+        backgroundColor: Color.blue,
+        child: Column(
+          children: [
+            Text('This dialog has custom colors.', style: TextStyle(color: Color.white)),
+            Text('Notice the blue background!', style: TextStyle(color: Color.yellow)),
+          ],
+        ),
         actions: [
-          TextButton(
+          Button(
+            text: 'Close',
             onPressed: () => dismissDialog('Colored dialog closed'),
-            child: Text('Close'),
+            style: const ButtonStyle(
+              backgroundColor: Color.green,
+              focusBackgroundColor: Color.brightGreen,
+              foregroundColor: Color.black,
+            ),
           ),
         ],
       ),
@@ -75,24 +96,29 @@ class _DialogExampleScreenState extends State<DialogExampleScreen> {
       builder: (BuildContext context) => Dialog(
         title: 'Constrained Dialog',
         constraints: BoxConstraints(
-          maxWidth: 300,
-          maxHeight: 200,
+          maxWidth: 40,
+          maxHeight: 8,
         ),
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(1),
         child: Column(
           children: [
-            Text('This dialog has size constraints.'),
-            Text('Width: max 300, Height: max 200'),
+            Text('Size constrained dialog.'),
+            Text('Max width: 40, height: 8'),
           ],
         ),
         actions: [
-          TextButton(
+          Button(
+            text: 'Return 42',
             onPressed: () => dismissDialog(42),
-            child: Text('Return Number'),
+            style: const ButtonStyle(
+              backgroundColor: Color.yellow,
+              focusBackgroundColor: Color.brightYellow,
+              foregroundColor: Color.black,
+            ),
           ),
-          TextButton(
+          Button(
+            text: 'Return Nothing',
             onPressed: () => dismissDialog(),
-            child: Text('Return Nothing'),
           ),
         ],
       ),
@@ -106,14 +132,25 @@ class _DialogExampleScreenState extends State<DialogExampleScreen> {
   Future<void> _showNonDismissibleDialog() async {
     final result = await showDialog<String>(
       context: context,
-      barrierDismissible: false, // Cannot dismiss with Escape key
+      barrierDismissible: false,
       builder: (BuildContext context) => Dialog(
         title: 'Non-Dismissible Dialog',
-        child: Text('This dialog cannot be dismissed with Escape key.'),
+        titleStyle: TextStyle(color: Color.red, bold: true),
+        child: Column(
+          children: [
+            Text('This dialog cannot be dismissed'),
+            Text('with the Escape key.'),
+            Text('You must click the button!'),
+          ],
+        ),
         actions: [
-          TextButton(
+          Button(
+            text: 'Must Click This',
             onPressed: () => dismissDialog('Explicitly closed'),
-            child: Text('Must Click This'),
+            style: const ButtonStyle(
+              backgroundColor: Color.magenta,
+              focusBackgroundColor: Color.brightMagenta,
+            ),
           ),
         ],
       ),
@@ -126,55 +163,62 @@ class _DialogExampleScreenState extends State<DialogExampleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Dialog Examples')),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text('Last Result: $_lastResult'),
-            SizedBox(height: 20),
-            
-            ElevatedButton(
-              onPressed: _showSimpleDialog,
-              child: Text('Show Simple Dialog'),
-            ),
-            SizedBox(height: 10),
-            
-            ElevatedButton(
-              onPressed: _showColoredDialog,
-              child: Text('Show Colored Dialog'),
-            ),
-            SizedBox(height: 10),
-            
-            ElevatedButton(
-              onPressed: _showConstrainedDialog,
-              child: Text('Show Constrained Dialog'),
-            ),
-            SizedBox(height: 10),
-            
-            ElevatedButton(
-              onPressed: _showNonDismissibleDialog,
-              child: Text('Show Non-Dismissible Dialog'),
-            ),
-            
-            SizedBox(height: 30),
-            Text(
-              'Features Demonstrated:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text('• Title and actions support'),
-            Text('• Barrier color customization'),
-            Text('• Size constraints with BoxConstraints'),
-            Text('• Return values from dialogs'),
-            Text('• Dismissible vs non-dismissible modes'),
-            Text('• Escape key handling (when barrierDismissible: true)'),
-            Text('• Custom styling and padding'),
-          ],
+    return Column(
+      children: [
+        Text('Dialog Widget Examples', style: TextStyle(color: Color.cyan, bold: true)),
+        SizedBox(height: 1),
+        Text('Last Result: $_lastResult', style: TextStyle(color: Color.yellow)),
+        SizedBox(height: 1),
+        Text(_instruction, style: TextStyle(color: Color.brightBlack, italic: true)),
+        SizedBox(height: 2),
+        
+        Button(
+          text: 'Show Simple Dialog',
+          onPressed: _showSimpleDialog,
         ),
-      ),
+        SizedBox(height: 1),
+        
+        Button(
+          text: 'Show Colored Dialog',
+          onPressed: _showColoredDialog,
+          style: const ButtonStyle(
+            backgroundColor: Color.blue,
+            focusBackgroundColor: Color.brightBlue,
+          ),
+        ),
+        SizedBox(height: 1),
+        
+        Button(
+          text: 'Show Constrained Dialog',
+          onPressed: _showConstrainedDialog,
+          style: const ButtonStyle(
+            backgroundColor: Color.yellow,
+            focusBackgroundColor: Color.brightYellow,
+            foregroundColor: Color.black,
+          ),
+        ),
+        SizedBox(height: 1),
+        
+        Button(
+          text: 'Show Non-Dismissible Dialog',
+          onPressed: _showNonDismissibleDialog,
+          style: const ButtonStyle(
+            backgroundColor: Color.red,
+            focusBackgroundColor: Color.brightRed,
+          ),
+        ),
+        
+        SizedBox(height: 2),
+        Text('Features Demonstrated:', style: TextStyle(color: Color.green, bold: true)),
+        SizedBox(height: 1),
+        Text('• Title and actions support'),
+        Text('• Barrier color customization'),
+        Text('• Size constraints with BoxConstraints'),
+        Text('• Return values from dialogs'),
+        Text('• Dismissible vs non-dismissible modes'),
+        Text('• Escape key handling (when barrierDismissible: true)'),
+        Text('• Custom styling and padding'),
+      ],
     );
   }
 }

@@ -3,6 +3,7 @@ import 'src/button_example.dart';
 import 'src/calculator_example.dart';
 import 'src/counter_example.dart';
 import 'src/dashboard_example.dart';
+import 'src/dialog_example.dart';
 import 'src/focus_example.dart';
 import 'src/guess_game_example.dart';
 import 'src/manual_test.dart';
@@ -27,6 +28,7 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/counter': (context) => const CounterExample(),
         '/calculator': (context) => const CalculatorExample(),
         '/dashboard': (context) => const DashboardExample(),
+        '/dialog': (context) => DialogExample(),
         '/guess_game': (context) => const GuessGameExample(),
         '/spinner': (context) => const SpinnerExample(),
         '/style': (context) => const StyleExample(),
@@ -51,6 +53,7 @@ class _MenuScreenState extends State<MenuScreen> {
     'Counter',
     'Calculator',
     'Dashboard',
+    'Dialog',
     'Guess Game',
     'Spinner',
     'Style Demo',
@@ -64,6 +67,7 @@ class _MenuScreenState extends State<MenuScreen> {
     '/counter',
     '/calculator',
     '/dashboard',
+    '/dialog',
     '/guess_game',
     '/spinner',
     '/style',
