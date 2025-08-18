@@ -11,10 +11,9 @@ import 'row.dart';
 import 'center.dart';
 import 'text.dart';
 import 'padding.dart';
+import 'builder.dart';
 import '../../scheduler/binding.dart';
 import '../../services/key_parser.dart';
-
-typedef WidgetBuilder = Widget Function(BuildContext context);
 
 class Dialog extends StatefulWidget {
   final Widget child;
@@ -127,17 +126,19 @@ class ModalRoute<T> extends Route {
 
   @override
   Widget buildPage(BuildContext context) {
-    final dialog = builder(context);
-
-    if (dialog is! Dialog) {
-      throw ArgumentError('The widget returned by builder must be a Dialog');
-    }
-
     return _ModalBarrier(
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
       alignment: alignment,
-      child: dialog,
+      child: Builder(
+        builder: (BuildContext context) {
+          final dialog = builder(context);
+          if (dialog is! Dialog) {
+            throw ArgumentError('The widget returned by builder must be a Dialog');
+          }
+          return dialog;
+        },
+      ),
     );
   }
 }
