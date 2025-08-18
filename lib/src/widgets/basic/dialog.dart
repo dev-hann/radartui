@@ -11,6 +11,7 @@ import 'package:radartui/src/widgets/basic/center.dart';
 import 'package:radartui/src/widgets/basic/text.dart';
 import 'package:radartui/src/widgets/basic/padding.dart';
 import 'package:radartui/src/scheduler/binding.dart';
+import 'package:radartui/src/services/key_parser.dart';
 
 typedef WidgetBuilder = Widget Function(BuildContext context);
 
@@ -47,37 +48,44 @@ class _DialogState extends State<Dialog> {
 
   @override
   Widget build(BuildContext context) {
-    Widget dialogContent = widget.child;
+    List<Widget> columnChildren = [];
 
-    // Wrap with title if provided
+    // Add title if provided
     if (widget.title != null) {
-      final titleWidget = Text(
-        widget.title!,
-        style: widget.titleStyle ?? const TextStyle(color: Colors.black),
+      columnChildren.add(
+        Text(
+          widget.title!,
+          style: widget.titleStyle ?? TextStyle(color: Colors.white, bold: true),
+        ),
       );
-      
-      final contentWithTitle = Column(
-        children: [
-          titleWidget,
-          dialogContent,
-        ],
-      );
-      dialogContent = contentWithTitle;
+      // Add spacing after title
+      columnChildren.add(Container(height: 1));
     }
+
+    // Add main content
+    columnChildren.add(widget.child);
 
     // Add actions if provided
     if (widget.actions != null && widget.actions!.isNotEmpty) {
-      final actionsRow = Row(children: widget.actions!);
-      dialogContent = Column(
-        children: [
-          dialogContent,
-          actionsRow,
-        ],
-      );
+      // Add spacing before actions
+      columnChildren.add(Container(height: 1));
+      
+      // Create actions row with proper spacing
+      final actionWidgets = <Widget>[];
+      for (int i = 0; i < widget.actions!.length; i++) {
+        if (i > 0) {
+          actionWidgets.add(Container(width: 2)); // Space between buttons
+        }
+        actionWidgets.add(widget.actions![i]);
+      }
+      columnChildren.add(Row(children: actionWidgets));
     }
 
+    // Build the main dialog content
+    Widget dialogContent = Column(children: columnChildren);
+
     // Apply padding
-    final padding = widget.padding ?? const EdgeInsets.all(1);
+    final padding = widget.padding ?? const EdgeInsets.all(2);
     dialogContent = Padding(
       padding: padding,
       child: dialogContent,
@@ -85,16 +93,11 @@ class _DialogState extends State<Dialog> {
 
     // Apply background and size constraints
     dialogContent = Container(
-      color: widget.backgroundColor,
+      color: widget.backgroundColor ?? Color.black,
       width: widget.constraints?.maxWidth.toInt(),
       height: widget.constraints?.maxHeight.toInt(),
       child: dialogContent,
     );
-
-    // Center the dialog based on alignment
-    if (widget.alignment == Alignment.center) {
-      dialogContent = Center(child: dialogContent);
-    }
 
     return dialogContent;
   }
@@ -136,7 +139,7 @@ Future<T?> showDialog<T>({
     dialog: dialog,
     barrierDismissible: barrierDismissible,
     barrierColor: barrierColor,
-    onDismiss: () => dismissDialog<T>(),
+    onDismiss: () => dismissTopDialog(),
   );
   
   // Add to overlay system
@@ -159,12 +162,41 @@ void dismissDialog<T>([T? result]) {
   if (_dialogRoutes.isNotEmpty) {
     final entry = _dialogRoutes.entries.last;
     final dialog = entry.key;
-    final route = entry.value as _DialogRoute<T>;
+    final route = entry.value;
+    
+    // Safely cast and check if the route matches the expected type
+    if (route is _DialogRoute<T>) {
+      SchedulerBinding.instance.removeOverlay(dialog);
+      _dialogRoutes.remove(dialog);
+      
+      if (!route.completer.isCompleted) {
+        route.completer.complete(result);
+      }
+    } else {
+      // Fallback: remove the dialog but complete with null result
+      SchedulerBinding.instance.removeOverlay(dialog);
+      _dialogRoutes.remove(dialog);
+      
+      if (route.completer is Completer<T?> && !route.completer.isCompleted) {
+        (route.completer as Completer<T?>).complete(result);
+      }
+    }
+  }
+}
+
+// Helper function to dismiss the topmost dialog without type constraints
+void dismissTopDialog() {
+  if (_dialogRoutes.isNotEmpty) {
+    final entry = _dialogRoutes.entries.last;
+    final dialog = entry.key;
+    final route = entry.value;
     
     SchedulerBinding.instance.removeOverlay(dialog);
     _dialogRoutes.remove(dialog);
     
-    route.completer.complete(result);
+    if (!route.completer.isCompleted) {
+      route.completer.complete(null);
+    }
   }
 }
 
@@ -187,10 +219,11 @@ class _DialogWrapper extends StatefulWidget {
 }
 
 class _DialogWrapperState extends State<_DialogWrapper> {
+  StreamSubscription<KeyEvent>? _keySubscription;
+
   @override
   void initState() {
     super.initState();
-    // TODO: Subscribe to keyboard events for Escape key handling
     _setupKeyboardListener();
   }
 
@@ -201,12 +234,18 @@ class _DialogWrapperState extends State<_DialogWrapper> {
   }
   
   void _setupKeyboardListener() {
-    // TODO: Implement keyboard event subscription
-    // This would require integration with the terminal input system
+    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen(_handleKeyEvent);
   }
   
   void _teardownKeyboardListener() {
-    // TODO: Implement keyboard event cleanup
+    _keySubscription?.cancel();
+    _keySubscription = null;
+  }
+
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      _handleEscapeKey();
+    }
   }
 
   void _handleEscapeKey() {
@@ -219,12 +258,18 @@ class _DialogWrapperState extends State<_DialogWrapper> {
   Widget build(BuildContext context) {
     Widget content = widget.dialog;
     
-    // Add barrier color background if specified
+    // Create modal barrier that fills the entire screen
     if (widget.barrierColor != null) {
+      // Full-screen barrier with dialog centered on top
       content = Container(
+        width: SchedulerBinding.instance.terminal.width,
+        height: SchedulerBinding.instance.terminal.height,
         color: widget.barrierColor,
-        child: content,
+        child: Center(child: content),
       );
+    } else {
+      // No barrier, just center the dialog
+      content = Center(child: content);
     }
     
     return content;
