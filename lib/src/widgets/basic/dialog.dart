@@ -44,23 +44,6 @@ class Dialog extends StatefulWidget {
 }
 
 class _DialogState extends State<Dialog> {
-  @override
-  void initState() {
-    super.initState();
-    // TODO: Subscribe to keyboard events for Escape key handling
-  }
-
-  @override
-  void dispose() {
-    // TODO: Unsubscribe from keyboard events
-    super.dispose();
-  }
-
-  void _handleEscapeKey() {
-    if (widget.barrierDismissible) {
-      // TODO: Close dialog
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +53,7 @@ class _DialogState extends State<Dialog> {
     if (widget.title != null) {
       final titleWidget = Text(
         widget.title!,
-        style: widget.titleStyle ?? const TextStyle(color: Colors.white),
+        style: widget.titleStyle ?? const TextStyle(color: Colors.black),
       );
       
       final contentWithTitle = Column(
@@ -103,8 +86,7 @@ class _DialogState extends State<Dialog> {
     // Apply background and constraints
     dialogContent = Container(
       color: widget.backgroundColor,
-      width: widget.constraints?.maxWidth,
-      height: widget.constraints?.maxHeight,
+      constraints: widget.constraints,
       child: dialogContent,
     );
 
@@ -117,9 +99,23 @@ class _DialogState extends State<Dialog> {
   }
 }
 
-// Global variable to track current dialog
-Dialog? _currentDialog;
-void Function()? _currentDialogCompleter;
+// Dialog route for overlay management
+class _DialogRoute<T> {
+  final Dialog dialog;
+  final Completer<T?> completer;
+  final bool barrierDismissible;
+  final Color? barrierColor;
+  
+  _DialogRoute({
+    required this.dialog,
+    required this.completer,
+    required this.barrierDismissible,
+    this.barrierColor,
+  });
+}
+
+// Global registry for dialog management
+final Map<Dialog, _DialogRoute> _dialogRoutes = {};
 
 Future<T?> showDialog<T>({
   required BuildContext context,
@@ -134,27 +130,102 @@ Future<T?> showDialog<T>({
     throw ArgumentError('The widget returned by builder must be a Dialog');
   }
 
-  // Store current dialog for overlay management
-  _currentDialog = dialog;
+  // Create enhanced dialog with barrier
+  final enhancedDialog = _DialogWrapper(
+    dialog: dialog,
+    barrierDismissible: barrierDismissible,
+    barrierColor: barrierColor,
+    onDismiss: () => dismissDialog<T>(),
+  );
   
   // Add to overlay system
-  SchedulerBinding.instance.addOverlay(dialog);
+  SchedulerBinding.instance.addOverlay(enhancedDialog);
   
-  // Return a Future that completes when dialog is closed
+  // Create route for management
   final completer = Completer<T?>();
-  _currentDialogCompleter = () => completer.complete(null);
+  final route = _DialogRoute<T>(
+    dialog: enhancedDialog,
+    completer: completer,
+    barrierDismissible: barrierDismissible,
+    barrierColor: barrierColor,
+  );
+  _dialogRoutes[enhancedDialog] = route;
   
   return completer.future;
 }
 
 void dismissDialog<T>([T? result]) {
-  if (_currentDialog != null) {
-    SchedulerBinding.instance.removeOverlay(_currentDialog!);
-    _currentDialog = null;
+  if (_dialogRoutes.isNotEmpty) {
+    final entry = _dialogRoutes.entries.last;
+    final dialog = entry.key;
+    final route = entry.value as _DialogRoute<T>;
     
-    if (_currentDialogCompleter != null) {
-      _currentDialogCompleter!();
-      _currentDialogCompleter = null;
+    SchedulerBinding.instance.removeOverlay(dialog);
+    _dialogRoutes.remove(dialog);
+    
+    route.completer.complete(result);
+  }
+}
+
+// Wrapper widget to handle barriers and keyboard events
+class _DialogWrapper extends StatefulWidget {
+  final Dialog dialog;
+  final bool barrierDismissible;
+  final Color? barrierColor;
+  final VoidCallback onDismiss;
+  
+  const _DialogWrapper({
+    required this.dialog,
+    required this.barrierDismissible,
+    this.barrierColor,
+    required this.onDismiss,
+  });
+  
+  @override
+  State<_DialogWrapper> createState() => _DialogWrapperState();
+}
+
+class _DialogWrapperState extends State<_DialogWrapper> {
+  @override
+  void initState() {
+    super.initState();
+    // TODO: Subscribe to keyboard events for Escape key handling
+    _setupKeyboardListener();
+  }
+
+  @override
+  void dispose() {
+    _teardownKeyboardListener();
+    super.dispose();
+  }
+  
+  void _setupKeyboardListener() {
+    // TODO: Implement keyboard event subscription
+    // This would require integration with the terminal input system
+  }
+  
+  void _teardownKeyboardListener() {
+    // TODO: Implement keyboard event cleanup
+  }
+
+  void _handleEscapeKey() {
+    if (widget.barrierDismissible) {
+      widget.onDismiss();
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget content = widget.dialog;
+    
+    // Add barrier color background if specified
+    if (widget.barrierColor != null) {
+      content = Container(
+        color: widget.barrierColor,
+        child: content,
+      );
+    }
+    
+    return content;
   }
 }
