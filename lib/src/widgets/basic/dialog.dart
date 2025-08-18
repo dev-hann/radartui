@@ -1,17 +1,17 @@
 import 'dart:async';
-import 'package:radartui/src/foundation/color.dart';
-import 'package:radartui/src/foundation/edge_insets.dart';
-import 'package:radartui/src/foundation/alignment.dart';
-import 'package:radartui/src/foundation/box_constraints.dart';
-import 'package:radartui/src/widgets/framework.dart';
-import 'package:radartui/src/widgets/basic/container.dart';
-import 'package:radartui/src/widgets/basic/column.dart';
-import 'package:radartui/src/widgets/basic/row.dart';
-import 'package:radartui/src/widgets/basic/center.dart';
-import 'package:radartui/src/widgets/basic/text.dart';
-import 'package:radartui/src/widgets/basic/padding.dart';
-import 'package:radartui/src/scheduler/binding.dart';
-import 'package:radartui/src/services/key_parser.dart';
+import '../../foundation/color.dart';
+import '../../foundation/edge_insets.dart';
+import '../../foundation/alignment.dart';
+import '../../foundation/box_constraints.dart';
+import '../framework.dart';
+import 'container.dart';
+import 'column.dart';
+import 'row.dart';
+import 'center.dart';
+import 'text.dart';
+import 'padding.dart';
+import '../../scheduler/binding.dart';
+import '../../services/key_parser.dart';
 
 typedef WidgetBuilder = Widget Function(BuildContext context);
 
@@ -48,18 +48,18 @@ class _DialogState extends State<Dialog> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> columnChildren = [];
+    final List<Widget> columnChildren = <Widget>[];
 
     // Add title if provided
     if (widget.title != null) {
       columnChildren.add(
         Text(
           widget.title!,
-          style: widget.titleStyle ?? TextStyle(color: Colors.white, bold: true),
-        ),
+          style: widget.titleStyle ?? const TextStyle(color: Color.white, bold: true),
+        ) as Widget,
       );
       // Add spacing after title
-      columnChildren.add(Container(height: 1));
+      columnChildren.add(const Container(height: 1) as Widget);
     }
 
     // Add main content
@@ -68,28 +68,28 @@ class _DialogState extends State<Dialog> {
     // Add actions if provided
     if (widget.actions != null && widget.actions!.isNotEmpty) {
       // Add spacing before actions
-      columnChildren.add(Container(height: 1));
+      columnChildren.add(const Container(height: 1) as Widget);
       
       // Create actions row with proper spacing
       final actionWidgets = <Widget>[];
       for (int i = 0; i < widget.actions!.length; i++) {
         if (i > 0) {
-          actionWidgets.add(Container(width: 2)); // Space between buttons
+          actionWidgets.add(const Container(width: 2) as Widget); // Space between buttons
         }
         actionWidgets.add(widget.actions![i]);
       }
-      columnChildren.add(Row(children: actionWidgets));
+      columnChildren.add(Row(children: actionWidgets) as Widget);
     }
 
     // Build the main dialog content
-    Widget dialogContent = Column(children: columnChildren);
+    Widget dialogContent = Column(children: columnChildren) as Widget;
 
     // Apply padding
     final padding = widget.padding ?? const EdgeInsets.all(2);
     dialogContent = Padding(
       padding: padding,
       child: dialogContent,
-    );
+    ) as Widget;
 
     // Apply background and size constraints
     dialogContent = Container(
@@ -97,7 +97,7 @@ class _DialogState extends State<Dialog> {
       width: widget.constraints?.maxWidth.toInt(),
       height: widget.constraints?.maxHeight.toInt(),
       child: dialogContent,
-    );
+    ) as Widget;
 
     return dialogContent;
   }
@@ -256,7 +256,7 @@ class _DialogWrapperState extends State<_DialogWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = widget.dialog;
+    Widget content = widget.dialog as Widget;
     
     // Create modal barrier that fills the entire screen
     if (widget.barrierColor != null) {
@@ -265,11 +265,11 @@ class _DialogWrapperState extends State<_DialogWrapper> {
         width: SchedulerBinding.instance.terminal.width,
         height: SchedulerBinding.instance.terminal.height,
         color: widget.barrierColor,
-        child: Center(child: content),
-      );
+        child: Center(child: content) as Widget,
+      ) as Widget;
     } else {
       // No barrier, just center the dialog
-      content = Center(child: content);
+      content = Center(child: content) as Widget;
     }
     
     return content;

@@ -2,6 +2,7 @@ export 'basic/button.dart';
 export 'basic/center.dart';
 export 'basic/column.dart';
 export 'basic/container.dart';
+export 'basic/dialog.dart';
 export 'basic/flex.dart';
 export 'basic/focus.dart';
 export 'basic/indicator.dart';

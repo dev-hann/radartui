@@ -7,7 +7,7 @@ class DialogExample extends StatefulWidget {
 
 class _DialogExampleState extends State<DialogExample> {
   String _lastResult = 'Press buttons to show dialogs!';
-  String _instruction = 'Use Tab to navigate, Enter to select, Escape to exit';
+  final String _instruction = 'Use Tab to navigate, Enter to select, Escape to exit';
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ class _DialogExampleState extends State<DialogExample> {
       barrierColor: Color.brightBlack,
       builder: (BuildContext context) => Dialog(
         title: 'Colored Dialog',
-        titleStyle: TextStyle(color: Color.cyan, bold: true),
+        titleStyle: const TextStyle(color: Color.cyan, bold: true),
         backgroundColor: Color.blue,
         child: Column(
           children: [
@@ -95,11 +95,7 @@ class _DialogExampleState extends State<DialogExample> {
       context: context,
       builder: (BuildContext context) => Dialog(
         title: 'Constrained Dialog',
-        constraints: BoxConstraints(
-          maxWidth: 40,
-          maxHeight: 8,
-        ),
-        padding: EdgeInsets.all(1),
+        padding: const EdgeInsets.all(1),
         child: Column(
           children: [
             Text('Size constrained dialog.'),
@@ -135,7 +131,7 @@ class _DialogExampleState extends State<DialogExample> {
       barrierDismissible: false,
       builder: (BuildContext context) => Dialog(
         title: 'Non-Dismissible Dialog',
-        titleStyle: TextStyle(color: Color.red, bold: true),
+        titleStyle: const TextStyle(color: Color.red, bold: true),
         child: Column(
           children: [
             Text('This dialog cannot be dismissed'),
