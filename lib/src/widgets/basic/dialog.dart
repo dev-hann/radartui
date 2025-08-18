@@ -10,6 +10,8 @@ import 'row.dart';
 import 'center.dart';
 import 'text.dart';
 import 'padding.dart';
+import 'focus.dart';
+import '../focus_manager.dart';
 import '../../scheduler/binding.dart';
 import '../../services/key_parser.dart';
 
@@ -220,17 +222,42 @@ class _DialogWrapper extends StatefulWidget {
 
 class _DialogWrapperState extends State<_DialogWrapper> {
   StreamSubscription<KeyEvent>? _keySubscription;
+  late FocusScope _dialogFocusScope;
+  FocusScope? _previousFocusScope;
 
   @override
   void initState() {
     super.initState();
+    _setupDialogFocus();
     _setupKeyboardListener();
   }
 
   @override
   void dispose() {
+    _restorePreviousFocus();
     _teardownKeyboardListener();
     super.dispose();
+  }
+
+  void _setupDialogFocus() {
+    // Store the current focus scope to restore later
+    _previousFocusScope = FocusManager.instance.currentScope;
+    
+    // Create a new focus scope for the dialog
+    _dialogFocusScope = FocusScope();
+    
+    // Set the dialog's focus scope as current
+    FocusManager.instance.pushScope(_dialogFocusScope);
+  }
+
+  void _restorePreviousFocus() {
+    // Clean up dialog's focus scope
+    _dialogFocusScope.dispose();
+    
+    // Restore the previous focus scope
+    if (_previousFocusScope != null) {
+      FocusManager.instance.popScope(_previousFocusScope!);
+    }
   }
   
   void _setupKeyboardListener() {

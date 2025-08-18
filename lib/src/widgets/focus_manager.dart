@@ -77,5 +77,13 @@ class FocusManager extends NavigatorObserver {
     _currentScope?.requestFocus(node);
   }
 
+  void pushScope(FocusScope scope) {
+    _activateScope(scope);
+  }
+
+  void popScope(FocusScope scope) {
+    _activateScope(scope);
+  }
+
   FocusNode? get currentFocus => _currentScope?.currentFocus;
 }
