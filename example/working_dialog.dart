@@ -198,8 +198,11 @@ class _DialogRoute<T> {
   });
 }
 
-// Global registry for dialog management
+// Global registry for dialog management  
 final Map<Widget, _DialogRoute> _dialogRoutes = {};
+
+// Public accessor for dialog count
+int get activeDialogCount => _dialogRoutes.length;
 
 class Dialog extends StatefulWidget {
   final Widget child;

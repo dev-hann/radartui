@@ -83,10 +83,11 @@ class _DialogState extends State<Dialog> {
       child: dialogContent,
     );
 
-    // Apply background and constraints
+    // Apply background and size constraints
     dialogContent = Container(
       color: widget.backgroundColor,
-      constraints: widget.constraints,
+      width: widget.constraints?.maxWidth.toInt(),
+      height: widget.constraints?.maxHeight.toInt(),
       child: dialogContent,
     );
 
@@ -101,7 +102,7 @@ class _DialogState extends State<Dialog> {
 
 // Dialog route for overlay management
 class _DialogRoute<T> {
-  final Dialog dialog;
+  final _DialogWrapper dialog;
   final Completer<T?> completer;
   final bool barrierDismissible;
   final Color? barrierColor;
@@ -115,7 +116,7 @@ class _DialogRoute<T> {
 }
 
 // Global registry for dialog management
-final Map<Dialog, _DialogRoute> _dialogRoutes = {};
+final Map<_DialogWrapper, _DialogRoute> _dialogRoutes = {};
 
 Future<T?> showDialog<T>({
   required BuildContext context,

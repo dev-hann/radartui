@@ -135,20 +135,20 @@ void runInteractiveDemo() async {
     ),
   );
   
-  print('📱 Two dialogs active! Current count: ${_dialogRoutes.length}');
+  print('📱 Two dialogs active! Current count: $activeDialogCount');
   print('Press Enter to close the top dialog...');
   stdin.readLineSync();
   
   dismissDialog('Top dialog closed');
   await future5b;
-  print('✅ Top dialog closed. Remaining: ${_dialogRoutes.length}');
+  print('✅ Top dialog closed. Remaining: $activeDialogCount');
   
   print('Press Enter to close the remaining dialog...');
   stdin.readLineSync();
   
   dismissDialog('Bottom dialog closed');
   await future5a;
-  print('✅ All dialogs closed. Remaining: ${_dialogRoutes.length}\n');
+  print('✅ All dialogs closed. Remaining: $activeDialogCount\n');
 
   // Demo 6: Typed Results
   print('=== Demo 6: Type-Safe Results ===');
