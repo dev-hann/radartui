@@ -68,6 +68,9 @@ class _ButtonState extends State<Button> {
 
   @override
   Widget build(BuildContext context) {
+    // Ensure the focus node is registered with the current scope
+    _focusNode.ensureRegistered();
+    
     return _ButtonRenderWidget(
       text: widget.text,
       enabled: widget.enabled,

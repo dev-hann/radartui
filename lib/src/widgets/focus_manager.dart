@@ -44,9 +44,25 @@ class FocusManager extends NavigatorObserver {
   }
 
   void _activateScope(FocusScope scope) {
+    // Deactivate current scope
+    _currentScope?.deactivate();
+    
+    // Set new current scope
     _currentScope = scope;
+    
+    // Activate the new scope
+    scope.activate();
+    
+    // Trigger re-registration of all existing nodes
+    _notifyNodesOfScopeChange();
+    
     SchedulerBinding.instance.scheduleFrame();
-    scope.notifyAllNodes();
+  }
+
+  void _notifyNodesOfScopeChange() {
+    // This will trigger existing FocusNodes to re-register with the new scope
+    // by calling ensureRegistered on all active widgets
+    SchedulerBinding.instance.scheduleFrame();
   }
 
   void _handleKeyEvent(KeyEvent event) {
@@ -92,6 +108,10 @@ class FocusManager extends NavigatorObserver {
       final previousScope = _scopeStack.removeLast();
       _activateScope(previousScope);
     }
+  }
+
+  void activateScope(FocusScope scope) {
+    _activateScope(scope);
   }
 
   FocusNode? get currentFocus => _currentScope?.currentFocus;

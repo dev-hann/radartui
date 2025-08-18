@@ -48,7 +48,7 @@ class FocusNode {
 
   void _autoRegister() {
     final currentScope = FocusManager.instance.currentScope;
-    if (currentScope != null) {
+    if (currentScope != null && currentScope._isActive) {
       // 이미 다른 scope에 등록되어 있다면 제거
       if (_scope != null && _scope != currentScope) {
         _scope!._removeNode(this);
@@ -59,8 +59,11 @@ class FocusNode {
 
   void ensureRegistered() {
     final currentScope = FocusManager.instance.currentScope;
-    if (currentScope != null && _scope != currentScope) {
-      _autoRegister();
+    if (currentScope != null && currentScope._isActive) {
+      // Always re-register if the scope is different or if not currently registered
+      if (_scope != currentScope || !currentScope._nodes.contains(this)) {
+        _autoRegister();
+      }
     }
   }
 
@@ -73,6 +76,7 @@ class FocusNode {
 class FocusScope {
   final List<FocusNode> _nodes = [];
   int _currentIndex = 0;
+  bool _isActive = false;
 
   void addNode(FocusNode node) {
     if (!_nodes.contains(node)) {
@@ -149,8 +153,27 @@ class FocusScope {
     setFocus(node);
   }
 
+  void activate() {
+    _isActive = true;
+    
+    // Re-attach all nodes to this scope when activating
+    for (final node in _nodes) {
+      node._scope = this;
+    }
+    
+    notifyAllNodes();
+  }
+
+  void deactivate() {
+    _isActive = false;
+    // Clear focus from all nodes when deactivating
+    for (final node in _nodes) {
+      node._setFocus(false);
+    }
+  }
+
   void notifyAllNodes() {
-    if (_nodes.isNotEmpty) {
+    if (_nodes.isNotEmpty && _isActive) {
       final index = _currentIndex.clamp(0, _nodes.length - 1);
       _currentIndex = index;
       final focusedNode = _nodes[index];

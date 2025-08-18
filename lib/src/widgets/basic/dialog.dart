@@ -223,6 +223,7 @@ class _DialogWrapper extends StatefulWidget {
 class _DialogWrapperState extends State<_DialogWrapper> {
   StreamSubscription<KeyEvent>? _keySubscription;
   late FocusScope _dialogFocusScope;
+  FocusScope? _previousFocusScope;
 
   @override
   void initState() {
@@ -239,6 +240,9 @@ class _DialogWrapperState extends State<_DialogWrapper> {
   }
 
   void _setupDialogFocus() {
+    // Store reference to the current scope before switching
+    _previousFocusScope = FocusManager.instance.currentScope;
+    
     // Create a new focus scope for the dialog
     _dialogFocusScope = FocusScope();
     
@@ -252,6 +256,12 @@ class _DialogWrapperState extends State<_DialogWrapper> {
     
     // Restore the previous focus scope from stack
     FocusManager.instance.popScope();
+    
+    // Double-check: if stack restoration didn't work, manually restore
+    if (_previousFocusScope != null && 
+        FocusManager.instance.currentScope != _previousFocusScope) {
+      FocusManager.instance.activateScope(_previousFocusScope!);
+    }
   }
   
   void _setupKeyboardListener() {
