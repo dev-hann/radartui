@@ -4,8 +4,10 @@ import '../framework.dart';
 
 class FocusNode {
   FocusNode() {
+    // Automatically register with current scope when created
     _autoRegister();
   }
+  
   bool _hasFocus = false;
   FocusScope? _scope;
   Function(KeyEvent)? onKeyEvent;
@@ -47,29 +49,13 @@ class FocusNode {
   }
 
   void _autoRegister() {
-    final currentScope = FocusManager.instance.currentScope;
-    if (currentScope != null && currentScope.isActive && _scope == null) {
-      // Only register if not already registered to any scope
-      currentScope.addNode(this);
-    }
-  }
-
-  void ensureRegistered() {
-    final currentScope = FocusManager.instance.currentScope;
-    if (currentScope != null && currentScope.isActive) {
-      // Register if not registered to any scope, or if current scope is different
-      if (_scope == null || _scope != currentScope) {
-        // Remove from old scope if exists
-        _scope?._removeNode(this);
-        // Add to current scope
-        currentScope.addNode(this);
-      }
-    }
+    // Simple auto-registration with current scope
+    FocusManager.instance.registerNode(this);
   }
 
   void dispose() {
     _listeners.clear();
-    _scope?._removeNode(this);
+    FocusManager.instance.unregisterNode(this);
   }
 }
 
@@ -83,23 +69,25 @@ class FocusScope {
       _nodes.add(node);
       node._scope = this;
 
-      // Automatically set focus to the first node
-      if (_nodes.length == 1) {
+      // Set focus to first node if this is the first one
+      if (_nodes.length == 1 && _isActive) {
         node._setFocus(true);
       }
     }
   }
 
-  void _removeNode(FocusNode node) {
+  void removeNode(FocusNode node) {
     final index = _nodes.indexOf(node);
     if (index != -1) {
       _nodes.removeAt(index);
       node._scope = null;
 
-      // 현재 포커스된 노드가 제거되면 다음 노드로 이동
+      // Adjust current index if needed
       if (index <= _currentIndex && _nodes.isNotEmpty) {
         _currentIndex = _currentIndex.clamp(0, _nodes.length - 1);
-        _nodes[_currentIndex]._setFocus(true);
+        if (_isActive) {
+          _nodes[_currentIndex]._setFocus(true);
+        }
       }
     }
   }
@@ -112,13 +100,13 @@ class FocusScope {
   }
 
   void _setFocusAtIndex(int index) {
-    if (index >= 0 && index < _nodes.length) {
-      // 이전 포커스 해제
+    if (index >= 0 && index < _nodes.length && _isActive) {
+      // Clear previous focus
       if (_currentIndex < _nodes.length) {
         _nodes[_currentIndex]._setFocus(false);
       }
 
-      // 새로운 포커스 설정
+      // Set new focus
       _currentIndex = index;
       _nodes[_currentIndex]._setFocus(true);
     }
@@ -145,10 +133,6 @@ class FocusScope {
 
   List<FocusNode> get nodes => _nodes;
 
-  void removeNode(FocusNode node) {
-    _removeNode(node);
-  }
-
   void requestFocus(FocusNode node) {
     setFocus(node);
   }
@@ -156,41 +140,26 @@ class FocusScope {
   void activate() {
     _isActive = true;
     
-    // Re-connect all nodes to this scope when activating
-    for (final node in _nodes) {
-      node._scope = this;
+    // Set focus to first node when activating
+    if (_nodes.isNotEmpty) {
+      _currentIndex = 0;
+      _nodes[_currentIndex]._setFocus(true);
     }
-    
-    notifyAllNodes();
   }
 
   void deactivate() {
     _isActive = false;
-    // Clear focus from all nodes when deactivating
+    // Clear focus from all nodes
     for (final node in _nodes) {
       node._setFocus(false);
-    }
-  }
-
-  void notifyAllNodes() {
-    if (_nodes.isNotEmpty && _isActive) {
-      final index = _currentIndex.clamp(0, _nodes.length - 1);
-      _currentIndex = index;
-      final focusedNode = _nodes[index];
-
-      for (int i = 0; i < _nodes.length; i++) {
-        if (i != index) {
-          _nodes[i]._setFocus(false);
-        }
-      }
-
-      focusedNode._setFocus(true);
     }
   }
 
   bool get isActive => _isActive;
 
   void dispose() {
+    deactivate();
+    // Clear all nodes
     for (final node in _nodes) {
       node._scope = null;
     }
@@ -253,6 +222,7 @@ class _FocusState extends State<Focus> {
 
   @override
   Widget build(BuildContext context) {
+    // Pure UI rendering only - no logic here
     return widget.child;
   }
 }

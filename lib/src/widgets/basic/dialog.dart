@@ -10,7 +10,6 @@ import 'row.dart';
 import 'center.dart';
 import 'text.dart';
 import 'padding.dart';
-import 'focus.dart';
 import '../focus_manager.dart';
 import '../../scheduler/binding.dart';
 import '../../services/key_parser.dart';
@@ -222,8 +221,6 @@ class _DialogWrapper extends StatefulWidget {
 
 class _DialogWrapperState extends State<_DialogWrapper> {
   StreamSubscription<KeyEvent>? _keySubscription;
-  late FocusScope _dialogFocusScope;
-  FocusScope? _previousFocusScope;
 
   @override
   void initState() {
@@ -240,28 +237,13 @@ class _DialogWrapperState extends State<_DialogWrapper> {
   }
 
   void _setupDialogFocus() {
-    // Store reference to the current scope before switching
-    _previousFocusScope = FocusManager.instance.currentScope;
-    
-    // Create a new focus scope for the dialog
-    _dialogFocusScope = FocusScope();
-    
-    // Push dialog's focus scope to stack (automatically saves current scope)
-    FocusManager.instance.pushScope(_dialogFocusScope);
+    // Navigation-style approach: completely clear existing focus and create new scope
+    FocusManager.instance.pushDialogScope();
   }
 
   void _restorePreviousFocus() {
-    // Clean up dialog's focus scope
-    _dialogFocusScope.dispose();
-    
-    // Restore the previous focus scope from stack
-    FocusManager.instance.popScope();
-    
-    // Double-check: if stack restoration didn't work, manually restore
-    if (_previousFocusScope != null && 
-        FocusManager.instance.currentScope != _previousFocusScope) {
-      FocusManager.instance.activateScope(_previousFocusScope!);
-    }
+    // Navigation-style approach: dispose dialog focus and restore previous scope
+    FocusManager.instance.popDialogScope();
   }
   
   void _setupKeyboardListener() {
@@ -287,6 +269,7 @@ class _DialogWrapperState extends State<_DialogWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    // Pure UI rendering - no focus logic here
     Widget content = widget.dialog as Widget;
     
     // Create modal barrier that fills the entire screen

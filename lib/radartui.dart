@@ -7,6 +7,7 @@ export 'src/foundation/constants.dart';
 
 export 'src/widgets/framework.dart';
 export 'src/widgets/basic.dart';
+export 'src/widgets/focus_manager.dart';
 export 'src/services/key_parser.dart';
 export 'src/services/logger.dart';
 export 'src/scheduler/binding.dart';

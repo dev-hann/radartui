@@ -34,11 +34,9 @@ class _ButtonState extends State<Button> {
   @override
   void initState() {
     super.initState();
-    _focusNode = widget.focusNode ?? FocusNode();
+    _focusNode = widget.focusNode ?? FocusNode(); // FocusNode auto-registers on creation
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChange);
-    // Ensure registration with current scope
-    _focusNode.ensureRegistered();
   }
 
   @override
