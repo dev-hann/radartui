@@ -48,16 +48,22 @@ class FocusNode {
 
   void _autoRegister() {
     final currentScope = FocusManager.instance.currentScope;
-    if (currentScope != null && currentScope._isActive && _scope == null) {
+    if (currentScope != null && currentScope.isActive && _scope == null) {
       // Only register if not already registered to any scope
       currentScope.addNode(this);
     }
   }
 
   void ensureRegistered() {
-    // Only register if not currently registered to any scope
-    if (_scope == null) {
-      _autoRegister();
+    final currentScope = FocusManager.instance.currentScope;
+    if (currentScope != null && currentScope.isActive) {
+      // Register if not registered to any scope, or if current scope is different
+      if (_scope == null || _scope != currentScope) {
+        // Remove from old scope if exists
+        _scope?._removeNode(this);
+        // Add to current scope
+        currentScope.addNode(this);
+      }
     }
   }
 
@@ -149,6 +155,12 @@ class FocusScope {
 
   void activate() {
     _isActive = true;
+    
+    // Re-connect all nodes to this scope when activating
+    for (final node in _nodes) {
+      node._scope = this;
+    }
+    
     notifyAllNodes();
   }
 
@@ -175,6 +187,8 @@ class FocusScope {
       focusedNode._setFocus(true);
     }
   }
+
+  bool get isActive => _isActive;
 
   void dispose() {
     for (final node in _nodes) {

@@ -60,9 +60,27 @@ class FocusManager extends NavigatorObserver {
   }
 
   void _notifyNodesOfScopeChange() {
-    // This will trigger existing FocusNodes to re-register with the new scope
-    // by calling ensureRegistered on all active widgets
+    // Re-register all existing focus nodes with the new current scope
+    _reregisterAllNodes();
+  }
+
+  void _reregisterAllNodes() {
+    // Force all widgets to rebuild and re-register their focus nodes
+    // This simulates what happens during navigation
     SchedulerBinding.instance.scheduleFrame();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _rebuildAllFocusNodes();
+    });
+  }
+
+  void _rebuildAllFocusNodes() {
+    // This will be called after the frame to ensure all widgets are built
+    // and can re-register their focus nodes with the current scope
+    final currentScope = _currentScope;
+    if (currentScope != null && currentScope.isActive) {
+      // The widgets will automatically re-register during their next build cycle
+      SchedulerBinding.instance.scheduleFrame();
+    }
   }
 
   void _handleKeyEvent(KeyEvent event) {
@@ -107,7 +125,33 @@ class FocusManager extends NavigatorObserver {
     if (_scopeStack.isNotEmpty) {
       final previousScope = _scopeStack.removeLast();
       _activateScope(previousScope);
+      
+      // Force all widgets to re-register with the restored scope
+      _triggerWidgetReregistration();
     }
+  }
+
+  void _triggerWidgetReregistration() {
+    // Navigation-style focus re-registration: re-register all existing nodes
+    final allExistingNodes = <FocusNode>[];
+    
+    // Collect all nodes from all scopes in the stack + current scope
+    for (final scope in _scopeStack) {
+      allExistingNodes.addAll(scope.nodes);
+    }
+    if (_currentScope != null) {
+      allExistingNodes.addAll(_currentScope!.nodes);
+    }
+    
+    // Re-register all nodes with the current active scope
+    if (_currentScope != null && _currentScope!.isActive) {
+      for (final node in allExistingNodes) {
+        node.ensureRegistered();
+      }
+    }
+    
+    // Schedule frame to ensure UI updates
+    SchedulerBinding.instance.scheduleFrame();
   }
 
   void activateScope(FocusScope scope) {

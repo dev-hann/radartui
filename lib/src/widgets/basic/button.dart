@@ -37,6 +37,8 @@ class _ButtonState extends State<Button> {
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChange);
+    // Ensure registration with current scope
+    _focusNode.ensureRegistered();
   }
 
   @override
