@@ -1,4 +1,4 @@
-import 'package:radartui/src/foundation/size.dart';
+import 'size.dart';
 
 class BoxConstraints {
   final int minWidth;

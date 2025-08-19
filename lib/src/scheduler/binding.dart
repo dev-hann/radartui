@@ -1,14 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:radartui/src/foundation/offset.dart';
-import 'package:radartui/src/rendering/render_box.dart';
-import 'package:radartui/src/rendering/render_object.dart';
-import 'package:radartui/src/services/key_parser.dart';
-import 'package:radartui/src/services/output_buffer.dart';
-import 'package:radartui/src/services/terminal.dart';
-import 'package:radartui/src/widgets/framework.dart';
-import 'package:radartui/src/services/logger.dart';
+import '../foundation.dart';
+import '../rendering.dart';
+import '../services.dart';
+import '../widgets.dart';
 
 typedef VoidCallback = void Function();
 typedef FrameCallback = void Function(Duration timeStamp);

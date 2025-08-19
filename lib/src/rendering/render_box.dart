@@ -1,36 +1,5 @@
-import 'package:radartui/src/foundation/edge_insets.dart';
-import 'package:radartui/src/foundation/offset.dart';
-import 'package:radartui/src/foundation/size.dart';
-import 'package:radartui/src/foundation/constants.dart';
-import 'package:radartui/src/rendering/render_object.dart';
-
-class BoxConstraints extends Constraints {
-  final int maxWidth, maxHeight;
-  const BoxConstraints({
-    this.maxWidth = LayoutConstants.maxWidth, 
-    this.maxHeight = LayoutConstants.maxHeight
-  });
-
-  Size get biggest => Size(maxWidth, maxHeight);
-  
-  Size constrain(Size size) {
-    final constrainedWidth = maxWidth > 0 ? size.width.clamp(0, maxWidth) : size.width.clamp(0, 1000);
-    final constrainedHeight = maxHeight > 0 ? size.height.clamp(0, maxHeight) : size.height.clamp(0, 1000);
-    return Size(
-      constrainedWidth.toInt(),
-      constrainedHeight.toInt(),
-    );
-  }
-  
-  BoxConstraints deflate(EdgeInsets edge) {
-    final horizontal = edge.left + edge.right;
-    final vertical = edge.top + edge.bottom;
-    return BoxConstraints(
-      maxWidth: (maxWidth - horizontal).clamp(0, LayoutConstants.maxWidth),
-      maxHeight: (maxHeight - vertical).clamp(0, LayoutConstants.maxHeight),
-    );
-  }
-}
+import '../foundation.dart';
+import 'render_object.dart';
 
 class FlexParentData extends ParentData {
   Offset offset = Offset.zero;

@@ -1,7 +1,6 @@
-import 'package:radartui/src/foundation/offset.dart';
-import 'package:radartui/src/foundation/size.dart';
-import 'package:radartui/src/rendering/render_box.dart';
-import 'package:radartui/src/rendering/render_object.dart';
+import '../foundation.dart';
+import 'render_box.dart';
+import 'render_object.dart';
 
 abstract class SingleChildRenderBox extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, ParentData> {

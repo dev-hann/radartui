@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'package:radartui/src/widgets/framework.dart';
-import 'package:radartui/src/widgets/focus_manager.dart';
-import 'package:radartui/src/widgets/navigator_observer.dart';
-import 'package:radartui/src/rendering/render_object.dart';
-import 'package:radartui/src/foundation/offset.dart';
-import 'package:radartui/src/foundation/errors.dart';
-import 'package:radartui/src/scheduler/binding.dart';
+import '../foundation.dart';
+import '../rendering.dart';
+import '../scheduler.dart';
+import 'framework.dart';
+import 'focus_manager.dart';
+import 'navigator_observer.dart';
 
 typedef RouteBuilder = Widget Function(BuildContext context);
 typedef RoutePredicate = bool Function(Route route);
