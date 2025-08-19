@@ -1,9 +1,9 @@
-import 'package:radartui/src/foundation/color.dart';
-import 'package:radartui/src/foundation/offset.dart';
-import 'package:radartui/src/foundation/size.dart';
-import 'package:radartui/src/rendering/render_box.dart';
-import 'package:radartui/src/rendering/render_object.dart';
-import 'package:radartui/src/widgets/framework.dart';
+import '../../foundation/color.dart';
+import '../../foundation/offset.dart';
+import '../../foundation/size.dart';
+import '../../rendering/render_box.dart';
+import '../../rendering/render_object.dart';
+import '../framework.dart';
 
 class Text extends RenderObjectWidget {
   final String data;

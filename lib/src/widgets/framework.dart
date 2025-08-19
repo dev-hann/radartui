@@ -1,6 +1,6 @@
-import 'package:radartui/src/rendering/render_box.dart';
-import 'package:radartui/src/rendering/render_object.dart';
-import 'package:radartui/src/scheduler/binding.dart';
+import '../rendering/render_box.dart';
+import '../rendering/render_object.dart';
+import '../scheduler/binding.dart';
 
 abstract class Widget {
   const Widget();

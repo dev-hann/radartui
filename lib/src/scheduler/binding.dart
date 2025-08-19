@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:radartui/src/foundation/offset.dart';
-import 'package:radartui/src/rendering/render_box.dart';
-import 'package:radartui/src/rendering/render_object.dart';
-import 'package:radartui/src/services/key_parser.dart';
-import 'package:radartui/src/services/output_buffer.dart';
-import 'package:radartui/src/services/terminal.dart';
-import 'package:radartui/src/widgets/framework.dart';
-import 'package:radartui/src/services/logger.dart';
+import '../foundation/offset.dart';
+import '../rendering/render_box.dart';
+import '../rendering/render_object.dart';
+import '../services/key_parser.dart';
+import '../services/output_buffer.dart';
+import '../services/terminal.dart';
+import '../widgets/framework.dart';
+import '../services/logger.dart';
 
 typedef VoidCallback = void Function();
 typedef FrameCallback = void Function(Duration timeStamp);
@@ -73,67 +73,39 @@ class SchedulerBinding {
     }
   }
 
-  void scheduleFrame() {
+  void scheduleFrame({bool clearScreen = false}) {
     if (_frameScheduled) return;
     _frameScheduled = true;
-    scheduleMicrotask(handleFrame);
-  }
-
-  void scheduleFrameWithClear() {
-    // Schedule frame with navigation flag for selective clearing
-    if (_frameScheduled) return;
-    _frameScheduled = true;
-    scheduleMicrotask(_handleFrameWithNavigation);
-  }
-
-  void _handleFrameWithNavigation() {
-    _build(_rootElement!);
-    _layout(_rootElement!);
-
-    // ALWAYS clear screen completely during navigation to ensure clean transitions
-    outputBuffer.clearAll();
-
-    _paint(_rootElement!);
-
-    // Build, layout, and paint overlay elements
-    for (final element in _overlayElements) {
-      _build(element);
-      _layout(element);
-      _paintOverlay(element);
-    }
-
-    _frameScheduled = false;
-
-    // Post-frame callbacks
-    if (_postFrameCallbacks.isNotEmpty) {
-      final callbacks = List<FrameCallback>.from(_postFrameCallbacks);
-      _postFrameCallbacks.clear();
-      final timeStamp = Duration.zero;
-      for (final callback in callbacks) {
-        try {
-          callback(timeStamp);
-        } catch (e) {
-          AppLogger.log('Error in post-frame callback: $e');
-        }
-      }
+    if (clearScreen) {
+      scheduleMicrotask(_handleFrameWithClear);
+    } else {
+      scheduleMicrotask(_handleFrameWithSmartClear);
     }
   }
+
+  void scheduleFrameWithClear() => scheduleFrame(clearScreen: true);
+
+  void _handleFrameWithClear() => _handleFrame(clearAll: true);
 
   void addPostFrameCallback(FrameCallback callback) {
     _postFrameCallbacks.add(callback);
     scheduleFrame();
   }
 
-  void handleFrame() {
+  void _handleFrameWithSmartClear() => _handleFrame(clearAll: false);
+
+  void _handleFrame({required bool clearAll}) {
     _build(_rootElement!);
     _layout(_rootElement!);
 
-    // Use smart clearing for regular frames to prevent flickering
-    outputBuffer.smartClear();
+    if (clearAll) {
+      outputBuffer.clearAll();
+    } else {
+      outputBuffer.smartClear();
+    }
 
     _paint(_rootElement!);
 
-    // Build, layout, and paint overlay elements
     for (final element in _overlayElements) {
       _build(element);
       _layout(element);
@@ -141,8 +113,10 @@ class SchedulerBinding {
     }
 
     _frameScheduled = false;
+    _executePostFrameCallbacks();
+  }
 
-    // 프레임 처리가 완료된 후 post-frame 콜백들을 실행
+  void _executePostFrameCallbacks() {
     if (_postFrameCallbacks.isNotEmpty) {
       final callbacks = List<FrameCallback>.from(_postFrameCallbacks);
       _postFrameCallbacks.clear();
@@ -156,6 +130,8 @@ class SchedulerBinding {
       }
     }
   }
+
+  void handleFrame() => _handleFrameWithSmartClear();
 
   void _build(Element element) {
     if (element.dirty) {
@@ -174,14 +150,11 @@ class SchedulerBinding {
     element.visitChildren(_layout);
   }
 
-  void _paint(Element element) {
-    final context = PaintingContext(outputBuffer);
-    element.renderObject?.paint(context, Offset.zero);
-    outputBuffer.flush();
-  }
+  void _paint(Element element) => _paintElement(element);
 
-  void _paintOverlay(Element element) {
-    // Don't clear buffer for overlays, paint on top of existing content
+  void _paintOverlay(Element element) => _paintElement(element);
+
+  void _paintElement(Element element) {
     final context = PaintingContext(outputBuffer);
     element.renderObject?.paint(context, Offset.zero);
     outputBuffer.flush();

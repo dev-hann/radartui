@@ -1,4 +1,4 @@
-import 'package:radartui/src/widgets/navigation.dart';
+import '../widgets/navigation.dart';
 
 abstract class NavigatorObserver {
   void didPush(Route route, Route? previousRoute);

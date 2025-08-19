@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:radartui/src/foundation/color.dart';
-import 'package:radartui/src/widgets/framework.dart';
-import 'package:radartui/src/widgets/basic/text.dart';
-import 'package:radartui/src/widgets/basic/row.dart';
+import '../foundation/color.dart';
+import '../widgets/framework.dart';
+import '../widgets/basic/text.dart';
+import '../widgets/basic/row.dart';
 
 /// A widget that displays animated loading indicators
 class LoadingIndicator extends StatefulWidget {
