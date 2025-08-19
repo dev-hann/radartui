@@ -7,7 +7,7 @@ class DialogExample extends StatefulWidget {
 
 class _DialogExampleState extends State<DialogExample> {
   String _lastResult = 'Press buttons to show dialogs!';
-  String _instruction = 'Use Tab to navigate, Enter to select, Escape to exit';
+  final String _instruction = 'Use Tab to navigate, Enter to select, Escape to exit';
 
   @override
   void initState() {

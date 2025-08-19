@@ -56,7 +56,7 @@ class _DashboardExampleState extends State<DashboardExample> {
   }
 
   void _startMonitoring() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _uptime++;
 

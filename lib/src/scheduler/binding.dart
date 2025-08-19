@@ -200,7 +200,7 @@ class RawKeyboard {
   void _initializeLineMode() {
     _stdinSubscription = stdin
         .transform(utf8.decoder)
-        .transform(LineSplitter())
+        .transform(const LineSplitter())
         .listen(
           (String line) {
             AppLogger.log('Line mode input: "$line"');
