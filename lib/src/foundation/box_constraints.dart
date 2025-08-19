@@ -1,3 +1,5 @@
+import 'package:radartui/src/foundation/size.dart';
+
 class BoxConstraints {
   final int minWidth;
   final int maxWidth;
@@ -60,23 +62,4 @@ class BoxConstraints {
   @override
   String toString() =>
       'BoxConstraints(w: $minWidth-$maxWidth, h: $minHeight-$maxHeight)';
-}
-
-class Size {
-  final int width;
-  final int height;
-
-  const Size(this.width, this.height);
-
-  static const Size zero = Size(0, 0);
-
-  @override
-  bool operator ==(Object other) =>
-      other is Size && width == other.width && height == other.height;
-
-  @override
-  int get hashCode => Object.hash(width, height);
-
-  @override
-  String toString() => 'Size($width, $height)';
 }

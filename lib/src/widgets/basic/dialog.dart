@@ -1,19 +1,8 @@
 import 'dart:async';
-import '../../foundation/color.dart';
-import '../../foundation/edge_insets.dart';
-import '../../foundation/alignment.dart';
-import '../../foundation/box_constraints.dart';
-import '../framework.dart';
-import '../navigation.dart';
-import 'container.dart';
-import 'column.dart';
-import 'row.dart';
-import 'center.dart';
-import 'text.dart';
-import 'padding.dart';
-import 'builder.dart';
-import '../../scheduler/binding.dart';
-import '../../services/key_parser.dart';
+import 'package:radartui/radartui.dart';
+import 'package:radartui/src/foundation/alignment.dart';
+import 'package:radartui/src/foundation/box_constraints.dart';
+import 'package:radartui/src/widgets/basic/builder.dart';
 
 class Dialog extends StatefulWidget {
   final Widget child;
@@ -119,7 +108,7 @@ class ModalRoute<T> extends Route {
   });
 
   @override
-  bool get fullScreenRender => false; // Don't clear screen for dialogs
+  bool get fullScreenRender => false;
 
   @override
   Widget buildPage(BuildContext context) {

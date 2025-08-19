@@ -1,8 +1,6 @@
 import 'dart:async';
-import '../foundation/color.dart';
-import '../widgets/framework.dart';
-import '../widgets/basic/text.dart';
-import '../widgets/basic/row.dart';
+
+import 'package:radartui/radartui.dart';
 
 /// A widget that displays animated loading indicators
 class LoadingIndicator extends StatefulWidget {
@@ -67,14 +65,10 @@ class _LoadingIndicatorState extends State<LoadingIndicator> {
 
     return Text(
       currentFrame,
-      style: TextStyle(
-        color: widget.color ?? Color.cyan,
-        bold: true,
-      ),
+      style: TextStyle(color: widget.color ?? Color.cyan, bold: true),
     );
   }
 }
-
 
 /// A progress indicator that shows completion percentage
 class ProgressIndicator extends StatelessWidget {
@@ -93,10 +87,11 @@ class ProgressIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final clampedProgress = progress.clamp(0, 100);
-    
+
     // Calculate available width based on parent constraints
     // Assume a default reasonable width for terminal UI
-    final availableWidth = showPercentage ? 16 : 20; // Reserve space for percentage text
+    final availableWidth =
+        showPercentage ? 16 : 20; // Reserve space for percentage text
     final filled = (clampedProgress * availableWidth / 100).round();
     final empty = availableWidth - filled;
 
@@ -107,10 +102,8 @@ class ProgressIndicator extends StatelessWidget {
 
     final progressBar = [
       const Text('[', style: TextStyle(color: Color.white)),
-      for (int i = 0; i < filled; i++)
-        Text(fillChar, style: fillStyle),
-      for (int i = 0; i < empty; i++)
-        Text(emptyChar, style: emptyStyle),
+      for (int i = 0; i < filled; i++) Text(fillChar, style: fillStyle),
+      for (int i = 0; i < empty; i++) Text(emptyChar, style: emptyStyle),
       Text('] ', style: const TextStyle(color: Color.white)),
     ];
 
@@ -124,10 +117,4 @@ class ProgressIndicator extends StatelessWidget {
   }
 }
 
-enum IndicatorType {
-  spinner,
-  dots,
-  bounce,
-  pulse,
-  wave,
-}
+enum IndicatorType { spinner, dots, bounce, pulse, wave }
