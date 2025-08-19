@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:radartui/src/foundation/constants.dart';
+import '../foundation.dart';
 
 class Terminal {
   int get width {
