@@ -1,9 +1,4 @@
-import '../../foundation/color.dart';
-import '../../foundation/offset.dart';
-import '../../foundation/size.dart';
-import '../../rendering/render_box.dart';
-import '../../rendering/render_object.dart';
-import '../framework.dart';
+import 'package:radartui/radartui.dart';
 
 class Text extends RenderObjectWidget {
   final String data;

@@ -1,4 +1,4 @@
-import '../framework.dart';
+import 'package:radartui/radartui.dart';
 
 typedef WidgetBuilder = Widget Function(BuildContext context);
 

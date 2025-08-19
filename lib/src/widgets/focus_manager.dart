@@ -1,9 +1,9 @@
 import 'dart:async';
-import '../scheduler/binding.dart';
-import '../services/key_parser.dart';
-import 'basic/focus.dart';
-import 'navigation.dart';
-import 'navigator_observer.dart';
+import 'package:radartui/src/scheduler/binding.dart';
+import 'package:radartui/src/services/key_parser.dart';
+import 'package:radartui/src/widgets/basic/focus.dart';
+import 'package:radartui/src/widgets/navigation.dart';
+import 'package:radartui/src/widgets/navigator_observer.dart';
 
 class FocusManager extends NavigatorObserver {
   static FocusManager? _instance;

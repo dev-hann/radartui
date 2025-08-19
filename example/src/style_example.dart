@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:radartui/radartui.dart';
-import 'package:radartui/src/scheduler/binding.dart';
 
 class StyleExample extends StatefulWidget {
   const StyleExample();
