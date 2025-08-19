@@ -1,12 +1,4 @@
-import '../../foundation/color.dart';
-import '../../foundation/edge_insets.dart';
-import '../../foundation/offset.dart';
-import '../../foundation/size.dart';
-import '../../foundation/constants.dart';
-import '../../rendering/render_box.dart';
-import '../../rendering/render_object.dart';
-import '../framework.dart';
-import 'sized_box.dart';
+import 'package:radartui/radartui.dart';
 
 class Container extends SingleChildRenderObjectWidget {
   final Color? color;

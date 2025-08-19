@@ -1,5 +1,4 @@
 import 'package:radartui/radartui.dart';
-import 'package:radartui/src/scheduler/binding.dart';
 
 class FocusExample extends StatefulWidget {
   const FocusExample();

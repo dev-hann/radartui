@@ -1,6 +1,6 @@
-import '../foundation/offset.dart';
-import '../foundation/size.dart';
-import '../services/output_buffer.dart';
+import 'package:radartui/src/foundation/offset.dart';
+import 'package:radartui/src/foundation/size.dart';
+import 'package:radartui/src/services/output_buffer.dart';
 
 class PaintingContext {
   final OutputBuffer buffer;

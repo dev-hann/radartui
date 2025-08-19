@@ -1,6 +1,6 @@
 import 'dart:io';
-import '../foundation/color.dart';
-import '../services/terminal.dart';
+import 'package:radartui/src/foundation/color.dart';
+import 'package:radartui/src/services/terminal.dart';
 
 class Cell {
   String char;

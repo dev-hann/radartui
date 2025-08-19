@@ -1,8 +1,8 @@
-import '../foundation/edge_insets.dart';
-import '../foundation/offset.dart';
-import '../foundation/size.dart';
-import '../foundation/constants.dart';
-import '../rendering/render_object.dart';
+import 'package:radartui/src/foundation/edge_insets.dart';
+import 'package:radartui/src/foundation/offset.dart';
+import 'package:radartui/src/foundation/size.dart';
+import 'package:radartui/src/foundation/constants.dart';
+import 'package:radartui/src/rendering/render_object.dart';
 
 class BoxConstraints extends Constraints {
   final int maxWidth, maxHeight;
