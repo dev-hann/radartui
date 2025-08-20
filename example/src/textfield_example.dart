@@ -1,4 +1,4 @@
-import 'package:radartui/radartui.dart';
+import '../../lib/radartui.dart';
 
 class TextFieldExample extends StatefulWidget {
   const TextFieldExample();

@@ -1,4 +1,4 @@
-import 'package:radartui/radartui.dart';
+import '../../../radartui.dart';
 
 class Container extends SingleChildRenderObjectWidget {
   final Color? color;
@@ -55,8 +55,8 @@ class RenderContainer extends RenderBox
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints as BoxConstraints;
-    final totalMargin = margin ?? EdgeInsets.all(0);
-    final totalPadding = padding ?? EdgeInsets.all(0);
+    final totalMargin = margin ?? const EdgeInsets.all(0);
+    final totalPadding = padding ?? const EdgeInsets.all(0);
 
     int containerWidth = width ?? boxConstraints.maxWidth;
     int containerHeight = height ?? LayoutConstants.defaultContainerHeight;
@@ -85,8 +85,8 @@ class RenderContainer extends RenderBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final totalMargin = margin ?? EdgeInsets.all(0);
-    final totalPadding = padding ?? EdgeInsets.all(0);
+    final totalMargin = margin ?? const EdgeInsets.all(0);
+    final totalPadding = padding ?? const EdgeInsets.all(0);
     final innerOffset = offset + Offset(totalMargin.left, totalMargin.top);
 
     // Fill background if color is specified

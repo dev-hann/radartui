@@ -1,4 +1,4 @@
-import 'package:radartui/radartui.dart';
+import '../../lib/radartui.dart';
 
 class CounterExample extends StatefulWidget {
   const CounterExample();

@@ -1,4 +1,4 @@
-import 'package:radartui/radartui.dart';
+import '../../lib/radartui.dart';
 
 class ButtonExample extends StatefulWidget {
   @override
@@ -28,11 +28,11 @@ class _ButtonExampleState extends State<ButtonExample> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('Button Widget Example'),
-        SizedBox(height: 2),
+        const Text('Button Widget Example'),
+        const SizedBox(height: 2),
         Text(_message),
         Text('Counter: $_counter'),
-        SizedBox(height: 2),
+        const SizedBox(height: 2),
         Row(
           children: [
             Button(
@@ -44,7 +44,7 @@ class _ButtonExampleState extends State<ButtonExample> {
                 });
               },
             ),
-            SizedBox(width: 4),
+            const SizedBox(width: 4),
             Button(
               text: 'Reset',
               onPressed: () {
@@ -60,7 +60,7 @@ class _ButtonExampleState extends State<ButtonExample> {
             ),
           ],
         ),
-        SizedBox(height: 2),
+        const SizedBox(height: 2),
         Button(
           text: 'Disabled Button',
           enabled: false,
@@ -71,7 +71,7 @@ class _ButtonExampleState extends State<ButtonExample> {
             });
           },
         ),
-        SizedBox(height: 2),
+        const SizedBox(height: 2),
         Button(
           text: 'Custom Style',
           onPressed: () {

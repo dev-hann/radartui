@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:radartui/radartui.dart';
+import '../../lib/radartui.dart';
 
 class GuessGameExample extends StatefulWidget {
   const GuessGameExample();

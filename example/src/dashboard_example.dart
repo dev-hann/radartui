@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:radartui/radartui.dart';
+import '../../lib/radartui.dart';
 
 class DashboardExample extends StatefulWidget {
   const DashboardExample();
@@ -56,7 +56,7 @@ class _DashboardExampleState extends State<DashboardExample> {
   }
 
   void _startMonitoring() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _uptime++;
 
@@ -97,7 +97,7 @@ class _DashboardExampleState extends State<DashboardExample> {
         ),
         ...List.generate(
           empty,
-          (_) => Text('░', style: TextStyle(color: Color.brightBlack)),
+          (_) => const Text('░', style: TextStyle(color: Color.brightBlack)),
         ),
       ],
     );
@@ -116,7 +116,7 @@ class _DashboardExampleState extends State<DashboardExample> {
       bars.add(
         Column(
           children: [
-            for (int j = 4; j > height; j--) Text(' '),
+            for (int j = 4; j > height; j--) const Text(' '),
             for (int j = 0; j < height; j++)
               Text('▁', style: TextStyle(color: barColor)),
           ],
@@ -151,36 +151,36 @@ class _DashboardExampleState extends State<DashboardExample> {
             ),
           ),
 
-          SizedBox(height: 1),
+          const SizedBox(height: 1),
 
           Container(
             width: 70,
             color: _statusColor,
             child: Row(
               children: [
-                Text(
+                const Text(
                   'System Status: ',
                   style: TextStyle(color: Color.black, bold: true),
                 ),
                 Text(
                   _systemStatus,
-                  style: TextStyle(color: Color.black, bold: true),
+                  style: const TextStyle(color: Color.black, bold: true),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Text(
                   'Uptime: ${_formatUptime(_uptime)}',
-                  style: TextStyle(color: Color.black),
+                  style: const TextStyle(color: Color.black),
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 Text(
                   _paused ? '[PAUSED]' : '',
-                  style: TextStyle(color: Color.black, bold: true),
+                  style: const TextStyle(color: Color.black, bold: true),
                 ),
               ],
             ),
           ),
 
-          SizedBox(height: 1),
+          const SizedBox(height: 1),
 
           Row(
             children: [
@@ -188,47 +188,47 @@ class _DashboardExampleState extends State<DashboardExample> {
                 width: 35,
                 height: 12,
                 color: Color.brightBlack,
-                padding: EdgeInsets.all(1),
+                padding: const EdgeInsets.all(1),
                 child: Column(
                   children: [
-                    Text(
+                    const Text(
                       'Resource Usage',
                       style: TextStyle(color: Color.cyan, bold: true),
                     ),
-                    SizedBox(height: 1),
+                    const SizedBox(height: 1),
 
                     Row(
                       children: [
-                        Text('CPU: ', style: TextStyle(color: Color.white)),
+                        const Text('CPU: ', style: TextStyle(color: Color.white)),
                         Text(
                           '${_cpuUsage.toStringAsFixed(1)}%',
-                          style: TextStyle(color: Color.yellow),
+                          style: const TextStyle(color: Color.yellow),
                         ),
                       ],
                     ),
                     _buildProgressBar(_cpuUsage, Color.yellow, 25),
 
-                    SizedBox(height: 1),
+                    const SizedBox(height: 1),
 
                     Row(
                       children: [
-                        Text('MEM: ', style: TextStyle(color: Color.white)),
+                        const Text('MEM: ', style: TextStyle(color: Color.white)),
                         Text(
                           '${_memoryUsage.toStringAsFixed(1)}%',
-                          style: TextStyle(color: Color.green),
+                          style: const TextStyle(color: Color.green),
                         ),
                       ],
                     ),
                     _buildProgressBar(_memoryUsage, Color.green, 25),
 
-                    SizedBox(height: 1),
+                    const SizedBox(height: 1),
 
                     Row(
                       children: [
-                        Text('DISK:', style: TextStyle(color: Color.white)),
+                        const Text('DISK:', style: TextStyle(color: Color.white)),
                         Text(
                           '${_diskUsage.toStringAsFixed(1)}%',
-                          style: TextStyle(color: Color.blue),
+                          style: const TextStyle(color: Color.blue),
                         ),
                       ],
                     ),
@@ -237,45 +237,45 @@ class _DashboardExampleState extends State<DashboardExample> {
                 ),
               ),
 
-              SizedBox(width: 2),
+              const SizedBox(width: 2),
 
               Container(
                 width: 32,
                 height: 12,
                 color: Color.black,
-                padding: EdgeInsets.all(1),
+                padding: const EdgeInsets.all(1),
                 child: Column(
                   children: [
-                    Text(
+                    const Text(
                       'Network & CPU Graph',
                       style: TextStyle(color: Color.magenta, bold: true),
                     ),
-                    SizedBox(height: 1),
+                    const SizedBox(height: 1),
 
                     Row(
                       children: [
-                        Text('IN: ', style: TextStyle(color: Color.green)),
+                        const Text('IN: ', style: TextStyle(color: Color.green)),
                         Text(
                           '$_networkIn KB/s',
-                          style: TextStyle(color: Color.white),
+                          style: const TextStyle(color: Color.white),
                         ),
-                        SizedBox(width: 3),
-                        Text('OUT: ', style: TextStyle(color: Color.red)),
+                        const SizedBox(width: 3),
+                        const Text('OUT: ', style: TextStyle(color: Color.red)),
                         Text(
                           '$_networkOut KB/s',
-                          style: TextStyle(color: Color.white),
+                          style: const TextStyle(color: Color.white),
                         ),
                       ],
                     ),
 
-                    SizedBox(height: 1),
+                    const SizedBox(height: 1),
 
-                    Text('CPU History:', style: TextStyle(color: Color.yellow)),
+                    const Text('CPU History:', style: TextStyle(color: Color.yellow)),
                     _buildCpuGraph(),
 
-                    SizedBox(height: 1),
+                    const SizedBox(height: 1),
 
-                    Text(
+                    const Text(
                       '0%  25%  50%  75% 100%',
                       style: TextStyle(color: Color.brightBlack),
                     ),
@@ -285,9 +285,9 @@ class _DashboardExampleState extends State<DashboardExample> {
             ],
           ),
 
-          SizedBox(height: 1),
+          const SizedBox(height: 1),
 
-          Container(
+          const Container(
             width: 70,
             color: Color.yellow,
             child: Text(

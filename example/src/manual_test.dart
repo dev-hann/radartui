@@ -1,4 +1,4 @@
-import 'package:radartui/radartui.dart';
+import '../../lib/radartui.dart';
 
 class ManualTest extends StatefulWidget {
   const ManualTest();
@@ -20,6 +20,6 @@ class _ManualTestState extends State<ManualTest> {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Manual Test');
+    return const Text('Manual Test');
   }
 }
