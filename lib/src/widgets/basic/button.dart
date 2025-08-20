@@ -1,4 +1,4 @@
-import 'package:radartui/radartui.dart';
+import '../../../radartui.dart';
 
 class Button extends StatefulWidget {
   final String text;

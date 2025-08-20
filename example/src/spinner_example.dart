@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:radartui/radartui.dart';
+import '../../lib/radartui.dart';
 
 class SpinnerExample extends StatefulWidget {
   const SpinnerExample();

@@ -11,7 +11,8 @@ class ParentData {}
 
 abstract class RenderObject {
   RenderObject? _parent;
-  set parent(RenderObject? value) => _parent = value; // Added setter
+  RenderObject? get parent => _parent;
+  set parent(RenderObject? value) => _parent = value;
   ParentData? parentData;
   Size? size;
   bool _needsLayout = true;

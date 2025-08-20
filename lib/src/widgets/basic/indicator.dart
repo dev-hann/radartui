@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:radartui/radartui.dart';
+import '../../../radartui.dart';
 
 /// A widget that displays animated loading indicators
 class LoadingIndicator extends StatefulWidget {
@@ -104,7 +104,7 @@ class ProgressIndicator extends StatelessWidget {
       const Text('[', style: TextStyle(color: Color.white)),
       for (int i = 0; i < filled; i++) Text(fillChar, style: fillStyle),
       for (int i = 0; i < empty; i++) Text(emptyChar, style: emptyStyle),
-      Text('] ', style: const TextStyle(color: Color.white)),
+      const Text('] ', style: TextStyle(color: Color.white)),
     ];
 
     if (showPercentage) {

@@ -1,4 +1,4 @@
-import 'package:radartui/radartui.dart';
+import '../lib/radartui.dart';
 import 'src/button_example.dart';
 import 'src/calculator_example.dart';
 import 'src/counter_example.dart';

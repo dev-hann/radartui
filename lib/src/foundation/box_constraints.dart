@@ -1,6 +1,8 @@
 import 'size.dart';
+import 'edge_insets.dart';
+import '../rendering.dart';
 
-class BoxConstraints {
+class BoxConstraints extends Constraints {
   final int minWidth;
   final int maxWidth;
   final int minHeight;
@@ -45,6 +47,23 @@ class BoxConstraints {
       maxWidth: maxWidth.clamp(constraints.minWidth, constraints.maxWidth),
       minHeight: minHeight.clamp(constraints.minHeight, constraints.maxHeight),
       maxHeight: maxHeight.clamp(constraints.minHeight, constraints.maxHeight),
+    );
+  }
+
+  Size constrain(Size size) {
+    final constrainedWidth = size.width.clamp(minWidth, maxWidth);
+    final constrainedHeight = size.height.clamp(minHeight, maxHeight);
+    return Size(constrainedWidth, constrainedHeight);
+  }
+
+  BoxConstraints deflate(EdgeInsets edge) {
+    final horizontal = edge.left + edge.right;
+    final vertical = edge.top + edge.bottom;
+    return BoxConstraints(
+      minWidth: (minWidth - horizontal).clamp(0, 999999),
+      maxWidth: (maxWidth - horizontal).clamp(0, 999999),
+      minHeight: (minHeight - vertical).clamp(0, 999999),
+      maxHeight: (maxHeight - vertical).clamp(0, 999999),
     );
   }
 

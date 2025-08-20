@@ -1,4 +1,4 @@
-import 'package:radartui/radartui.dart';
+import '../../../radartui.dart';
 
 abstract class Flex extends MultiChildRenderObjectWidget {
   final Axis direction;

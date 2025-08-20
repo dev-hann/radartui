@@ -1,4 +1,4 @@
-import 'package:radartui/radartui.dart';
+import '../../../radartui.dart';
 
 class Center extends SingleChildRenderObjectWidget {
   const Center({required super.child});

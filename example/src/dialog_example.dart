@@ -1,4 +1,4 @@
-import 'package:radartui/radartui.dart';
+import '../../lib/radartui.dart';
 
 class DialogExample extends StatefulWidget {
   @override
@@ -30,7 +30,7 @@ class _DialogExampleState extends State<DialogExample> {
       builder:
           (BuildContext context) => Dialog(
             title: 'Simple Dialog',
-            child: Column(
+            child: const Column(
               children: [
                 Text('This is a simple dialog with a title.'),
                 Text('It demonstrates basic dialog functionality.'),
@@ -67,7 +67,7 @@ class _DialogExampleState extends State<DialogExample> {
             title: 'Colored Dialog',
             titleStyle: const TextStyle(color: Color.cyan, bold: true),
             backgroundColor: Color.blue,
-            child: Column(
+            child: const Column(
               children: [
                 Text(
                   'This dialog has custom colors.',
@@ -106,7 +106,7 @@ class _DialogExampleState extends State<DialogExample> {
           (BuildContext context) => Dialog(
             title: 'Constrained Dialog',
             padding: const EdgeInsets.all(1),
-            child: Column(
+            child: const Column(
               children: [
                 Text('Size constrained dialog.'),
                 Text('Max width: 40, height: 8'),
@@ -144,7 +144,7 @@ class _DialogExampleState extends State<DialogExample> {
           (BuildContext context) => Dialog(
             title: 'Non-Dismissible Dialog',
             titleStyle: const TextStyle(color: Color.red, bold: true),
-            child: Column(
+            child: const Column(
               children: [
                 Text('This dialog cannot be dismissed'),
                 Text('with the Escape key.'),
@@ -173,24 +173,24 @@ class _DialogExampleState extends State<DialogExample> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
+        const Text(
           'Dialog Widget Examples',
           style: TextStyle(color: Color.cyan, bold: true),
         ),
-        SizedBox(height: 1),
+        const SizedBox(height: 1),
         Text(
           'Last Result: $_lastResult',
-          style: TextStyle(color: Color.yellow),
+          style: const TextStyle(color: Color.yellow),
         ),
-        SizedBox(height: 1),
+        const SizedBox(height: 1),
         Text(
           _instruction,
-          style: TextStyle(color: Color.brightBlack, italic: true),
+          style: const TextStyle(color: Color.brightBlack, italic: true),
         ),
-        SizedBox(height: 2),
+        const SizedBox(height: 2),
 
         Button(text: 'Show Simple Dialog', onPressed: _showSimpleDialog),
-        SizedBox(height: 1),
+        const SizedBox(height: 1),
 
         Button(
           text: 'Show Colored Dialog',
@@ -200,7 +200,7 @@ class _DialogExampleState extends State<DialogExample> {
             focusBackgroundColor: Color.brightBlue,
           ),
         ),
-        SizedBox(height: 1),
+        const SizedBox(height: 1),
 
         Button(
           text: 'Show Constrained Dialog',
@@ -211,7 +211,7 @@ class _DialogExampleState extends State<DialogExample> {
             foregroundColor: Color.black,
           ),
         ),
-        SizedBox(height: 1),
+        const SizedBox(height: 1),
 
         Button(
           text: 'Show Non-Dismissible Dialog',
@@ -222,19 +222,19 @@ class _DialogExampleState extends State<DialogExample> {
           ),
         ),
 
-        SizedBox(height: 2),
-        Text(
+        const SizedBox(height: 2),
+        const Text(
           'Features Demonstrated:',
           style: TextStyle(color: Color.green, bold: true),
         ),
-        SizedBox(height: 1),
-        Text('• Title and actions support'),
-        Text('• Barrier color customization'),
-        Text('• Size constraints with BoxConstraints'),
-        Text('• Return values from dialogs'),
-        Text('• Dismissible vs non-dismissible modes'),
-        Text('• Escape key handling (when barrierDismissible: true)'),
-        Text('• Custom styling and padding'),
+        const SizedBox(height: 1),
+        const Text('• Title and actions support'),
+        const Text('• Barrier color customization'),
+        const Text('• Size constraints with BoxConstraints'),
+        const Text('• Return values from dialogs'),
+        const Text('• Dismissible vs non-dismissible modes'),
+        const Text('• Escape key handling (when barrierDismissible: true)'),
+        const Text('• Custom styling and padding'),
       ],
     );
   }

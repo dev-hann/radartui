@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:radartui/radartui.dart';
+import '../../../radartui.dart';
 
 class Dialog extends StatefulWidget {
   final Widget child;
