@@ -19,7 +19,6 @@ class _DashboardExampleState extends State<DashboardExample> {
   int _networkIn = 0;
   int _networkOut = 0;
   int _uptime = 0;
-  final List<double> _cpuHistory = [];
   String _systemStatus = 'Optimal';
   Color _statusColor = Color.green;
   bool _paused = false;
@@ -28,24 +27,26 @@ class _DashboardExampleState extends State<DashboardExample> {
   void initState() {
     super.initState();
     _startMonitoring();
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
-      if (key.code == KeyCode.escape) {
-        Navigator.of(context).pop();
-        return;
-      }
-      if (key.code == KeyCode.char && (key.char == 'p' || key.char == 'P')) {
-        setState(() {
-          _paused = !_paused;
-          if (_paused) {
-            _timer?.cancel();
-          } else {
-            _startMonitoring();
-          }
-        });
-      }
-    });
+    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen(
+      _handleKeyEvent,
+    );
+  }
+
+  void _handleKeyEvent(KeyEvent key) {
+    if (key.code == KeyCode.escape) {
+      Navigator.of(context).pop();
+      return;
+    }
+    if (key.code == KeyCode.char && (key.char == 'p' || key.char == 'P')) {
+      setState(() {
+        _paused = !_paused;
+        if (_paused) {
+          _timer?.cancel();
+        } else {
+          _startMonitoring();
+        }
+      });
+    }
   }
 
   @override
@@ -65,11 +66,6 @@ class _DashboardExampleState extends State<DashboardExample> {
         _diskUsage = 55 + Random().nextDouble() * 10;
         _networkIn = Random().nextInt(1000);
         _networkOut = Random().nextInt(800);
-
-        _cpuHistory.add(_cpuUsage);
-        if (_cpuHistory.length > 20) {
-          _cpuHistory.removeAt(0);
-        }
 
         if (_cpuUsage > 80 || _memoryUsage > 85) {
           _systemStatus = 'Warning';
@@ -103,29 +99,6 @@ class _DashboardExampleState extends State<DashboardExample> {
     );
   }
 
-  Widget _buildCpuGraph() {
-    List<Widget> bars = [];
-    for (int i = 0; i < _cpuHistory.length; i++) {
-      final value = _cpuHistory[i];
-      final height = (value / 25).round().clamp(0, 4);
-
-      Color barColor = Color.green;
-      if (value > 60) barColor = Color.yellow;
-      if (value > 80) barColor = Color.red;
-
-      bars.add(
-        Column(
-          children: [
-            for (int j = 4; j > height; j--) const Text(' '),
-            for (int j = 0; j < height; j++)
-              Text('▁', style: TextStyle(color: barColor)),
-          ],
-        ),
-      );
-    }
-
-    return Row(children: bars);
-  }
 
   String _formatUptime(int seconds) {
     final hours = seconds ~/ 3600;
@@ -145,7 +118,7 @@ class _DashboardExampleState extends State<DashboardExample> {
             color: Color.blue,
             child: Center(
               child: Text(
-                '📊 RadarTUI System Dashboard 📊',
+                'RadarTUI System Dashboard',
                 style: TextStyle(color: Color.white, bold: true),
               ),
             ),
@@ -268,17 +241,6 @@ class _DashboardExampleState extends State<DashboardExample> {
                       ],
                     ),
 
-                    const SizedBox(height: 1),
-
-                    const Text('CPU History:', style: TextStyle(color: Color.yellow)),
-                    _buildCpuGraph(),
-
-                    const SizedBox(height: 1),
-
-                    const Text(
-                      '0%  25%  50%  75% 100%',
-                      style: TextStyle(color: Color.brightBlack),
-                    ),
                   ],
                 ),
               ),

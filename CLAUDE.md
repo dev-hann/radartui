@@ -208,22 +208,141 @@ linter:
 
 ### **ZERO TOLERANCE:** Treat ALL warnings as errors in CI and development
 
-## 📌 Testing
+## 📌 Testing Rules & Guidelines
 
+### 🎯 General Testing Principles
+
+- **MANDATORY:** Every new widget and feature must be thoroughly tested
 - Follow the test case list provided by Gemini CLI
 - Test names must describe the exact behavior being tested
-- Use `testWidgets` for UI-related tests
+- Use `testWidgets` for UI-related tests when applicable
+- **CRITICAL:** Always test keyboard input functionality using `inputTest`
 
-### 🖥️ Terminal Example Testing
+### 🖥️ Terminal UI Input Testing
 
-For testing terminal UI examples and interactive components, use the **`inputTest`** method provided by **SchedulerBinding**:
+**MANDATORY:** For all interactive terminal UI components (buttons, checkboxes, radio buttons, text fields, navigation, etc.), use the **`inputTest`** method provided by **SchedulerBinding**.
 
+#### 📋 Required Testing Procedure:
+
+1. **Initialize Test Environment:**
 ```dart
-// Use SchedulerBinding.instance.inputTest() for terminal interaction testing
-SchedulerBinding.instance.inputTest(/* test parameters */);
+final binding = SchedulerBinding.instance;
+binding.runApp(YourTestWidget());
+FocusManager.instance.initialize(); // CRITICAL: Always initialize FocusManager
 ```
 
-This method allows proper simulation of user input and keyboard events in terminal environments, ensuring accurate testing of TUI components like dialogs, buttons, and navigation.
+2. **Test Key Input Simulation:**
+```dart
+// Test various key inputs
+binding.inputTest(' ');      // Space key
+binding.inputTest('\t');     // Tab key  
+binding.inputTest('q');      // Character keys
+// Add delays between inputs for proper processing
+Future.delayed(Duration(milliseconds: 100), () => binding.inputTest('next_key'));
+```
+
+3. **Test All Interactive Elements:**
+   - **Navigation Keys:** Tab, Shift+Tab, Arrow keys
+   - **Action Keys:** Space, Enter
+   - **Special Keys:** ESC (back navigation), character inputs
+   - **Focus Management:** Ensure proper focus transitions
+
+#### ⚡ Mandatory Key Input Tests:
+
+**For Every Interactive Widget, Test:**
+
+- ✅ **Space Key:** Primary selection/toggle action
+- ✅ **Enter Key:** Alternative selection/confirmation action  
+- ✅ **Tab Key:** Focus navigation (forward)
+- ✅ **ESC Key:** Back/cancel navigation
+- ✅ **Focus Behavior:** Visual feedback when focused/unfocused
+- ✅ **State Changes:** Immediate visual updates after interaction
+
+#### 🔧 Testing Template:
+
+```dart
+import 'dart:io';
+import 'lib/radartui.dart';
+
+void main() {
+  final binding = SchedulerBinding.instance;
+  
+  print('Testing [Widget Name] functionality...');
+  
+  final app = YourTestWidget();
+  binding.runApp(app);
+  
+  // CRITICAL: Initialize FocusManager
+  FocusManager.instance.initialize();
+  
+  // Wait for initialization
+  Future.delayed(const Duration(milliseconds: 200), () {
+    print('Testing Space key...');
+    binding.inputTest(' ');
+    
+    Future.delayed(const Duration(milliseconds: 100), () {
+      print('Testing Enter key...');
+      binding.inputTest('\n');
+      
+      Future.delayed(const Duration(milliseconds: 100), () {
+        print('Test completed successfully');
+        exit(0);
+      });
+    });
+  });
+}
+```
+
+#### 🚨 Critical Testing Requirements:
+
+**Before Any Widget Is Considered Complete:**
+
+1. **Space Key Test:** Widget must respond to space key input
+2. **Enter Key Test:** Widget must respond to enter key input  
+3. **Focus Test:** Widget must show visual focus indication
+4. **State Sync Test:** Widget state changes must be immediately visible
+5. **ESC Navigation Test:** All examples must support ESC to return to menu
+
+#### 📊 Testing Verification Checklist:
+
+- [ ] `inputTest(' ')` triggers expected action
+- [ ] `inputTest('\n')` triggers expected action  
+- [ ] Focus transitions work with Tab key
+- [ ] Visual feedback appears immediately
+- [ ] State changes are synchronized with rendering
+- [ ] No input lag or delayed responses
+- [ ] ESC key returns to main menu
+
+### 🎪 Complex Interaction Testing
+
+**For Multi-Component UIs:**
+
+```dart
+// Test component interaction flows
+binding.inputTest('\t');  // Move to first component
+binding.inputTest(' ');   // Activate first component
+binding.inputTest('\t');  // Move to second component  
+binding.inputTest(' ');   // Activate second component
+// Verify state changes across components
+```
+
+### 🔍 Debugging Failed Tests
+
+**When Tests Fail:**
+
+1. **Check FocusManager:** Ensure `FocusManager.instance.initialize()` is called
+2. **Check Key Parsing:** Verify Space is parsed as `KeyCode.char` with `char == ' '`
+3. **Check Timing:** Add sufficient delays between input simulations
+4. **Check State Updates:** Ensure `setState()` and `didUpdateWidget()` are properly implemented
+5. **Check Rendering:** Ensure `markNeedsLayout()` is called when needed
+
+### ⚠️ Testing Anti-Patterns to Avoid:
+
+- ❌ **Never** test widgets without initializing FocusManager
+- ❌ **Never** assume input works without explicit `inputTest` verification  
+- ❌ **Never** commit interactive widgets that fail Space/Enter key tests
+- ❌ **Never** skip testing state synchronization
+- ❌ **Never** ignore visual feedback testing
 
 ## 📌 Code Quality Verification
 
