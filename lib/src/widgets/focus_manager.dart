@@ -74,6 +74,9 @@ class FocusManager extends NavigatorObserver {
   }
 
   void registerNode(FocusNode node) {
+    if (_currentScope == null) {
+      createNewScope();
+    }
     _currentScope?.addNode(node);
   }
 

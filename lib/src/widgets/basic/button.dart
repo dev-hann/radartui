@@ -25,7 +25,8 @@ class _ButtonState extends State<Button> {
   @override
   void initState() {
     super.initState();
-    _focusNode = widget.focusNode ?? FocusNode(); // FocusNode auto-registers on creation
+    _focusNode =
+        widget.focusNode ?? FocusNode(); // FocusNode auto-registers on creation
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChange);
   }
@@ -47,7 +48,8 @@ class _ButtonState extends State<Button> {
   void _handleKeyEvent(KeyEvent event) {
     if (!widget.enabled) return;
 
-    if (event.code == KeyCode.enter || event.code == KeyCode.space) {
+    if (event.code == KeyCode.enter || 
+        (event.code == KeyCode.char && event.char == ' ')) {
       widget.onPressed?.call();
     }
   }
@@ -89,12 +91,12 @@ class _ButtonRenderWidget extends RenderObjectWidget {
 
   @override
   RenderButton createRenderObject(BuildContext context) => RenderButton(
-    text: text,
-    enabled: enabled,
-    focused: focused,
-    style: style,
-    onTap: onTap,
-  );
+        text: text,
+        enabled: enabled,
+        focused: focused,
+        style: style,
+        onTap: onTap,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {

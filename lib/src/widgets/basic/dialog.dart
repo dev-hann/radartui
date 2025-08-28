@@ -40,8 +40,7 @@ class _DialogState extends State<Dialog> {
       columnChildren.add(
         Text(
           widget.title!,
-          style:
-              widget.titleStyle ??
+          style: widget.titleStyle ??
               const TextStyle(color: Color.white, bold: true),
         ),
       );

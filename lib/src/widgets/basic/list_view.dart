@@ -8,6 +8,7 @@ class ListView extends StatefulWidget {
   final String? unfocusedBorder;
   final int initialSelectedIndex;
   final void Function(int index, String item)? onItemSelected;
+  final bool wrapAroundNavigation;
 
   const ListView({
     required this.items,
@@ -17,6 +18,7 @@ class ListView extends StatefulWidget {
     this.unfocusedBorder = '   ',
     this.initialSelectedIndex = 0,
     this.onItemSelected,
+    this.wrapAroundNavigation = false,
   });
 
   @override
@@ -63,16 +65,21 @@ class _ListViewState extends State<ListView> {
   }
 
   void _moveSelection(int direction) {
-    final oldIndex = selectedIndex;
     setState(() {
-      selectedIndex = (selectedIndex + direction).clamp(
-        0,
-        widget.items.length - 1,
-      );
+      if (widget.wrapAroundNavigation) {
+        // 순환 네비게이션: 맨 위에서 위로 가면 맨 아래로, 맨 아래에서 아래로 가면 맨 위로
+        selectedIndex = (selectedIndex + direction) % widget.items.length;
+        if (selectedIndex < 0) {
+          selectedIndex = widget.items.length - 1;
+        }
+      } else {
+        // 기존 방식: clamp로 경계 제한
+        selectedIndex = (selectedIndex + direction).clamp(
+          0,
+          widget.items.length - 1,
+        );
+      }
     });
-    AppLogger.log(
-      '📍 Selection moved: $oldIndex -> $selectedIndex (direction: $direction)',
-    );
   }
 
   void _onFocusChanged() {

@@ -250,4 +250,12 @@ dart analyze
 3. **Test thoroughly:** Ensure all functionality works as expected
 4. **Document changes:** Update documentation and comments as needed
 
+### ⚡ Critical Enforcement Rule:
+
+**MANDATORY:** After running `dart analyze`, ALL issues including errors, warnings, and info/hints **MUST** be resolved immediately. No code should be committed or considered complete until `dart analyze` returns **"No issues found!"**
+
+- **Errors:** Fix immediately - code will not compile
+- **Warnings:** Fix immediately - indicates potential runtime issues
+- **Info/Hints:** Fix immediately - ensures code follows best practices and style guidelines
+
 **Goal:** Maintain production-quality code with zero tolerance for technical debt.

@@ -1,13 +1,16 @@
 import '../lib/radartui.dart';
 import 'src/button_example.dart';
 import 'src/calculator_example.dart';
+import 'src/checkbox_example.dart';
 import 'src/counter_example.dart';
 import 'src/dashboard_example.dart';
 import 'src/dialog_example.dart';
+import 'src/divider_example.dart';
 import 'src/focus_example.dart';
 import 'src/guess_game_example.dart';
-import 'src/manual_test.dart';
+import 'src/radio_example.dart';
 import 'src/spinner_example.dart';
+import 'src/stack_example.dart';
 import 'src/style_example.dart';
 import 'src/textfield_example.dart';
 
@@ -34,7 +37,10 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/style': (context) => const StyleExample(),
         '/focus': (context) => const FocusExample(),
         '/textfield': (context) => const TextFieldExample(),
-        '/manual_test': (context) => const ManualTest(),
+        '/stack': (context) => const StackExample(),
+        '/divider': (context) => const DividerExample(),
+        '/checkbox': (context) => const CheckboxExample(),
+        '/radio': (context) => const RadioExample(),
       },
     );
   }
@@ -59,7 +65,10 @@ class _MenuScreenState extends State<MenuScreen> {
     'Style Demo',
     'Focus Example',
     'TextField Example',
-    'Manual Test',
+    'Stack Widget',
+    'Divider Widget',
+    'Checkbox Widget',
+    'Radio Button',
   ];
 
   final List<String> _exampleRoutes = [
@@ -73,7 +82,10 @@ class _MenuScreenState extends State<MenuScreen> {
     '/style',
     '/focus',
     '/textfield',
-    '/manual_test',
+    '/stack',
+    '/divider',
+    '/checkbox',
+    '/radio',
   ];
 
   void _onExampleSelected(int index, String item) async {
@@ -113,6 +125,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   initialSelectedIndex: 0,
                   items: _exampleTitles,
                   onItemSelected: _onExampleSelected,
+                  wrapAroundNavigation: true,
                 ),
                 const SizedBox(height: 2),
                 const Text(

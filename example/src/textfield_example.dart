@@ -15,6 +15,16 @@ class _TextFieldExampleState extends State<TextFieldExample> {
   void initState() {
     super.initState();
     _controller1.text = 'Initial text';
+    SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+      _handleKeyEvent(key);
+    });
+  }
+
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      Navigator.of(context).pop();
+      return;
+    }
   }
 
   @override
