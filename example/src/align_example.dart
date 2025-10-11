@@ -29,6 +29,15 @@ class _AlignExampleState extends State<AlignExample> {
       padding: EdgeInsets.all(2),
       child: Column(
         children: [
+          Column(
+            children: [
+              Align(
+                alignment: Alignment.topCenter,
+                child: Text('Top Center'),
+              ),
+              Text('Bottom Center')
+            ],
+          ),
           Container(
             width: 50,
             height: 3,
@@ -99,33 +108,33 @@ class _AlignExampleState extends State<AlignExample> {
               ],
             ),
           ),
-          SizedBox(height: 2),
-          Container(
-            color: Color.brightBlack,
-            padding: EdgeInsets.all(1),
-            child: Column(
-              children: [
-                Text(
-                  'Center Widget Example (Refactored):',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
-                SizedBox(height: 1),
-                Container(
-                  width: 40,
-                  height: 5,
-                  color: Colors.green,
-                  child: Center(
-                    child: Text('This is centered!'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 2),
-          Text(
-            'Press ESC to return to main menu',
-            style: TextStyle(color: Color.yellow, italic: true),
-          ),
+          // SizedBox(height: 2),
+          // Container(
+          //   color: Color.brightBlack,
+          //   padding: EdgeInsets.all(1),
+          //   child: Column(
+          //     children: [
+          //       Text(
+          //         'Center Widget Example (Refactored):',
+          //         style: TextStyle(color: Color.cyan, bold: true),
+          //       ),
+          //       SizedBox(height: 1),
+          //       Container(
+          //         width: 40,
+          //         height: 5,
+          //         color: Colors.green,
+          //         child: Center(
+          //           child: Text('This is centered!'),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // SizedBox(height: 2),
+          // Text(
+          //   'Press ESC to return to main menu',
+          //   style: TextStyle(color: Color.yellow, italic: true),
+          // ),
         ],
       ),
     );

@@ -33,8 +33,13 @@ class RenderAlign extends SingleChildRenderBox {
   }
 
   @override
-  Size computeSizeFromChild(BoxConstraints constraints, Size childSize) =>
-      Size(constraints.maxWidth, constraints.maxHeight);
+  Size computeSizeFromChild(BoxConstraints constraints, Size childSize) {
+    final int width =
+        constraints.maxWidth == 999999 ? childSize.width : constraints.maxWidth;
+    final int height =
+        constraints.maxHeight == 999999 ? childSize.height : constraints.maxHeight;
+    return Size(width, height);
+  }
 
   @override
   Offset computeChildOffset(Offset parentOffset, Size childSize) {
