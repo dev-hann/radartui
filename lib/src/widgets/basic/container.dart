@@ -89,26 +89,25 @@ class RenderContainer extends RenderBox
     final totalPadding = padding ?? const EdgeInsets.all(0);
     final innerOffset = offset + Offset(totalMargin.left, totalMargin.top);
 
-    // Fill background if color is specified
+    // Fill background FIRST if color is specified
     if (color != null) {
       final bgStyle = TextStyle(backgroundColor: color);
       final bgWidth = size!.width - totalMargin.left - totalMargin.right;
       final bgHeight = size!.height - totalMargin.top - totalMargin.bottom;
-      final bgLine = ' ' * bgWidth;
 
       for (int y = 0; y < bgHeight; y++) {
-        for (int i = 0; i < bgLine.length; i++) {
+        for (int x = 0; x < bgWidth; x++) {
           context.buffer.writeStyled(
-            innerOffset.x + i,
+            innerOffset.x + x,
             innerOffset.y + y,
-            bgLine[i],
+            ' ',
             bgStyle,
           );
         }
       }
     }
 
-    // Paint child with padding offset
+    // Paint child AFTER background with padding offset
     if (children.isNotEmpty) {
       context.paintChild(
         children.first,

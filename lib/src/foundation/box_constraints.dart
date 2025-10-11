@@ -51,19 +51,34 @@ class BoxConstraints extends Constraints {
   }
 
   Size constrain(Size size) {
-    final constrainedWidth = size.width.clamp(minWidth, maxWidth);
-    final constrainedHeight = size.height.clamp(minHeight, maxHeight);
+    // Ensure valid clamp ranges (min must not exceed max)
+    // Handle cases where maxWidth or maxHeight might be negative or zero
+    final safeMaxWidth = maxWidth.clamp(0, 999999);
+    final safeMaxHeight = maxHeight.clamp(0, 999999);
+    final safeMinWidth = minWidth.clamp(0, safeMaxWidth);
+    final safeMinHeight = minHeight.clamp(0, safeMaxHeight);
+
+    final constrainedWidth = size.width.clamp(safeMinWidth, safeMaxWidth);
+    final constrainedHeight = size.height.clamp(safeMinHeight, safeMaxHeight);
     return Size(constrainedWidth, constrainedHeight);
   }
 
   BoxConstraints deflate(EdgeInsets edge) {
     final horizontal = edge.left + edge.right;
     final vertical = edge.top + edge.bottom;
+
+    // Calculate deflated values ensuring they don't go negative
+    final deflatedMaxWidth = (maxWidth - horizontal).clamp(0, 999999);
+    final deflatedMaxHeight = (maxHeight - vertical).clamp(0, 999999);
+    final deflatedMinWidth = (minWidth - horizontal).clamp(0, 999999);
+    final deflatedMinHeight = (minHeight - vertical).clamp(0, 999999);
+
+    // Ensure min doesn't exceed max after deflation
     return BoxConstraints(
-      minWidth: (minWidth - horizontal).clamp(0, 999999),
-      maxWidth: (maxWidth - horizontal).clamp(0, 999999),
-      minHeight: (minHeight - vertical).clamp(0, 999999),
-      maxHeight: (maxHeight - vertical).clamp(0, 999999),
+      minWidth: deflatedMinWidth.clamp(0, deflatedMaxWidth),
+      maxWidth: deflatedMaxWidth,
+      minHeight: deflatedMinHeight.clamp(0, deflatedMaxHeight),
+      maxHeight: deflatedMaxHeight,
     );
   }
 

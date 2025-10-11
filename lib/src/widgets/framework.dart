@@ -174,8 +174,8 @@ class RenderObjectElement extends Element implements BuildContext {
 }
 
 abstract class SingleChildRenderObjectWidget extends RenderObjectWidget {
-  final Widget child;
-  const SingleChildRenderObjectWidget({required this.child});
+  final Widget? child;
+  const SingleChildRenderObjectWidget({this.child});
   @override
   SingleChildRenderObjectElement createElement() =>
       SingleChildRenderObjectElement(this);
@@ -188,9 +188,12 @@ class SingleChildRenderObjectElement extends RenderObjectElement {
   @override
   void mount(Element? parent) {
     super.mount(parent);
-    _child = updateChild(null, (widget as SingleChildRenderObjectWidget).child);
-    if (_child?.renderObject != null) {
-      (renderObject as ContainerRenderObjectMixin).add(_child!.renderObject!);
+    final childWidget = (widget as SingleChildRenderObjectWidget).child;
+    if (childWidget != null) {
+      _child = updateChild(null, childWidget);
+      if (_child?.renderObject != null) {
+        (renderObject as ContainerRenderObjectMixin).add(_child!.renderObject!);
+      }
     }
   }
 
@@ -198,13 +201,19 @@ class SingleChildRenderObjectElement extends RenderObjectElement {
   void update(Widget newWidget) {
     super.update(newWidget);
     final oldChild = _child;
-    _child = updateChild(_child, (widget as SingleChildRenderObjectWidget).child);
-    if (oldChild != _child && _child?.renderObject != null) {
-      final container = renderObject as ContainerRenderObjectMixin;
-      if (oldChild?.renderObject != null) {
-        container.clear();
+    final childWidget = (widget as SingleChildRenderObjectWidget).child;
+    if (childWidget != null) {
+      _child = updateChild(_child, childWidget);
+      if (oldChild != _child && _child?.renderObject != null) {
+        final container = renderObject as ContainerRenderObjectMixin;
+        if (oldChild?.renderObject != null) {
+          container.clear();
+        }
+        container.add(_child!.renderObject!);
       }
-      container.add(_child!.renderObject!);
+    } else if (oldChild != null) {
+      _child = null;
+      (renderObject as ContainerRenderObjectMixin).clear();
     }
   }
 

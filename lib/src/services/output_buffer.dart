@@ -165,6 +165,7 @@ class OutputBuffer {
     // Reset style at the end to ensure clean state
     stdout.write('\x1b[0m');
     terminal.setCursorPosition(0, 0);
-    terminal.showCursor();
+    // Keep cursor hidden during app execution
+    // Cursor will be shown only on shutdown via SchedulerBinding.shutdown()
   }
 }

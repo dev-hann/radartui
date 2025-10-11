@@ -1,17 +1,17 @@
 import '../../../radartui.dart';
 
-class SizedBox extends RenderObjectWidget {
+class SizedBox extends SingleChildRenderObjectWidget {
   final int width;
   final int height;
 
-  const SizedBox({this.width = 0, this.height = 0});
-  const SizedBox.shrink() : width = 0, height = 0;
-  const SizedBox.square({required int dimension})
-    : width = dimension,
-      height = dimension;
+  const SizedBox({this.width = 0, this.height = 0, super.child});
+  const SizedBox.shrink({super.child})
+      : width = 0,
+        height = 0;
+  const SizedBox.square({required int dimension, super.child})
+      : width = dimension,
+        height = dimension;
 
-  @override
-  RenderObjectElement createElement() => RenderObjectElement(this);
 
   @override
   RenderSizedBox createRenderObject(BuildContext context) =>
@@ -25,7 +25,8 @@ class SizedBox extends RenderObjectWidget {
   }
 }
 
-class RenderSizedBox extends RenderBox {
+class RenderSizedBox extends RenderBox
+    with ContainerRenderObjectMixin<RenderObject, ParentData> {
   int width;
   int height;
 
@@ -33,11 +34,19 @@ class RenderSizedBox extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    size = Size(width, height);
+    final boxSize = Size(width, height);
+    size = boxSize;
+
+    if (children.isNotEmpty) {
+      final child = children.first;
+      child.layout(BoxConstraints.tight(boxSize));
+    }
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    // SizedBox doesn't paint anything
+    if (children.isNotEmpty) {
+      context.paintChild(children.first, offset);
+    }
   }
 }

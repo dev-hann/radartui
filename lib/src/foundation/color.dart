@@ -54,21 +54,31 @@ class Colors {
   static const Color black54 = Color(16); // Semi-transparent black for barriers
 }
 
+enum FontFamily {
+  /// System default font
+  system,
+
+  /// Monospace font (suitable for code, terminals, etc.)
+  monospace,
+}
+
 class TextStyle {
   final Color? color;
   final Color? backgroundColor;
   final bool bold;
   final bool italic;
   final bool underline;
-  
+  final FontFamily fontFamily;
+
   const TextStyle({
     this.color,
     this.backgroundColor,
     this.bold = false,
     this.italic = false,
     this.underline = false,
+    this.fontFamily = FontFamily.monospace,
   });
-  
+
   @override
   bool operator ==(Object other) =>
       other is TextStyle &&
@@ -76,17 +86,19 @@ class TextStyle {
       backgroundColor == other.backgroundColor &&
       bold == other.bold &&
       italic == other.italic &&
-      underline == other.underline;
+      underline == other.underline &&
+      fontFamily == other.fontFamily;
 
   @override
   int get hashCode => Object.hash(
-    color, 
-    backgroundColor, 
-    bold, 
-    italic, 
-    underline
+    color,
+    backgroundColor,
+    bold,
+    italic,
+    underline,
+    fontFamily,
   );
-  
+
   @override
-  String toString() => 'TextStyle(color: $color, bg: $backgroundColor, bold: $bold)';
+  String toString() => 'TextStyle(color: $color, bg: $backgroundColor, bold: $bold, font: $fontFamily)';
 }

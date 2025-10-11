@@ -1,6 +1,7 @@
 import '../lib/radartui.dart';
 import 'src/button_example.dart';
 import 'src/calculator_example.dart';
+import 'src/card_example.dart';
 import 'src/checkbox_example.dart';
 import 'src/counter_example.dart';
 import 'src/dashboard_example.dart';
@@ -30,6 +31,7 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/button': (context) => ButtonExample(),
         '/counter': (context) => const CounterExample(),
         '/calculator': (context) => const CalculatorExample(),
+        '/card': (context) => const CardExample(),
         '/dashboard': (context) => const DashboardExample(),
         '/dialog': (context) => DialogExample(),
         '/guess_game': (context) => const GuessGameExample(),
@@ -58,6 +60,7 @@ class _MenuScreenState extends State<MenuScreen> {
     'Button',
     'Counter',
     'Calculator',
+    'Card Widget',
     'Dashboard',
     'Dialog',
     'Guess Game',
@@ -75,6 +78,7 @@ class _MenuScreenState extends State<MenuScreen> {
     '/button',
     '/counter',
     '/calculator',
+    '/card',
     '/dashboard',
     '/dialog',
     '/guess_game',

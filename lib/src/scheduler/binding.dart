@@ -31,6 +31,7 @@ class SchedulerBinding {
 
     keyboard.initialize();
     terminal.clear();
+    terminal.hideCursor();
     _rootElement = app.createElement();
     _rootElement!.mount(null);
     scheduleFrame();
@@ -155,6 +156,14 @@ class SchedulerBinding {
     element.renderObject?.paint(context, Offset.zero);
     outputBuffer.flush();
   }
+
+  void visibleCursor(bool visible) {
+    if (visible) {
+      terminal.showCursor();
+    } else {
+      terminal.hideCursor();
+    }
+  }
 }
 
 class RawKeyboard {
@@ -194,21 +203,19 @@ class RawKeyboard {
   }
 
   void _initializeLineMode() {
-    _stdinSubscription = stdin
-        .transform(utf8.decoder)
-        .transform(const LineSplitter())
-        .listen(
-          (String line) {
-            AppLogger.log('Line mode input: "$line"');
-            _processLineInput(line);
-          },
-          onError: (e) {
-            AppLogger.log('Line mode stdin error: $e');
-          },
-          onDone: () {
-            AppLogger.log('Line mode stdin done');
-          },
-        );
+    _stdinSubscription =
+        stdin.transform(utf8.decoder).transform(const LineSplitter()).listen(
+      (String line) {
+        AppLogger.log('Line mode input: "$line"');
+        _processLineInput(line);
+      },
+      onError: (e) {
+        AppLogger.log('Line mode stdin error: $e');
+      },
+      onDone: () {
+        AppLogger.log('Line mode stdin done');
+      },
+    );
   }
 
   void _processLineInput(String line) {

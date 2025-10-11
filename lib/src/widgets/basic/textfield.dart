@@ -316,7 +316,8 @@ class RenderTextField extends RenderBox {
 
   void performLayout(Constraints constraints) {
     final displayText = text.isEmpty && placeholder != null ? placeholder! : text;
-    final desiredWidth = displayText.length + 1;
+    // Ensure minimum width of at least 1 character
+    final desiredWidth = (displayText.length + 1).clamp(1, 999999);
     final boxConstraints = constraints as BoxConstraints;
     size = boxConstraints.constrain(Size(desiredWidth, 1));
   }
