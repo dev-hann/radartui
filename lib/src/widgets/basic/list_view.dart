@@ -1,21 +1,25 @@
 import '../../../radartui.dart';
 
+Text defaultSelectedBuilder(String item) {
+  return Text('> $item');
+}
+
+Text defaultUnselectedBuilder(String item) {
+  return Text('  $item');
+}
+
 class ListView extends StatefulWidget {
   final List<String> items;
-  final String? selectedPrefix;
-  final String? unselectedPrefix;
-  final String? focusedBorder;
-  final String? unfocusedBorder;
+  final Widget Function(String item) selectedBuilder;
+  final Widget Function(String item) unselectedBuilder;
   final int initialSelectedIndex;
   final void Function(int index, String item)? onItemSelected;
   final bool wrapAroundNavigation;
 
   const ListView({
     required this.items,
-    this.selectedPrefix = '> ',
-    this.unselectedPrefix = '  ',
-    this.focusedBorder = '[ ]',
-    this.unfocusedBorder = '   ',
+    this.selectedBuilder = defaultSelectedBuilder,
+    this.unselectedBuilder = defaultUnselectedBuilder,
     this.initialSelectedIndex = 0,
     this.onItemSelected,
     this.wrapAroundNavigation = false,
@@ -90,26 +94,17 @@ class _ListViewState extends State<ListView> {
 
   @override
   Widget build(BuildContext context) {
-    final borderPrefix =
-        _hasFocus ? widget.focusedBorder : widget.unfocusedBorder;
-
     final children = <Widget>[];
-
-    if (borderPrefix != null) {
-      children.add(Text(borderPrefix));
-    }
 
     for (final entry in widget.items.asMap().entries) {
       final index = entry.key;
       final item = entry.value;
       final isSelected = index == selectedIndex && _hasFocus;
-      final prefix =
-          isSelected ? widget.selectedPrefix : widget.unselectedPrefix;
-      children.add(Text('$prefix$item'));
-    }
-
-    if (borderPrefix != null) {
-      children.add(Text(borderPrefix));
+      children.add(
+        isSelected
+            ? widget.selectedBuilder(item)
+            : widget.unselectedBuilder(item),
+      );
     }
 
     return Column(children: children);

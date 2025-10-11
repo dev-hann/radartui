@@ -29,7 +29,9 @@ class _FocusExampleState extends State<FocusExample> {
       padding: const EdgeInsets.all(2),
       child: Column(
         children: [
-          const Text('Focus Example - Use Tab/Shift+Tab to switch between lists'),
+          const Text(
+            'Focus Example - Use Tab/Shift+Tab to switch between lists',
+          ),
           const SizedBox(height: 1),
           Row(
             children: [
@@ -41,8 +43,6 @@ class _FocusExampleState extends State<FocusExample> {
                     const Text('Actions:'),
                     ListView(
                       items: ['Create', 'Edit', 'Delete', 'Copy', 'Move'],
-                      focusedBorder: '[====== Actions ======]',
-                      unfocusedBorder: '                       ',
                       onItemSelected: (index, item) {
                         setState(() {
                           selectedAction = item;
@@ -68,8 +68,6 @@ class _FocusExampleState extends State<FocusExample> {
                         'README.md',
                         'test.dart',
                       ],
-                      focusedBorder: '[====== Files ========]',
-                      unfocusedBorder: '                       ',
                       onItemSelected: (index, item) {
                         setState(() {
                           selectedFile = item;
@@ -90,8 +88,6 @@ class _FocusExampleState extends State<FocusExample> {
                     const Text('Options:'),
                     ListView(
                       items: ['Confirm', 'Preview', 'Backup', 'Skip'],
-                      focusedBorder: '[====== Options ======]',
-                      unfocusedBorder: '                       ',
                       onItemSelected: (index, item) {
                         setState(() {
                           selectedOption = item;

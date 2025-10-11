@@ -36,14 +36,14 @@ class SchedulerBinding {
     scheduleFrame();
 
     // Register shutdown hooks
-    ProcessSignal.sigint.watch().listen((_) => shutdown('SIGINT'));
-    ProcessSignal.sigterm.watch().listen((_) => shutdown('SIGTERM'));
+    ProcessSignal.sigint.watch().listen((_) => shutdown());
+    ProcessSignal.sigterm.watch().listen((_) => shutdown());
     ProcessSignal.sigwinch.watch().listen((_) {
       outputBuffer.resize();
     });
   }
 
-  void shutdown(String signal) {
+  void shutdown() {
     keyboard.dispose();
     AppLogger.dispose();
     terminal.showCursor();
