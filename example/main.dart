@@ -14,6 +14,7 @@ import 'src/spinner_example.dart';
 import 'src/stack_example.dart';
 import 'src/style_example.dart';
 import 'src/textfield_example.dart';
+import 'src/align_example.dart';
 
 void main() {
   runApp(const RadarTUIExamplesApp());
@@ -43,6 +44,7 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/divider': (context) => const DividerExample(),
         '/checkbox': (context) => const CheckboxExample(),
         '/radio': (context) => const RadioExample(),
+        '/align': (context) => const AlignExample(),
       },
     );
   }
@@ -72,6 +74,7 @@ class _MenuScreenState extends State<MenuScreen> {
     'Divider Widget',
     'Checkbox Widget',
     'Radio Button',
+    'Align & Center',
   ];
 
   final List<String> _exampleRoutes = [
@@ -90,6 +93,7 @@ class _MenuScreenState extends State<MenuScreen> {
     '/divider',
     '/checkbox',
     '/radio',
+    '/align',
   ];
 
   void _onExampleSelected(int index, String item) async {

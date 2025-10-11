@@ -1,6 +1,7 @@
 export 'basic/builder.dart';
 export 'basic/button.dart';
 export 'basic/card.dart';
+export 'basic/align.dart';
 export 'basic/center.dart';
 export 'basic/checkbox.dart';
 export 'basic/container.dart';

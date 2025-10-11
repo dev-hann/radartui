@@ -5,7 +5,7 @@ This directory contains the concrete implementations of the basic widgets used t
 ### Key Widgets
 
 - **`Text`**, **`TextField`**: Widgets for displaying and inputting text.
-- **`Container`**, **`Padding`**, **`SizedBox`**, **`Center`**: Widgets for controlling the layout, style, and size of a single child widget.
+- **`Container`**, **`Padding`**, **`SizedBox`**, **`Center`**, **`Align`**: Widgets for controlling the layout, style, and size of a single child widget.
 - **`Row`**, **`Column`**, **`Flex`**: Flex-based layout widgets for arranging multiple child widgets horizontally or vertically.
 - **`Button`**, **`Dialog`**, **`Indicator`**: Widgets for user interaction and state display.
 - **`ListView`**: A widget for displaying a scrollable list.
