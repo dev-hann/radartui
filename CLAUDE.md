@@ -378,3 +378,56 @@ dart analyze
 - **Info/Hints:** Fix immediately - ensures code follows best practices and style guidelines
 
 **Goal:** Maintain production-quality code with zero tolerance for technical debt.
+
+---
+
+# Development History & Implementation Notes
+
+## 2025-10-19: StreamBuilder & FutureBuilder Implementation
+
+### ✅ Implemented Features
+
+Added asynchronous widget builders to RadarTUI for handling Stream and Future data:
+
+#### New Files Created:
+1. **`lib/src/widgets/basic/async_snapshot.dart`**
+   - `ConnectionState` enum: none, waiting, active, done
+   - `AsyncSnapshot<T>` class: Immutable snapshot of async computation state
+   - Factory constructors: `nothing()`, `waiting()`, `withData()`, `withError()`
+   - Null-safe API with `hasData`, `hasError` getters
+
+2. **`lib/src/widgets/basic/async_widget_builder.dart`**
+   - `AsyncWidgetBuilder<T>` typedef for builder callbacks
+   - Shared between StreamBuilder and FutureBuilder
+
+3. **`lib/src/widgets/basic/stream_builder.dart`**
+   - `StreamBuilder<T>` widget for reactive Stream data
+   - Automatic subscription/unsubscription lifecycle management
+   - Error handling with stack traces
+   - Support for initial data
+   - ConnectionState tracking: waiting → active → done
+
+4. **`lib/src/widgets/basic/future_builder.dart`**
+   - `FutureBuilder<T>` widget for one-time Future data
+   - Callback identity tracking to prevent stale updates
+   - Error handling with stack traces
+   - Support for initial data
+   - ConnectionState tracking: waiting → done
+
+#### Updated Files:
+- **`lib/src/widgets/basic.dart`**: Added exports for new async widgets
+- **`lib/src/widgets/basic/README.md`**: Documented new async widgets
+
+### 🎯 Design Decisions
+
+- **Separated AsyncWidgetBuilder**: Created dedicated file to avoid ambiguous exports
+- **No Key Parameter**: StatefulWidget in RadarTUI doesn't support key parameter (unlike Flutter)
+- **Flutter API Compatibility**: Maintains same API surface as Flutter's async builders
+- **Generic Type Support**: Full `<T>` generic support for type safety
+- **Testing Strategy**: Examples only (no unit tests) - following project convention
+
+### 📝 Notes
+
+- **Test files removed**: Project uses examples instead of traditional tests
+- **Code quality verified**: All files pass `dart analyze` with zero issues
+- **Ready for examples**: Widgets are production-ready, awaiting example implementations
