@@ -34,10 +34,19 @@ class RenderAlign extends SingleChildRenderBox {
 
   @override
   Size computeSizeFromChild(BoxConstraints constraints, Size childSize) {
-    final int width =
-        constraints.maxWidth == 999999 ? childSize.width : constraints.maxWidth;
-    final int height =
-        constraints.maxHeight == 999999 ? childSize.height : constraints.maxHeight;
+    // Shrink-wrap logic:
+    // - If alignment has left/right (x != 0): shrink width to child
+    // - If alignment has top/bottom (y != 0): shrink height to child
+    // - If center (x == 0, y == 0): expand to fill bounded constraints
+    // - If unbounded: always shrink to child
+    final bool shrinkWrapWidth =
+        _alignment.x != 0 || constraints.maxWidth == 999999;
+    final bool shrinkWrapHeight =
+        _alignment.y != 0 || constraints.maxHeight == 999999;
+
+    final int width = shrinkWrapWidth ? childSize.width : constraints.maxWidth;
+    final int height = shrinkWrapHeight ? childSize.height : constraints.maxHeight;
+
     return Size(width, height);
   }
 

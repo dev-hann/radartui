@@ -41,6 +41,15 @@ class BoxConstraints extends Constraints {
       minHeight >= 0.0 &&
       minHeight <= maxHeight;
 
+  BoxConstraints loosen() {
+    return BoxConstraints(
+      minWidth: 0,
+      maxWidth: maxWidth,
+      minHeight: 0,
+      maxHeight: maxHeight,
+    );
+  }
+
   BoxConstraints enforce(BoxConstraints constraints) {
     return BoxConstraints(
       minWidth: minWidth.clamp(constraints.minWidth, constraints.maxWidth),
