@@ -1,11 +1,11 @@
 import '../../../radartui.dart';
 
-class FocusNode {
+class FocusNode extends ChangeNotifier {
   FocusNode() {
     // Automatically register with current scope when created
     _autoRegister();
   }
-  
+
   bool _hasFocus = false;
   FocusScope? _scope;
   Function(KeyEvent)? onKeyEvent;
@@ -30,30 +30,15 @@ class FocusNode {
     }
   }
 
-  final List<Function()> _listeners = [];
-
-  void addListener(Function() listener) {
-    _listeners.add(listener);
-  }
-
-  void removeListener(Function() listener) {
-    _listeners.remove(listener);
-  }
-
-  void notifyListeners() {
-    for (final listener in _listeners) {
-      listener();
-    }
-  }
-
   void _autoRegister() {
     // Simple auto-registration with current scope
     FocusManager.instance.registerNode(this);
   }
 
+  @override
   void dispose() {
-    _listeners.clear();
     FocusManager.instance.unregisterNode(this);
+    super.dispose();
   }
 }
 
@@ -137,7 +122,7 @@ class FocusScope {
 
   void activate() {
     _isActive = true;
-    
+
     // Set focus to first node when activating
     if (_nodes.isNotEmpty) {
       _currentIndex = 0;
@@ -167,9 +152,10 @@ class FocusScope {
 
 class Focus extends StatefulWidget {
   final FocusNode? focusNode;
+  final Function(KeyEvent)? onKeyEvent;
   final Widget child;
 
-  const Focus({this.focusNode, required this.child});
+  const Focus({this.focusNode, this.onKeyEvent, required this.child});
 
   @override
   State<Focus> createState() => _FocusState();
@@ -189,6 +175,10 @@ class _FocusState extends State<Focus> {
       _focusNode = FocusNode();
       _isNodeOwned = true;
     }
+    _focusNode.onKeyEvent = widget.onKeyEvent;
+    _focusNode.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -220,7 +210,6 @@ class _FocusState extends State<Focus> {
 
   @override
   Widget build(BuildContext context) {
-    // Pure UI rendering only - no logic here
     return widget.child;
   }
 }
