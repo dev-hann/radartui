@@ -1,21 +1,22 @@
 import '../lib/radartui.dart';
+import 'src/align_example.dart';
+import 'src/async_example.dart';
 import 'src/button_example.dart';
-import 'src/calculator_example.dart';
 import 'src/card_example.dart';
 import 'src/checkbox_example.dart';
-import 'src/counter_example.dart';
-import 'src/dashboard_example.dart';
 import 'src/dialog_example.dart';
 import 'src/divider_example.dart';
 import 'src/flex_example.dart';
 import 'src/focus_example.dart';
-import 'src/guess_game_example.dart';
+import 'src/form_example.dart';
 import 'src/radio_example.dart';
+import 'src/spacer_example.dart';
 import 'src/spinner_example.dart';
 import 'src/stack_example.dart';
 import 'src/style_example.dart';
 import 'src/textfield_example.dart';
-import 'src/align_example.dart';
+import 'src/theme_example.dart';
+import 'src/wrap_example.dart';
 
 void main() {
   runApp(const RadarTUIExamplesApp());
@@ -30,23 +31,24 @@ class RadarTUIExamplesApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const MenuScreen(),
+        '/align': (context) => const AlignExample(),
+        '/async': (context) => const AsyncExample(),
         '/button': (context) => const ButtonExample(),
-        '/counter': (context) => const CounterExample(),
-        '/calculator': (context) => const CalculatorExample(),
         '/card': (context) => const CardExample(),
-        '/dashboard': (context) => const DashboardExample(),
+        '/checkbox': (context) => const CheckboxExample(),
         '/dialog': (context) => const DialogExample(),
-        '/guess_game': (context) => const GuessGameExample(),
-        '/spinner': (context) => const SpinnerExample(),
-        '/style': (context) => const StyleExample(),
-        '/focus': (context) => const FocusExample(),
-        '/textfield': (context) => const TextFieldExample(),
-        '/stack': (context) => const StackExample(),
         '/divider': (context) => const DividerExample(),
         '/flex': (context) => const FlexExample(),
-        '/checkbox': (context) => const CheckboxExample(),
+        '/focus': (context) => const FocusExample(),
+        '/form': (context) => const FormExample(),
         '/radio': (context) => const RadioExample(),
-        '/align': (context) => const AlignExample(),
+        '/spacer': (context) => const SpacerExample(),
+        '/spinner': (context) => const SpinnerExample(),
+        '/stack': (context) => const StackExample(),
+        '/style': (context) => const StyleExample(),
+        '/textfield': (context) => const TextFieldExample(),
+        '/theme': (context) => const ThemeExample(),
+        '/wrap': (context) => const WrapExample(),
       },
     );
   }
@@ -61,43 +63,45 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   final List<String> _exampleTitles = [
-    'Button',
-    'Counter',
-    'Calculator',
+    'Align & Center',
+    'Async (Future/Stream)',
+    'Button Widget',
     'Card Widget',
-    'Dashboard',
-    'Dialog',
-    'Guess Game',
-    'Spinner',
-    'Style Demo',
-    'Focus Example',
-    'TextField Example',
-    'Stack Widget',
+    'Checkbox Widget',
+    'Dialog Widget',
     'Divider Widget',
     'Flex Layout',
-    'Checkbox Widget',
+    'Focus Management',
+    'Form Validation',
     'Radio Button',
-    'Align & Center',
+    'Spacer & Flexible',
+    'Spinner & Progress',
+    'Stack Widget',
+    'Text Styling',
+    'TextField Widget',
+    'Theme & MediaQuery',
+    'Wrap Widget',
   ];
 
   final List<String> _exampleRoutes = [
+    '/align',
+    '/async',
     '/button',
-    '/counter',
-    '/calculator',
     '/card',
-    '/dashboard',
+    '/checkbox',
     '/dialog',
-    '/guess_game',
-    '/spinner',
-    '/style',
-    '/focus',
-    '/textfield',
-    '/stack',
     '/divider',
     '/flex',
-    '/checkbox',
+    '/focus',
+    '/form',
     '/radio',
-    '/align',
+    '/spacer',
+    '/spinner',
+    '/stack',
+    '/style',
+    '/textfield',
+    '/theme',
+    '/wrap',
   ];
 
   void _onExampleSelected(int index, String item) async {
@@ -116,7 +120,7 @@ class _MenuScreenState extends State<MenuScreen> {
             color: Color.blue,
             child: Center(
               child: Text(
-                '🚀 RadarTUI Examples Collection 🚀',
+                'RadarTUI Examples Collection',
                 style: TextStyle(color: Color.white, bold: true),
               ),
             ),

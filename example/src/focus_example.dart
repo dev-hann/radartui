@@ -16,7 +16,7 @@ class _FocusExampleState extends State<FocusExample> {
   void initState() {
     super.initState();
 
-    SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       }

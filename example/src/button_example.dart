@@ -14,7 +14,7 @@ class _ButtonExampleState extends State<ButtonExample> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }

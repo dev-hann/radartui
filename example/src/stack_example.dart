@@ -11,7 +11,7 @@ class _StackExampleState extends State<StackExample> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }

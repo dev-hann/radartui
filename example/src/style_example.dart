@@ -14,7 +14,7 @@ class _StyleExampleState extends State<StyleExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
       key,
     ) {
       if (key.code == KeyCode.escape) {

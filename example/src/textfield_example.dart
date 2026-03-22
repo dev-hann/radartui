@@ -15,7 +15,7 @@ class _TextFieldExampleState extends State<TextFieldExample> {
   void initState() {
     super.initState();
     _controller1.text = 'Initial text';
-    SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }

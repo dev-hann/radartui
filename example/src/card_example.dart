@@ -11,7 +11,7 @@ class _CardExampleState extends State<CardExample> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.keyboard.keyEvents.listen((key) {
+    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }

@@ -37,7 +37,7 @@ class _SpinnerExampleState extends State<SpinnerExample> {
   void initState() {
     super.initState();
     _startAnimation();
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen((
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
       key,
     ) {
       if (key.code == KeyCode.escape) {
