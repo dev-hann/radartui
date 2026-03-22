@@ -3,9 +3,11 @@ import '../foundation.dart';
 import 'terminal.dart';
 
 class Cell {
-  String char;
-  TextStyle? style;
-  Cell(this.char, [this.style]);
+  final String char;
+  final TextStyle? style;
+  const Cell(this.char, [this.style]);
+  
+  static const empty = Cell(' ');
 
   @override
   bool operator ==(Object other) =>
@@ -33,11 +35,11 @@ class OutputBuffer {
   void resize() {
     _grid = List.generate(
       terminal.height,
-      (_) => List.generate(terminal.width, (_) => Cell(' ')),
+      (_) => List.generate(terminal.width, (_) => Cell.empty),
     );
     _previousGrid = List.generate(
       terminal.height,
-      (_) => List.generate(terminal.width, (_) => Cell(' ')),
+      (_) => List.generate(terminal.width, (_) => Cell.empty),
     );
   }
 
@@ -55,33 +57,26 @@ class OutputBuffer {
   void clear() {
     for (var y = 0; y < terminal.height; y++) {
       for (var x = 0; x < terminal.width; x++) {
-        _grid[y][x] = Cell(' ', null); // Clear with null style
+        _grid[y][x] = Cell.empty;
       }
     }
   }
 
   void clearAll() {
-    // Clear the terminal completely
     terminal.clear();
 
-    // Clear both current and previous grids to force complete redraw
     for (var y = 0; y < terminal.height; y++) {
       for (var x = 0; x < terminal.width; x++) {
-        _grid[y][x] = Cell(' ', null); // Clear with null style
-        _previousGrid[y][x] = Cell(
-          '',
-          null,
-        ); // Make different from current to force redraw
+        _grid[y][x] = Cell.empty;
+        _previousGrid[y][x] = const Cell('');
       }
     }
   }
 
   void smartClear() {
-    // Clear only the grid, preserve previous grid for diff-based rendering
-    // This avoids terminal flicker while ensuring clean content
     for (var y = 0; y < terminal.height; y++) {
       for (var x = 0; x < terminal.width; x++) {
-        _grid[y][x] = Cell(' ', null); // Clear with null style
+        _grid[y][x] = Cell.empty;
       }
     }
   }
@@ -116,27 +111,36 @@ class OutputBuffer {
 
   String _buildAnsiEscapeCode(TextStyle? style) {
     if (style == null) {
-      // Complete reset to clear all previous styles
       return '\x1b[0m';
     }
 
-    // Always start with reset to ensure clean style application
     List<String> codes = ['0'];
 
-    // Apply new styles
     if (style.bold) codes.add('1');
     if (style.italic) codes.add('3');
     if (style.underline) codes.add('4');
 
     if (style.color != null) {
-      codes.add('3${style.color!.value}');
+      codes.add(_colorToAnsi(style.color!.value, true));
     }
 
     if (style.backgroundColor != null) {
-      codes.add('4${style.backgroundColor!.value}');
+      codes.add(_colorToAnsi(style.backgroundColor!.value, false));
     }
 
     return '\x1b[${codes.join(';')}m';
+  }
+
+  String _colorToAnsi(int value, bool foreground) {
+    if (value < 0) return foreground ? '39' : '49';
+    if (value < 8) {
+      return foreground ? '3$value' : '4$value';
+    }
+    if (value < 16) {
+      final brightValue = value - 8;
+      return foreground ? '9$brightValue' : '10$brightValue';
+    }
+    return foreground ? '39' : '49';
   }
 
   void flush() {
