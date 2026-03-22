@@ -37,7 +37,7 @@ RadarTUI follows a layered architecture inspired by Flutter. Each layer has a cl
 └──────────────────────────┘
 ```
 
-For more detailed architecture information, please refer to the [GEMINI.md](GEMINI.md) document.
+For more detailed architecture information, please refer to the [AGENTS.md](AGENTS.md) document.
 
 ## 🚀 Getting Started
 
@@ -141,7 +141,7 @@ RadarTUI is continuously evolving, with plans for the following features:
 
 Contributions to RadarTUI are welcome! Bug reports, feature suggestions, code contributions, and any other form of participation are appreciated.
 
-Before you start contributing, reading the [GEMINI.md](GEMINI.md) architecture document will be very helpful in understanding the project structure.
+Before you start contributing, reading the [AGENTS.md](AGENTS.md) architecture document will be very helpful in understanding the project structure.
 
 ## 📜 License
 
