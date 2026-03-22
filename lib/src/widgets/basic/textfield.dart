@@ -1,17 +1,54 @@
 import '../../../radartui.dart';
 
-class TextEditingController {
+class TextSelection {
+  final int start;
+  final int end;
+  
+  const TextSelection({required this.start, required this.end});
+  
+  bool get isValid => start >= 0 && end >= start;
+  int get length => end - start;
+  String textInRange(String fullText) {
+    if (!isValid) return '';
+    return fullText.substring(start, end);
+  }
+}
+
+abstract class Clipboard {
+  static String? _data;
+  
+  static Future<void> setData(String text) async {
+    _data = text;
+  }
+  
+  static Future<String?> getData() async {
+    return _data;
+  }
+  
+  static bool get hasData => _data != null && _data!.isNotEmpty;
+}
+
+class TextEditingController extends ChangeNotifier {
   String _text = '';
   int _cursorPosition = 0;
-  final List<Function()> _listeners = [];
+  int? _selectionStart;
+  int? _selectionEnd;
 
   String get text => _text;
   int get cursorPosition => _cursorPosition;
+  
+  TextSelection? get selection {
+    if (_selectionStart == null || _selectionEnd == null) return null;
+    return TextSelection(start: _selectionStart!, end: _selectionEnd!);
+  }
+  
+  bool get hasSelection => _selectionStart != null && _selectionEnd != null;
 
   set text(String value) {
     if (_text != value) {
       _text = value;
       _cursorPosition = _cursorPosition.clamp(0, _text.length);
+      clearSelection();
       notifyListeners();
     }
   }
@@ -20,25 +57,64 @@ class TextEditingController {
     final newPosition = position.clamp(0, _text.length);
     if (_cursorPosition != newPosition) {
       _cursorPosition = newPosition;
+      clearSelection();
       notifyListeners();
     }
   }
-
-  void addListener(Function() listener) {
-    _listeners.add(listener);
+  
+  void setSelection(int start, int end) {
+    _selectionStart = start.clamp(0, _text.length);
+    _selectionEnd = end.clamp(_selectionStart!, _text.length);
+    notifyListeners();
   }
-
-  void removeListener(Function() listener) {
-    _listeners.remove(listener);
+  
+  void clearSelection() {
+    _selectionStart = null;
+    _selectionEnd = null;
   }
-
-  void notifyListeners() {
-    for (final listener in _listeners) {
-      listener();
+  
+  void selectAll() {
+    _selectionStart = 0;
+    _selectionEnd = _text.length;
+    notifyListeners();
+  }
+  
+  Future<void> copy() async {
+    if (hasSelection) {
+      await Clipboard.setData(selection!.textInRange(_text));
     }
+  }
+  
+  Future<void> cut() async {
+    if (hasSelection) {
+      await Clipboard.setData(selection!.textInRange(_text));
+      deleteSelection();
+    }
+  }
+  
+  Future<void> paste() async {
+    final clipboardText = await Clipboard.getData();
+    if (clipboardText != null && clipboardText.isNotEmpty) {
+      if (hasSelection) {
+        deleteSelection();
+      }
+      insertText(clipboardText);
+    }
+  }
+  
+  void deleteSelection() {
+    if (!hasSelection) return;
+    final sel = selection!;
+    _text = _text.substring(0, sel.start) + _text.substring(sel.end);
+    _cursorPosition = sel.start;
+    clearSelection();
+    notifyListeners();
   }
 
   void insertText(String text) {
+    if (hasSelection) {
+      deleteSelection();
+    }
     _text = _text.substring(0, _cursorPosition) + 
             text + 
             _text.substring(_cursorPosition);
@@ -47,6 +123,10 @@ class TextEditingController {
   }
 
   void deleteBackward() {
+    if (hasSelection) {
+      deleteSelection();
+      return;
+    }
     if (_cursorPosition > 0) {
       _text = _text.substring(0, _cursorPosition - 1) + 
               _text.substring(_cursorPosition);
@@ -56,6 +136,10 @@ class TextEditingController {
   }
 
   void deleteForward() {
+    if (hasSelection) {
+      deleteSelection();
+      return;
+    }
     if (_cursorPosition < _text.length) {
       _text = _text.substring(0, _cursorPosition) + 
               _text.substring(_cursorPosition + 1);
@@ -66,6 +150,7 @@ class TextEditingController {
   void moveCursorLeft() {
     if (_cursorPosition > 0) {
       _cursorPosition--;
+      clearSelection();
       notifyListeners();
     }
   }
@@ -73,28 +158,56 @@ class TextEditingController {
   void moveCursorRight() {
     if (_cursorPosition < _text.length) {
       _cursorPosition++;
+      clearSelection();
       notifyListeners();
     }
   }
 
   void moveCursorToStart() {
     _cursorPosition = 0;
+    clearSelection();
     notifyListeners();
   }
 
   void moveCursorToEnd() {
     _cursorPosition = _text.length;
+    clearSelection();
+    notifyListeners();
+  }
+  
+  void moveCursorWordLeft() {
+    if (_cursorPosition == 0) return;
+    int pos = _cursorPosition - 1;
+    while (pos > 0 && _text[pos - 1] != ' ') {
+      pos--;
+    }
+    _cursorPosition = pos;
+    clearSelection();
+    notifyListeners();
+  }
+  
+  void moveCursorWordRight() {
+    if (_cursorPosition >= _text.length) return;
+    int pos = _cursorPosition;
+    while (pos < _text.length && _text[pos] == ' ') {
+      pos++;
+    }
+    while (pos < _text.length && _text[pos] != ' ') {
+      pos++;
+    }
+    while (pos < _text.length && _text[pos] == ' ') {
+      pos++;
+    }
+    _cursorPosition = pos;
+    clearSelection();
     notifyListeners();
   }
 
   void clear() {
     _text = '';
     _cursorPosition = 0;
+    clearSelection();
     notifyListeners();
-  }
-
-  void dispose() {
-    _listeners.clear();
   }
 }
 
@@ -107,6 +220,7 @@ class TextField extends StatefulWidget {
   final Function(String)? onSubmitted;
 
   const TextField({
+    super.key,
     this.controller,
     this.placeholder,
     this.style,
@@ -138,11 +252,9 @@ class _TextFieldState extends State<TextField> {
     _controller.addListener(_onControllerChanged);
     
     _focusNode = FocusNode();
+    FocusManager.instance.registerNode(_focusNode);
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChanged);
-    
-    // Register with FocusManager directly like ListView does
-    FocusManager.instance.registerNode(_focusNode);
   }
 
   @override
@@ -304,7 +416,6 @@ class RenderTextField extends RenderBox {
   String? placeholder;
   TextStyle? style;
   bool hasFocus;
-  Size? size;
 
   RenderTextField({
     required this.text,
@@ -314,14 +425,15 @@ class RenderTextField extends RenderBox {
     required this.hasFocus,
   });
 
+  @override
   void performLayout(Constraints constraints) {
     final displayText = text.isEmpty && placeholder != null ? placeholder! : text;
-    // Ensure minimum width of at least 1 character
-    final desiredWidth = (displayText.length + 1).clamp(1, 999999);
-    final boxConstraints = constraints as BoxConstraints;
+    final desiredWidth = (displayText.length + 1).clamp(1, Constraints.infinity);
+    final boxConstraints = constraints.asBoxConstraints;
     size = boxConstraints.constrain(Size(desiredWidth, 1));
   }
 
+  @override
   void paint(PaintingContext context, Offset offset) {
     final displayText = text.isEmpty && placeholder != null ? placeholder! : text;
     
@@ -392,31 +504,46 @@ class RenderTextField extends RenderBox {
   void _drawBorder(PaintingContext context, Offset offset, Size size) {
     const borderStyle = TextStyle(color: Color.cyan, bold: true);
     final width = size.width.toInt();
-    
-    // Draw simple focused border (underline)
-    for (int x = 0; x < width; x++) {
-      context.buffer.writeStyled(
-        offset.x + x, 
-        offset.y - 1, 
-        '─', 
-        borderStyle
-      );
-      context.buffer.writeStyled(
-        offset.x + x, 
-        offset.y + 1, 
-        '─', 
-        borderStyle
-      );
+    final bufferHeight = context.buffer.terminal.height;
+    final bufferWidth = context.buffer.terminal.width;
+
+    if (offset.y > 0) {
+      for (int x = 0; x < width; x++) {
+        final posX = offset.x + x;
+        if (posX >= 0 && posX < bufferWidth) {
+          context.buffer.writeStyled(posX, offset.y - 1, '─', borderStyle);
+        }
+      }
     }
-    
-    // Draw side borders
-    context.buffer.writeStyled(offset.x - 1, offset.y, '│', borderStyle);
-    context.buffer.writeStyled(offset.x + width, offset.y, '│', borderStyle);
-    
-    // Draw corners
-    context.buffer.writeStyled(offset.x - 1, offset.y - 1, '┌', borderStyle);
-    context.buffer.writeStyled(offset.x + width, offset.y - 1, '┐', borderStyle);
-    context.buffer.writeStyled(offset.x - 1, offset.y + 1, '└', borderStyle);
-    context.buffer.writeStyled(offset.x + width, offset.y + 1, '┘', borderStyle);
+
+    if (offset.y + 1 < bufferHeight) {
+      for (int x = 0; x < width; x++) {
+        final posX = offset.x + x;
+        if (posX >= 0 && posX < bufferWidth) {
+          context.buffer.writeStyled(posX, offset.y + 1, '─', borderStyle);
+        }
+      }
+    }
+
+    if (offset.x > 0) {
+      context.buffer.writeStyled(offset.x - 1, offset.y, '│', borderStyle);
+    }
+
+    if (offset.x + width < bufferWidth) {
+      context.buffer.writeStyled(offset.x + width, offset.y, '│', borderStyle);
+    }
+
+    if (offset.x > 0 && offset.y > 0) {
+      context.buffer.writeStyled(offset.x - 1, offset.y - 1, '┌', borderStyle);
+    }
+    if (offset.x + width < bufferWidth && offset.y > 0) {
+      context.buffer.writeStyled(offset.x + width, offset.y - 1, '┐', borderStyle);
+    }
+    if (offset.x > 0 && offset.y + 1 < bufferHeight) {
+      context.buffer.writeStyled(offset.x - 1, offset.y + 1, '└', borderStyle);
+    }
+    if (offset.x + width < bufferWidth && offset.y + 1 < bufferHeight) {
+      context.buffer.writeStyled(offset.x + width, offset.y + 1, '┘', borderStyle);
+    }
   }
 }
