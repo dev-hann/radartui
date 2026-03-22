@@ -8,6 +8,7 @@ class Container extends SingleChildRenderObjectWidget {
   final EdgeInsets? margin;
 
   const Container({
+    super.key,
     Widget? child,
     this.color,
     this.width,
@@ -37,7 +38,7 @@ class Container extends SingleChildRenderObjectWidget {
 }
 
 class RenderContainer extends RenderBox
-    with ContainerRenderObjectMixin<RenderBox, ParentData> {
+    with RenderObjectWithChildMixin<RenderBox> {
   Color? color;
   int? width;
   int? height;
@@ -54,27 +55,26 @@ class RenderContainer extends RenderBox
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints as BoxConstraints;
+    final boxConstraints = constraints.asBoxConstraints;
     final totalMargin = margin ?? const EdgeInsets.all(0);
     final totalPadding = padding ?? const EdgeInsets.all(0);
 
     int containerWidth = width ?? boxConstraints.maxWidth;
     int containerHeight = height ?? LayoutConstants.defaultContainerHeight;
 
-    if (children.isNotEmpty) {
-      final child = children.first;
+    if (child != null) {
       final childConstraints = BoxConstraints(
         maxWidth: containerWidth - totalPadding.left - totalPadding.right,
         maxHeight: containerHeight - totalPadding.top - totalPadding.bottom,
       );
-      child.layout(childConstraints);
+      child!.layout(childConstraints);
 
       if (width == null)
         containerWidth =
-            child.size!.width + totalPadding.left + totalPadding.right;
+            child!.size!.width + totalPadding.left + totalPadding.right;
       if (height == null)
         containerHeight =
-            child.size!.height + totalPadding.top + totalPadding.bottom;
+            child!.size!.height + totalPadding.top + totalPadding.bottom;
     }
 
     size = Size(
@@ -108,9 +108,9 @@ class RenderContainer extends RenderBox
     }
 
     // Paint child AFTER background with padding offset
-    if (children.isNotEmpty) {
+    if (child != null) {
       context.paintChild(
-        children.first,
+        child!,
         innerOffset + Offset(totalPadding.left, totalPadding.top),
       );
     }

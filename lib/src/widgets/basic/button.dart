@@ -8,6 +8,7 @@ class Button extends StatefulWidget {
   final FocusNode? focusNode;
 
   const Button({
+    super.key,
     required this.text,
     this.onPressed,
     this.enabled = true,
@@ -25,14 +26,15 @@ class _ButtonState extends State<Button> {
   @override
   void initState() {
     super.initState();
-    _focusNode =
-        widget.focusNode ?? FocusNode(); // FocusNode auto-registers on creation
+    _focusNode = widget.focusNode ?? FocusNode();
+    FocusManager.instance.registerNode(_focusNode);
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChange);
   }
 
   @override
   void dispose() {
+    FocusManager.instance.unregisterNode(_focusNode);
     if (widget.focusNode == null) {
       _focusNode.dispose();
     } else {

@@ -2,7 +2,7 @@ import '../../../radartui.dart';
 
 class Padding extends SingleChildRenderObjectWidget {
   final EdgeInsets padding;
-  const Padding({required this.padding, required super.child});
+  const Padding({super.key, required this.padding, required super.child});
   @override
   RenderPadding createRenderObject(BuildContext context) =>
       RenderPadding(padding: padding);

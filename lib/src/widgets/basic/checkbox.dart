@@ -1,7 +1,5 @@
 import '../../../radartui.dart';
 
-typedef ValueChanged<T> = void Function(T value);
-
 class Checkbox extends StatefulWidget {
   final bool value;
   final ValueChanged<bool?>? onChanged;
@@ -11,6 +9,7 @@ class Checkbox extends StatefulWidget {
   final Color? checkColor;
 
   const Checkbox({
+    super.key,
     required this.value,
     this.onChanged,
     this.tristate = false,
@@ -30,13 +29,14 @@ class _CheckboxState extends State<Checkbox> {
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
+    FocusManager.instance.registerNode(_focusNode);
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChange);
-    
   }
 
   @override
   void dispose() {
+    FocusManager.instance.unregisterNode(_focusNode);
     if (widget.focusNode == null) {
       _focusNode.dispose();
     } else {

@@ -7,6 +7,7 @@ class Divider extends StatelessWidget {
   final String? character;
 
   const Divider({
+    super.key,
     this.height,
     this.thickness,
     this.color,
@@ -31,6 +32,7 @@ class VerticalDivider extends StatelessWidget {
   final String? character;
 
   const VerticalDivider({
+    super.key,
     this.width,
     this.thickness,
     this.color,
@@ -132,7 +134,7 @@ class RenderDivider extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints as BoxConstraints;
+    final boxConstraints = constraints.asBoxConstraints;
     size = Size(boxConstraints.maxWidth, height);
   }
 
@@ -169,7 +171,7 @@ class RenderVerticalDivider extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints as BoxConstraints;
+    final boxConstraints = constraints.asBoxConstraints;
     size = Size(width, boxConstraints.maxHeight);
   }
 

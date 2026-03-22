@@ -5,6 +5,7 @@ class Card extends SingleChildRenderObjectWidget {
   final EdgeInsets? padding;
 
   const Card({
+    super.key,
     Widget? child,
     this.color,
     this.padding,
@@ -36,7 +37,7 @@ class RenderCard extends RenderBox
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints as BoxConstraints;
+    final boxConstraints = constraints.asBoxConstraints;
     final totalPadding = padding ?? const EdgeInsets.all(0);
 
     // Border takes 2 cells (1 on each side)

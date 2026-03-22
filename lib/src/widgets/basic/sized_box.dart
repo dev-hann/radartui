@@ -4,11 +4,11 @@ class SizedBox extends SingleChildRenderObjectWidget {
   final int width;
   final int height;
 
-  const SizedBox({this.width = 0, this.height = 0, super.child});
-  const SizedBox.shrink({super.child})
+  const SizedBox({super.key, this.width = 0, this.height = 0, super.child});
+  const SizedBox.shrink({super.key, super.child})
       : width = 0,
         height = 0;
-  const SizedBox.square({required int dimension, super.child})
+  const SizedBox.square({super.key, required int dimension, super.child})
       : width = dimension,
         height = dimension;
 

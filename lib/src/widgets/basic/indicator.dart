@@ -9,6 +9,7 @@ class LoadingIndicator extends StatefulWidget {
   final Duration? speed;
 
   const LoadingIndicator({
+    super.key,
     this.type = IndicatorType.spinner,
     this.color,
     this.speed,
@@ -78,6 +79,7 @@ class ProgressIndicator extends StatelessWidget {
   final bool showPercentage;
 
   const ProgressIndicator({
+    super.key,
     required this.progress,
     this.fillColor,
     this.backgroundColor,

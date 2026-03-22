@@ -1,86 +1,61 @@
 import 'dart:async';
 import '../../../radartui.dart';
 
-class Dialog extends StatefulWidget {
+class Dialog extends StatelessWidget {
   final Widget child;
   final String? title;
   final List<Widget>? actions;
-  final bool barrierDismissible;
-  final Color? barrierColor;
-  final Alignment alignment;
   final EdgeInsets? padding;
   final TextStyle? titleStyle;
-  final Color? backgroundColor;
-  final BoxConstraints? constraints;
+  final Color backgroundColor;
 
   const Dialog({
+    super.key,
     required this.child,
     this.title,
     this.actions,
-    this.barrierDismissible = true,
-    this.barrierColor,
-    this.alignment = Alignment.center,
     this.padding,
     this.titleStyle,
     this.backgroundColor = Colors.white,
-    this.constraints,
   });
 
-  @override
-  State<Dialog> createState() => _DialogState();
-}
-
-class _DialogState extends State<Dialog> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> columnChildren = <Widget>[];
 
-    // Add title if provided
-    if (widget.title != null) {
+    if (title != null) {
       columnChildren.add(
         Text(
-          widget.title!,
-          style: widget.titleStyle ??
+          title!,
+          style: titleStyle ??
               const TextStyle(color: Color.white, bold: true),
         ),
       );
-      // Add spacing after title
-      columnChildren.add(const Container(height: 1) as Widget);
+      columnChildren.add(const Container(height: 1));
     }
 
-    // Add main content
-    columnChildren.add(widget.child);
+    columnChildren.add(child);
 
-    // Add actions if provided
-    if (widget.actions != null && widget.actions!.isNotEmpty) {
-      // Add spacing before actions
-      columnChildren.add(const Container(height: 1) as Widget);
+    if (actions != null && actions!.isNotEmpty) {
+      columnChildren.add(const Container(height: 1));
 
-      // Create actions row with proper spacing
       final actionWidgets = <Widget>[];
-      for (int i = 0; i < widget.actions!.length; i++) {
+      for (int i = 0; i < actions!.length; i++) {
         if (i > 0) {
-          actionWidgets.add(
-            const Container(width: 2) as Widget,
-          ); // Space between buttons
+          actionWidgets.add(const Container(width: 2));
         }
-        actionWidgets.add(widget.actions![i]);
+        actionWidgets.add(actions![i]);
       }
       columnChildren.add(Row(children: actionWidgets));
     }
 
-    // Build the main dialog content
     Widget dialogContent = Column(children: columnChildren);
 
-    // Apply padding
-    final padding = widget.padding ?? const EdgeInsets.all(2);
-    dialogContent = Padding(padding: padding, child: dialogContent);
+    final effectivePadding = padding ?? const EdgeInsets.all(2);
+    dialogContent = Padding(padding: effectivePadding, child: dialogContent);
 
-    // Apply background and size constraints
     dialogContent = Container(
-      color: widget.backgroundColor ?? Color.black,
-      width: widget.constraints?.maxWidth.toInt(),
-      height: widget.constraints?.maxHeight.toInt(),
+      color: backgroundColor,
       child: dialogContent,
     );
 
@@ -88,14 +63,13 @@ class _DialogState extends State<Dialog> {
   }
 }
 
-// Modal route for Navigator-based dialog management
-class ModalRoute<T> extends Route {
+class ModalRoute<T> extends Route<T> {
   final WidgetBuilder builder;
   final bool barrierDismissible;
   final Color? barrierColor;
   final Alignment alignment;
 
-  const ModalRoute({
+  ModalRoute({
     required this.builder,
     this.barrierDismissible = true,
     this.barrierColor,
@@ -105,6 +79,18 @@ class ModalRoute<T> extends Route {
 
   @override
   bool get fullScreenRender => false;
+
+  @override
+  void didPush() {
+    super.didPush();
+    FocusManager.instance.pushDialogScope();
+  }
+
+  @override
+  void didPop(T? result) {
+    FocusManager.instance.popDialogScope();
+    super.didPop(result);
+  }
 
   @override
   Widget buildPage(BuildContext context) {
@@ -145,7 +131,6 @@ Future<T?> showDialog<T>({
   );
 }
 
-// Modal barrier widget to handle background and keyboard events
 class _ModalBarrier extends StatefulWidget {
   final Widget child;
   final bool barrierDismissible;
@@ -199,7 +184,6 @@ class _ModalBarrierState extends State<_ModalBarrier> {
   Widget build(BuildContext context) {
     Widget content = Center(child: widget.child);
 
-    // Create modal barrier that fills the entire screen
     if (widget.barrierColor != null) {
       content = Container(
         width: SchedulerBinding.instance.terminal.width,

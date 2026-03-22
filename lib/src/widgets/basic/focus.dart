@@ -1,10 +1,7 @@
 import '../../../radartui.dart';
 
 class FocusNode extends ChangeNotifier {
-  FocusNode() {
-    // Automatically register with current scope when created
-    _autoRegister();
-  }
+  FocusNode();
 
   bool _hasFocus = false;
   FocusScope? _scope;
@@ -28,11 +25,6 @@ class FocusNode extends ChangeNotifier {
       _hasFocus = value;
       notifyListeners();
     }
-  }
-
-  void _autoRegister() {
-    // Simple auto-registration with current scope
-    FocusManager.instance.registerNode(this);
   }
 
   @override
@@ -155,7 +147,7 @@ class Focus extends StatefulWidget {
   final Function(KeyEvent)? onKeyEvent;
   final Widget child;
 
-  const Focus({this.focusNode, this.onKeyEvent, required this.child});
+  const Focus({super.key, this.focusNode, this.onKeyEvent, required this.child});
 
   @override
   State<Focus> createState() => _FocusState();
@@ -175,6 +167,7 @@ class _FocusState extends State<Focus> {
       _focusNode = FocusNode();
       _isNodeOwned = true;
     }
+    FocusManager.instance.registerNode(_focusNode);
     _focusNode.onKeyEvent = widget.onKeyEvent;
     _focusNode.addListener(() {
       setState(() {});
@@ -186,6 +179,7 @@ class _FocusState extends State<Focus> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.focusNode != oldWidget.focusNode) {
+      FocusManager.instance.unregisterNode(_focusNode);
       if (_isNodeOwned) {
         _focusNode.dispose();
       }
@@ -197,11 +191,14 @@ class _FocusState extends State<Focus> {
         _focusNode = FocusNode();
         _isNodeOwned = true;
       }
+      FocusManager.instance.registerNode(_focusNode);
+      _focusNode.onKeyEvent = widget.onKeyEvent;
     }
   }
 
   @override
   void dispose() {
+    FocusManager.instance.unregisterNode(_focusNode);
     if (_isNodeOwned) {
       _focusNode.dispose();
     }

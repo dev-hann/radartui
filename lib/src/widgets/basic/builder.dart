@@ -3,7 +3,7 @@ import '../../../radartui.dart';
 typedef WidgetBuilder = Widget Function(BuildContext context);
 
 class Builder extends StatelessWidget {
-  const Builder({required this.builder});
+  const Builder({super.key, required this.builder});
 
   final WidgetBuilder builder;
 

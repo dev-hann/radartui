@@ -9,8 +9,8 @@ import 'navigator_observer.dart';
 typedef RouteBuilder = Widget Function(BuildContext context);
 typedef RoutePredicate = bool Function(Route route);
 
-abstract class Route {
-  const Route({this.settings});
+abstract class Route<T> {
+  Route({this.settings});
 
   final RouteSettings? settings;
 
@@ -18,8 +18,22 @@ abstract class Route {
 
   bool get isFirst => settings?.name == '/';
 
-  // Whether this route should clear the entire screen when rendered
   bool get fullScreenRender => true;
+
+  bool get canPop => true;
+
+  bool _isCurrent = false;
+  bool get isCurrent => _isCurrent;
+
+  void install() {}
+
+  void didPush() {}
+
+  void didPop(T? result) {}
+
+  void didReplace(Route? oldRoute) {}
+
+  void dispose() {}
 }
 
 class RouteSettings {
@@ -29,8 +43,8 @@ class RouteSettings {
   final Object? arguments;
 }
 
-class PageRoute extends Route {
-  const PageRoute({required this.builder, super.settings});
+class PageRoute<T> extends Route<T> {
+  PageRoute({required this.builder, super.settings});
 
   final RouteBuilder builder;
 
@@ -51,11 +65,9 @@ class NavigatorState extends State<Navigator> {
   void initState() {
     super.initState();
 
-    // Initialize FocusManager and add it as observer
     FocusManager.instance.initialize();
     _observers.add(FocusManager.instance);
 
-    // Add observers from widget
     if (widget.observers != null) {
       _observers.addAll(widget.observers!);
     }
@@ -75,6 +87,12 @@ class NavigatorState extends State<Navigator> {
 
   @override
   void dispose() {
+    for (final route in _history.reversed) {
+      route._isCurrent = false;
+      route.dispose();
+    }
+    _history.clear();
+
     for (final completer in _completers) {
       if (!completer.isCompleted) {
         completer.complete();
@@ -86,21 +104,35 @@ class NavigatorState extends State<Navigator> {
   }
 
   void _addRoute(Route route, Completer<Object?>? completer) {
+    if (_history.isNotEmpty) {
+      _history.last._isCurrent = false;
+    }
     _history.add(route);
     _completers.add(completer ?? Completer<Object?>());
+    route._isCurrent = true;
+    route.install();
+    route.didPush();
   }
 
   void _removeLast([Object? result]) {
     final removedRoute = _history.removeLast();
+    removedRoute._isCurrent = false;
+    removedRoute.didPop(result);
+
     final completer = _completers.removeLast();
     if (!completer.isCompleted) {
       completer.complete(result);
     }
 
     final previousRoute = _history.isNotEmpty ? _history.last : null;
+    if (previousRoute != null) {
+      previousRoute._isCurrent = true;
+    }
+
     _notifyObservers(
       (observer) => observer.didPop(removedRoute, previousRoute),
     );
+    removedRoute.dispose();
   }
 
   void _notifyObservers(void Function(NavigatorObserver observer) callback) {
@@ -115,8 +147,6 @@ class NavigatorState extends State<Navigator> {
     setState(() {
       _addRoute(route, completer);
     });
-    // Only clear screen for full-screen routes (like page navigation)
-    // Modal routes (like dialogs) don't need full screen clear
     if (route.fullScreenRender) {
       SchedulerBinding.instance.scheduleFrameWithClear();
     } else {
@@ -126,19 +156,23 @@ class NavigatorState extends State<Navigator> {
     return completer.future;
   }
 
-  void pop([Object? result]) {
+  bool pop([Object? result]) {
     if (_history.length > 1) {
+      if (!_history.last.canPop) {
+        return false;
+      }
       final currentRoute = _history.last;
       setState(() {
         _removeLast(result);
       });
-      // Only clear screen for full-screen routes
       if (currentRoute.fullScreenRender) {
         SchedulerBinding.instance.scheduleFrameWithClear();
       } else {
         SchedulerBinding.instance.scheduleFrame();
       }
+      return true;
     }
+    return false;
   }
 
   void popUntil(RoutePredicate predicate, [Object? result]) {
@@ -158,7 +192,6 @@ class NavigatorState extends State<Navigator> {
       }
       _addRoute(route, completer);
     });
-    // Only clear screen for full-screen routes
     if (route.fullScreenRender) {
       SchedulerBinding.instance.scheduleFrameWithClear();
     } else {
@@ -215,7 +248,13 @@ class NavigatorState extends State<Navigator> {
 }
 
 class Navigator extends StatefulWidget {
-  const Navigator({this.home, this.routes, this.initialRoute, this.observers});
+  const Navigator({
+    super.key,
+    this.home,
+    this.routes,
+    this.initialRoute,
+    this.observers,
+  });
 
   final Widget? home;
   final Map<String, RouteBuilder>? routes;
@@ -243,8 +282,8 @@ class Navigator extends StatefulWidget {
     return of(context).push(route);
   }
 
-  static void pop(BuildContext context, [Object? result]) {
-    of(context).pop(result);
+  static bool pop(BuildContext context, [Object? result]) {
+    return of(context).pop(result);
   }
 
   static void popUntil(
@@ -293,7 +332,6 @@ class _NavigatorScope extends StatelessWidget {
   Widget build(BuildContext context) => child;
 }
 
-
 extension BuildContextNavigation on BuildContext {
   NavigatorState get navigator => Navigator.of(this);
   FocusManager get focusManager => Navigator.focusManager;
@@ -321,12 +359,8 @@ class _EmptyRenderWidget extends RenderObjectWidget {
 
 class _EmptyRenderObject extends RenderObject {
   @override
-  void performLayout(Constraints constraints) {
-    // Empty widget has zero size
-  }
+  void performLayout(Constraints constraints) {}
 
   @override
-  void paint(PaintingContext context, Offset offset) {
-    // Empty widget paints nothing
-  }
+  void paint(PaintingContext context, Offset offset) {}
 }

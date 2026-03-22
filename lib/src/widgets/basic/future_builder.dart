@@ -8,6 +8,7 @@ class FutureBuilder<T> extends StatefulWidget {
   /// Creates a widget that builds itself based on the latest snapshot of
   /// interaction with a [Future].
   const FutureBuilder({
+    super.key,
     this.future,
     this.initialData,
     required this.builder,

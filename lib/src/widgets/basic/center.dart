@@ -1,7 +1,7 @@
 import '../../../radartui.dart';
 
 class Center extends StatelessWidget {
-  const Center({this.child});
+  const Center({super.key, this.child});
 
   final Widget? child;
 

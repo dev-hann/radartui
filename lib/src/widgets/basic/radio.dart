@@ -9,6 +9,7 @@ class Radio<T> extends StatefulWidget {
   final Color? checkColor;
 
   const Radio({
+    super.key,
     required this.value,
     required this.groupValue,
     this.onChanged,
@@ -28,12 +29,14 @@ class _RadioState<T> extends State<Radio<T>> {
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
+    FocusManager.instance.registerNode(_focusNode);
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChange);
   }
 
   @override
   void dispose() {
+    FocusManager.instance.unregisterNode(_focusNode);
     if (widget.focusNode == null) {
       _focusNode.dispose();
     } else {

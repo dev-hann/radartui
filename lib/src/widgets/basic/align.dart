@@ -2,6 +2,7 @@ import '../../../radartui.dart';
 
 class Align extends SingleChildRenderObjectWidget {
   const Align({
+    super.key,
     required this.alignment,
     super.child,
   });
@@ -34,15 +35,10 @@ class RenderAlign extends SingleChildRenderBox {
 
   @override
   Size computeSizeFromChild(BoxConstraints constraints, Size childSize) {
-    // Shrink-wrap logic:
-    // - If alignment has left/right (x != 0): shrink width to child
-    // - If alignment has top/bottom (y != 0): shrink height to child
-    // - If center (x == 0, y == 0): expand to fill bounded constraints
-    // - If unbounded: always shrink to child
     final bool shrinkWrapWidth =
-        _alignment.x != 0 || constraints.maxWidth == 999999;
+        _alignment.x != 0 || constraints.maxWidth == Constraints.infinity;
     final bool shrinkWrapHeight =
-        _alignment.y != 0 || constraints.maxHeight == 999999;
+        _alignment.y != 0 || constraints.maxHeight == Constraints.infinity;
 
     final int width = shrinkWrapWidth ? childSize.width : constraints.maxWidth;
     final int height = shrinkWrapHeight ? childSize.height : constraints.maxHeight;

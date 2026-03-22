@@ -9,6 +9,7 @@ class StreamBuilder<T> extends StatefulWidget {
   /// snapshot of interaction with the specified [stream] and whose build
   /// strategy is given by [builder].
   const StreamBuilder({
+    super.key,
     this.initialData,
     this.stream,
     required this.builder,
