@@ -66,7 +66,7 @@ class _CheckboxState extends State<Checkbox> {
     
     // Force rebuild if value changed
     if (oldWidget.value != widget.value) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {});
       });
     }

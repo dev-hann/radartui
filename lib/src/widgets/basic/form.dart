@@ -142,7 +142,7 @@ class FormFieldState<T> extends State<FormField<T>> {
   void initState() {
     super.initState();
     _value = widget.initialValue;
-    SchedulerBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final formScope = FormScope.of(context);
       if (formScope != null) {
         formScope.formState.register(this);

@@ -30,8 +30,8 @@ class Container extends SingleChildRenderObjectWidget {
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
     final container = renderObject as RenderContainer;
     container.color = color;
-    container.width = width;
-    container.height = height;
+    container.containerWidth = width;
+    container.containerHeight = height;
     container.padding = padding;
     container.margin = margin;
   }
@@ -40,18 +40,24 @@ class Container extends SingleChildRenderObjectWidget {
 class RenderContainer extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
   Color? color;
-  int? width;
-  int? height;
+  int? _width;
+  int? _height;
   EdgeInsets? padding;
   EdgeInsets? margin;
 
+  int? get containerWidth => _width;
+  set containerWidth(int? value) => _width = value;
+
+  int? get containerHeight => _height;
+  set containerHeight(int? value) => _height = value;
+
   RenderContainer({
     this.color,
-    this.width,
-    this.height,
+    int? width,
+    int? height,
     this.padding,
     this.margin,
-  });
+  })  : _width = width, _height = height;
 
   @override
   void performLayout(Constraints constraints) {
@@ -59,27 +65,27 @@ class RenderContainer extends RenderBox
     final totalMargin = margin ?? const EdgeInsets.all(0);
     final totalPadding = padding ?? const EdgeInsets.all(0);
 
-    int containerWidth = width ?? boxConstraints.maxWidth;
-    int containerHeight = height ?? LayoutConstants.defaultContainerHeight;
+    int containerW = _width ?? boxConstraints.maxWidth;
+    int containerH = _height ?? LayoutConstants.defaultContainerHeight;
 
     if (child != null) {
-      final childConstraints = BoxConstraints(
-        maxWidth: containerWidth - totalPadding.left - totalPadding.right,
-        maxHeight: containerHeight - totalPadding.top - totalPadding.bottom,
+      final childConstraint = BoxConstraints(
+        maxWidth: containerW - totalPadding.left - totalPadding.right,
+        maxHeight: containerH - totalPadding.top - totalPadding.bottom,
       );
-      child!.layout(childConstraints);
+      child!.layout(childConstraint);
 
-      if (width == null)
-        containerWidth =
+      if (_width == null)
+        containerW =
             child!.size!.width + totalPadding.left + totalPadding.right;
-      if (height == null)
-        containerHeight =
+      if (_height == null)
+        containerH =
             child!.size!.height + totalPadding.top + totalPadding.bottom;
     }
 
     size = Size(
-      containerWidth + totalMargin.left + totalMargin.right,
-      containerHeight + totalMargin.top + totalMargin.bottom,
+      containerW + totalMargin.left + totalMargin.right,
+      containerH + totalMargin.top + totalMargin.bottom,
     );
   }
 

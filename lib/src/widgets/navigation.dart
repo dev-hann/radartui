@@ -1,13 +1,21 @@
 import 'dart:async';
+import '../binding.dart';
 import '../foundation.dart';
 import '../rendering.dart';
-import '../scheduler.dart';
 import 'framework.dart';
 import 'focus_manager.dart';
 import 'navigator_observer.dart';
 
 typedef RouteBuilder = Widget Function(BuildContext context);
 typedef RoutePredicate = bool Function(Route route);
+
+class NavigatorDisposedException implements Exception {
+  final String message;
+  NavigatorDisposedException([this.message = 'Navigator has been disposed']);
+
+  @override
+  String toString() => 'NavigatorDisposedException: $message';
+}
 
 abstract class Route<T> {
   Route({this.settings});
@@ -93,9 +101,10 @@ class NavigatorState extends State<Navigator> {
     }
     _history.clear();
 
+    final disposeError = NavigatorDisposedException();
     for (final completer in _completers) {
       if (!completer.isCompleted) {
-        completer.complete();
+        completer.completeError(disposeError);
       }
     }
     _completers.clear();
@@ -148,9 +157,9 @@ class NavigatorState extends State<Navigator> {
       _addRoute(route, completer);
     });
     if (route.fullScreenRender) {
-      SchedulerBinding.instance.scheduleFrameWithClear();
+      WidgetsBinding.instance.scheduleFrameWithClear();
     } else {
-      SchedulerBinding.instance.scheduleFrame();
+      WidgetsBinding.instance.scheduleFrame();
     }
     _notifyObservers((observer) => observer.didPush(route, previousRoute));
     return completer.future;
@@ -166,9 +175,9 @@ class NavigatorState extends State<Navigator> {
         _removeLast(result);
       });
       if (currentRoute.fullScreenRender) {
-        SchedulerBinding.instance.scheduleFrameWithClear();
+        WidgetsBinding.instance.scheduleFrameWithClear();
       } else {
-        SchedulerBinding.instance.scheduleFrame();
+        WidgetsBinding.instance.scheduleFrame();
       }
       return true;
     }
@@ -193,9 +202,9 @@ class NavigatorState extends State<Navigator> {
       _addRoute(route, completer);
     });
     if (route.fullScreenRender) {
-      SchedulerBinding.instance.scheduleFrameWithClear();
+      WidgetsBinding.instance.scheduleFrameWithClear();
     } else {
-      SchedulerBinding.instance.scheduleFrame();
+      WidgetsBinding.instance.scheduleFrame();
     }
     _notifyObservers(
       (observer) => observer.didReplace(newRoute: route, oldRoute: oldRoute),

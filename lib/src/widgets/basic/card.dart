@@ -25,8 +25,7 @@ class Card extends SingleChildRenderObjectWidget {
   }
 }
 
-class RenderCard extends RenderBox
-    with ContainerRenderObjectMixin<RenderBox, ParentData> {
+class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   Color? color;
   EdgeInsets? padding;
 
@@ -40,7 +39,6 @@ class RenderCard extends RenderBox
     final boxConstraints = constraints.asBoxConstraints;
     final totalPadding = padding ?? const EdgeInsets.all(0);
 
-    // Border takes 2 cells (1 on each side)
     final borderSize = 2;
     final availableWidth = boxConstraints.maxWidth - borderSize;
     final availableHeight = boxConstraints.maxHeight - borderSize;
@@ -48,10 +46,7 @@ class RenderCard extends RenderBox
     int cardWidth;
     int cardHeight;
 
-    if (children.isNotEmpty) {
-      final child = children.first;
-
-      // Calculate child constraints
+    if (child != null) {
       final childMaxWidth =
           availableWidth - totalPadding.left - totalPadding.right;
       final childMaxHeight =
@@ -63,14 +58,12 @@ class RenderCard extends RenderBox
         minHeight: 0,
         maxHeight: childMaxHeight,
       );
-      child.layout(childConstraints);
+      child!.layout(childConstraints);
 
-      // If constraints are tight (minWidth == maxWidth), use available space
-      // Otherwise, use child size + padding + border
       if (boxConstraints.minWidth >= boxConstraints.maxWidth) {
         cardWidth = boxConstraints.maxWidth;
       } else {
-        cardWidth = child.size!.width +
+        cardWidth = child!.size!.width +
             totalPadding.left +
             totalPadding.right +
             borderSize;
@@ -79,20 +72,17 @@ class RenderCard extends RenderBox
       if (boxConstraints.minHeight >= boxConstraints.maxHeight) {
         cardHeight = boxConstraints.maxHeight;
       } else {
-        cardHeight = child.size!.height +
+        cardHeight = child!.size!.height +
             totalPadding.top +
             totalPadding.bottom +
             borderSize;
       }
 
-      // Ensure minimum height for proper border rendering
-      // (top border + padding + at least 1 content row + padding + bottom border)
       final minHeight = borderSize + totalPadding.top + 1 + totalPadding.bottom;
       if (cardHeight < minHeight) {
         cardHeight = minHeight;
       }
     } else {
-      // No child - use constraints or default
       cardWidth = boxConstraints.maxWidth;
       cardHeight = LayoutConstants.defaultContainerHeight;
     }
@@ -108,7 +98,6 @@ class RenderCard extends RenderBox
     final borderStyle = TextStyle(backgroundColor: color);
     final bgStyle = TextStyle(backgroundColor: color);
 
-    // First, fill background if color is specified
     if (color != null) {
       for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
@@ -117,10 +106,9 @@ class RenderCard extends RenderBox
       }
     }
 
-    // Paint child first (before borders) with padding offset
-    if (children.isNotEmpty) {
+    if (child != null) {
       context.paintChild(
-        children.first,
+        child!,
         offset + Offset(1 + totalPadding.left, 1 + totalPadding.top),
       );
     }

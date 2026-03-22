@@ -164,7 +164,7 @@ class _ModalBarrierState extends State<_ModalBarrier> {
   }
 
   void _setupKeyboardListener() {
-    _keySubscription = SchedulerBinding.instance.keyboard.keyEvents.listen(
+    _keySubscription = WidgetsBinding.instance.keyboard.keyEvents.listen(
       _handleKeyEvent,
     );
   }
@@ -186,8 +186,8 @@ class _ModalBarrierState extends State<_ModalBarrier> {
 
     if (widget.barrierColor != null) {
       content = Container(
-        width: SchedulerBinding.instance.terminal.width,
-        height: SchedulerBinding.instance.terminal.height,
+        width: WidgetsBinding.instance.terminal.width,
+        height: WidgetsBinding.instance.terminal.height,
         color: widget.barrierColor,
         child: content,
       );

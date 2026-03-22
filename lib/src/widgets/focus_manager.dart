@@ -1,5 +1,5 @@
 import 'dart:async';
-import '../scheduler.dart';
+import '../binding.dart';
 import '../services.dart';
 import 'basic/focus.dart';
 import 'navigation.dart';
@@ -14,11 +14,21 @@ class FocusManager extends NavigatorObserver {
   FocusScope? _currentScope;
   FocusScope? get currentScope => _currentScope;
   StreamSubscription<KeyEvent>? _keySubscription;
+  Stream<KeyEvent>? _testKeyEvents;
+
+  void setTestKeyEvents(Stream<KeyEvent> stream) {
+    _testKeyEvents = stream;
+  }
 
   void initialize() {
-    _keySubscription ??= SchedulerBinding.instance.keyboard.keyEvents.listen(
-      _handleKeyEvent,
-    );
+    _keySubscription?.cancel();
+    Stream<KeyEvent> stream;
+    if (_testKeyEvents != null) {
+      stream = _testKeyEvents!;
+    } else {
+      stream = WidgetsBinding.instance.keyboard.keyEvents;
+    }
+    _keySubscription = stream.listen(_handleKeyEvent);
   }
 
   void dispose() {
@@ -46,7 +56,7 @@ class FocusManager extends NavigatorObserver {
     _clearCurrentScope();
     _currentScope = FocusScope();
     _currentScope!.activate();
-    SchedulerBinding.instance.scheduleFrame();
+    WidgetsBinding.instance.scheduleFrame();
   }
 
   void _clearCurrentScope() {

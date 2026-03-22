@@ -12,7 +12,6 @@ class SizedBox extends SingleChildRenderObjectWidget {
       : width = dimension,
         height = dimension;
 
-
   @override
   RenderSizedBox createRenderObject(BuildContext context) =>
       RenderSizedBox(width, height);
@@ -20,33 +19,32 @@ class SizedBox extends SingleChildRenderObjectWidget {
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
     final sizedBox = renderObject as RenderSizedBox;
-    sizedBox.width = width;
-    sizedBox.height = height;
+    sizedBox.boxWidth = width;
+    sizedBox.boxHeight = height;
   }
 }
 
 class RenderSizedBox extends RenderBox
-    with ContainerRenderObjectMixin<RenderObject, ParentData> {
-  int width;
-  int height;
+    with RenderObjectWithChildMixin<RenderBox> {
+  int boxWidth;
+  int boxHeight;
 
-  RenderSizedBox(this.width, this.height);
+  RenderSizedBox(this.boxWidth, this.boxHeight);
 
   @override
   void performLayout(Constraints constraints) {
-    final boxSize = Size(width, height);
+    final boxSize = Size(boxWidth, boxHeight);
     size = boxSize;
 
-    if (children.isNotEmpty) {
-      final child = children.first;
-      child.layout(BoxConstraints.tight(boxSize));
+    if (child != null) {
+      child!.layout(BoxConstraints.tight(boxSize));
     }
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (children.isNotEmpty) {
-      context.paintChild(children.first, offset);
+    if (child != null) {
+      context.paintChild(child!, offset);
     }
   }
 }

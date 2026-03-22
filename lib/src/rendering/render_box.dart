@@ -9,7 +9,17 @@ class FlexParentData extends ParentData {
   Offset offset = Offset.zero;
 }
 
-abstract class RenderBox extends RenderObject {}
+abstract class RenderBox extends RenderObject {
+  bool get hasSize => size != null;
+
+  int get width => size?.width ?? 0;
+
+  int get height => size?.height ?? 0;
+
+  int get widthInt => size?.width ?? 0;
+
+  int get heightInt => size?.height ?? 0;
+}
 
 mixin RenderObjectWithChildMixin<C extends RenderObject> on RenderObject {
   C? _child;

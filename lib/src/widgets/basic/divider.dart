@@ -68,7 +68,7 @@ class _DividerRenderWidget extends RenderObjectWidget {
 
   @override
   RenderDivider createRenderObject(BuildContext context) => RenderDivider(
-        height: height,
+        dividerHeight: height,
         thickness: thickness,
         color: color,
         character: character,
@@ -77,7 +77,7 @@ class _DividerRenderWidget extends RenderObjectWidget {
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
     final divider = renderObject as RenderDivider;
-    divider.height = height;
+    divider.dividerHeight = height;
     divider.thickness = thickness;
     divider.color = color;
     divider.character = character;
@@ -103,7 +103,7 @@ class _VerticalDividerRenderWidget extends RenderObjectWidget {
   @override
   RenderVerticalDivider createRenderObject(BuildContext context) =>
       RenderVerticalDivider(
-        width: width,
+        dividerWidth: width,
         thickness: thickness,
         color: color,
         character: character,
@@ -112,7 +112,7 @@ class _VerticalDividerRenderWidget extends RenderObjectWidget {
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
     final divider = renderObject as RenderVerticalDivider;
-    divider.width = width;
+    divider.dividerWidth = width;
     divider.thickness = thickness;
     divider.color = color;
     divider.character = character;
@@ -120,13 +120,13 @@ class _VerticalDividerRenderWidget extends RenderObjectWidget {
 }
 
 class RenderDivider extends RenderBox {
-  int height;
+  int dividerHeight;
   int thickness;
   Color color;
   String character;
 
   RenderDivider({
-    required this.height,
+    required this.dividerHeight,
     required this.thickness,
     required this.color,
     required this.character,
@@ -135,7 +135,7 @@ class RenderDivider extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
-    size = Size(boxConstraints.maxWidth, height);
+    size = Size(boxConstraints.maxWidth, dividerHeight);
   }
 
   @override
@@ -143,7 +143,7 @@ class RenderDivider extends RenderBox {
     final textStyle = TextStyle(color: color);
     final lineChar = character.isNotEmpty ? character[0] : '─';
 
-    for (int y = 0; y < thickness && y < height; y++) {
+    for (int y = 0; y < thickness && y < dividerHeight; y++) {
       for (int x = 0; x < size!.width; x++) {
         context.buffer.writeStyled(
           offset.x + x,
@@ -157,13 +157,13 @@ class RenderDivider extends RenderBox {
 }
 
 class RenderVerticalDivider extends RenderBox {
-  int width;
+  int dividerWidth;
   int thickness;
   Color color;
   String character;
 
   RenderVerticalDivider({
-    required this.width,
+    required this.dividerWidth,
     required this.thickness,
     required this.color,
     required this.character,
@@ -172,7 +172,7 @@ class RenderVerticalDivider extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
-    size = Size(width, boxConstraints.maxHeight);
+    size = Size(dividerWidth, boxConstraints.maxHeight);
   }
 
   @override
@@ -180,7 +180,7 @@ class RenderVerticalDivider extends RenderBox {
     final textStyle = TextStyle(color: color);
     final lineChar = character.isNotEmpty ? character[0] : '│';
 
-    for (int x = 0; x < thickness && x < width; x++) {
+    for (int x = 0; x < thickness && x < dividerWidth; x++) {
       for (int y = 0; y < size!.height; y++) {
         context.buffer.writeStyled(
           offset.x + x,

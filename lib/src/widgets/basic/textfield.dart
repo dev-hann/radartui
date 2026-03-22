@@ -1,3 +1,4 @@
+import 'dart:async';
 import '../../../radartui.dart';
 
 class TextSelection {
@@ -293,23 +294,18 @@ class _TextFieldState extends State<TextField> {
     super.dispose();
   }
 
-  bool _isProcessingChange = false;
-  
+  bool _isChangeScheduled = false;
+
   void _onControllerChanged() {
-    if (_isProcessingChange) return;
-    
-    _isProcessingChange = true;
-    try {
-      // Immediately update the UI
+    if (_isChangeScheduled) return;
+
+    _isChangeScheduled = true;
+    scheduleMicrotask(() {
+      _isChangeScheduled = false;
+      if (!mounted) return;
       setState(() {});
-      
-      // Call onChanged immediately to avoid timing issues
-      if (widget.onChanged != null) {
-        widget.onChanged!(_controller.text);
-      }
-    } finally {
-      _isProcessingChange = false;
-    }
+      widget.onChanged?.call(_controller.text);
+    });
   }
 
   void _onFocusChanged() {

@@ -56,7 +56,7 @@ class _RadioState<T> extends State<Radio<T>> {
     // Force rebuild if selection state changed
     if (oldWidget.groupValue != widget.groupValue || 
         oldWidget.value != widget.value) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {});
       });
     }

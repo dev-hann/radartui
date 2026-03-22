@@ -117,9 +117,10 @@ class RenderFlex extends RenderBox
       totalMainAxisExtent = maxMainAxisExtent;
     }
     
+    final effectiveCrossAxisExtent = crossAxisExtent < 0 ? 0 : crossAxisExtent;
     final actualSize = isHorizontal
-        ? Size(totalMainAxisExtent, maxCrossAxisExtent.clamp(0, crossAxisExtent))
-        : Size(maxCrossAxisExtent.clamp(0, crossAxisExtent), totalMainAxisExtent);
+        ? Size(totalMainAxisExtent, maxCrossAxisExtent.clamp(0, effectiveCrossAxisExtent))
+        : Size(maxCrossAxisExtent.clamp(0, effectiveCrossAxisExtent), totalMainAxisExtent);
     
     final actualCrossAxisExtent = isHorizontal ? actualSize.height : actualSize.width;
     final actualMainAxisExtent = isHorizontal ? actualSize.width : actualSize.height;

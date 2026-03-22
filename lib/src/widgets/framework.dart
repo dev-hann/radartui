@@ -184,8 +184,10 @@ abstract class State<T extends StatefulWidget> {
   T get widget => _widget!;
   T? _widget;
   StatefulElement? _element;
-  
+
   BuildContext get context => _element!;
+
+  bool get mounted => _element != null;
 
   void initState() {}
 
@@ -194,8 +196,14 @@ abstract class State<T extends StatefulWidget> {
   void dispose() {}
 
   void setState(void Function() fn) {
-    fn();
-    _element?.markNeedsBuild();
+    try {
+      fn();
+      _element?.markNeedsBuild();
+    } on Exception catch (e) {
+      assert(() {
+        throw StateError('setState() callback failed: $e');
+      }());
+    }
   }
 
   Widget build(BuildContext context);
@@ -213,7 +221,8 @@ class StatefulElement extends ComponentElement {
     _state._widget = widget as StatefulWidget;
     _state._element = this;
   }
-  late final State _state;
+  late final State<StatefulWidget> _state;
+  State<StatefulWidget> get state => _state;
   @override
   Widget build() => _state.build(this);
   @override
