@@ -1,6 +1,8 @@
 import '../../lib/radartui.dart';
 
 class ButtonExample extends StatefulWidget {
+  const ButtonExample();
+
   @override
   State<ButtonExample> createState() => _ButtonExampleState();
 }

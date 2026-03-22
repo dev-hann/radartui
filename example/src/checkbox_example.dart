@@ -9,9 +9,9 @@ class CheckboxExample extends StatefulWidget {
 
 class _CheckboxExampleState extends State<CheckboxExample> {
   bool _option1 = false;
-  final bool _option2 = true;
-  final bool _option3 = false;
-  final bool _option4 = true;
+  bool _option2 = true;
+  bool _option3 = false;
+  bool _option4 = true;
 
   @override
   void initState() {
@@ -73,52 +73,53 @@ class _CheckboxExampleState extends State<CheckboxExample> {
                   ],
                 ),
                 const SizedBox(height: 1),
-                // Row(
-                //   children: [
-                //     Checkbox(
-                //       value: _option2,
-                //       onChanged: (value) {
-                //         _option2 = value ?? false;
-                //         setState(() {});
-                //       },
-                //     ),
-                //     const SizedBox(width: 2),
-                //     const Text('Auto-save documents'),
-                //   ],
-                // ),
-                // const SizedBox(height: 1),
-                // Row(
-                //   children: [
-                //     Checkbox(
-                //       value: _option3,
-                //       onChanged: (value) {
-                //         setState(() {
-                //           _option3 = value ?? false;
-                //         });
-                //       },
-                //       activeColor: Color.green,
-                //     ),
-                //     const SizedBox(width: 2),
-                //     const Text('Green themed checkbox'),
-                //   ],
-                // ),
-                // const SizedBox(height: 1),
-                // Row(
-                //   children: [
-                //     Checkbox(
-                //       value: _option4,
-                //       onChanged: (value) {
-                //         setState(() {
-                //           _option4 = value ?? false;
-                //         });
-                //       },
-                //       activeColor: Color.red,
-                //       checkColor: Color.yellow,
-                //     ),
-                //     const SizedBox(width: 2),
-                //     const Text('Custom colors checkbox'),
-                //   ],
-                // ),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _option2,
+                      onChanged: (value) {
+                        setState(() {
+                          _option2 = value ?? false;
+                        });
+                      },
+                    ),
+                    const SizedBox(width: 2),
+                    const Text('Auto-save documents'),
+                  ],
+                ),
+                const SizedBox(height: 1),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _option3,
+                      onChanged: (value) {
+                        setState(() {
+                          _option3 = value ?? false;
+                        });
+                      },
+                      activeColor: Color.green,
+                    ),
+                    const SizedBox(width: 2),
+                    const Text('Green themed checkbox'),
+                  ],
+                ),
+                const SizedBox(height: 1),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _option4,
+                      onChanged: (value) {
+                        setState(() {
+                          _option4 = value ?? false;
+                        });
+                      },
+                      activeColor: Color.red,
+                      checkColor: Color.yellow,
+                    ),
+                    const SizedBox(width: 2),
+                    const Text('Custom colors checkbox'),
+                  ],
+                ),
               ],
             ),
           ),
@@ -126,40 +127,40 @@ class _CheckboxExampleState extends State<CheckboxExample> {
           const SizedBox(height: 2),
 
           // Disabled Checkboxes
-          // const Container(
-          //   color: Color.brightBlack,
-          //   padding: EdgeInsets.all(1),
-          //   child: const Column(
-          //     children: [
-          //       Text(
-          //         'Disabled Checkboxes:',
-          //         style: TextStyle(color: Color.cyan, bold: true),
-          //       ),
-          //       SizedBox(height: 1),
-          //       Row(
-          //         children: [
-          //           Checkbox(
-          //             value: false,
-          //             onChanged: null, // Disabled
-          //           ),
-          //           SizedBox(width: 2),
-          //           Text('Disabled unchecked'),
-          //         ],
-          //       ),
-          //       SizedBox(height: 1),
-          //       Row(
-          //         children: [
-          //           Checkbox(
-          //             value: true,
-          //             onChanged: null, // Disabled
-          //           ),
-          //           SizedBox(width: 2),
-          //           Text('Disabled checked'),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          const Container(
+            color: Color.brightBlack,
+            padding: EdgeInsets.all(1),
+            child: Column(
+              children: [
+                const Text(
+                  'Disabled Checkboxes:',
+                  style: TextStyle(color: Color.cyan, bold: true),
+                ),
+                const SizedBox(height: 1),
+                const Row(
+                  children: [
+                    Checkbox(
+                      value: false,
+                      onChanged: null,
+                    ),
+                    SizedBox(width: 2),
+                    Text('Disabled unchecked'),
+                  ],
+                ),
+                const SizedBox(height: 1),
+                const Row(
+                  children: [
+                    Checkbox(
+                      value: true,
+                      onChanged: null,
+                    ),
+                    SizedBox(width: 2),
+                    Text('Disabled checked'),
+                  ],
+                ),
+              ],
+            ),
+          ),
 
           const SizedBox(height: 2),
 

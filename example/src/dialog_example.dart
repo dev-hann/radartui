@@ -1,6 +1,8 @@
 import '../../lib/radartui.dart';
 
 class DialogExample extends StatefulWidget {
+  const DialogExample();
+
   @override
   State<DialogExample> createState() => _DialogExampleState();
 }

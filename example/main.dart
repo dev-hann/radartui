@@ -7,6 +7,7 @@ import 'src/counter_example.dart';
 import 'src/dashboard_example.dart';
 import 'src/dialog_example.dart';
 import 'src/divider_example.dart';
+import 'src/flex_example.dart';
 import 'src/focus_example.dart';
 import 'src/guess_game_example.dart';
 import 'src/radio_example.dart';
@@ -29,12 +30,12 @@ class RadarTUIExamplesApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const MenuScreen(),
-        '/button': (context) => ButtonExample(),
+        '/button': (context) => const ButtonExample(),
         '/counter': (context) => const CounterExample(),
         '/calculator': (context) => const CalculatorExample(),
         '/card': (context) => const CardExample(),
         '/dashboard': (context) => const DashboardExample(),
-        '/dialog': (context) => DialogExample(),
+        '/dialog': (context) => const DialogExample(),
         '/guess_game': (context) => const GuessGameExample(),
         '/spinner': (context) => const SpinnerExample(),
         '/style': (context) => const StyleExample(),
@@ -42,6 +43,7 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/textfield': (context) => const TextFieldExample(),
         '/stack': (context) => const StackExample(),
         '/divider': (context) => const DividerExample(),
+        '/flex': (context) => const FlexExample(),
         '/checkbox': (context) => const CheckboxExample(),
         '/radio': (context) => const RadioExample(),
         '/align': (context) => const AlignExample(),
@@ -72,6 +74,7 @@ class _MenuScreenState extends State<MenuScreen> {
     'TextField Example',
     'Stack Widget',
     'Divider Widget',
+    'Flex Layout',
     'Checkbox Widget',
     'Radio Button',
     'Align & Center',
@@ -91,6 +94,7 @@ class _MenuScreenState extends State<MenuScreen> {
     '/textfield',
     '/stack',
     '/divider',
+    '/flex',
     '/checkbox',
     '/radio',
     '/align',
