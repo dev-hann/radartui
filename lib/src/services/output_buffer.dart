@@ -1,5 +1,6 @@
 import 'dart:io';
 import '../foundation.dart';
+import 'logger.dart';
 import 'terminal.dart';
 
 class Cell {
@@ -49,6 +50,10 @@ class OutputBuffer {
 
   void writeStyled(int x, int y, String char, TextStyle? style) {
     if (y >= terminal.height || x >= terminal.width || x < 0 || y < 0) {
+      AppLogger.log(
+        'OutputBuffer: Write out of bounds - x:$x, y:$y, '
+        'terminal size: ${terminal.width}x${terminal.height}',
+      );
       return;
     }
     _grid[y][x] = Cell(char, style);
