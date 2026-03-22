@@ -1,38 +1,64 @@
 import '../../../radartui.dart';
 
-Text defaultSelectedBuilder(String item) {
+Widget _defaultSelectedBuilder<T>(T item) {
   return Text('> $item');
 }
 
-Text defaultUnselectedBuilder(String item) {
+Widget _defaultUnselectedBuilder<T>(T item) {
   return Text('  $item');
 }
 
-class ListView extends StatefulWidget {
-  final List<String> items;
-  final Widget Function(String item) selectedBuilder;
-  final Widget Function(String item) unselectedBuilder;
+class ScrollController extends ChangeNotifier {
+  int _offset = 0;
+  
+  int get offset => _offset;
+  
+  set offset(int value) {
+    if (_offset != value) {
+      _offset = value;
+      notifyListeners();
+    }
+  }
+  
+  void animateTo(int newOffset) {
+    offset = newOffset;
+  }
+}
+
+class ListView<T> extends StatefulWidget {
+  final List<T> items;
+  final Widget Function(T item) selectedBuilder;
+  final Widget Function(T item) unselectedBuilder;
   final int initialSelectedIndex;
-  final void Function(int index, String item)? onItemSelected;
+  final void Function(int index, T item)? onItemSelected;
   final bool wrapAroundNavigation;
+  final ScrollController? controller;
+  final int? itemExtent;
 
   const ListView({
+    super.key,
     required this.items,
-    this.selectedBuilder = defaultSelectedBuilder,
-    this.unselectedBuilder = defaultUnselectedBuilder,
+    Widget Function(T item)? selectedBuilder,
+    Widget Function(T item)? unselectedBuilder,
     this.initialSelectedIndex = 0,
     this.onItemSelected,
     this.wrapAroundNavigation = false,
-  });
+    this.controller,
+    this.itemExtent,
+  })  : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
+        unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
 
   @override
-  State<ListView> createState() => _ListViewState();
+  State<ListView<T>> createState() => _ListViewState<T>();
 }
 
-class _ListViewState extends State<ListView> {
+class _ListViewState<T> extends State<ListView<T>> {
   int selectedIndex = 0;
+  late ScrollController _scrollController;
+  bool _ownsController = false;
   final FocusNode _focusNode = FocusNode();
   bool _hasFocus = false;
+  int _viewportHeight = 0;
 
   @override
   void initState() {
@@ -40,17 +66,37 @@ class _ListViewState extends State<ListView> {
       0,
       widget.items.length - 1,
     );
+    
+    if (widget.controller != null) {
+      _scrollController = widget.controller!;
+    } else {
+      _scrollController = ScrollController();
+      _ownsController = true;
+    }
+    
+    _scrollController.addListener(_onScrollChanged);
+    
+    FocusManager.instance.registerNode(_focusNode);
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChanged);
-    // 초기 focus 상태 동기화
     _hasFocus = _focusNode.hasFocus;
     super.initState();
   }
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScrollChanged);
+    if (_ownsController) {
+      _scrollController.dispose();
+    }
+    FocusManager.instance.unregisterNode(_focusNode);
     _focusNode.removeListener(_onFocusChanged);
+    _focusNode.dispose();
     super.dispose();
+  }
+
+  void _onScrollChanged() {
+    setState(() {});
   }
 
   void _handleKeyEvent(KeyEvent event) {
@@ -71,19 +117,31 @@ class _ListViewState extends State<ListView> {
   void _moveSelection(int direction) {
     setState(() {
       if (widget.wrapAroundNavigation) {
-        // 순환 네비게이션: 맨 위에서 위로 가면 맨 아래로, 맨 아래에서 아래로 가면 맨 위로
         selectedIndex = (selectedIndex + direction) % widget.items.length;
         if (selectedIndex < 0) {
           selectedIndex = widget.items.length - 1;
         }
       } else {
-        // 기존 방식: clamp로 경계 제한
         selectedIndex = (selectedIndex + direction).clamp(
           0,
           widget.items.length - 1,
         );
       }
+      _ensureVisible(selectedIndex);
     });
+  }
+
+  void _ensureVisible(int index) {
+    if (_viewportHeight <= 0) return;
+    
+    final scrollOffset = _scrollController.offset;
+    final bottomVisible = scrollOffset + _viewportHeight - 1;
+    
+    if (index < scrollOffset) {
+      _scrollController.animateTo(index);
+    } else if (index > bottomVisible) {
+      _scrollController.animateTo(index - _viewportHeight + 1);
+    }
   }
 
   void _onFocusChanged() {
@@ -94,12 +152,23 @@ class _ListViewState extends State<ListView> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = context.findAncestorWidgetOfExactType<MediaQuery>();
+    _viewportHeight = mediaQuery?.data.size.height ?? 24;
+    
+    final itemCount = widget.items.length;
+    if (itemCount == 0) {
+      return const SizedBox();
+    }
+    
+    final scrollOffset = _scrollController.offset.clamp(0, itemCount - 1);
+    final visibleCount = _viewportHeight.clamp(1, itemCount);
+    final endIndex = (scrollOffset + visibleCount).clamp(0, itemCount);
+    
     final children = <Widget>[];
-
-    for (final entry in widget.items.asMap().entries) {
-      final index = entry.key;
-      final item = entry.value;
-      final isSelected = index == selectedIndex && _hasFocus;
+    
+    for (int i = scrollOffset; i < endIndex; i++) {
+      final item = widget.items[i];
+      final isSelected = i == selectedIndex && _hasFocus;
       children.add(
         isSelected
             ? widget.selectedBuilder(item)
