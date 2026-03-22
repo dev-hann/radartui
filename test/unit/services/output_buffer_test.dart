@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:radartui/radartui_test.dart';
 
 void main() {
   group('Cell', () {
@@ -57,12 +58,12 @@ void main() {
   });
 
   group('OutputBuffer', () {
-    late Terminal terminal;
+    late TestTerminal terminal;
     late OutputBuffer buffer;
 
     setUp(() {
-      terminal = Terminal();
-      buffer = OutputBuffer(terminal);
+      terminal = TestTerminal();
+      buffer = TestOutputBuffer(terminal);
     });
 
     group('write', () {
