@@ -3,13 +3,11 @@ import 'render_box.dart';
 import 'render_object.dart';
 
 abstract class SingleChildRenderBox extends RenderBox
-    with ContainerRenderObjectMixin<RenderBox, ParentData> {
-  
-  RenderBox? get child => children.isNotEmpty ? children.first : null;
+    with RenderObjectWithChildMixin<RenderBox> {
   
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints as BoxConstraints;
+    final boxConstraints = constraints.asBoxConstraints;
     
     if (child != null) {
       final childConstraints = getConstraintsForChild(boxConstraints);
