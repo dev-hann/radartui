@@ -45,6 +45,12 @@ abstract class Flexible extends ParentDataWidget<FlexParentData> {
 
   @override
   void applyParentData(RenderObject renderObject) {
+    if (renderObject.parentData == null) {
+      renderObject.parentData = FlexParentData();
+    }
+    if (renderObject.parentData is! FlexParentData) {
+      renderObject.parentData = FlexParentData();
+    }
     final parentData = renderObject.parentData as FlexParentData;
     if (parentData.flex != flex || parentData.fit != fit) {
       parentData.flex = flex;
