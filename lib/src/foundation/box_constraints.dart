@@ -10,9 +10,9 @@ class BoxConstraints extends Constraints {
 
   const BoxConstraints({
     this.minWidth = 0,
-    this.maxWidth = 999999,
+    this.maxWidth = Constraints.infinity,
     this.minHeight = 0,
-    this.maxHeight = 999999,
+    this.maxHeight = Constraints.infinity,
   });
 
   BoxConstraints.tight(Size size)
@@ -28,12 +28,18 @@ class BoxConstraints extends Constraints {
       maxHeight = size.height;
 
   const BoxConstraints.expand({int? width, int? height})
-    : minWidth = width ?? 999999,
-      maxWidth = width ?? 999999,
-      minHeight = height ?? 999999,
-      maxHeight = height ?? 999999;
+    : minWidth = width ?? Constraints.infinity,
+      maxWidth = width ?? Constraints.infinity,
+      minHeight = height ?? Constraints.infinity,
+      maxHeight = height ?? Constraints.infinity;
 
-  bool get isTight => minWidth >= maxWidth && minHeight >= maxHeight;
+  const BoxConstraints.tightFor({int? width, int? height})
+    : minWidth = width ?? 0,
+      maxWidth = width ?? Constraints.infinity,
+      minHeight = height ?? 0,
+      maxHeight = height ?? Constraints.infinity;
+
+  bool get isTight => minWidth == maxWidth && minHeight == maxHeight;
 
   bool get isNormalized =>
       minWidth >= 0.0 &&
@@ -60,10 +66,8 @@ class BoxConstraints extends Constraints {
   }
 
   Size constrain(Size size) {
-    // Ensure valid clamp ranges (min must not exceed max)
-    // Handle cases where maxWidth or maxHeight might be negative or zero
-    final safeMaxWidth = maxWidth.clamp(0, 999999);
-    final safeMaxHeight = maxHeight.clamp(0, 999999);
+    final safeMaxWidth = maxWidth.clamp(0, Constraints.infinity);
+    final safeMaxHeight = maxHeight.clamp(0, Constraints.infinity);
     final safeMinWidth = minWidth.clamp(0, safeMaxWidth);
     final safeMinHeight = minHeight.clamp(0, safeMaxHeight);
 
@@ -76,13 +80,11 @@ class BoxConstraints extends Constraints {
     final horizontal = edge.left + edge.right;
     final vertical = edge.top + edge.bottom;
 
-    // Calculate deflated values ensuring they don't go negative
-    final deflatedMaxWidth = (maxWidth - horizontal).clamp(0, 999999);
-    final deflatedMaxHeight = (maxHeight - vertical).clamp(0, 999999);
-    final deflatedMinWidth = (minWidth - horizontal).clamp(0, 999999);
-    final deflatedMinHeight = (minHeight - vertical).clamp(0, 999999);
+    final deflatedMaxWidth = (maxWidth - horizontal).clamp(0, Constraints.infinity);
+    final deflatedMaxHeight = (maxHeight - vertical).clamp(0, Constraints.infinity);
+    final deflatedMinWidth = (minWidth - horizontal).clamp(0, Constraints.infinity);
+    final deflatedMinHeight = (minHeight - vertical).clamp(0, Constraints.infinity);
 
-    // Ensure min doesn't exceed max after deflation
     return BoxConstraints(
       minWidth: deflatedMinWidth.clamp(0, deflatedMaxWidth),
       maxWidth: deflatedMaxWidth,

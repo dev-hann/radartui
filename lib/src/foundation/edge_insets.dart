@@ -10,6 +10,28 @@ class EdgeInsets {
     this.bottom = 0,
     this.left = 0,
   });
+  static const EdgeInsets zero = EdgeInsets.all(0);
+
+  int get horizontal => left + right;
+  int get vertical => top + bottom;
+
+  EdgeInsets operator +(EdgeInsets other) => EdgeInsets.fromLTRB(
+    left + other.left,
+    top + other.top,
+    right + other.right,
+    bottom + other.bottom,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      other is EdgeInsets &&
+      top == other.top &&
+      right == other.right &&
+      bottom == other.bottom &&
+      left == other.left;
+
+  @override
+  int get hashCode => Object.hash(top, right, bottom, left);
 
   @override
   String toString() => 'EdgeInsets($left, $top, $right, $bottom)';
