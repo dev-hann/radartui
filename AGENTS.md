@@ -4,6 +4,75 @@
 
 ---
 
+## 0. ⚠️ MANDATORY: Git Worktree Workflow
+
+> **모든 AI 작업은 반드시 worktree에서 시작해야 합니다.**
+> 메인 디렉토리(`~/Documents/radartui/`)에서 직접 수정 금지.
+
+### Pre-Work Checklist (작업 전 필수)
+
+- [ ] 작업 유형에 맞는 브랜치 네이밍 결정 (`feat/`, `fix/`, `refactor/`)
+- [ ] Worktree 생성: `git worktree add ../.worktrees/<branch> -b <branch>`
+- [ ] Worktree 디렉토리로 이동 후 작업 시작
+
+### Workflow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  1. CREATE worktree                                         │
+│     git worktree add ../.worktrees/fix-xxx -b fix/xxx       │
+├─────────────────────────────────────────────────────────────┤
+│  2. WORK in isolated environment                            │
+│     cd ../.worktrees/fix-xxx                                │
+│     ... implement, test, format, analyze ...                │
+├─────────────────────────────────────────────────────────────┤
+│  3. FINISH: PR → Merge → Cleanup                            │
+│     git worktree remove ../.worktrees/fix-xxx               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Commands
+
+```bash
+# Create worktree
+git worktree add ../.worktrees/<branch-name> -b <branch-name>
+
+# List all worktrees
+git worktree list
+
+# After merge, cleanup
+git worktree remove ../.worktrees/<branch-name>
+```
+
+### Branch Naming
+
+| Type | Pattern | Example |
+|------|---------|---------|
+| Feature | `feat/xxx` | `feat/add-gridview` |
+| Fix | `fix/xxx` | `fix/memory-leak-focus` |
+| Refactor | `refactor/xxx` | `refactor/simplify-layout` |
+
+### Directory Structure
+
+```
+~/Documents/
+├── radartui/              # Main worktree (main branch) - READ ONLY for AI
+└── .worktrees/            # AI session worktrees - WORK HERE
+    ├── feat-add-gridview/
+    ├── fix-memory-leak/
+    └── refactor-layout/
+```
+
+### Why Worktree?
+
+| Without Worktree | With Worktree |
+|-----------------|---------------|
+| Main branch 오염 위험 | 격리된 환경에서 안전하게 작업 |
+| 여러 작업 동시 진행 불가 | 여러 worktree로 병렬 작업 가능 |
+| Rollback 어려움 | worktree 삭제로 즉시 초기화 |
+
+---
+
 ## 1. Flutter Reference Principle
 
 **CRITICAL: All implementations MUST reference Flutter's design patterns.**
