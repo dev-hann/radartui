@@ -1,1 +1,3 @@
-export 'scheduler/binding.dart';
+library scheduler;
+
+export 'binding.dart' show SchedulerBinding, FrameCallback;
