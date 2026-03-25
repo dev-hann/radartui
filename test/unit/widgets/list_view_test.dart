@@ -1,11 +1,11 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('ListView', () {
     group('constructor', () {
       test('creates with required parameters', () {
-        final listView = ListView<String>(
+        const listView = ListView<String>(
           items: ['a', 'b', 'c'],
         );
         expect(listView.items, equals(['a', 'b', 'c']));
@@ -14,7 +14,7 @@ void main() {
       });
 
       test('creates with custom initial index', () {
-        final listView = ListView<String>(
+        const listView = ListView<String>(
           items: ['a', 'b', 'c'],
           initialSelectedIndex: 1,
         );
@@ -22,7 +22,7 @@ void main() {
       });
 
       test('creates with wrap around navigation', () {
-        final listView = ListView<String>(
+        const listView = ListView<String>(
           items: ['a', 'b', 'c'],
           wrapAroundNavigation: true,
         );
@@ -30,7 +30,7 @@ void main() {
       });
 
       test('supports generic types', () {
-        final listView = ListView<int>(
+        const listView = ListView<int>(
           items: [1, 2, 3],
         );
         expect(listView.items, equals([1, 2, 3]));
@@ -39,7 +39,7 @@ void main() {
 
     group('builders', () {
       test('uses default selected builder', () {
-        final listView = ListView<String>(
+        const listView = ListView<String>(
           items: ['test'],
         );
         final widget = listView.selectedBuilder('test');
@@ -47,7 +47,7 @@ void main() {
       });
 
       test('uses default unselected builder', () {
-        final listView = ListView<String>(
+        const listView = ListView<String>(
           items: ['test'],
         );
         final widget = listView.unselectedBuilder('test');

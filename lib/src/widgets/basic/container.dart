@@ -1,11 +1,6 @@
 import '../../../radartui.dart';
 
 class Container extends SingleChildRenderObjectWidget {
-  final Color? color;
-  final int? width;
-  final int? height;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
 
   const Container({
     super.key,
@@ -16,6 +11,11 @@ class Container extends SingleChildRenderObjectWidget {
     this.padding,
     this.margin,
   }) : super(child: child ?? const SizedBox());
+  final Color? color;
+  final int? width;
+  final int? height;
+  final EdgeInsets? padding;
+  final EdgeInsets? margin;
 
   @override
   RenderContainer createRenderObject(BuildContext context) => RenderContainer(
@@ -39,6 +39,14 @@ class Container extends SingleChildRenderObjectWidget {
 
 class RenderContainer extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
+
+  RenderContainer({
+    this.color,
+    int? width,
+    int? height,
+    this.padding,
+    this.margin,
+  })  : _width = width, _height = height;
   Color? color;
   int? _width;
   int? _height;
@@ -50,14 +58,6 @@ class RenderContainer extends RenderBox
 
   int? get containerHeight => _height;
   set containerHeight(int? value) => _height = value;
-
-  RenderContainer({
-    this.color,
-    int? width,
-    int? height,
-    this.padding,
-    this.margin,
-  })  : _width = width, _height = height;
 
   @override
   void performLayout(Constraints constraints) {
@@ -75,12 +75,14 @@ class RenderContainer extends RenderBox
       );
       child!.layout(childConstraint);
 
-      if (_width == null)
+      if (_width == null) {
         containerW =
             child!.size!.width + totalPadding.left + totalPadding.right;
-      if (_height == null)
+      }
+      if (_height == null) {
         containerH =
             child!.size!.height + totalPadding.top + totalPadding.bottom;
+      }
     }
 
     size = Size(

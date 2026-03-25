@@ -2,8 +2,8 @@ import '../foundation.dart';
 import '../services.dart';
 
 class PaintingContext {
-  final OutputBuffer buffer;
   PaintingContext(this.buffer);
+  final OutputBuffer buffer;
   void paintChild(RenderObject child, Offset offset) => child.paint(this, offset);
 }
 
@@ -26,9 +26,7 @@ abstract class RenderObject {
   }
 
   void setupParentData(RenderObject child) {
-    if (child.parentData == null) {
-      child.parentData = ParentData();
-    }
+    child.parentData ??= ParentData();
   }
 
   void markNeedsLayout() {

@@ -31,15 +31,15 @@
 /// ```
 library radartui;
 
-export 'src/foundation.dart';
-export 'src/rendering.dart';
-export 'src/widgets.dart';
-export 'src/services.dart';
-export 'src/binding.dart';
-
 import 'src/binding.dart';
 import 'src/services.dart';
 import 'src/widgets.dart';
+
+export 'src/binding.dart';
+export 'src/foundation.dart';
+export 'src/rendering.dart';
+export 'src/services.dart';
+export 'src/widgets.dart';
 
 void runApp(Widget app) {
   AppLogger.initialize();

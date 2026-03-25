@@ -1,17 +1,18 @@
 import 'dart:async';
+
 import '../binding.dart';
 import '../foundation.dart';
 import '../rendering.dart';
-import 'framework.dart';
 import 'focus_manager.dart';
+import 'framework.dart';
 import 'navigator_observer.dart';
 
 typedef RouteBuilder = Widget Function(BuildContext context);
 typedef RoutePredicate = bool Function(Route route);
 
 class NavigatorDisposedException implements Exception {
-  final String message;
   NavigatorDisposedException([this.message = 'Navigator has been disposed']);
+  final String message;
 
   @override
   String toString() => 'NavigatorDisposedException: $message';

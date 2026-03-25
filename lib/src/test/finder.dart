@@ -45,9 +45,9 @@ class TypeFinder<T extends Widget> extends Finder {
 }
 
 class TextFinder extends Finder {
-  final String targetText;
 
   const TextFinder(this.targetText);
+  final String targetText;
 
   @override
   List<Element> evaluateAll() {
@@ -70,9 +70,9 @@ class TextFinder extends Finder {
 }
 
 class KeyFinder extends Finder {
-  final Key key;
 
   const KeyFinder(this.key);
+  final Key key;
 
   @override
   List<Element> evaluateAll() {

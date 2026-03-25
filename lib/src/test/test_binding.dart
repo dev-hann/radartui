@@ -6,6 +6,12 @@ import '../widgets.dart';
 
 class TestBinding extends BindingBase
     with SchedulerBinding, ServicesBinding, RendererBinding, WidgetsBinding {
+
+  TestBinding({int width = 80, int height = 24})
+      : terminal = TestTerminal(width: width, height: height),
+        keyboard = TestKeyboard() {
+    outputBuffer = TestOutputBuffer(terminal);
+  }
   static TestBinding? _testInstance;
 
   static TestBinding? get maybeInstance => _testInstance;
@@ -20,12 +26,6 @@ class TestBinding extends BindingBase
 
   @override
   late final TestOutputBuffer outputBuffer;
-
-  TestBinding({int width = 80, int height = 24})
-      : terminal = TestTerminal(width: width, height: height),
-        keyboard = TestKeyboard() {
-    outputBuffer = TestOutputBuffer(terminal);
-  }
 
   @override
   void initInstances() {
@@ -116,11 +116,6 @@ class TestBinding extends BindingBase
 }
 
 class TestTerminal implements Terminal {
-  int _width;
-  int _height;
-  final List<List<String>> _grid;
-  int _cursorX = 0;
-  int _cursorY = 0;
 
   TestTerminal({int width = 80, int height = 24})
       : _width = width,
@@ -129,6 +124,11 @@ class TestTerminal implements Terminal {
           height,
           (_) => List.generate(width, (_) => ' '),
         );
+  int _width;
+  int _height;
+  final List<List<String>> _grid;
+  int _cursorX = 0;
+  int _cursorY = 0;
 
   @override
   int get width => _width;
@@ -248,9 +248,9 @@ class TestTerminal implements Terminal {
 }
 
 class _TestTerminalBackend implements TerminalBackend {
-  final TestTerminal _terminal;
 
   _TestTerminalBackend(this._terminal);
+  final TestTerminal _terminal;
 
   @override
   int get width => _terminal.width;
@@ -275,11 +275,11 @@ class _TestTerminalBackend implements TerminalBackend {
 }
 
 class TestOutputBuffer implements OutputBuffer {
+
+  TestOutputBuffer(this.terminal);
   @override
   final TestTerminal terminal;
   final List<String> _output = [];
-
-  TestOutputBuffer(this.terminal);
 
   @override
   void writeStyled(int x, int y, String char, TextStyle? style) {
@@ -412,6 +412,7 @@ class TestKeyboard implements RawKeyboard {
   @override
   void inputTest(String input) {}
 
+  @override
   void dispose() {
     if (!_controller.isClosed) {
       _controller.close();

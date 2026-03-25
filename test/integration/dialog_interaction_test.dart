@@ -19,10 +19,10 @@ void main() {
 
     testWidgets('Dialog renders with actions', (tester) async {
       tester.pumpWidget(
-        Dialog(
-          child: const Text('Body'),
+        const Dialog(
+          child: Text('Body'),
           actions: [
-            const Button(text: 'OK'),
+            Button(text: 'OK'),
           ],
         ),
       );
@@ -62,11 +62,11 @@ void main() {
 
     testWidgets('Dialog shows actions', (tester) async {
       tester.pumpWidget(
-        Dialog(
-          child: const Text('Content'),
+        const Dialog(
+          child: Text('Content'),
           actions: [
-            const Button(text: 'OK'),
-            const Button(text: 'Cancel'),
+            Button(text: 'OK'),
+            Button(text: 'Cancel'),
           ],
         ),
       );

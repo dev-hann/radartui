@@ -1,10 +1,10 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Key', () {
     test('Key.value creates ValueKey<String>', () {
-      final key = const Key.value('test');
+      const key = Key.value('test');
       expect(key, isA<ValueKey<String>>());
       expect((key as ValueKey<String>).value, equals('test'));
     });
@@ -57,29 +57,29 @@ void main() {
 
   group('Widget.canUpdate', () {
     test('canUpdate returns true for same type and null keys', () {
-      final oldWidget = _TestWidget();
-      final newWidget = _TestWidget();
+      const oldWidget = _TestWidget();
+      const newWidget = _TestWidget();
       expect(Widget.canUpdate(oldWidget, newWidget), isTrue);
     });
 
     test('canUpdate returns true for same type and same key', () {
       const key = ValueKey<String>('test');
-      final oldWidget = _TestWidget(key: key);
-      final newWidget = _TestWidget(key: key);
+      const oldWidget = _TestWidget(key: key);
+      const newWidget = _TestWidget(key: key);
       expect(Widget.canUpdate(oldWidget, newWidget), isTrue);
     });
 
     test('canUpdate returns false for same type but different keys', () {
       const key1 = ValueKey<String>('test1');
       const key2 = ValueKey<String>('test2');
-      final oldWidget = _TestWidget(key: key1);
-      final newWidget = _TestWidget(key: key2);
+      const oldWidget = _TestWidget(key: key1);
+      const newWidget = _TestWidget(key: key2);
       expect(Widget.canUpdate(oldWidget, newWidget), isFalse);
     });
 
     test('canUpdate returns false for different types', () {
-      final oldWidget = _TestWidget();
-      final newWidget = _TestWidget2();
+      const oldWidget = _TestWidget();
+      const newWidget = _TestWidget2();
       expect(Widget.canUpdate(oldWidget, newWidget), isFalse);
     });
   });
@@ -93,7 +93,7 @@ class _TestWidget extends StatelessWidget {
 }
 
 class _TestWidget2 extends StatelessWidget {
-  const _TestWidget2({super.key});
+  const _TestWidget2();
 
   @override
   Widget build(BuildContext context) => const Text('test2');

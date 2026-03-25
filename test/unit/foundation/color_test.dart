@@ -1,21 +1,21 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Color', () {
     group('constructor', () {
       test('creates color with value', () {
-        final color = Color(5);
+        const color = Color(5);
         expect(color.value, equals(5));
       });
 
       test('creates color with zero value', () {
-        final color = Color(0);
+        const color = Color(0);
         expect(color.value, equals(0));
       });
 
       test('creates color with negative value', () {
-        final color = Color(-1);
+        const color = Color(-1);
         expect(color.value, equals(-1));
       });
     });
@@ -96,7 +96,7 @@ void main() {
 
     group('toString', () {
       test('returns readable representation', () {
-        final color = Color(5);
+        const color = Color(5);
         expect(color.toString(), equals('Color(5)'));
       });
     });
@@ -185,7 +185,7 @@ void main() {
   group('TextStyle', () {
     group('constructor', () {
       test('creates with default values', () {
-        final style = TextStyle();
+        const style = TextStyle();
         expect(style.color, isNull);
         expect(style.backgroundColor, isNull);
         expect(style.bold, isFalse);
@@ -195,37 +195,37 @@ void main() {
       });
 
       test('creates with color', () {
-        final style = TextStyle(color: Colors.red);
+        const style = TextStyle(color: Colors.red);
         expect(style.color, equals(Colors.red));
       });
 
       test('creates with backgroundColor', () {
-        final style = TextStyle(backgroundColor: Colors.blue);
+        const style = TextStyle(backgroundColor: Colors.blue);
         expect(style.backgroundColor, equals(Colors.blue));
       });
 
       test('creates with bold', () {
-        final style = TextStyle(bold: true);
+        const style = TextStyle(bold: true);
         expect(style.bold, isTrue);
       });
 
       test('creates with italic', () {
-        final style = TextStyle(italic: true);
+        const style = TextStyle(italic: true);
         expect(style.italic, isTrue);
       });
 
       test('creates with underline', () {
-        final style = TextStyle(underline: true);
+        const style = TextStyle(underline: true);
         expect(style.underline, isTrue);
       });
 
       test('creates with fontFamily', () {
-        final style = TextStyle(fontFamily: FontFamily.system);
+        const style = TextStyle(fontFamily: FontFamily.system);
         expect(style.fontFamily, equals(FontFamily.system));
       });
 
       test('creates with all properties', () {
-        final style = TextStyle(
+        const style = TextStyle(
           color: Colors.red,
           backgroundColor: Colors.blue,
           bold: true,
@@ -244,28 +244,28 @@ void main() {
 
     group('equality', () {
       test('equal styles have same hashCode', () {
-        final a = TextStyle(color: Colors.red, bold: true);
-        final b = TextStyle(color: Colors.red, bold: true);
+        const a = TextStyle(color: Colors.red, bold: true);
+        const b = TextStyle(color: Colors.red, bold: true);
         expect(a, equals(b));
         expect(a.hashCode, equals(b.hashCode));
       });
 
       test('different styles are not equal', () {
-        final a = TextStyle(color: Colors.red);
-        final b = TextStyle(color: Colors.blue);
+        const a = TextStyle(color: Colors.red);
+        const b = TextStyle(color: Colors.blue);
         expect(a, isNot(equals(b)));
       });
 
       test('default styles are equal', () {
-        final a = TextStyle();
-        final b = TextStyle();
+        const a = TextStyle();
+        const b = TextStyle();
         expect(a, equals(b));
       });
     });
 
     group('toString', () {
       test('returns readable representation', () {
-        final style = TextStyle(color: Colors.red);
+        const style = TextStyle(color: Colors.red);
         expect(style.toString(), contains('Color(1)'));
       });
     });

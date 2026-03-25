@@ -1,12 +1,6 @@
 import '../../../radartui.dart';
 
 class Radio<T> extends StatefulWidget {
-  final T value;
-  final T? groupValue;
-  final ValueChanged<T?>? onChanged;
-  final FocusNode? focusNode;
-  final Color? activeColor;
-  final Color? checkColor;
 
   const Radio({
     super.key,
@@ -17,6 +11,12 @@ class Radio<T> extends StatefulWidget {
     this.activeColor,
     this.checkColor,
   });
+  final T value;
+  final T? groupValue;
+  final ValueChanged<T?>? onChanged;
+  final FocusNode? focusNode;
+  final Color? activeColor;
+  final Color? checkColor;
 
   @override
   State<Radio<T>> createState() => _RadioState<T>();
@@ -92,12 +92,6 @@ class _RadioState<T> extends State<Radio<T>> {
 }
 
 class _RadioRenderWidget extends RenderObjectWidget {
-  final bool selected;
-  final bool focused;
-  final bool enabled;
-  final Color activeColor;
-  final Color checkColor;
-  final VoidCallback? onTap;
 
   const _RadioRenderWidget({
     required this.selected,
@@ -107,6 +101,12 @@ class _RadioRenderWidget extends RenderObjectWidget {
     required this.checkColor,
     this.onTap,
   });
+  final bool selected;
+  final bool focused;
+  final bool enabled;
+  final Color activeColor;
+  final Color checkColor;
+  final VoidCallback? onTap;
 
   @override
   RenderObjectElement createElement() => RenderObjectElement(this);
@@ -141,12 +141,6 @@ class _RadioRenderWidget extends RenderObjectWidget {
 }
 
 class RenderRadio extends RenderBox {
-  bool selected;
-  bool focused;
-  bool enabled;
-  Color activeColor;
-  Color checkColor;
-  VoidCallback? onTap;
 
   RenderRadio({
     required this.selected,
@@ -156,6 +150,12 @@ class RenderRadio extends RenderBox {
     required this.checkColor,
     this.onTap,
   });
+  bool selected;
+  bool focused;
+  bool enabled;
+  Color activeColor;
+  Color checkColor;
+  VoidCallback? onTap;
 
   @override
   void performLayout(Constraints constraints) {

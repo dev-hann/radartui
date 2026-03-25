@@ -1,17 +1,17 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Positioned', () {
     test('Positioned creates with all parameters', () {
-      final positioned = Positioned(
+      const positioned = Positioned(
         left: 10,
         top: 5,
         right: 20,
         bottom: 15,
         width: 100,
         height: 50,
-        child: const Text('test'),
+        child: Text('test'),
       );
       expect(positioned.left, equals(10));
       expect(positioned.top, equals(5));
@@ -22,8 +22,8 @@ void main() {
     });
 
     test('Positioned.fill creates with zero offsets', () {
-      final positioned = Positioned.fill(
-        child: const Text('test'),
+      const positioned = Positioned.fill(
+        child: Text('test'),
       );
       expect(positioned.left, equals(0));
       expect(positioned.top, equals(0));
@@ -34,10 +34,10 @@ void main() {
     });
 
     test('Positioned creates with partial parameters', () {
-      final positioned = Positioned(
+      const positioned = Positioned(
         left: 10,
         top: 5,
-        child: const Text('test'),
+        child: Text('test'),
       );
       expect(positioned.left, equals(10));
       expect(positioned.top, equals(5));
@@ -48,25 +48,25 @@ void main() {
     });
 
     test('Positioned child is accessible', () {
-      final positioned = Positioned(
+      const positioned = Positioned(
         left: 10,
-        child: const Text('test'),
+        child: Text('test'),
       );
       expect(positioned.child, isA<Text>());
     });
 
     test('Positioned is a ParentDataWidget', () {
-      final positioned = Positioned(
-        child: const Text('test'),
+      const positioned = Positioned(
+        child: Text('test'),
       );
       expect(positioned, isA<ParentDataWidget>());
     });
 
     test('Positioned.applyParentData sets StackParentData', () {
-      final positioned = Positioned(
+      const positioned = Positioned(
         left: 10,
         top: 5,
-        child: const Text('test'),
+        child: Text('test'),
       );
       final renderObject = _TestRenderBox();
       renderObject.parentData = StackParentData();

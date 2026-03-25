@@ -12,8 +12,8 @@ abstract class LocalKey extends Key {
 }
 
 class ValueKey<T> extends LocalKey {
-  final T value;
   const ValueKey(this.value);
+  final T value;
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -23,7 +23,7 @@ class ValueKey<T> extends LocalKey {
   @override
   int get hashCode => Object.hash(runtimeType, value);
   @override
-  String toString() => "ValueKey<$T>($value)";
+  String toString() => 'ValueKey<$T>($value)';
 }
 
 class GlobalKey extends Key {
@@ -53,8 +53,8 @@ class UniqueKey extends LocalKey {
 }
 
 abstract class Widget {
-  final Key? key;
   const Widget({this.key});
+  final Key? key;
   Element createElement();
   static bool canUpdate(Widget oldWidget, Widget newWidget) {
     return oldWidget.runtimeType == newWidget.runtimeType &&
@@ -72,24 +72,24 @@ abstract class Element {
 
   void mount(Element? parent) {
     _parent = parent;
-    if (widget.key case GlobalKey key) {
+    if (widget.key case final GlobalKey key) {
       key._register(this);
     }
   }
   
   void update(Widget newWidget) {
     if (widget.key != newWidget.key) {
-      if (widget.key case GlobalKey key) {
+      if (widget.key case final GlobalKey key) {
         key._unregister(this);
       }
-      if (newWidget.key case GlobalKey key) {
+      if (newWidget.key case final GlobalKey key) {
         key._register(this);
       }
     }
     widget = newWidget;
   }
   void unmount() {
-    if (widget.key case GlobalKey key) {
+    if (widget.key case final GlobalKey key) {
       key._unregister(this);
     }
     _clearDependencies();
@@ -275,16 +275,16 @@ abstract class ComponentElement extends Element implements BuildContext {
 }
 
 abstract class InheritedWidget extends Widget {
-  final Widget child;
   const InheritedWidget({super.key, required this.child});
+  final Widget child;
   @override
   InheritedElement createElement() => InheritedElement(this);
   bool updateShouldNotify(covariant InheritedWidget oldWidget);
 }
 
 class InheritedElement extends ComponentElement {
-  final Set<Element> _dependents = {};
   InheritedElement(InheritedWidget super.widget);
+  final Set<Element> _dependents = {};
   
   @override
   void unmount() {
@@ -311,8 +311,8 @@ class InheritedElement extends ComponentElement {
 }
 
 abstract class ParentDataWidget<T extends ParentData> extends Widget {
-  final Widget child;
   const ParentDataWidget({super.key, required this.child});
+  final Widget child;
   void applyParentData(RenderObject renderObject);
   @override
   ParentDataElement createElement() => ParentDataElement(this);
@@ -320,7 +320,6 @@ abstract class ParentDataWidget<T extends ParentData> extends Widget {
 
 class ParentDataElement extends ComponentElement {
   ParentDataElement(ParentDataWidget super.widget);
-  Element? _child;
 
   @override
   void mount(Element? parent) {
@@ -383,8 +382,8 @@ class RenderObjectElement extends Element implements BuildContext {
 }
 
 abstract class SingleChildRenderObjectWidget extends RenderObjectWidget {
-  final Widget? child;
   const SingleChildRenderObjectWidget({super.key, this.child});
+  final Widget? child;
   @override
   SingleChildRenderObjectElement createElement() =>
       SingleChildRenderObjectElement(this);
@@ -430,8 +429,8 @@ class SingleChildRenderObjectElement extends RenderObjectElement {
 }
 
 abstract class MultiChildRenderObjectWidget extends RenderObjectWidget {
-  final List<Widget> children;
   const MultiChildRenderObjectWidget({super.key, required this.children});
+  final List<Widget> children;
   @override
   MultiChildRenderObjectElement createElement() =>
       MultiChildRenderObjectElement(this);
@@ -444,7 +443,7 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
   @override
   void mount(Element? parent) {
     super.mount(parent);
-    var renderObject = this.renderObject
+    final renderObject = this.renderObject
         as ContainerRenderObjectMixin<RenderObject, ParentData>;
     _children = (widget as MultiChildRenderObjectWidget).children.map((w) {
       final child = w.createElement();
@@ -507,6 +506,8 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
 
   @override
   void visitChildren(void Function(Element e) visitor) {
-    for (final c in _children) visitor(c);
+    for (final c in _children) {
+      visitor(c);
+    }
   }
 }

@@ -1,12 +1,6 @@
 import '../../../radartui.dart';
 
 class Positioned extends ParentDataWidget<StackParentData> {
-  final int? left;
-  final int? top;
-  final int? right;
-  final int? bottom;
-  final int? width;
-  final int? height;
 
   const Positioned({
     super.key,
@@ -21,14 +15,19 @@ class Positioned extends ParentDataWidget<StackParentData> {
 
   const Positioned.fill({
     super.key,
-    required Widget child,
+    required super.child,
   }) : left = 0,
        top = 0,
        right = 0,
        bottom = 0,
        width = null,
-       height = null,
-       super(child: child);
+       height = null;
+  final int? left;
+  final int? top;
+  final int? right;
+  final int? bottom;
+  final int? width;
+  final int? height;
 
   @override
   void applyParentData(RenderObject renderObject) {

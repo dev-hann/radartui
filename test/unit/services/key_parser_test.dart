@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('KeyParser', () {
@@ -307,12 +307,12 @@ void main() {
   group('KeyEvent', () {
     group('toString', () {
       test('formats character key', () {
-        final event = KeyEvent(code: KeyCode.char, char: 'a');
+        const event = KeyEvent(code: KeyCode.char, char: 'a');
         expect(event.toString(), equals('KeyEvent(a)'));
       });
 
       test('formats character key with modifiers', () {
-        final event = KeyEvent(
+        const event = KeyEvent(
           code: KeyCode.char,
           char: 'a',
           isCtrlPressed: true,
@@ -322,12 +322,12 @@ void main() {
       });
 
       test('formats special key', () {
-        final event = KeyEvent(code: KeyCode.arrowUp);
+        const event = KeyEvent(code: KeyCode.arrowUp);
         expect(event.toString(), equals('KeyEvent(arrowUp)'));
       });
 
       test('formats special key with modifiers', () {
-        final event = KeyEvent(
+        const event = KeyEvent(
           code: KeyCode.arrowUp,
           isShiftPressed: true,
         );
@@ -335,7 +335,7 @@ void main() {
       });
 
       test('formats all modifiers in order', () {
-        final event = KeyEvent(
+        const event = KeyEvent(
           code: KeyCode.enter,
           isCtrlPressed: true,
           isAltPressed: true,

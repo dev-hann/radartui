@@ -1,13 +1,13 @@
 import '../../../radartui.dart';
 
 class MediaQueryData {
-  final Size size;
-  final EdgeInsets padding;
 
   const MediaQueryData({
     required this.size,
     this.padding = EdgeInsets.zero,
   });
+  final Size size;
+  final EdgeInsets padding;
 
   MediaQueryData copyWith({
     Size? size,
@@ -35,13 +35,13 @@ class MediaQueryData {
 }
 
 class MediaQuery extends InheritedWidget {
-  final MediaQueryData data;
 
   const MediaQuery({
     super.key,
     required this.data,
     required super.child,
   });
+  final MediaQueryData data;
 
   static MediaQueryData of(BuildContext context) {
     final widget = context.dependOnInheritedWidgetOfExactType<MediaQuery>();
@@ -61,8 +61,8 @@ class MediaQuery extends InheritedWidget {
 }
 
 class FlutterError implements Exception {
-  final String message;
   FlutterError(this.message);
+  final String message;
   @override
   String toString() => 'FlutterError: $message';
 }

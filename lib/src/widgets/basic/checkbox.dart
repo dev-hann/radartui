@@ -1,12 +1,6 @@
 import '../../../radartui.dart';
 
 class Checkbox extends StatefulWidget {
-  final bool value;
-  final ValueChanged<bool?>? onChanged;
-  final bool tristate;
-  final FocusNode? focusNode;
-  final Color? activeColor;
-  final Color? checkColor;
 
   const Checkbox({
     super.key,
@@ -17,6 +11,12 @@ class Checkbox extends StatefulWidget {
     this.activeColor,
     this.checkColor,
   });
+  final bool value;
+  final ValueChanged<bool?>? onChanged;
+  final bool tristate;
+  final FocusNode? focusNode;
+  final Color? activeColor;
+  final Color? checkColor;
 
   @override
   State<Checkbox> createState() => _CheckboxState();
@@ -86,12 +86,6 @@ class _CheckboxState extends State<Checkbox> {
 }
 
 class _CheckboxRenderWidget extends RenderObjectWidget {
-  final bool value;
-  final bool tristate;
-  final bool focused;
-  final bool enabled;
-  final Color activeColor;
-  final Color checkColor;
 
   const _CheckboxRenderWidget({
     required this.value,
@@ -101,6 +95,12 @@ class _CheckboxRenderWidget extends RenderObjectWidget {
     required this.activeColor,
     required this.checkColor,
   });
+  final bool value;
+  final bool tristate;
+  final bool focused;
+  final bool enabled;
+  final Color activeColor;
+  final Color checkColor;
 
   @override
   RenderObjectElement createElement() => RenderObjectElement(this);
@@ -135,12 +135,6 @@ class _CheckboxRenderWidget extends RenderObjectWidget {
 }
 
 class RenderCheckbox extends RenderBox {
-  bool value;
-  bool tristate;
-  bool focused;
-  bool enabled;
-  Color activeColor;
-  Color checkColor;
 
   RenderCheckbox({
     required this.value,
@@ -150,6 +144,12 @@ class RenderCheckbox extends RenderBox {
     required this.activeColor,
     required this.checkColor,
   });
+  bool value;
+  bool tristate;
+  bool focused;
+  bool enabled;
+  Color activeColor;
+  Color checkColor;
 
   @override
   void performLayout(Constraints constraints) {

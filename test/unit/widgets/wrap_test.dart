@@ -1,49 +1,49 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Wrap widget', () {
     test('Wrap creates with children', () {
-      final wrap = Wrap(children: const [Text('a'), Text('b')]);
+      const wrap = Wrap(children: [Text('a'), Text('b')]);
       expect(wrap.children.length, equals(2));
     });
 
     test('Wrap creates with direction', () {
-      final wrap = Wrap(
+      const wrap = Wrap(
         direction: Axis.vertical,
-        children: const [Text('a')],
+        children: [Text('a')],
       );
       expect(wrap.direction, equals(Axis.vertical));
     });
 
     test('Wrap creates with alignment', () {
-      final wrap = Wrap(
+      const wrap = Wrap(
         alignment: WrapAlignment.center,
-        children: const [Text('a')],
+        children: [Text('a')],
       );
       expect(wrap.alignment, equals(WrapAlignment.center));
     });
 
     test('Wrap creates with crossAxisAlignment', () {
-      final wrap = Wrap(
+      const wrap = Wrap(
         crossAxisAlignment: WrapCrossAlignment.end,
-        children: const [Text('a')],
+        children: [Text('a')],
       );
       expect(wrap.crossAxisAlignment, equals(WrapCrossAlignment.end));
     });
 
     test('Wrap creates with spacing', () {
-      final wrap = Wrap(spacing: 2, children: const [Text('a')]);
+      const wrap = Wrap(spacing: 2, children: [Text('a')]);
       expect(wrap.spacing, equals(2));
     });
 
     test('Wrap creates with runSpacing', () {
-      final wrap = Wrap(runSpacing: 1, children: const [Text('a')]);
+      const wrap = Wrap(runSpacing: 1, children: [Text('a')]);
       expect(wrap.runSpacing, equals(1));
     });
 
     test('Wrap creates RenderWrap', () {
-      final wrap = Wrap(children: const [Text('a')]);
+      const wrap = Wrap(children: [Text('a')]);
       final renderObject = wrap.createRenderObject(_MockBuildContext());
       expect(renderObject, isA<RenderWrap>());
     });

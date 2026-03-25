@@ -2,12 +2,6 @@ import 'dart:async';
 import '../../../radartui.dart';
 
 class Dialog extends StatelessWidget {
-  final Widget child;
-  final String? title;
-  final List<Widget>? actions;
-  final EdgeInsets? padding;
-  final TextStyle? titleStyle;
-  final Color backgroundColor;
 
   const Dialog({
     super.key,
@@ -18,6 +12,12 @@ class Dialog extends StatelessWidget {
     this.titleStyle,
     this.backgroundColor = Colors.white,
   });
+  final Widget child;
+  final String? title;
+  final List<Widget>? actions;
+  final EdgeInsets? padding;
+  final TextStyle? titleStyle;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +64,6 @@ class Dialog extends StatelessWidget {
 }
 
 class ModalRoute<T> extends Route<T> {
-  final WidgetBuilder builder;
-  final bool barrierDismissible;
-  final Color? barrierColor;
-  final Alignment alignment;
 
   ModalRoute({
     required this.builder,
@@ -76,6 +72,10 @@ class ModalRoute<T> extends Route<T> {
     this.alignment = Alignment.center,
     super.settings,
   });
+  final WidgetBuilder builder;
+  final bool barrierDismissible;
+  final Color? barrierColor;
+  final Alignment alignment;
 
   @override
   bool get fullScreenRender => false;
@@ -132,10 +132,6 @@ Future<T?> showDialog<T>({
 }
 
 class _ModalBarrier extends StatefulWidget {
-  final Widget child;
-  final bool barrierDismissible;
-  final Color? barrierColor;
-  final Alignment alignment;
 
   const _ModalBarrier({
     required this.child,
@@ -143,6 +139,10 @@ class _ModalBarrier extends StatefulWidget {
     this.barrierColor,
     this.alignment = Alignment.center,
   });
+  final Widget child;
+  final bool barrierDismissible;
+  final Color? barrierColor;
+  final Alignment alignment;
 
   @override
   State<_ModalBarrier> createState() => _ModalBarrierState();

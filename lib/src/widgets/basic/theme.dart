@@ -1,12 +1,6 @@
 import '../../../radartui.dart';
 
 class ThemeData {
-  final Color primaryColor;
-  final Color backgroundColor;
-  final Color textColor;
-  final Color selectedColor;
-  final Color borderColor;
-  final Color dividerColor;
 
   const ThemeData({
     this.primaryColor = Colors.blue,
@@ -16,6 +10,12 @@ class ThemeData {
     this.borderColor = Colors.white,
     this.dividerColor = Colors.white,
   });
+  final Color primaryColor;
+  final Color backgroundColor;
+  final Color textColor;
+  final Color selectedColor;
+  final Color borderColor;
+  final Color dividerColor;
 
   static ThemeData get dark => const ThemeData(
         primaryColor: Colors.blue,
@@ -80,13 +80,13 @@ class ThemeData {
 }
 
 class Theme extends InheritedWidget {
-  final ThemeData data;
 
   const Theme({
     super.key,
     required this.data,
     required super.child,
   });
+  final ThemeData data;
 
   static ThemeData of(BuildContext context) {
     final widget = context.dependOnInheritedWidgetOfExactType<Theme>();

@@ -1,17 +1,17 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Button', () {
     group('constructor', () {
       test('creates with required text', () {
-        final button = Button(text: 'Click me');
+        const button = Button(text: 'Click me');
         expect(button.text, equals('Click me'));
         expect(button.enabled, isTrue);
       });
 
       test('creates with enabled false', () {
-        final button = Button(text: 'Click me', enabled: false);
+        const button = Button(text: 'Click me', enabled: false);
         expect(button.enabled, isFalse);
       });
 
@@ -20,7 +20,7 @@ void main() {
           foregroundColor: Color.red,
           backgroundColor: Color.blue,
         );
-        final button = Button(text: 'Click me', style: style);
+        const button = Button(text: 'Click me', style: style);
         expect(button.style, equals(style));
       });
 

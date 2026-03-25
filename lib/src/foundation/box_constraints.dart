@@ -1,12 +1,8 @@
-import 'size.dart';
-import 'edge_insets.dart';
 import '../rendering.dart';
+import 'edge_insets.dart';
+import 'size.dart';
 
 class BoxConstraints extends Constraints {
-  final int minWidth;
-  final int maxWidth;
-  final int minHeight;
-  final int maxHeight;
 
   const BoxConstraints({
     this.minWidth = 0,
@@ -38,6 +34,10 @@ class BoxConstraints extends Constraints {
       maxWidth = width ?? Constraints.infinity,
       minHeight = height ?? 0,
       maxHeight = height ?? Constraints.infinity;
+  final int minWidth;
+  final int maxWidth;
+  final int minHeight;
+  final int maxHeight;
 
   bool get isTight => minWidth == maxWidth && minHeight == maxHeight;
 

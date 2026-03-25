@@ -1,47 +1,47 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Flex widget', () {
     test('Flex creates with direction', () {
-      final flex = Flex(
+      const flex = Flex(
         direction: Axis.horizontal,
-        children: const [Text('a'), Text('b')],
+        children: [Text('a'), Text('b')],
       );
       expect(flex.direction, equals(Axis.horizontal));
     });
 
     test('Flex creates with mainAxisAlignment', () {
-      final flex = Flex(
+      const flex = Flex(
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [Text('a')],
+        children: [Text('a')],
       );
       expect(flex.mainAxisAlignment, equals(MainAxisAlignment.center));
     });
 
     test('Flex creates with crossAxisAlignment', () {
-      final flex = Flex(
+      const flex = Flex(
         direction: Axis.horizontal,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [Text('a')],
+        children: [Text('a')],
       );
       expect(flex.crossAxisAlignment, equals(CrossAxisAlignment.start));
     });
 
     test('Flex creates with mainAxisSize', () {
-      final flex = Flex(
+      const flex = Flex(
         direction: Axis.horizontal,
         mainAxisSize: MainAxisSize.min,
-        children: const [Text('a')],
+        children: [Text('a')],
       );
       expect(flex.mainAxisSize, equals(MainAxisSize.min));
     });
 
     test('Flex creates RenderFlex', () {
-      final flex = Flex(
+      const flex = Flex(
         direction: Axis.horizontal,
-        children: const [Text('a')],
+        children: [Text('a')],
       );
       final renderObject = flex.createRenderObject(_MockBuildContext());
       expect(renderObject, isA<RenderFlex>());
@@ -78,22 +78,22 @@ void main() {
 
   group('Row widget', () {
     test('Row creates horizontal Flex', () {
-      final row = Row(children: const [Text('a'), Text('b')]);
+      const row = Row(children: [Text('a'), Text('b')]);
       expect(row.direction, equals(Axis.horizontal));
     });
 
     test('Row creates with mainAxisAlignment', () {
-      final row = Row(
+      const row = Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: const [Text('a')],
+        children: [Text('a')],
       );
       expect(row.mainAxisAlignment, equals(MainAxisAlignment.spaceAround));
     });
 
     test('Row creates with crossAxisAlignment', () {
-      final row = Row(
+      const row = Row(
         crossAxisAlignment: CrossAxisAlignment.end,
-        children: const [Text('a')],
+        children: [Text('a')],
       );
       expect(row.crossAxisAlignment, equals(CrossAxisAlignment.end));
     });
@@ -101,22 +101,22 @@ void main() {
 
   group('Column widget', () {
     test('Column creates vertical Flex', () {
-      final column = Column(children: const [Text('a'), Text('b')]);
+      const column = Column(children: [Text('a'), Text('b')]);
       expect(column.direction, equals(Axis.vertical));
     });
 
     test('Column creates with mainAxisAlignment', () {
-      final column = Column(
+      const column = Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [Text('a')],
+        children: [Text('a')],
       );
       expect(column.mainAxisAlignment, equals(MainAxisAlignment.spaceBetween));
     });
 
     test('Column creates with crossAxisAlignment', () {
-      final column = Column(
+      const column = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [Text('a')],
+        children: [Text('a')],
       );
       expect(column.crossAxisAlignment, equals(CrossAxisAlignment.start));
     });

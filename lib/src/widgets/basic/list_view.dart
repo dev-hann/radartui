@@ -26,14 +26,6 @@ class ScrollController extends ChangeNotifier {
 }
 
 class ListView<T> extends StatefulWidget {
-  final List<T> items;
-  final Widget Function(T item) selectedBuilder;
-  final Widget Function(T item) unselectedBuilder;
-  final int initialSelectedIndex;
-  final void Function(int index, T item)? onItemSelected;
-  final bool wrapAroundNavigation;
-  final ScrollController? controller;
-  final int? itemExtent;
 
   const ListView({
     super.key,
@@ -47,6 +39,14 @@ class ListView<T> extends StatefulWidget {
     this.itemExtent,
   })  : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
         unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
+  final List<T> items;
+  final Widget Function(T item) selectedBuilder;
+  final Widget Function(T item) unselectedBuilder;
+  final int initialSelectedIndex;
+  final void Function(int index, T item)? onItemSelected;
+  final bool wrapAroundNavigation;
+  final ScrollController? controller;
+  final int? itemExtent;
 
   @override
   State<ListView<T>> createState() => _ListViewState<T>();

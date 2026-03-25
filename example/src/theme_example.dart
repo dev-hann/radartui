@@ -1,4 +1,4 @@
-import '../../lib/radartui.dart';
+import 'package:radartui/radartui.dart';
 
 class ThemeExample extends StatefulWidget {
   const ThemeExample();
@@ -87,8 +87,8 @@ class _ThemeExampleState extends State<ThemeExample> {
                   child: Builder(
                     builder: (context) {
                       final mediaQuery = MediaQuery.maybeOf(context);
-                      final size = mediaQuery?.size ?? const Size(80, 24);
-                      final padding = mediaQuery?.padding ?? EdgeInsets.zero;
+                      final size = mediaQuery.size;
+                      final padding = mediaQuery.padding;
                       
                       return Column(
                         children: [
@@ -138,14 +138,14 @@ class _ThemeExampleState extends State<ThemeExample> {
 
                 const SizedBox(height: 2),
 
-                Container(
+                const Container(
                   width: 60,
                   color: Color.yellow,
-                  padding: const EdgeInsets.all(1),
+                  padding: EdgeInsets.all(1),
                   child: Column(
                     children: [
-                      const Text('Controls:', style: TextStyle(color: Color.black, bold: true)),
-                      const Text('T: Toggle Theme | ESC: Return', style: TextStyle(color: Color.black)),
+                      Text('Controls:', style: TextStyle(color: Color.black, bold: true)),
+                      Text('T: Toggle Theme | ESC: Return', style: TextStyle(color: Color.black)),
                     ],
                   ),
                 ),

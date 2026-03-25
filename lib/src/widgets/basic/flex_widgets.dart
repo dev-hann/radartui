@@ -3,38 +3,28 @@ import '../../../radartui.dart';
 class Row extends Flex {
   const Row({
     super.key,
-    required List<Widget> children,
-    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
-    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
-    MainAxisSize mainAxisSize = MainAxisSize.max,
+    required super.children,
+    super.mainAxisAlignment,
+    super.crossAxisAlignment,
+    super.mainAxisSize,
   }) : super(
-           children: children,
            direction: Axis.horizontal,
-           mainAxisAlignment: mainAxisAlignment,
-           crossAxisAlignment: crossAxisAlignment,
-           mainAxisSize: mainAxisSize,
          );
 }
 
 class Column extends Flex {
   const Column({
     super.key,
-    required List<Widget> children,
-    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
-    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
-    MainAxisSize mainAxisSize = MainAxisSize.max,
+    required super.children,
+    super.mainAxisAlignment,
+    super.crossAxisAlignment,
+    super.mainAxisSize,
   }) : super(
-           children: children,
            direction: Axis.vertical,
-           mainAxisAlignment: mainAxisAlignment,
-           crossAxisAlignment: crossAxisAlignment,
-           mainAxisSize: mainAxisSize,
          );
 }
 
 abstract class Flexible extends ParentDataWidget<FlexParentData> {
-  final int flex;
-  final FlexFit fit;
 
   const Flexible({
     super.key,
@@ -42,12 +32,12 @@ abstract class Flexible extends ParentDataWidget<FlexParentData> {
     this.flex = 1,
     this.fit = FlexFit.loose,
   });
+  final int flex;
+  final FlexFit fit;
 
   @override
   void applyParentData(RenderObject renderObject) {
-    if (renderObject.parentData == null) {
-      renderObject.parentData = FlexParentData();
-    }
+    renderObject.parentData ??= FlexParentData();
     if (renderObject.parentData is! FlexParentData) {
       renderObject.parentData = FlexParentData();
     }
@@ -64,6 +54,6 @@ class Expanded extends Flexible {
   const Expanded({
     super.key,
     required super.child,
-    int flex = 1,
-  }) : super(flex: flex, fit: FlexFit.tight);
+    super.flex,
+  }) : super(fit: FlexFit.tight);
 }

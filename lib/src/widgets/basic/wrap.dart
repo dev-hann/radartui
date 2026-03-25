@@ -1,11 +1,6 @@
 import '../../../radartui.dart';
 
 class Wrap extends MultiChildRenderObjectWidget {
-  final Axis direction;
-  final WrapAlignment alignment;
-  final WrapCrossAlignment crossAxisAlignment;
-  final int spacing;
-  final int runSpacing;
   
   const Wrap({
     super.key,
@@ -16,6 +11,11 @@ class Wrap extends MultiChildRenderObjectWidget {
     this.spacing = 0,
     this.runSpacing = 0,
   });
+  final Axis direction;
+  final WrapAlignment alignment;
+  final WrapCrossAlignment crossAxisAlignment;
+  final int spacing;
+  final int runSpacing;
   
   @override
   RenderWrap createRenderObject(BuildContext context) => RenderWrap(
@@ -59,12 +59,6 @@ class WrapParentData extends ParentData {
 class RenderWrap extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, WrapParentData> {
   
-  Axis direction;
-  WrapAlignment alignment;
-  WrapCrossAlignment crossAxisAlignment;
-  int spacing;
-  int runSpacing;
-  
   RenderWrap({
     this.direction = Axis.horizontal,
     this.alignment = WrapAlignment.start,
@@ -72,6 +66,12 @@ class RenderWrap extends RenderBox
     this.spacing = 0,
     this.runSpacing = 0,
   });
+  
+  Axis direction;
+  WrapAlignment alignment;
+  WrapCrossAlignment crossAxisAlignment;
+  int spacing;
+  int runSpacing;
   
   @override
   void setupParentData(RenderObject child) {

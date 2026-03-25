@@ -1,4 +1,4 @@
-import '../../lib/radartui.dart';
+import 'package:radartui/radartui.dart';
 
 class ButtonExample extends StatefulWidget {
   const ButtonExample();

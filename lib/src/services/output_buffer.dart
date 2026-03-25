@@ -4,9 +4,9 @@ import 'logger.dart';
 import 'terminal.dart';
 
 class Cell {
+  const Cell(this.char, [this.style]);
   final String char;
   final TextStyle? style;
-  const Cell(this.char, [this.style]);
   
   static const empty = Cell(' ');
 
@@ -25,13 +25,13 @@ class Cell {
 }
 
 class OutputBuffer {
-  final Terminal terminal;
-  late List<List<Cell>> _grid;
-  late List<List<Cell>> _previousGrid;
 
   OutputBuffer(this.terminal) {
     resize();
   }
+  final Terminal terminal;
+  late List<List<Cell>> _grid;
+  late List<List<Cell>> _previousGrid;
 
   void resize() {
     _grid = List.generate(
@@ -119,7 +119,7 @@ class OutputBuffer {
       return '\x1b[0m';
     }
 
-    List<String> codes = ['0'];
+    final List<String> codes = ['0'];
 
     if (style.bold) codes.add('1');
     if (style.italic) codes.add('3');

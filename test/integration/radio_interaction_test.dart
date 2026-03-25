@@ -71,10 +71,10 @@ void main() {
     });
 
     testWidgets('Disabled radio does not respond to input', (tester) async {
-      String? groupValue = 'initial';
+      const String groupValue = 'initial';
 
       tester.pumpWidget(
-        Radio<String>(
+        const Radio<String>(
           value: 'option1',
           groupValue: groupValue,
           onChanged: null,

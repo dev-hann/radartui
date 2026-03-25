@@ -1,19 +1,19 @@
 import '../../../radartui.dart';
 
 class Flex extends MultiChildRenderObjectWidget {
-  final Axis direction;
-  final MainAxisAlignment mainAxisAlignment;
-  final CrossAxisAlignment crossAxisAlignment;
-  final MainAxisSize mainAxisSize;
 
   const Flex({
     super.key,
-    required List<Widget> children,
+    required super.children,
     required this.direction,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisSize = MainAxisSize.max,
-  }) : super(children: children);
+  });
+  final Axis direction;
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
+  final MainAxisSize mainAxisSize;
 
   @override
   RenderFlex createRenderObject(BuildContext context) => RenderFlex(
@@ -35,10 +35,6 @@ class Flex extends MultiChildRenderObjectWidget {
 
 class RenderFlex extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, FlexParentData> {
-  Axis direction;
-  MainAxisAlignment mainAxisAlignment;
-  CrossAxisAlignment crossAxisAlignment;
-  MainAxisSize mainAxisSize;
 
   RenderFlex({
     required this.direction,
@@ -46,6 +42,10 @@ class RenderFlex extends RenderBox
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisSize = MainAxisSize.max,
   });
+  Axis direction;
+  MainAxisAlignment mainAxisAlignment;
+  CrossAxisAlignment crossAxisAlignment;
+  MainAxisSize mainAxisSize;
 
   @override
   void setupParentData(RenderObject child) {

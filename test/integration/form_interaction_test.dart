@@ -264,8 +264,8 @@ void main() {
 
     testWidgets('Form can be found by type', (tester) async {
       tester.pumpWidget(
-        Form(
-          child: const Text('Form'),
+        const Form(
+          child: Text('Form'),
         ),
       );
 

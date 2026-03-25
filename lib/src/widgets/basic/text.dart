@@ -7,11 +7,6 @@ enum TextOverflow {
 }
 
 class Text extends RenderObjectWidget {
-  final String data;
-  final TextStyle? style;
-  final bool softWrap;
-  final int? maxLines;
-  final TextOverflow overflow;
   
   const Text(
     this.data, {
@@ -21,6 +16,11 @@ class Text extends RenderObjectWidget {
     this.maxLines,
     this.overflow = TextOverflow.clip,
   });
+  final String data;
+  final TextStyle? style;
+  final bool softWrap;
+  final int? maxLines;
+  final TextOverflow overflow;
   
   @override
   RenderObjectElement createElement() => RenderObjectElement(this);
@@ -46,12 +46,6 @@ class Text extends RenderObjectWidget {
 }
 
 class RenderText extends RenderBox {
-  String text;
-  TextStyle? style;
-  bool softWrap;
-  int? maxLines;
-  TextOverflow overflow;
-  List<String> _lines = [];
   
   RenderText({
     required this.text,
@@ -60,6 +54,12 @@ class RenderText extends RenderBox {
     this.maxLines,
     this.overflow = TextOverflow.clip,
   });
+  String text;
+  TextStyle? style;
+  bool softWrap;
+  int? maxLines;
+  TextOverflow overflow;
+  List<String> _lines = [];
 
   @override
   void performLayout(Constraints constraints) {
@@ -116,13 +116,13 @@ class RenderText extends RenderBox {
       if (softWrap) {
         int start = 0;
         while (start < paragraph.length) {
-          int end = start + maxWidth;
+          final int end = start + maxWidth;
           if (end >= paragraph.length) {
             lines.add(paragraph.substring(start));
             break;
           }
           
-          int lastSpace = paragraph.lastIndexOf(' ', end);
+          final int lastSpace = paragraph.lastIndexOf(' ', end);
           if (lastSpace > start) {
             lines.add(paragraph.substring(start, lastSpace));
             start = lastSpace + 1;

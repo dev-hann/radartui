@@ -1,8 +1,8 @@
 class Alignment {
-  final double x;
-  final double y;
 
   const Alignment(this.x, this.y);
+  final double x;
+  final double y;
 
   static const Alignment topLeft = Alignment(-1.0, -1.0);
   static const Alignment topCenter = Alignment(0.0, -1.0);

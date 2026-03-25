@@ -13,6 +13,6 @@ export 'services/keyboard_backend.dart';
 export 'services/logger.dart';
 export 'services/output_buffer.dart';
 export 'services/raw_keyboard.dart';
+export 'services/real_terminal_backend.dart';
 export 'services/terminal.dart';
 export 'services/terminal_backend.dart';
-export 'services/real_terminal_backend.dart';

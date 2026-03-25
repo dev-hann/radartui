@@ -1,8 +1,8 @@
 import '../../../radartui.dart';
 
 class Padding extends SingleChildRenderObjectWidget {
-  final EdgeInsets padding;
   const Padding({super.key, required this.padding, required super.child});
+  final EdgeInsets padding;
   @override
   RenderPadding createRenderObject(BuildContext context) =>
       RenderPadding(padding: padding);
@@ -13,8 +13,8 @@ class Padding extends SingleChildRenderObjectWidget {
 }
 
 class RenderPadding extends SingleChildRenderBox {
-  EdgeInsets padding;
   RenderPadding({required this.padding});
+  EdgeInsets padding;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) =>

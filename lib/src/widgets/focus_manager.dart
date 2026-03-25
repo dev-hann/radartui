@@ -6,10 +6,10 @@ import 'navigation.dart';
 import 'navigator_observer.dart';
 
 class FocusManager extends NavigatorObserver {
-  static FocusManager? _instance;
-  static FocusManager get instance => _instance ??= FocusManager._();
 
   FocusManager._();
+  static FocusManager? _instance;
+  static FocusManager get instance => _instance ??= FocusManager._();
 
   FocusScope? _currentScope;
   FocusScope? get currentScope => _currentScope;

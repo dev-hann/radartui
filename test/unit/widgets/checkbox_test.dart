@@ -1,17 +1,17 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Checkbox', () {
     group('constructor', () {
       test('creates with required value', () {
-        final checkbox = Checkbox(value: true);
+        const checkbox = Checkbox(value: true);
         expect(checkbox.value, isTrue);
         expect(checkbox.tristate, isFalse);
       });
 
       test('creates with tristate enabled', () {
-        final checkbox = Checkbox(value: false, tristate: true);
+        const checkbox = Checkbox(value: false, tristate: true);
         expect(checkbox.tristate, isTrue);
       });
 
@@ -29,7 +29,7 @@ void main() {
       });
 
       test('creates with custom colors', () {
-        final checkbox = Checkbox(
+        const checkbox = Checkbox(
           value: true,
           activeColor: Color.red,
           checkColor: Color.yellow,

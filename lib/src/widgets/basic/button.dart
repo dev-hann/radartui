@@ -1,11 +1,6 @@
 import '../../../radartui.dart';
 
 class Button extends StatefulWidget {
-  final String text;
-  final VoidCallback? onPressed;
-  final bool enabled;
-  final ButtonStyle? style;
-  final FocusNode? focusNode;
 
   const Button({
     super.key,
@@ -15,6 +10,11 @@ class Button extends StatefulWidget {
     this.style,
     this.focusNode,
   });
+  final String text;
+  final VoidCallback? onPressed;
+  final bool enabled;
+  final ButtonStyle? style;
+  final FocusNode? focusNode;
 
   @override
   State<Button> createState() => _ButtonState();
@@ -74,11 +74,6 @@ class _ButtonState extends State<Button> {
 }
 
 class _ButtonRenderWidget extends RenderObjectWidget {
-  final String text;
-  final bool enabled;
-  final bool focused;
-  final ButtonStyle style;
-  final VoidCallback? onTap;
 
   const _ButtonRenderWidget({
     required this.text,
@@ -87,6 +82,11 @@ class _ButtonRenderWidget extends RenderObjectWidget {
     required this.style,
     this.onTap,
   });
+  final String text;
+  final bool enabled;
+  final bool focused;
+  final ButtonStyle style;
+  final VoidCallback? onTap;
 
   @override
   RenderObjectElement createElement() => RenderObjectElement(this);
@@ -112,11 +112,6 @@ class _ButtonRenderWidget extends RenderObjectWidget {
 }
 
 class RenderButton extends RenderBox {
-  String text;
-  bool enabled;
-  bool focused;
-  ButtonStyle style;
-  VoidCallback? onTap;
 
   RenderButton({
     required this.text,
@@ -125,6 +120,11 @@ class RenderButton extends RenderBox {
     required this.style,
     this.onTap,
   });
+  String text;
+  bool enabled;
+  bool focused;
+  ButtonStyle style;
+  VoidCallback? onTap;
 
   @override
   void performLayout(Constraints constraints) {
@@ -244,14 +244,6 @@ class RenderButton extends RenderBox {
 }
 
 class ButtonStyle {
-  final Color foregroundColor;
-  final Color backgroundColor;
-  final Color focusColor;
-  final Color focusBackgroundColor;
-  final Color disabledColor;
-  final Color disabledBackgroundColor;
-  final EdgeInsets padding;
-  final bool bold;
 
   const ButtonStyle({
     this.foregroundColor = Color.white,
@@ -263,4 +255,12 @@ class ButtonStyle {
     this.padding = const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
     this.bold = false,
   });
+  final Color foregroundColor;
+  final Color backgroundColor;
+  final Color focusColor;
+  final Color focusBackgroundColor;
+  final Color disabledColor;
+  final Color disabledBackgroundColor;
+  final EdgeInsets padding;
+  final bool bold;
 }

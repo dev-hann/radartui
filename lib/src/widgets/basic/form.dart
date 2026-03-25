@@ -1,13 +1,13 @@
 import '../../../radartui.dart';
 
 class FormScope extends InheritedWidget {
-  final FormState formState;
   
   const FormScope({
     super.key,
     required this.formState,
     required super.child,
   });
+  final FormState formState;
   
   static FormScope? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<FormScope>();
@@ -18,9 +18,6 @@ class FormScope extends InheritedWidget {
 }
 
 class Form extends StatefulWidget {
-  final Widget child;
-  final VoidCallback? onSubmitted;
-  final bool autovalidate;
   
   const Form({
     super.key,
@@ -28,6 +25,9 @@ class Form extends StatefulWidget {
     this.onSubmitted,
     this.autovalidate = false,
   });
+  final Widget child;
+  final VoidCallback? onSubmitted;
+  final bool autovalidate;
   
   @override
   State<Form> createState() => FormState();
@@ -89,10 +89,6 @@ class FormState extends State<Form> {
 }
 
 class FormField<T> extends StatefulWidget {
-  final T initialValue;
-  final String? Function(T?)? validator;
-  final void Function(T)? onSaved;
-  final Widget Function(FormFieldState<T>) builder;
   
   const FormField({
     super.key,
@@ -101,6 +97,10 @@ class FormField<T> extends StatefulWidget {
     this.onSaved,
     required this.builder,
   });
+  final T initialValue;
+  final String? Function(T?)? validator;
+  final void Function(T)? onSaved;
+  final Widget Function(FormFieldState<T>) builder;
   
   @override
   State<FormField<T>> createState() => FormFieldState<T>();
@@ -166,13 +166,6 @@ class FormFieldState<T> extends State<FormField<T>> {
 }
 
 class TextFormField extends StatefulWidget {
-  final TextEditingController? controller;
-  final String? initialValue;
-  final String? Function(String?)? validator;
-  final void Function(String)? onSaved;
-  final String? placeholder;
-  final TextStyle? style;
-  final int? maxLength;
   
   const TextFormField({
     super.key,
@@ -184,6 +177,13 @@ class TextFormField extends StatefulWidget {
     this.style,
     this.maxLength,
   });
+  final TextEditingController? controller;
+  final String? initialValue;
+  final String? Function(String?)? validator;
+  final void Function(String)? onSaved;
+  final String? placeholder;
+  final TextStyle? style;
+  final int? maxLength;
   
   @override
   State<TextFormField> createState() => _TextFormFieldState();

@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-import 'keyboard_backend.dart';
+
 import 'key_parser.dart';
+import 'keyboard_backend.dart';
 import 'logger.dart';
 
 class RawKeyboard implements KeyboardBackend {
@@ -9,8 +10,10 @@ class RawKeyboard implements KeyboardBackend {
       StreamController<KeyEvent>.broadcast();
   StreamSubscription<String>? _subscription;
 
+  @override
   Stream<KeyEvent> get keyEvents => _controller.stream;
 
+  @override
   void initialize() {
     stdin.echoMode = false;
     stdin.lineMode = false;
@@ -35,6 +38,7 @@ class RawKeyboard implements KeyboardBackend {
     _controller.add(event);
   }
 
+  @override
   void dispose() {
     _subscription?.cancel();
     _subscription = null;

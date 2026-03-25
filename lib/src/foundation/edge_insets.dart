@@ -1,5 +1,4 @@
 class EdgeInsets {
-  final int top, right, bottom, left;
   const EdgeInsets.fromLTRB(this.left, this.top, this.right, this.bottom);
   const EdgeInsets.all(int v) : this.fromLTRB(v, v, v, v);
   const EdgeInsets.symmetric({int vertical = 0, int horizontal = 0})
@@ -10,6 +9,7 @@ class EdgeInsets {
     this.bottom = 0,
     this.left = 0,
   });
+  final int top, right, bottom, left;
   static const EdgeInsets zero = EdgeInsets.all(0);
 
   int get horizontal => left + right;

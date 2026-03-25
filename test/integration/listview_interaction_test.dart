@@ -5,7 +5,7 @@ void main() {
   group('ListView rendering', () {
     testWidgets('ListView renders items with selection indicator', (tester) async {
       tester.pumpWidget(
-        ListView<String>(
+        const ListView<String>(
           items: ['Item 1', 'Item 2', 'Item 3'],
         ),
       );
@@ -195,7 +195,7 @@ void main() {
 
     testWidgets('ListView can be found by type', (tester) async {
       tester.pumpWidget(
-        ListView<String>(
+        const ListView<String>(
           items: ['Item 1'],
         ),
       );

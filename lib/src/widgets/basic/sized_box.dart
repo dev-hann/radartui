@@ -1,8 +1,6 @@
 import '../../../radartui.dart';
 
 class SizedBox extends SingleChildRenderObjectWidget {
-  final int width;
-  final int height;
 
   const SizedBox({super.key, this.width = 0, this.height = 0, super.child});
   const SizedBox.shrink({super.key, super.child})
@@ -11,6 +9,8 @@ class SizedBox extends SingleChildRenderObjectWidget {
   const SizedBox.square({super.key, required int dimension, super.child})
       : width = dimension,
         height = dimension;
+  final int width;
+  final int height;
 
   @override
   RenderSizedBox createRenderObject(BuildContext context) =>
@@ -26,10 +26,10 @@ class SizedBox extends SingleChildRenderObjectWidget {
 
 class RenderSizedBox extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
-  int boxWidth;
-  int boxHeight;
 
   RenderSizedBox(this.boxWidth, this.boxHeight);
+  int boxWidth;
+  int boxHeight;
 
   @override
   void performLayout(Constraints constraints) {

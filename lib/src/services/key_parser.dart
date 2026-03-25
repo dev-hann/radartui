@@ -33,12 +33,6 @@ enum KeyCode {
 }
 
 class KeyEvent {
-  final KeyCode code;
-  final String? char;
-  final bool isShiftPressed;
-  final bool isAltPressed;
-  final bool isCtrlPressed;
-  final bool isMetaPressed;
 
   const KeyEvent({
     required this.code,
@@ -48,6 +42,12 @@ class KeyEvent {
     this.isCtrlPressed = false,
     this.isMetaPressed = false,
   });
+  final KeyCode code;
+  final String? char;
+  final bool isShiftPressed;
+  final bool isAltPressed;
+  final bool isCtrlPressed;
+  final bool isMetaPressed;
 
   @override
   String toString() {
@@ -60,9 +60,9 @@ class KeyEvent {
     final modifierString = modifiers.isNotEmpty ? '${modifiers.join('+')}+' : '';
 
     if (code == KeyCode.char) {
-      return 'KeyEvent(${modifierString}${char ?? 'null'})';
+      return 'KeyEvent($modifierString${char ?? 'null'})';
     }
-    return 'KeyEvent(${modifierString}${code.name})';
+    return 'KeyEvent($modifierString${code.name})';
   }
 }
 

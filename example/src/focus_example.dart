@@ -1,4 +1,4 @@
-import '../../lib/radartui.dart';
+import 'package:radartui/radartui.dart';
 
 class FocusExample extends StatefulWidget {
   const FocusExample();

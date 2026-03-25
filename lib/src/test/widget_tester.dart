@@ -1,12 +1,12 @@
 import '../services.dart';
 import '../widgets.dart';
-import 'test_binding.dart';
 import 'finder.dart';
+import 'test_binding.dart';
 
 class WidgetTester {
-  final TestBinding binding;
 
   WidgetTester() : binding = TestBinding.instance;
+  final TestBinding binding;
 
   Element? get rootElement => binding.rootElement;
 

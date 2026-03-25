@@ -1,6 +1,5 @@
-import 'dart:async';
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('RouteSettings', () {

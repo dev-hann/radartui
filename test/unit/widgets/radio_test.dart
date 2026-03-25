@@ -1,17 +1,17 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Radio', () {
     group('constructor', () {
       test('creates with required value and groupValue', () {
-        final radio = Radio<int>(value: 1, groupValue: 1);
+        const radio = Radio<int>(value: 1, groupValue: 1);
         expect(radio.value, equals(1));
         expect(radio.groupValue, equals(1));
       });
 
       test('creates with null groupValue', () {
-        final radio = Radio<int>(value: 1, groupValue: null);
+        const radio = Radio<int>(value: 1, groupValue: null);
         expect(radio.value, equals(1));
         expect(radio.groupValue, isNull);
       });
@@ -31,7 +31,7 @@ void main() {
       });
 
       test('creates with custom colors', () {
-        final radio = Radio<int>(
+        const radio = Radio<int>(
           value: 1,
           groupValue: 1,
           activeColor: Color.red,
@@ -49,7 +49,7 @@ void main() {
       });
 
       test('supports String type', () {
-        final radio = Radio<String>(value: 'a', groupValue: 'b');
+        const radio = Radio<String>(value: 'a', groupValue: 'b');
         expect(radio.value, equals('a'));
         expect(radio.groupValue, equals('b'));
       });
@@ -57,17 +57,17 @@ void main() {
 
     group('selection state', () {
       test('is selected when value equals groupValue', () {
-        final radio = Radio<int>(value: 1, groupValue: 1);
+        const radio = Radio<int>(value: 1, groupValue: 1);
         expect(radio.value == radio.groupValue, isTrue);
       });
 
       test('is not selected when value differs from groupValue', () {
-        final radio = Radio<int>(value: 1, groupValue: 2);
+        const radio = Radio<int>(value: 1, groupValue: 2);
         expect(radio.value == radio.groupValue, isFalse);
       });
 
       test('is not selected when groupValue is null', () {
-        final radio = Radio<int>(value: 1, groupValue: null);
+        const radio = Radio<int>(value: 1, groupValue: null);
         expect(radio.value == radio.groupValue, isFalse);
       });
     });

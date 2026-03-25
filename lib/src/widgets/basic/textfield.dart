@@ -2,10 +2,10 @@ import 'dart:async';
 import '../../../radartui.dart';
 
 class TextSelection {
-  final int start;
-  final int end;
   
   const TextSelection({required this.start, required this.end});
+  final int start;
+  final int end;
   
   bool get isValid => start >= 0 && end >= start;
   int get length => end - start;
@@ -213,12 +213,6 @@ class TextEditingController extends ChangeNotifier {
 }
 
 class TextField extends StatefulWidget {
-  final TextEditingController? controller;
-  final String? placeholder;
-  final TextStyle? style;
-  final int? maxLength;
-  final Function(String)? onChanged;
-  final Function(String)? onSubmitted;
 
   const TextField({
     super.key,
@@ -229,6 +223,12 @@ class TextField extends StatefulWidget {
     this.onChanged,
     this.onSubmitted,
   });
+  final TextEditingController? controller;
+  final String? placeholder;
+  final TextStyle? style;
+  final int? maxLength;
+  final Function(String)? onChanged;
+  final Function(String)? onSubmitted;
 
   @override
   State<TextField> createState() => _TextFieldState();
@@ -369,11 +369,6 @@ class _TextFieldState extends State<TextField> {
 }
 
 class _TextField extends RenderObjectWidget {
-  final String text;
-  final int cursorPosition;
-  final String? placeholder;
-  final TextStyle? style;
-  final bool hasFocus;
 
   const _TextField({
     required this.text,
@@ -382,6 +377,11 @@ class _TextField extends RenderObjectWidget {
     this.style,
     required this.hasFocus,
   });
+  final String text;
+  final int cursorPosition;
+  final String? placeholder;
+  final TextStyle? style;
+  final bool hasFocus;
 
   @override
   RenderObjectElement createElement() => RenderObjectElement(this);
@@ -407,11 +407,6 @@ class _TextField extends RenderObjectWidget {
 }
 
 class RenderTextField extends RenderBox {
-  String text;
-  int cursorPosition;
-  String? placeholder;
-  TextStyle? style;
-  bool hasFocus;
 
   RenderTextField({
     required this.text,
@@ -420,6 +415,11 @@ class RenderTextField extends RenderBox {
     this.style,
     required this.hasFocus,
   });
+  String text;
+  int cursorPosition;
+  String? placeholder;
+  TextStyle? style;
+  bool hasFocus;
 
   @override
   void performLayout(Constraints constraints) {

@@ -1,15 +1,15 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Stack widget', () {
     test('Stack creates with children', () {
-      final stack = Stack(children: const [Text('a'), Text('b')]);
+      const stack = Stack(children: [Text('a'), Text('b')]);
       expect(stack.children.length, equals(2));
     });
 
     test('Stack creates RenderStack', () {
-      final stack = Stack(children: const [Text('a')]);
+      const stack = Stack(children: [Text('a')]);
       final renderObject = stack.createRenderObject(_MockBuildContext());
       expect(renderObject, isA<RenderStack>());
     });

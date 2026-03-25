@@ -1,6 +1,6 @@
 class Color {
-  final int value;
   const Color(this.value);
+  final int value;
   
   // Basic colors
   static const Color black = Color(0);
@@ -63,12 +63,6 @@ enum FontFamily {
 }
 
 class TextStyle {
-  final Color? color;
-  final Color? backgroundColor;
-  final bool bold;
-  final bool italic;
-  final bool underline;
-  final FontFamily fontFamily;
 
   const TextStyle({
     this.color,
@@ -78,6 +72,12 @@ class TextStyle {
     this.underline = false,
     this.fontFamily = FontFamily.monospace,
   });
+  final Color? color;
+  final Color? backgroundColor;
+  final bool bold;
+  final bool italic;
+  final bool underline;
+  final FontFamily fontFamily;
 
   @override
   bool operator ==(Object other) =>

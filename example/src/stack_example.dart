@@ -1,4 +1,4 @@
-import '../../lib/radartui.dart';
+import 'package:radartui/radartui.dart';
 
 class StackExample extends StatefulWidget {
   const StackExample();
@@ -27,26 +27,26 @@ class _StackExampleState extends State<StackExample> {
   Widget build(BuildContext context) {
     return const Padding(
       padding: EdgeInsets.all(2),
-      child: const Column(
+      child: Column(
         children: [
-          const Container(
+          Container(
             width: 50,
             height: 3,
             color: Color.blue,
-            child: const Center(
+            child: Center(
               child: Text(
                 '📚 Stack Widget Example',
                 style: TextStyle(color: Color.white, bold: true),
               ),
             ),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: 2),
           
           // Stack Example 1: Basic Overlapping
-          const Container(
+          Container(
             color: Color.brightBlack,
             padding: EdgeInsets.all(1),
-            child: const Column(
+            child: Column(
               children: [
                 Text(
                   'Basic Stack - Overlapping Widgets:',
@@ -94,13 +94,13 @@ class _StackExampleState extends State<StackExample> {
             ),
           ),
           
-          const SizedBox(height: 2),
+          SizedBox(height: 2),
           
           // Stack Example 2: Text Overlay
-          const Container(
+          Container(
             color: Color.brightBlack,
             padding: EdgeInsets.all(1),
-            child: const Column(
+            child: Column(
               children: [
                 Text(
                   'Stack with Text Overlay:',
@@ -124,10 +124,10 @@ class _StackExampleState extends State<StackExample> {
             ),
           ),
           
-          const SizedBox(height: 2),
+          SizedBox(height: 2),
           
           // Navigation hint
-          const Text(
+          Text(
             'Press ESC to return to main menu',
             style: TextStyle(color: Color.yellow, italic: true),
           ),

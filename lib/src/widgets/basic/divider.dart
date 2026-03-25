@@ -1,10 +1,6 @@
 import '../../../radartui.dart';
 
 class Divider extends StatelessWidget {
-  final int? height;
-  final int? thickness;
-  final Color? color;
-  final String? character;
 
   const Divider({
     super.key,
@@ -13,6 +9,10 @@ class Divider extends StatelessWidget {
     this.color,
     this.character,
   });
+  final int? height;
+  final int? thickness;
+  final Color? color;
+  final String? character;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +26,6 @@ class Divider extends StatelessWidget {
 }
 
 class VerticalDivider extends StatelessWidget {
-  final int? width;
-  final int? thickness;
-  final Color? color;
-  final String? character;
 
   const VerticalDivider({
     super.key,
@@ -38,6 +34,10 @@ class VerticalDivider extends StatelessWidget {
     this.color,
     this.character,
   });
+  final int? width;
+  final int? thickness;
+  final Color? color;
+  final String? character;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +51,6 @@ class VerticalDivider extends StatelessWidget {
 }
 
 class _DividerRenderWidget extends RenderObjectWidget {
-  final int height;
-  final int thickness;
-  final Color color;
-  final String character;
 
   const _DividerRenderWidget({
     required this.height,
@@ -62,6 +58,10 @@ class _DividerRenderWidget extends RenderObjectWidget {
     required this.color,
     required this.character,
   });
+  final int height;
+  final int thickness;
+  final Color color;
+  final String character;
 
   @override
   RenderObjectElement createElement() => RenderObjectElement(this);
@@ -85,10 +85,6 @@ class _DividerRenderWidget extends RenderObjectWidget {
 }
 
 class _VerticalDividerRenderWidget extends RenderObjectWidget {
-  final int width;
-  final int thickness;
-  final Color color;
-  final String character;
 
   const _VerticalDividerRenderWidget({
     required this.width,
@@ -96,6 +92,10 @@ class _VerticalDividerRenderWidget extends RenderObjectWidget {
     required this.color,
     required this.character,
   });
+  final int width;
+  final int thickness;
+  final Color color;
+  final String character;
 
   @override
   RenderObjectElement createElement() => RenderObjectElement(this);
@@ -120,10 +120,6 @@ class _VerticalDividerRenderWidget extends RenderObjectWidget {
 }
 
 class RenderDivider extends RenderBox {
-  int dividerHeight;
-  int thickness;
-  Color color;
-  String character;
 
   RenderDivider({
     required this.dividerHeight,
@@ -131,6 +127,10 @@ class RenderDivider extends RenderBox {
     required this.color,
     required this.character,
   });
+  int dividerHeight;
+  int thickness;
+  Color color;
+  String character;
 
   @override
   void performLayout(Constraints constraints) {
@@ -157,10 +157,6 @@ class RenderDivider extends RenderBox {
 }
 
 class RenderVerticalDivider extends RenderBox {
-  int dividerWidth;
-  int thickness;
-  Color color;
-  String character;
 
   RenderVerticalDivider({
     required this.dividerWidth,
@@ -168,6 +164,10 @@ class RenderVerticalDivider extends RenderBox {
     required this.color,
     required this.character,
   });
+  int dividerWidth;
+  int thickness;
+  Color color;
+  String character;
 
   @override
   void performLayout(Constraints constraints) {

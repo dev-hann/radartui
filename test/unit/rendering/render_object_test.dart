@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('RenderObject', () {
@@ -29,7 +29,7 @@ void main() {
 
       test('layout caches constraints', () {
         final renderObject = _TestRenderObject();
-        final constraints = const BoxConstraints(maxWidth: 100, maxHeight: 100);
+        const constraints = BoxConstraints(maxWidth: 100, maxHeight: 100);
 
         renderObject.layout(constraints);
 
@@ -38,7 +38,7 @@ void main() {
 
       test('layout skips when constraints unchanged and not dirty', () {
         final renderObject = _TestRenderObject();
-        final constraints = const BoxConstraints(maxWidth: 100, maxHeight: 100);
+        const constraints = BoxConstraints(maxWidth: 100, maxHeight: 100);
 
         renderObject.layout(constraints);
         final firstLayoutCount = renderObject.layoutCount;
@@ -97,7 +97,7 @@ class _TestRenderObject extends RenderBox {
   void performLayout(Constraints constraints) {
     layoutCount++;
     lastConstraints = constraints as BoxConstraints;
-    size = Size(50, 50);
+    size = const Size(50, 50);
   }
 
   @override

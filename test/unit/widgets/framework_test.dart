@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Widget', () {
@@ -24,7 +24,7 @@ void main() {
 
     test('StatelessElement build returns widget build result', () {
       const widget = _TestStatelessWidget();
-      final element = widget.createElement() as StatelessElement;
+      final element = widget.createElement();
       final built = element.build();
       expect(built, isA<Text>());
     });
@@ -32,21 +32,21 @@ void main() {
 
   group('StatefulWidget', () {
     test('StatefulWidget creates StatefulElement', () {
-      final widget = _TestStatefulWidget();
+      const widget = _TestStatefulWidget();
       final element = widget.createElement();
       expect(element, isA<StatefulElement>());
     });
 
     test('State is created in element constructor', () {
-      final widget = _TestStatefulWidget();
-      final element = widget.createElement() as StatefulElement;
+      const widget = _TestStatefulWidget();
+      final element = widget.createElement();
       expect(element.widget, equals(widget));
     });
   });
 
   group('Element', () {
     test('Element dirty defaults to true', () {
-      final element = _TestStatelessWidget().createElement();
+      final element = const _TestStatelessWidget().createElement();
       expect(element.dirty, isTrue);
     });
   });
@@ -55,7 +55,7 @@ void main() {
     test('GlobalKey registers element on mount', () {
       final key = GlobalKey();
       final widget = _TestStatefulWidget(key: key);
-      final element = widget.createElement() as StatefulElement;
+      final element = widget.createElement();
       
       element.mount(null);
       expect(key.currentElement, equals(element));
@@ -64,7 +64,7 @@ void main() {
     test('GlobalKey unregisters element on unmount', () {
       final key = GlobalKey();
       final widget = _TestStatefulWidget(key: key);
-      final element = widget.createElement() as StatefulElement;
+      final element = widget.createElement();
       
       element.mount(null);
       expect(key.currentElement, isNotNull);
@@ -76,7 +76,7 @@ void main() {
     test('GlobalKey currentWidget returns widget', () {
       final key = GlobalKey();
       final widget = _TestStatefulWidget(key: key);
-      final element = widget.createElement() as StatefulElement;
+      final element = widget.createElement();
       
       element.mount(null);
       expect(key.currentWidget, equals(widget));
@@ -100,23 +100,23 @@ void main() {
 
   group('UniqueKey', () {
     test('UniqueKey is only equal to itself', () {
-      final key1 = UniqueKey();
-      final key2 = UniqueKey();
+      const key1 = UniqueKey();
+      const key2 = UniqueKey();
       expect(key1, equals(key1));
       expect(key1, isNot(equals(key2)));
     });
 
     test('UniqueKey has unique hashCodes', () {
-      final key1 = UniqueKey();
-      final key2 = UniqueKey();
+      const key1 = UniqueKey();
+      const key2 = UniqueKey();
       expect(key1.hashCode, isNot(equals(key2.hashCode)));
     });
   });
 
   group('Widget.canUpdate', () {
     test('canUpdate returns true for same type without key', () {
-      final w1 = _TestStatelessWidget();
-      final w2 = _TestStatelessWidget();
+      const w1 = _TestStatelessWidget();
+      const w2 = _TestStatelessWidget();
       expect(Widget.canUpdate(w1, w2), isTrue);
     });
 
@@ -136,25 +136,25 @@ void main() {
     });
 
     test('canUpdate returns false for different types', () {
-      final w1 = _TestStatelessWidget();
-      final w2 = _TestStatefulWidget();
+      const w1 = _TestStatelessWidget();
+      const w2 = _TestStatefulWidget();
       expect(Widget.canUpdate(w1, w2), isFalse);
     });
   });
 
   group('InheritedElement', () {
     test('InheritedElement tracks dependents', () {
-      final inherited = _TestInheritedWidget(value: 42, child: const Text('test'));
-      final element = inherited.createElement() as InheritedElement;
+      const inherited = _TestInheritedWidget(value: 42, child: Text('test'));
+      final element = inherited.createElement();
       expect(element, isA<InheritedElement>());
     });
 
     test('InheritedWidget updateShouldNotify works correctly', () {
-      final oldWidget = _TestInheritedWidget(value: 1, child: const Text('a'));
-      final newWidget = _TestInheritedWidget(value: 2, child: const Text('b'));
+      const oldWidget = _TestInheritedWidget(value: 1, child: Text('a'));
+      const newWidget = _TestInheritedWidget(value: 2, child: Text('b'));
       expect(newWidget.updateShouldNotify(oldWidget), isTrue);
       
-      final sameWidget = _TestInheritedWidget(value: 1, child: const Text('b'));
+      const sameWidget = _TestInheritedWidget(value: 1, child: Text('b'));
       expect(sameWidget.updateShouldNotify(oldWidget), isFalse);
     });
   });
@@ -193,12 +193,12 @@ class _TestStatefulWidgetState extends State<_TestStatefulWidget> {
 }
 
 class _TestInheritedWidget extends InheritedWidget {
-  final int value;
 
   const _TestInheritedWidget({
     required this.value,
     required super.child,
   });
+  final int value;
 
   @override
   bool updateShouldNotify(_TestInheritedWidget oldWidget) => value != oldWidget.value;

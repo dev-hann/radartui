@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('TextSelection', () {
@@ -145,7 +145,7 @@ void main() {
 
   group('Form widget', () {
     test('Form creates with child', () {
-      final form = Form(child: const Text('test'));
+      const form = Form(child: Text('test'));
       expect(form.child, isA<Text>());
     });
 

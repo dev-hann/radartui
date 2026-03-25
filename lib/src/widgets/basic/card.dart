@@ -1,8 +1,6 @@
 import '../../../radartui.dart';
 
 class Card extends SingleChildRenderObjectWidget {
-  final Color? color;
-  final EdgeInsets? padding;
 
   const Card({
     super.key,
@@ -10,6 +8,8 @@ class Card extends SingleChildRenderObjectWidget {
     this.color,
     this.padding,
   }) : super(child: child ?? const SizedBox());
+  final Color? color;
+  final EdgeInsets? padding;
 
   @override
   RenderCard createRenderObject(BuildContext context) => RenderCard(
@@ -26,20 +26,20 @@ class Card extends SingleChildRenderObjectWidget {
 }
 
 class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
-  Color? color;
-  EdgeInsets? padding;
 
   RenderCard({
     this.color,
     this.padding,
   });
+  Color? color;
+  EdgeInsets? padding;
 
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
     final totalPadding = padding ?? const EdgeInsets.all(0);
 
-    final borderSize = 2;
+    const borderSize = 2;
     final availableWidth = boxConstraints.maxWidth - borderSize;
     final availableHeight = boxConstraints.maxHeight - borderSize;
 

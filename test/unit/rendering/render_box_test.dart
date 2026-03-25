@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('RenderBox', () {
@@ -134,7 +134,7 @@ void main() {
 class _TestRenderBox extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
-    size = Size(50, 50);
+    size = const Size(50, 50);
   }
 
   @override
@@ -146,7 +146,7 @@ class _TestRenderBoxWithChild extends RenderBox
   @override
   void performLayout(Constraints constraints) {
     final bc = constraints as BoxConstraints;
-    size = Size(100, 100);
+    size = const Size(100, 100);
     child?.layout(bc);
   }
 
@@ -163,7 +163,7 @@ class _TestContainerRenderObject extends RenderBox
   @override
   void performLayout(Constraints constraints) {
     final bc = constraints as BoxConstraints;
-    size = Size(100, 100);
+    size = const Size(100, 100);
     for (final child in children) {
       child.layout(bc);
     }

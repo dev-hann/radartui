@@ -144,11 +144,11 @@ class FocusScope {
 }
 
 class Focus extends StatefulWidget {
+
+  const Focus({super.key, this.focusNode, this.onKeyEvent, required this.child});
   final FocusNode? focusNode;
   final Function(KeyEvent)? onKeyEvent;
   final Widget child;
-
-  const Focus({super.key, this.focusNode, this.onKeyEvent, required this.child});
 
   @override
   State<Focus> createState() => _FocusState();

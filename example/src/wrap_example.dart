@@ -1,4 +1,4 @@
-import '../../lib/radartui.dart';
+import 'package:radartui/radartui.dart';
 
 class WrapExample extends StatefulWidget {
   const WrapExample();
@@ -124,16 +124,16 @@ class _WrapExampleState extends State<WrapExample> {
 
           const SizedBox(height: 2),
 
-          Container(
+          const Container(
             width: 60,
             color: Color.yellow,
-            padding: const EdgeInsets.all(1),
+            padding: EdgeInsets.all(1),
             child: Column(
               children: [
-                const Text('Properties:', style: TextStyle(color: Color.black, bold: true)),
-                const Text('spacing: horizontal gap between items', style: TextStyle(color: Color.black)),
-                const Text('runSpacing: vertical gap between rows', style: TextStyle(color: Color.black)),
-                const Text('alignment: start/end/center/spaceBetween', style: TextStyle(color: Color.black)),
+                Text('Properties:', style: TextStyle(color: Color.black, bold: true)),
+                Text('spacing: horizontal gap between items', style: TextStyle(color: Color.black)),
+                Text('runSpacing: vertical gap between rows', style: TextStyle(color: Color.black)),
+                Text('alignment: start/end/center/spaceBetween', style: TextStyle(color: Color.black)),
               ],
             ),
           ),

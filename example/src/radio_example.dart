@@ -1,4 +1,4 @@
-import '../../lib/radartui.dart';
+import 'package:radartui/radartui.dart';
 
 class RadioExample extends StatefulWidget {
   const RadioExample();
@@ -243,7 +243,7 @@ class _RadioExampleState extends State<RadioExample> {
           const Container(
             color: Color.brightBlack,
             padding: EdgeInsets.all(1),
-            child: const Column(
+            child: Column(
               children: [
                 Text(
                   'Disabled Radio Buttons:',

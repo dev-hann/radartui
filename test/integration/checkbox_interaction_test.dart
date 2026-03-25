@@ -78,10 +78,10 @@ void main() {
     });
 
     testWidgets('Disabled checkbox does not respond to input', (tester) async {
-      var value = false;
+      const value = false;
 
       tester.pumpWidget(
-        Checkbox(
+        const Checkbox(
           value: value,
           onChanged: null,
         ),

@@ -1,5 +1,5 @@
 import 'dart:async';
-import '../../lib/radartui.dart';
+import 'package:radartui/radartui.dart';
 
 class StyleExample extends StatefulWidget {
   const StyleExample();

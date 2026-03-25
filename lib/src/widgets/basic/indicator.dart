@@ -4,9 +4,6 @@ import '../../../radartui.dart';
 
 /// A widget that displays animated loading indicators
 class LoadingIndicator extends StatefulWidget {
-  final IndicatorType type;
-  final Color? color;
-  final Duration? speed;
 
   const LoadingIndicator({
     super.key,
@@ -14,6 +11,9 @@ class LoadingIndicator extends StatefulWidget {
     this.color,
     this.speed,
   });
+  final IndicatorType type;
+  final Color? color;
+  final Duration? speed;
 
   @override
   State<LoadingIndicator> createState() => _LoadingIndicatorState();
@@ -73,10 +73,6 @@ class _LoadingIndicatorState extends State<LoadingIndicator> {
 
 /// A progress indicator that shows completion percentage
 class ProgressIndicator extends StatelessWidget {
-  final int progress; // 0-100
-  final Color? fillColor;
-  final Color? backgroundColor;
-  final bool showPercentage;
 
   const ProgressIndicator({
     super.key,
@@ -85,6 +81,10 @@ class ProgressIndicator extends StatelessWidget {
     this.backgroundColor,
     this.showPercentage = true,
   });
+  final int progress; // 0-100
+  final Color? fillColor;
+  final Color? backgroundColor;
+  final bool showPercentage;
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +97,8 @@ class ProgressIndicator extends StatelessWidget {
     final filled = (clampedProgress * availableWidth / 100).round();
     final empty = availableWidth - filled;
 
-    final fillChar = '█';
-    final emptyChar = '░';
+    const fillChar = '█';
+    const emptyChar = '░';
     final fillStyle = TextStyle(color: fillColor ?? Color.green);
     final emptyStyle = TextStyle(color: backgroundColor ?? Color.brightBlack);
 

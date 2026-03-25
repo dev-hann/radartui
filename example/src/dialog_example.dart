@@ -1,4 +1,4 @@
-import '../../lib/radartui.dart';
+import 'package:radartui/radartui.dart';
 
 class DialogExample extends StatefulWidget {
   const DialogExample();

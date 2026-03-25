@@ -1,54 +1,54 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('InheritedWidget', () {
     test('InheritedWidget child is accessible', () {
-      final inherited = _TestInheritedWidget(
+      const inherited = _TestInheritedWidget(
         value: 42,
-        child: const Text('test'),
+        child: Text('test'),
       );
       expect(inherited.child, isA<Text>());
     });
 
     test('updateShouldNotify returns true when value changes', () {
-      final oldWidget = _TestInheritedWidget(value: 1, child: const Text('a'));
-      final newWidget = _TestInheritedWidget(value: 2, child: const Text('a'));
+      const oldWidget = _TestInheritedWidget(value: 1, child: Text('a'));
+      const newWidget = _TestInheritedWidget(value: 2, child: Text('a'));
       expect(newWidget.updateShouldNotify(oldWidget), isTrue);
     });
 
     test('updateShouldNotify returns false when value is same', () {
-      final oldWidget = _TestInheritedWidget(value: 1, child: const Text('a'));
-      final newWidget = _TestInheritedWidget(value: 1, child: const Text('b'));
+      const oldWidget = _TestInheritedWidget(value: 1, child: Text('a'));
+      const newWidget = _TestInheritedWidget(value: 1, child: Text('b'));
       expect(newWidget.updateShouldNotify(oldWidget), isFalse);
     });
   });
 
   group('MediaQueryData', () {
     test('MediaQueryData creates with size', () {
-      final data = const MediaQueryData(size: Size(100, 50));
+      const data = MediaQueryData(size: Size(100, 50));
       expect(data.size.width, equals(100));
       expect(data.size.height, equals(50));
     });
 
     test('MediaQueryData creates with padding', () {
-      final data = MediaQueryData(
-        size: const Size(100, 50),
-        padding: const EdgeInsets.all(2),
+      const data = MediaQueryData(
+        size: Size(100, 50),
+        padding: EdgeInsets.all(2),
       );
       expect(data.padding.top, equals(2));
       expect(data.padding.left, equals(2));
     });
 
     test('MediaQueryData equality', () {
-      final data1 = const MediaQueryData(size: Size(100, 50));
-      final data2 = const MediaQueryData(size: Size(100, 50));
+      const data1 = MediaQueryData(size: Size(100, 50));
+      const data2 = MediaQueryData(size: Size(100, 50));
       expect(data1, equals(data2));
       expect(data1.hashCode, equals(data2.hashCode));
     });
 
     test('MediaQueryData copyWith', () {
-      final data = const MediaQueryData(size: Size(100, 50));
+      const data = MediaQueryData(size: Size(100, 50));
       final copied = data.copyWith(padding: const EdgeInsets.all(5));
       expect(copied.size, equals(const Size(100, 50)));
       expect(copied.padding, equals(const EdgeInsets.all(5)));
@@ -57,34 +57,34 @@ void main() {
 
   group('MediaQuery', () {
     test('MediaQuery creates widget with data', () {
-      final mq = MediaQuery(
-        data: const MediaQueryData(size: Size(80, 24)),
-        child: const Text('test'),
+      const mq = MediaQuery(
+        data: MediaQueryData(size: Size(80, 24)),
+        child: Text('test'),
       );
       expect(mq.data.size.width, equals(80));
       expect(mq.data.size.height, equals(24));
     });
 
     test('MediaQuery updateShouldNotify returns true on data change', () {
-      final oldWidget = MediaQuery(
-        data: const MediaQueryData(size: Size(80, 24)),
-        child: const Text('a'),
+      const oldWidget = MediaQuery(
+        data: MediaQueryData(size: Size(80, 24)),
+        child: Text('a'),
       );
-      final newWidget = MediaQuery(
-        data: const MediaQueryData(size: Size(100, 50)),
-        child: const Text('b'),
+      const newWidget = MediaQuery(
+        data: MediaQueryData(size: Size(100, 50)),
+        child: Text('b'),
       );
       expect(newWidget.updateShouldNotify(oldWidget), isTrue);
     });
 
     test('MediaQuery updateShouldNotify returns false on same data', () {
-      final oldWidget = MediaQuery(
-        data: const MediaQueryData(size: Size(80, 24)),
-        child: const Text('a'),
+      const oldWidget = MediaQuery(
+        data: MediaQueryData(size: Size(80, 24)),
+        child: Text('a'),
       );
-      final newWidget = MediaQuery(
-        data: const MediaQueryData(size: Size(80, 24)),
-        child: const Text('b'),
+      const newWidget = MediaQuery(
+        data: MediaQueryData(size: Size(80, 24)),
+        child: Text('b'),
       );
       expect(newWidget.updateShouldNotify(oldWidget), isFalse);
     });
@@ -92,7 +92,7 @@ void main() {
 
   group('ThemeData', () {
     test('ThemeData creates with default colors', () {
-      final theme = ThemeData();
+      const theme = ThemeData();
       expect(theme.primaryColor, equals(Colors.blue));
       expect(theme.backgroundColor, equals(Colors.black));
       expect(theme.textColor, equals(Colors.white));
@@ -170,12 +170,12 @@ void main() {
 }
 
 class _TestInheritedWidget extends InheritedWidget {
-  final int value;
 
   const _TestInheritedWidget({
     required this.value,
     required super.child,
   });
+  final int value;
 
   @override
   bool updateShouldNotify(_TestInheritedWidget oldWidget) =>

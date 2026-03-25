@@ -1,4 +1,4 @@
-import '../../lib/radartui.dart';
+import 'package:radartui/radartui.dart';
 
 class CheckboxExample extends StatefulWidget {
   const CheckboxExample();
@@ -132,12 +132,12 @@ class _CheckboxExampleState extends State<CheckboxExample> {
             padding: EdgeInsets.all(1),
             child: Column(
               children: [
-                const Text(
+                Text(
                   'Disabled Checkboxes:',
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
-                const SizedBox(height: 1),
-                const Row(
+                SizedBox(height: 1),
+                Row(
                   children: [
                     Checkbox(
                       value: false,
@@ -147,8 +147,8 @@ class _CheckboxExampleState extends State<CheckboxExample> {
                     Text('Disabled unchecked'),
                   ],
                 ),
-                const SizedBox(height: 1),
-                const Row(
+                SizedBox(height: 1),
+                Row(
                   children: [
                     Checkbox(
                       value: true,

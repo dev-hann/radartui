@@ -1,5 +1,5 @@
 import 'dart:async';
-import '../../lib/radartui.dart';
+import 'package:radartui/radartui.dart';
 
 class AsyncExample extends StatefulWidget {
   const AsyncExample();
@@ -147,17 +147,17 @@ class _AsyncExampleState extends State<AsyncExample> {
           
           const SizedBox(height: 2),
           
-          Container(
+          const Container(
             width: 60,
             color: Color.blue,
-            padding: const EdgeInsets.all(1),
+            padding: EdgeInsets.all(1),
             child: Column(
               children: [
-                const Text(
+                Text(
                   'Controls:',
                   style: TextStyle(color: Color.white, bold: true),
                 ),
-                const Text('R: Refresh Future | ESC: Return', style: TextStyle(color: Color.white)),
+                Text('R: Refresh Future | ESC: Return', style: TextStyle(color: Color.white)),
               ],
             ),
           ),
