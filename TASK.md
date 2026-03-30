@@ -9,8 +9,8 @@
 | Task ID | 작업명 | 상태 | 담당자 | 브랜치 |
 |---------|--------|------|--------|--------|
 | T-001 | IndexedStack | ✅ 완료 | - | feat/indexedstack |
-| T-002 | TabBar / TabBarView | ⬜ 대기 | - | feat/tabbar |
-| T-003 | DropdownButton | ⬜ 대기 | - | feat/dropdown |
+| T-002 | TabBar / TabBarView | ✅ 완료 | - | feat/tabbar |
+| T-003 | DropdownButton | ✅ 완료 | - | feat/dropdown |
 | T-004 | Shortcuts / Actions | ✅ 완료 | - | feat/shortcuts |
 | T-005 | RichText / TextSpan | ✅ 완료 | - | feat/richtext |
 | T-006 | DefaultTextStyle | ✅ 완료 | - | feat/defaulttextstyle |
@@ -813,3 +813,5 @@ git worktree add ../.worktrees/<branch> -b <branch>
 | 2026-03-31 | DefaultTextStyle | #7 | 완료 |
 | 2026-03-31 | IndexedStack | #8 | 완료 |
 | 2026-03-31 | DataTable | #9 | 완료 |
+| 2026-03-31 | DropdownButton | #10 | 완료 |
+| 2026-03-31 | TabBar / TabBarView | #11 | 완료 |

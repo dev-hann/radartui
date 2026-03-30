@@ -241,8 +241,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      expect(
-          Actions.of(tester.rootElement!.renderObject as BuildContext), isNull);
+      expect(Actions.of(tester.rootElement! as BuildContext), isNull);
     });
 
     testWidgets('Shortcuts.of returns null when no Shortcuts ancestor',
@@ -251,8 +250,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      expect(Shortcuts.of(tester.rootElement!.renderObject as BuildContext),
-          isNull);
+      expect(Shortcuts.of(tester.rootElement! as BuildContext), isNull);
     });
 
     testWidgets('Multiple shortcuts map to different intents', (tester) async {
