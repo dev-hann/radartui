@@ -1,10 +1,6 @@
 import '../../../radartui.dart';
 
-enum TextOverflow {
-  clip,
-  ellipsis,
-  fade,
-}
+enum TextOverflow { clip, ellipsis, fade }
 
 class Text extends RenderObjectWidget {
   const Text(
@@ -25,19 +21,25 @@ class Text extends RenderObjectWidget {
   RenderObjectElement createElement() => RenderObjectElement(this);
 
   @override
-  RenderText createRenderObject(BuildContext context) => RenderText(
-        text: data,
-        style: style,
-        softWrap: softWrap,
-        maxLines: maxLines,
-        overflow: overflow,
-      );
+  RenderText createRenderObject(BuildContext context) {
+    final defaultStyle = DefaultTextStyle.of(context);
+    final effectiveStyle = defaultStyle.merge(style);
+    return RenderText(
+      text: data,
+      style: effectiveStyle,
+      softWrap: softWrap,
+      maxLines: maxLines,
+      overflow: overflow,
+    );
+  }
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
+    final defaultStyle = DefaultTextStyle.of(context);
+    final effectiveStyle = defaultStyle.merge(style);
     final renderText = renderObject as RenderText;
     renderText.text = data;
-    renderText.style = style;
+    renderText.style = effectiveStyle;
     renderText.softWrap = softWrap;
     renderText.maxLines = maxLines;
     renderText.overflow = overflow;
@@ -88,8 +90,10 @@ class RenderText extends RenderBox {
 
     final effectiveMaxHeight =
         boxConstraints.maxHeight > 0 ? boxConstraints.maxHeight : 1;
-    final width =
-        computedWidth.clamp(boxConstraints.minWidth, boxConstraints.maxWidth);
+    final width = computedWidth.clamp(
+      boxConstraints.minWidth,
+      boxConstraints.maxWidth,
+    );
     final height = _lines.length.clamp(1, effectiveMaxHeight);
 
     size = Size(width, height);

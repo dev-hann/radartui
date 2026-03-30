@@ -7,6 +7,7 @@ export 'basic/card.dart';
 export 'basic/center.dart';
 export 'basic/checkbox.dart';
 export 'basic/container.dart';
+export 'basic/default_text_style.dart';
 export 'basic/dialog.dart';
 export 'basic/divider.dart';
 export 'basic/flex.dart';
