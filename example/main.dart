@@ -9,6 +9,7 @@ import 'src/divider_example.dart';
 import 'src/flex_example.dart';
 import 'src/focus_example.dart';
 import 'src/form_example.dart';
+import 'src/grid_view_example.dart';
 import 'src/radio_example.dart';
 import 'src/spacer_example.dart';
 import 'src/spinner_example.dart';
@@ -41,6 +42,7 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/flex': (context) => const FlexExample(),
         '/focus': (context) => const FocusExample(),
         '/form': (context) => const FormExample(),
+        '/gridview': (context) => const GridViewExample(),
         '/radio': (context) => const RadioExample(),
         '/spacer': (context) => const SpacerExample(),
         '/spinner': (context) => const SpinnerExample(),
@@ -73,6 +75,7 @@ class _MenuScreenState extends State<MenuScreen> {
     'Flex Layout',
     'Focus Management',
     'Form Validation',
+    'GridView Widget',
     'Radio Button',
     'Spacer & Flexible',
     'Spinner & Progress',
@@ -94,6 +97,7 @@ class _MenuScreenState extends State<MenuScreen> {
     '/flex',
     '/focus',
     '/form',
+    '/gridview',
     '/radio',
     '/spacer',
     '/spinner',
