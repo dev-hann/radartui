@@ -37,7 +37,9 @@ void main() {
                 },
               ),
             },
-            child: const Text('Test'),
+            child: ShortcutActionsHandler(
+              child: const Text('Test'),
+            ),
           ),
         ),
       );
@@ -79,7 +81,9 @@ void main() {
                 const ShortcutActivator(key: KeyCode.enter):
                     const _SaveIntent(),
               },
-              child: const Text('Nested'),
+              child: ShortcutActionsHandler(
+                child: const Text('Nested'),
+              ),
             ),
           ),
         ),
@@ -146,18 +150,18 @@ void main() {
                 },
               ),
             },
-            child: const Text('Copy'),
+            child: ShortcutActionsHandler(
+              child: const Text('Copy'),
+            ),
           ),
         ),
       );
 
       await tester.pumpAndSettle();
 
-      tester.sendKeyEvent(const KeyEvent(
-        code: KeyCode.char,
-        char: 'c',
-        isCtrlPressed: true,
-      ));
+      tester.sendKeyEvent(
+        const KeyEvent(code: KeyCode.char, char: 'c', isCtrlPressed: true),
+      );
 
       await tester.pumpAndSettle();
 
@@ -219,24 +223,24 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final shiftEvent = KeyEvent(
-        code: KeyCode.arrowUp,
-        isShiftPressed: true,
-      );
+      final shiftEvent = KeyEvent(code: KeyCode.arrowUp, isShiftPressed: true);
 
       final nonShiftEvent = KeyEvent(
         code: KeyCode.arrowUp,
         isShiftPressed: false,
       );
 
-      final activator =
-          const ShortcutActivator(key: KeyCode.arrowUp, shift: true);
+      final activator = const ShortcutActivator(
+        key: KeyCode.arrowUp,
+        shift: true,
+      );
       expect(activator.accepts(shiftEvent), isTrue);
       expect(activator.accepts(nonShiftEvent), isFalse);
     });
 
-    testWidgets('Actions.of returns null when no Actions ancestor',
-        (tester) async {
+    testWidgets('Actions.of returns null when no Actions ancestor', (
+      tester,
+    ) async {
       tester.pumpWidget(const Text('No Actions'));
 
       await tester.pumpAndSettle();
@@ -244,8 +248,9 @@ void main() {
       expect(Actions.of(tester.rootElement! as BuildContext), isNull);
     });
 
-    testWidgets('Shortcuts.of returns null when no Shortcuts ancestor',
-        (tester) async {
+    testWidgets('Shortcuts.of returns null when no Shortcuts ancestor', (
+      tester,
+    ) async {
       tester.pumpWidget(const Text('No Shortcuts'));
 
       await tester.pumpAndSettle();
@@ -269,22 +274,32 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final ctrlActivator =
-          const ShortcutActivator(key: KeyCode.char, ctrl: true);
-      final altActivator =
-          const ShortcutActivator(key: KeyCode.char, alt: true);
+      final ctrlActivator = const ShortcutActivator(
+        key: KeyCode.char,
+        ctrl: true,
+      );
+      final altActivator = const ShortcutActivator(
+        key: KeyCode.char,
+        alt: true,
+      );
       final escActivator = const ShortcutActivator(key: KeyCode.escape);
 
       expect(
-          ctrlActivator.accepts(const KeyEvent(
-              code: KeyCode.char, char: 'c', isCtrlPressed: true)),
-          isTrue);
+        ctrlActivator.accepts(
+          const KeyEvent(code: KeyCode.char, char: 'c', isCtrlPressed: true),
+        ),
+        isTrue,
+      );
       expect(
-          altActivator.accepts(const KeyEvent(
-              code: KeyCode.char, char: 'p', isAltPressed: true)),
-          isTrue);
+        altActivator.accepts(
+          const KeyEvent(code: KeyCode.char, char: 'p', isAltPressed: true),
+        ),
+        isTrue,
+      );
       expect(
-          escActivator.accepts(const KeyEvent(code: KeyCode.escape)), isTrue);
+        escActivator.accepts(const KeyEvent(code: KeyCode.escape)),
+        isTrue,
+      );
     });
   });
 }
