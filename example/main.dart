@@ -4,6 +4,7 @@ import 'src/async_example.dart';
 import 'src/button_example.dart';
 import 'src/card_example.dart';
 import 'src/checkbox_example.dart';
+import 'src/data_table_example.dart';
 import 'src/default_text_style_example.dart';
 import 'src/dialog_example.dart';
 import 'src/divider_example.dart';
@@ -41,6 +42,7 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/button': (context) => const ButtonExample(),
         '/card': (context) => const CardExample(),
         '/checkbox': (context) => const CheckboxExample(),
+        '/datatable': (context) => const DataTableExample(),
         '/defaulttextstyle': (context) => const DefaultTextStyleExample(),
         '/dialog': (context) => const DialogExample(),
         '/divider': (context) => const DividerExample(),
@@ -78,6 +80,7 @@ class _MenuScreenState extends State<MenuScreen> {
     'Button Widget',
     'Card Widget',
     'Checkbox Widget',
+    'DataTable Widget',
     'DefaultTextStyle Widget',
     'Dialog Widget',
     'Divider Widget',
@@ -104,6 +107,7 @@ class _MenuScreenState extends State<MenuScreen> {
     '/button',
     '/card',
     '/checkbox',
+    '/datatable',
     '/defaulttextstyle',
     '/dialog',
     '/divider',
