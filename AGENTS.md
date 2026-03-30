@@ -501,6 +501,7 @@ Fix ALL errors, warnings, and hints. Zero tolerance.
 - `InheritedWidget` (dependency injection)
 - `MediaQuery` / `Theme`
 - `ListView<T>` (generic support with virtualization)
+- `GridView<T>` (4-direction keyboard navigation)
 - `TextEditingController` extends `ChangeNotifier` (with selection, clipboard)
 - `Route<T>` lifecycle methods (install, didPush, didPop, dispose)
 - `Route.canPop` and `Route.isCurrent`
@@ -513,5 +514,4 @@ Fix ALL errors, warnings, and hints. Zero tolerance.
 - `RelayoutBoundary` for layout optimization
 
 ### Pending Implementation
-- `GridView` widget
-- `IndexedStack` widget
+- `IndexedStack` widget (see TASK.md for roadmap)

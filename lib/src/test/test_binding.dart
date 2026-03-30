@@ -396,6 +396,10 @@ class TestKeyboard implements RawKeyboard {
     sendKeyEvent(const KeyEvent(code: KeyCode.end));
   }
 
+  void sendEscape() {
+    sendKeyEvent(const KeyEvent(code: KeyCode.escape));
+  }
+
   void typeText(String text) {
     for (final char in text.split('')) {
       sendChar(char);

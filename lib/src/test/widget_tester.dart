@@ -81,6 +81,10 @@ class WidgetTester {
     binding.keyboard.sendEnd();
   }
 
+  void sendEscape() {
+    binding.keyboard.sendEscape();
+  }
+
   void typeText(String text) {
     binding.keyboard.typeText(text);
   }
