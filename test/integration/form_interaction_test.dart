@@ -18,7 +18,8 @@ void main() {
       tester.assertContains('─');
     });
 
-    testWidgets('Form renders error text on validation failure', (tester) async {
+    testWidgets('Form renders error text on validation failure',
+        (tester) async {
       final formKey = GlobalKey();
 
       tester.pumpWidget(
@@ -37,7 +38,8 @@ void main() {
                 children: [
                   const TextField(),
                   if (state.errorText != null)
-                    Text(state.errorText!, style: const TextStyle(color: Color.red)),
+                    Text(state.errorText!,
+                        style: const TextStyle(color: Color.red)),
                 ],
               );
             },
@@ -95,7 +97,8 @@ void main() {
       expect(isValid, isTrue);
     });
 
-    testWidgets('Form validate returns false for invalid fields', (tester) async {
+    testWidgets('Form validate returns false for invalid fields',
+        (tester) async {
       final formKey = GlobalKey();
       final controller = TextEditingController();
 
@@ -165,7 +168,8 @@ void main() {
       expect(submitted, isTrue);
     });
 
-    testWidgets('Form submit does not call onSubmitted when invalid', (tester) async {
+    testWidgets('Form submit does not call onSubmitted when invalid',
+        (tester) async {
       final formKey = GlobalKey();
       var submitted = false;
       final controller = TextEditingController();
@@ -245,7 +249,8 @@ void main() {
                 children: [
                   const TextField(),
                   if (state.errorText != null)
-                    Text(state.errorText!, style: const TextStyle(color: Color.red)),
+                    Text(state.errorText!,
+                        style: const TextStyle(color: Color.red)),
                 ],
               );
             },

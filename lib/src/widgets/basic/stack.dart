@@ -67,12 +67,15 @@ class RenderStack extends RenderBox
         child.layout(childConstraints);
       }
 
-      stackWidth = stackWidth > child.size!.width ? stackWidth : child.size!.width;
-      stackHeight = stackHeight > child.size!.height ? stackHeight : child.size!.height;
+      stackWidth =
+          stackWidth > child.size!.width ? stackWidth : child.size!.width;
+      stackHeight =
+          stackHeight > child.size!.height ? stackHeight : child.size!.height;
     }
 
     final finalWidth = stackWidth > 0 ? stackWidth : boxConstraints.minWidth;
-    final finalHeight = stackHeight > 0 ? stackHeight : boxConstraints.minHeight;
+    final finalHeight =
+        stackHeight > 0 ? stackHeight : boxConstraints.minHeight;
     size = boxConstraints.constrain(Size(finalWidth, finalHeight));
 
     for (final child in children) {
@@ -84,29 +87,35 @@ class RenderStack extends RenderBox
       int top;
 
       if (childParentData.left != null && childParentData.right != null) {
-        final width = finalWidth - childParentData.right! - childParentData.left!;
+        final width =
+            finalWidth - childParentData.right! - childParentData.left!;
         left = childParentData.left!;
         if (width != childWidth) {
-          child.layout(BoxConstraints.tightFor(width: width, height: childHeight));
+          child.layout(
+              BoxConstraints.tightFor(width: width, height: childHeight));
         }
       } else if (childParentData.left != null) {
         left = childParentData.left!;
       } else if (childParentData.right != null) {
-        left = (finalWidth - childParentData.right! - childWidth).clamp(0, finalWidth);
+        left = (finalWidth - childParentData.right! - childWidth)
+            .clamp(0, finalWidth);
       } else {
         left = 0;
       }
 
       if (childParentData.top != null && childParentData.bottom != null) {
-        final height = finalHeight - childParentData.bottom! - childParentData.top!;
+        final height =
+            finalHeight - childParentData.bottom! - childParentData.top!;
         top = childParentData.top!;
         if (height != childHeight) {
-          child.layout(BoxConstraints.tightFor(width: child.size!.width, height: height));
+          child.layout(BoxConstraints.tightFor(
+              width: child.size!.width, height: height));
         }
       } else if (childParentData.top != null) {
         top = childParentData.top!;
       } else if (childParentData.bottom != null) {
-        top = (finalHeight - childParentData.bottom! - childHeight).clamp(0, finalHeight);
+        top = (finalHeight - childParentData.bottom! - childHeight)
+            .clamp(0, finalHeight);
       } else {
         top = 0;
       }

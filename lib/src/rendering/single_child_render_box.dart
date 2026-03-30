@@ -4,11 +4,10 @@ import 'render_object.dart';
 
 abstract class SingleChildRenderBox extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
-  
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
-    
+
     if (child != null) {
       final childConstraints = getConstraintsForChild(boxConstraints);
       child!.layout(childConstraints);
@@ -26,12 +25,15 @@ abstract class SingleChildRenderBox extends RenderBox
     }
   }
 
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) => constraints;
-  
-  Size computeSizeFromChild(BoxConstraints constraints, Size childSize) => childSize;
-  
-  Size computeSizeWithoutChild(BoxConstraints constraints) => 
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) =>
+      constraints;
+
+  Size computeSizeFromChild(BoxConstraints constraints, Size childSize) =>
+      childSize;
+
+  Size computeSizeWithoutChild(BoxConstraints constraints) =>
       Size(constraints.maxWidth, constraints.maxHeight);
-  
-  Offset computeChildOffset(Offset parentOffset, Size childSize) => parentOffset;
+
+  Offset computeChildOffset(Offset parentOffset, Size childSize) =>
+      parentOffset;
 }

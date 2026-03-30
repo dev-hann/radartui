@@ -174,7 +174,6 @@ class _MockBuildContext implements BuildContext {
   T? dependOnInheritedWidgetOfExactType<T extends InheritedWidget>() => null;
 
   @override
-  InheritedElement? findAncestorElementOfExactType<
-          T extends InheritedWidget>() =>
-      null;
+  InheritedElement?
+      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }

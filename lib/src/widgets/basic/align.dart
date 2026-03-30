@@ -15,7 +15,8 @@ class Align extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, covariant RenderAlign renderObject) {
+  void updateRenderObject(
+      BuildContext context, covariant RenderAlign renderObject) {
     renderObject.alignment = alignment;
   }
 }
@@ -41,15 +42,16 @@ class RenderAlign extends SingleChildRenderBox {
         _alignment.y != 0 || constraints.maxHeight == Constraints.infinity;
 
     final int width = shrinkWrapWidth ? childSize.width : constraints.maxWidth;
-    final int height = shrinkWrapHeight ? childSize.height : constraints.maxHeight;
+    final int height =
+        shrinkWrapHeight ? childSize.height : constraints.maxHeight;
 
     return Size(width, height);
   }
 
   @override
   Offset computeChildOffset(Offset parentOffset, Size childSize) {
-    final double x =
-        parentOffset.x + (size!.width - childSize.width) * (alignment.x + 1) / 2;
+    final double x = parentOffset.x +
+        (size!.width - childSize.width) * (alignment.x + 1) / 2;
     final double y = parentOffset.y +
         (size!.height - childSize.height) * (alignment.y + 1) / 2;
     return Offset(x.round(), y.round());

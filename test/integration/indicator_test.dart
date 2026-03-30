@@ -66,7 +66,8 @@ void main() {
           buffer.contains('/') ||
           buffer.contains('-') ||
           buffer.contains('\\');
-      expect(hasSpinner, isTrue, reason: 'Spinner should show one of: | / - \\');
+      expect(hasSpinner, isTrue,
+          reason: 'Spinner should show one of: | / - \\');
     });
 
     testWidgets('LoadingIndicator with dots type', (tester) async {

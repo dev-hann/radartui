@@ -1,7 +1,7 @@
 class Color {
   const Color(this.value);
   final int value;
-  
+
   // Basic colors
   static const Color black = Color(0);
   static const Color red = Color(1);
@@ -11,7 +11,7 @@ class Color {
   static const Color magenta = Color(5);
   static const Color cyan = Color(6);
   static const Color white = Color(7);
-  
+
   // Bright colors
   static const Color brightBlack = Color(8);
   static const Color brightRed = Color(9);
@@ -21,10 +21,10 @@ class Color {
   static const Color brightMagenta = Color(13);
   static const Color brightCyan = Color(14);
   static const Color brightWhite = Color(15);
-  
+
   // Special colors
   static const Color transparent = Color(-1);
-  
+
   @override
   String toString() => 'Color($value)';
 }
@@ -38,7 +38,7 @@ class Colors {
   static const Color magenta = Color(5);
   static const Color cyan = Color(6);
   static const Color white = Color(7);
-  
+
   // Bright colors
   static const Color brightBlack = Color(8);
   static const Color brightRed = Color(9);
@@ -48,7 +48,7 @@ class Colors {
   static const Color brightMagenta = Color(13);
   static const Color brightCyan = Color(14);
   static const Color brightWhite = Color(15);
-  
+
   // Special colors
   static const Color transparent = Color(-1);
   static const Color black54 = Color(16); // Semi-transparent black for barriers
@@ -63,7 +63,6 @@ enum FontFamily {
 }
 
 class TextStyle {
-
   const TextStyle({
     this.color,
     this.backgroundColor,
@@ -91,14 +90,15 @@ class TextStyle {
 
   @override
   int get hashCode => Object.hash(
-    color,
-    backgroundColor,
-    bold,
-    italic,
-    underline,
-    fontFamily,
-  );
+        color,
+        backgroundColor,
+        bold,
+        italic,
+        underline,
+        fontFamily,
+      );
 
   @override
-  String toString() => 'TextStyle(color: $color, bg: $backgroundColor, bold: $bold, font: $fontFamily)';
+  String toString() =>
+      'TextStyle(color: $color, bg: $backgroundColor, bold: $bold, font: $fontFamily)';
 }

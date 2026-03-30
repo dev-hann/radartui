@@ -7,7 +7,7 @@ class Cell {
   const Cell(this.char, [this.style]);
   final String char;
   final TextStyle? style;
-  
+
   static const empty = Cell(' ');
 
   @override
@@ -25,7 +25,6 @@ class Cell {
 }
 
 class OutputBuffer {
-
   OutputBuffer(this.terminal) {
     resize();
   }

@@ -2,7 +2,7 @@ class EdgeInsets {
   const EdgeInsets.fromLTRB(this.left, this.top, this.right, this.bottom);
   const EdgeInsets.all(int v) : this.fromLTRB(v, v, v, v);
   const EdgeInsets.symmetric({int vertical = 0, int horizontal = 0})
-    : this.fromLTRB(horizontal, vertical, horizontal, vertical);
+      : this.fromLTRB(horizontal, vertical, horizontal, vertical);
   const EdgeInsets.only({
     this.top = 0,
     this.right = 0,
@@ -16,11 +16,11 @@ class EdgeInsets {
   int get vertical => top + bottom;
 
   EdgeInsets operator +(EdgeInsets other) => EdgeInsets.fromLTRB(
-    left + other.left,
-    top + other.top,
-    right + other.right,
-    bottom + other.bottom,
-  );
+        left + other.left,
+        top + other.top,
+        right + other.right,
+        bottom + other.bottom,
+      );
 
   @override
   bool operator ==(Object other) =>

@@ -1,7 +1,6 @@
 import '../../../radartui.dart';
 
 class Button extends StatefulWidget {
-
   const Button({
     super.key,
     required this.text,
@@ -50,7 +49,7 @@ class _ButtonState extends State<Button> {
   void _handleKeyEvent(KeyEvent event) {
     if (!widget.enabled) return;
 
-    if (event.code == KeyCode.enter || 
+    if (event.code == KeyCode.enter ||
         (event.code == KeyCode.char && event.char == ' ')) {
       widget.onPressed?.call();
     }
@@ -74,7 +73,6 @@ class _ButtonState extends State<Button> {
 }
 
 class _ButtonRenderWidget extends RenderObjectWidget {
-
   const _ButtonRenderWidget({
     required this.text,
     required this.enabled,
@@ -112,7 +110,6 @@ class _ButtonRenderWidget extends RenderObjectWidget {
 }
 
 class RenderButton extends RenderBox {
-
   RenderButton({
     required this.text,
     required this.enabled,
@@ -244,7 +241,6 @@ class RenderButton extends RenderBox {
 }
 
 class ButtonStyle {
-
   const ButtonStyle({
     this.foregroundColor = Color.white,
     this.backgroundColor = Color.blue,

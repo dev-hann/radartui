@@ -4,7 +4,6 @@ import 'finder.dart';
 import 'test_binding.dart';
 
 class WidgetTester {
-
   WidgetTester() : binding = TestBinding.instance;
   final TestBinding binding;
 
@@ -147,7 +146,8 @@ class WidgetTester {
 
   void assertBufferLines(List<String> expected) {
     final actual = lines;
-    final maxHeight = actual.length > expected.length ? actual.length : expected.length;
+    final maxHeight =
+        actual.length > expected.length ? actual.length : expected.length;
     final diffs = <String>[];
     var hasDiff = false;
 
@@ -183,37 +183,43 @@ class WidgetTester {
 
         if (actualCell != expectedCell) {
           hasDiff = true;
-          diffs.add('Cell ($x, $y): Expected "$expectedCell", Actual "$actualCell"');
+          diffs.add(
+              'Cell ($x, $y): Expected "$expectedCell", Actual "$actualCell"');
         }
       }
     }
 
     if (hasDiff) {
-      throw AssertionError('Buffer does not match:\n${diffs.take(20).join('\n')}');
+      throw AssertionError(
+          'Buffer does not match:\n${diffs.take(20).join('\n')}');
     }
   }
 
   void assertLine(int lineIndex, String expected) {
     final actualLines = lines;
     if (lineIndex >= actualLines.length) {
-      throw AssertionError('Line $lineIndex out of range (max: ${actualLines.length - 1})');
+      throw AssertionError(
+          'Line $lineIndex out of range (max: ${actualLines.length - 1})');
     }
     final actual = actualLines[lineIndex];
     if (actual != expected) {
-      throw AssertionError('Line $lineIndex does not match:\n  Expected: "$expected"\n  Actual:   "$actual"');
+      throw AssertionError(
+          'Line $lineIndex does not match:\n  Expected: "$expected"\n  Actual:   "$actual"');
     }
   }
 
   void assertContains(String text) {
     if (!contains(text)) {
-      throw AssertionError('Buffer does not contain "$text"\nActual output:\n${getPlainText()}');
+      throw AssertionError(
+          'Buffer does not contain "$text"\nActual output:\n${getPlainText()}');
     }
   }
 
   void assertCellAt(int x, int y, String expected) {
     final actual = cellAt(x, y);
     if (actual != expected) {
-      throw AssertionError('Cell at ($x, $y) does not match:\n  Expected: "$expected"\n  Actual:   "$actual"');
+      throw AssertionError(
+          'Cell at ($x, $y) does not match:\n  Expected: "$expected"\n  Actual:   "$actual"');
     }
   }
 }

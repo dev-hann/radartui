@@ -4,7 +4,6 @@ import '../../../radartui.dart';
 
 /// A widget that displays animated loading indicators
 class LoadingIndicator extends StatefulWidget {
-
   const LoadingIndicator({
     super.key,
     this.type = IndicatorType.spinner,
@@ -73,7 +72,6 @@ class _LoadingIndicatorState extends State<LoadingIndicator> {
 
 /// A progress indicator that shows completion percentage
 class ProgressIndicator extends StatelessWidget {
-
   const ProgressIndicator({
     super.key,
     required this.progress,

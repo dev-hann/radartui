@@ -1,7 +1,6 @@
 import '../../../radartui.dart';
 
 class Divider extends StatelessWidget {
-
   const Divider({
     super.key,
     this.height,
@@ -26,7 +25,6 @@ class Divider extends StatelessWidget {
 }
 
 class VerticalDivider extends StatelessWidget {
-
   const VerticalDivider({
     super.key,
     this.width,
@@ -51,7 +49,6 @@ class VerticalDivider extends StatelessWidget {
 }
 
 class _DividerRenderWidget extends RenderObjectWidget {
-
   const _DividerRenderWidget({
     required this.height,
     required this.thickness,
@@ -85,7 +82,6 @@ class _DividerRenderWidget extends RenderObjectWidget {
 }
 
 class _VerticalDividerRenderWidget extends RenderObjectWidget {
-
   const _VerticalDividerRenderWidget({
     required this.width,
     required this.thickness,
@@ -120,7 +116,6 @@ class _VerticalDividerRenderWidget extends RenderObjectWidget {
 }
 
 class RenderDivider extends RenderBox {
-
   RenderDivider({
     required this.dividerHeight,
     required this.thickness,
@@ -157,7 +152,6 @@ class RenderDivider extends RenderBox {
 }
 
 class RenderVerticalDivider extends RenderBox {
-
   RenderVerticalDivider({
     required this.dividerWidth,
     required this.thickness,

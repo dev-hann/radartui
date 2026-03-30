@@ -1,7 +1,6 @@
 import '../../../radartui.dart';
 
 class MediaQueryData {
-
   const MediaQueryData({
     required this.size,
     this.padding = EdgeInsets.zero,
@@ -35,7 +34,6 @@ class MediaQueryData {
 }
 
 class MediaQuery extends InheritedWidget {
-
   const MediaQuery({
     super.key,
     required this.data,

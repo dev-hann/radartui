@@ -29,7 +29,7 @@ void main() {
       final existingData = StackParentData();
       existingData.left = 10;
       child.parentData = existingData;
-      
+
       renderStack.setupParentData(child);
       expect(child.parentData, equals(existingData));
       expect((child.parentData as StackParentData).left, equals(10));
@@ -57,7 +57,7 @@ void main() {
       data.width = 100;
       data.height = 50;
       data.offset = const Offset(5, 15);
-      
+
       expect(data.left, equals(10));
       expect(data.top, equals(20));
       expect(data.right, equals(30));
@@ -137,7 +137,7 @@ void main() {
       final renderObject = _MockRenderBox();
       renderObject.parentData = StackParentData();
       positioned.applyParentData(renderObject);
-      
+
       expect(renderObject.parentData, isA<StackParentData>());
       final data = renderObject.parentData as StackParentData;
       expect(data.left, equals(10));
@@ -154,9 +154,9 @@ void main() {
       final existingData = StackParentData();
       existingData.offset = const Offset(100, 200);
       renderObject.parentData = existingData;
-      
+
       positioned.applyParentData(renderObject);
-      
+
       final data = renderObject.parentData as StackParentData;
       expect(data.offset, equals(const Offset(100, 200)));
       expect(data.left, equals(10));
@@ -182,7 +182,8 @@ class _MockBuildContext implements BuildContext {
   T? dependOnInheritedWidgetOfExactType<T extends InheritedWidget>() => null;
 
   @override
-  InheritedElement? findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+  InheritedElement?
+      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _MockRenderBox extends RenderBox {

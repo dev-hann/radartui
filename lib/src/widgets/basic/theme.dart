@@ -1,7 +1,6 @@
 import '../../../radartui.dart';
 
 class ThemeData {
-
   const ThemeData({
     this.primaryColor = Colors.blue,
     this.backgroundColor = Colors.black,
@@ -76,11 +75,11 @@ class ThemeData {
       );
 
   @override
-  String toString() => 'ThemeData(primaryColor: $primaryColor, backgroundColor: $backgroundColor, textColor: $textColor)';
+  String toString() =>
+      'ThemeData(primaryColor: $primaryColor, backgroundColor: $backgroundColor, textColor: $textColor)';
 }
 
 class Theme extends InheritedWidget {
-
   const Theme({
     super.key,
     required this.data,

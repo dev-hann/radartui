@@ -249,7 +249,8 @@ void main() {
           minHeight: 5,
           maxHeight: 50,
         );
-        expect(constraints.constrain(const Size(50, 25)), equals(const Size(50, 25)));
+        expect(constraints.constrain(const Size(50, 25)),
+            equals(const Size(50, 25)));
       });
 
       test('clamps size to min bounds', () {
@@ -259,7 +260,8 @@ void main() {
           minHeight: 5,
           maxHeight: 50,
         );
-        expect(constraints.constrain(const Size(5, 2)), equals(const Size(10, 5)));
+        expect(
+            constraints.constrain(const Size(5, 2)), equals(const Size(10, 5)));
       });
 
       test('clamps size to max bounds', () {
@@ -269,13 +271,16 @@ void main() {
           minHeight: 5,
           maxHeight: 50,
         );
-        expect(constraints.constrain(const Size(150, 75)), equals(const Size(100, 50)));
+        expect(constraints.constrain(const Size(150, 75)),
+            equals(const Size(100, 50)));
       });
 
       test('returns exact size for tight constraints', () {
         final constraints = BoxConstraints.tight(const Size(100, 50));
-        expect(constraints.constrain(const Size(200, 200)), equals(const Size(100, 50)));
-        expect(constraints.constrain(const Size(0, 0)), equals(const Size(100, 50)));
+        expect(constraints.constrain(const Size(200, 200)),
+            equals(const Size(100, 50)));
+        expect(constraints.constrain(const Size(0, 0)),
+            equals(const Size(100, 50)));
       });
     });
 

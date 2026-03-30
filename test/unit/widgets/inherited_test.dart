@@ -170,7 +170,6 @@ void main() {
 }
 
 class _TestInheritedWidget extends InheritedWidget {
-
   const _TestInheritedWidget({
     required this.value,
     required super.child,
