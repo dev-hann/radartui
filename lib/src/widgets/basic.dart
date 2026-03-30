@@ -21,6 +21,7 @@ export 'basic/media_query.dart';
 export 'basic/padding.dart';
 export 'basic/positioned.dart';
 export 'basic/radio.dart';
+export 'basic/rich_text.dart';
 export 'basic/sized_box.dart';
 export 'basic/spacer.dart';
 export 'basic/stack.dart';
