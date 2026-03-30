@@ -13,6 +13,7 @@ export 'basic/flex.dart';
 export 'basic/flex_widgets.dart';
 export 'basic/focus.dart';
 export 'basic/form.dart';
+export 'basic/icon.dart';
 export 'basic/future_builder.dart';
 export 'basic/grid_view.dart';
 export 'basic/indicator.dart';
