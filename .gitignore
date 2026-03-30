@@ -6,3 +6,6 @@ pubspec.lock
 
 # Logs
 *.log
+
+# Worktrees
+.worktrees/
