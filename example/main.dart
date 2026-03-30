@@ -11,6 +11,7 @@ import 'src/focus_example.dart';
 import 'src/form_example.dart';
 import 'src/grid_view_example.dart';
 import 'src/radio_example.dart';
+import 'src/rich_text_example.dart';
 import 'src/spacer_example.dart';
 import 'src/spinner_example.dart';
 import 'src/stack_example.dart';
@@ -44,6 +45,7 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/form': (context) => const FormExample(),
         '/gridview': (context) => const GridViewExample(),
         '/radio': (context) => const RadioExample(),
+        '/richtext': (context) => const RichTextExample(),
         '/spacer': (context) => const SpacerExample(),
         '/spinner': (context) => const SpinnerExample(),
         '/stack': (context) => const StackExample(),
@@ -77,6 +79,7 @@ class _MenuScreenState extends State<MenuScreen> {
     'Form Validation',
     'GridView Widget',
     'Radio Button',
+    'RichText Widget',
     'Spacer & Flexible',
     'Spinner & Progress',
     'Stack Widget',
@@ -99,6 +102,7 @@ class _MenuScreenState extends State<MenuScreen> {
     '/form',
     '/gridview',
     '/radio',
+    '/richtext',
     '/spacer',
     '/spinner',
     '/stack',
