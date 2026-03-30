@@ -512,6 +512,21 @@ Fix ALL errors, warnings, and hints. Zero tolerance.
 - `Wrap` widget for wrapping flex layout
 - `RenderObjectWithChildMixin<C>` for optimized single-child render objects
 - `RelayoutBoundary` for layout optimization
+- `IndexedStack` widget
+- `TabBar` / `TabBarView` with `TabController`
+- `DropdownButton<T>` and `DropdownMenuItem<T>`
+- `Shortcuts` / `Actions` / `ShortcutActionsHandler` / `Intent` / `Action`
+- `RichText` / `TextSpan`
+- `DefaultTextStyle`
+- `Icon` widget
+- `DataTable` with sorting and selection
 
-### Pending Implementation
-- `IndexedStack` widget (see TASK.md for roadmap)
+### 2026-03-31: Phase 1 Widgets
+- `IndexedStack` widget
+- `TabBar` / `TabBarView` with `TabController`
+- `DropdownButton<T>` and `DropdownMenuItem<T>`
+- `Shortcuts` / `Actions` / `ShortcutActionsHandler` / `Intent` / `Action`
+- `RichText` / `TextSpan`
+- `DefaultTextStyle`
+- `Icon` widget
+- `DataTable` with sorting and selection
