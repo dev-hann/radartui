@@ -7,7 +7,6 @@ enum TextOverflow {
 }
 
 class Text extends RenderObjectWidget {
-  
   const Text(
     this.data, {
     super.key,
@@ -21,19 +20,19 @@ class Text extends RenderObjectWidget {
   final bool softWrap;
   final int? maxLines;
   final TextOverflow overflow;
-  
+
   @override
   RenderObjectElement createElement() => RenderObjectElement(this);
-  
+
   @override
   RenderText createRenderObject(BuildContext context) => RenderText(
-    text: data,
-    style: style,
-    softWrap: softWrap,
-    maxLines: maxLines,
-    overflow: overflow,
-  );
-  
+        text: data,
+        style: style,
+        softWrap: softWrap,
+        maxLines: maxLines,
+        overflow: overflow,
+      );
+
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
     final renderText = renderObject as RenderText;
@@ -46,7 +45,6 @@ class Text extends RenderObjectWidget {
 }
 
 class RenderText extends RenderBox {
-  
   RenderText({
     required this.text,
     this.style,
@@ -65,54 +63,57 @@ class RenderText extends RenderBox {
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
     final maxWidth = boxConstraints.maxWidth;
-    
+
     _lines = _wrapText(text, maxWidth);
-    
+
     if (maxLines != null && _lines.length > maxLines!) {
       _lines = _lines.sublist(0, maxLines!);
       if (overflow == TextOverflow.ellipsis && _lines.isNotEmpty) {
         final lastLine = _lines.last;
         if (lastLine.length >= 3) {
-          _lines[_lines.length - 1] = '${lastLine.substring(0, lastLine.length - 3)}...';
+          _lines[_lines.length - 1] =
+              '${lastLine.substring(0, lastLine.length - 3)}...';
         } else {
           _lines[_lines.length - 1] = '...';
         }
       }
     }
-    
+
     int computedWidth = 0;
     for (final line in _lines) {
       if (line.length > computedWidth) {
         computedWidth = line.length;
       }
     }
-    
-    final effectiveMaxHeight = boxConstraints.maxHeight > 0 ? boxConstraints.maxHeight : 1;
-    final width = computedWidth.clamp(boxConstraints.minWidth, boxConstraints.maxWidth);
+
+    final effectiveMaxHeight =
+        boxConstraints.maxHeight > 0 ? boxConstraints.maxHeight : 1;
+    final width =
+        computedWidth.clamp(boxConstraints.minWidth, boxConstraints.maxWidth);
     final height = _lines.length.clamp(1, effectiveMaxHeight);
-    
+
     size = Size(width, height);
   }
-  
+
   List<String> _wrapText(String text, int maxWidth) {
     if (maxWidth >= Constraints.infinity || maxWidth <= 0) {
       return text.isEmpty ? [''] : text.split('\n');
     }
-    
+
     final lines = <String>[];
     final paragraphs = text.split('\n');
-    
+
     for (final paragraph in paragraphs) {
       if (paragraph.isEmpty) {
         lines.add('');
         continue;
       }
-      
+
       if (paragraph.length <= maxWidth) {
         lines.add(paragraph);
         continue;
       }
-      
+
       if (softWrap) {
         int start = 0;
         while (start < paragraph.length) {
@@ -121,7 +122,7 @@ class RenderText extends RenderBox {
             lines.add(paragraph.substring(start));
             break;
           }
-          
+
           final int lastSpace = paragraph.lastIndexOf(' ', end);
           if (lastSpace > start) {
             lines.add(paragraph.substring(start, lastSpace));
@@ -135,7 +136,7 @@ class RenderText extends RenderBox {
         lines.add(paragraph.substring(0, maxWidth));
       }
     }
-    
+
     return lines.isEmpty ? [''] : lines;
   }
 

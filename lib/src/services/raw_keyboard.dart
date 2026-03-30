@@ -18,8 +18,8 @@ class RawKeyboard implements KeyboardBackend {
     stdin.echoMode = false;
     stdin.lineMode = false;
     _subscription = stdin.transform(const SystemEncoding().decoder).listen(
-      _handleInput,
-    );
+          _handleInput,
+        );
   }
 
   void _handleInput(String input) {

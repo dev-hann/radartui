@@ -2,7 +2,7 @@ import 'navigation.dart';
 
 abstract class NavigatorObserver {
   void didPush(Route route, Route? previousRoute);
-  void didPop(Route route, Route? previousRoute);  
+  void didPop(Route route, Route? previousRoute);
   void didReplace({Route? newRoute, Route? oldRoute});
   void didStartUserGesture(Route route, Route? previousRoute) {}
   void didStopUserGesture() {}
@@ -31,7 +31,7 @@ class RouteObserver<R extends Route> extends NavigatorObserver {
     if (route is R && previousRoute is R) {
       final previousRouteAware = _getRouteAware(previousRoute);
       previousRouteAware?.didPushNext();
-      
+
       final routeAware = _getRouteAware(route);
       routeAware?.didPush();
     }
@@ -42,7 +42,7 @@ class RouteObserver<R extends Route> extends NavigatorObserver {
     if (route is R && previousRoute is R) {
       final routeAware = _getRouteAware(route);
       routeAware?.didPop();
-      
+
       final previousRouteAware = _getRouteAware(previousRoute);
       previousRouteAware?.didPopNext();
     }

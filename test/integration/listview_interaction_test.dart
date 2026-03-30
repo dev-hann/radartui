@@ -3,7 +3,8 @@ import 'package:test/test.dart';
 
 void main() {
   group('ListView rendering', () {
-    testWidgets('ListView renders items with selection indicator', (tester) async {
+    testWidgets('ListView renders items with selection indicator',
+        (tester) async {
       tester.pumpWidget(
         const ListView<String>(
           items: ['Item 1', 'Item 2', 'Item 3'],
@@ -141,7 +142,8 @@ void main() {
       expect(selectedIndex, equals(1));
     });
 
-    testWidgets('ListView wrapAroundNavigation wraps to last from first', (tester) async {
+    testWidgets('ListView wrapAroundNavigation wraps to last from first',
+        (tester) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
       var selectedIndex = -1;
 
@@ -167,7 +169,8 @@ void main() {
       expect(selectedIndex, equals(2));
     });
 
-    testWidgets('ListView wrapAroundNavigation wraps to first from last', (tester) async {
+    testWidgets('ListView wrapAroundNavigation wraps to first from last',
+        (tester) async {
       final items = ['Item 1', 'Item 2'];
       var selectedIndex = -1;
 

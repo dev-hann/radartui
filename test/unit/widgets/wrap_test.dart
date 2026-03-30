@@ -82,7 +82,7 @@ void main() {
       renderWrap.crossAxisAlignment = WrapCrossAlignment.center;
       renderWrap.spacing = 2;
       renderWrap.runSpacing = 1;
-      
+
       expect(renderWrap.direction, equals(Axis.vertical));
       expect(renderWrap.alignment, equals(WrapAlignment.end));
       expect(renderWrap.crossAxisAlignment, equals(WrapCrossAlignment.center));
@@ -141,7 +141,8 @@ class _MockBuildContext implements BuildContext {
   T? dependOnInheritedWidgetOfExactType<T extends InheritedWidget>() => null;
 
   @override
-  InheritedElement? findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+  InheritedElement?
+      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _MockRenderBox extends RenderBox {

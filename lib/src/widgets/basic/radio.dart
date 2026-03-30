@@ -1,7 +1,6 @@
 import '../../../radartui.dart';
 
 class Radio<T> extends StatefulWidget {
-
   const Radio({
     super.key,
     required this.value,
@@ -52,9 +51,9 @@ class _RadioState<T> extends State<Radio<T>> {
   @override
   void didUpdateWidget(Radio<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
+
     // Force rebuild if selection state changed
-    if (oldWidget.groupValue != widget.groupValue || 
+    if (oldWidget.groupValue != widget.groupValue ||
         oldWidget.value != widget.value) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {});
@@ -65,7 +64,7 @@ class _RadioState<T> extends State<Radio<T>> {
   void _handleKeyEvent(KeyEvent event) {
     if (widget.onChanged == null) return;
 
-    if (event.code == KeyCode.enter || 
+    if (event.code == KeyCode.enter ||
         (event.code == KeyCode.char && event.char == ' ')) {
       widget.onChanged!(widget.value);
     }
@@ -79,7 +78,7 @@ class _RadioState<T> extends State<Radio<T>> {
   @override
   Widget build(BuildContext context) {
     final isSelected = widget.value == widget.groupValue;
-    
+
     return _RadioRenderWidget(
       selected: isSelected,
       focused: _focusNode.hasFocus,
@@ -92,7 +91,6 @@ class _RadioState<T> extends State<Radio<T>> {
 }
 
 class _RadioRenderWidget extends RenderObjectWidget {
-
   const _RadioRenderWidget({
     required this.selected,
     required this.focused,
@@ -125,14 +123,14 @@ class _RadioRenderWidget extends RenderObjectWidget {
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
     final radio = renderObject as RenderRadio;
     final oldSelected = radio.selected;
-    
+
     radio.selected = selected;
     radio.focused = focused;
     radio.enabled = enabled;
     radio.activeColor = activeColor;
     radio.checkColor = checkColor;
     radio.onTap = onTap;
-    
+
     // Force repaint if selection state changed
     if (oldSelected != selected) {
       radio.markNeedsLayout();
@@ -141,7 +139,6 @@ class _RadioRenderWidget extends RenderObjectWidget {
 }
 
 class RenderRadio extends RenderBox {
-
   RenderRadio({
     required this.selected,
     required this.focused,
@@ -167,7 +164,8 @@ class RenderRadio extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     final backgroundColor = _getBackgroundColor();
     final foregroundColor = _getForegroundColor();
-    final borderColor = focused ? activeColor : (enabled ? Color.white : Color.brightBlack);
+    final borderColor =
+        focused ? activeColor : (enabled ? Color.white : Color.brightBlack);
 
     // Draw radio background
     for (int x = 0; x < 3; x++) {

@@ -49,7 +49,7 @@ void main() {
       final controller = TextEditingController();
       controller.text = 'Hello';
       controller.setSelection(0, 5);
-      
+
       expect(controller.hasSelection, isTrue);
       expect(controller.selection?.start, equals(0));
       expect(controller.selection?.end, equals(5));
@@ -59,7 +59,7 @@ void main() {
       final controller = TextEditingController();
       controller.text = 'Hello';
       controller.selectAll();
-      
+
       expect(controller.hasSelection, isTrue);
       expect(controller.selection?.start, equals(0));
       expect(controller.selection?.end, equals(5));
@@ -70,7 +70,7 @@ void main() {
       controller.text = 'Hello';
       controller.selectAll();
       controller.clearSelection();
-      
+
       expect(controller.hasSelection, isFalse);
     });
 
@@ -79,7 +79,7 @@ void main() {
       controller.text = 'Hello World';
       controller.setSelection(0, 6);
       controller.deleteSelection();
-      
+
       expect(controller.text, equals('World'));
       expect(controller.cursorPosition, equals(0));
     });
@@ -89,7 +89,7 @@ void main() {
       controller.text = 'Hello World';
       controller.setSelection(0, 5);
       await controller.copy();
-      
+
       final data = await Clipboard.getData();
       expect(data, equals('Hello'));
     });
@@ -99,7 +99,7 @@ void main() {
       controller.text = 'Hello World';
       controller.setSelection(0, 6);
       await controller.cut();
-      
+
       expect(controller.text, equals('World'));
       final data = await Clipboard.getData();
       expect(data, equals('Hello '));
@@ -111,7 +111,7 @@ void main() {
       controller.text = 'Hello';
       controller.cursorPosition = 5;
       await controller.paste();
-      
+
       expect(controller.text, equals('HelloTest'));
     });
 
@@ -120,7 +120,7 @@ void main() {
       controller.text = 'Hello World';
       controller.setSelection(0, 6);
       controller.insertText('Hi ');
-      
+
       expect(controller.text, equals('Hi World'));
     });
 
@@ -129,7 +129,7 @@ void main() {
       controller.text = 'Hello World';
       controller.cursorPosition = 11;
       controller.moveCursorWordLeft();
-      
+
       expect(controller.cursorPosition, equals(6));
     });
 
@@ -138,7 +138,7 @@ void main() {
       controller.text = 'Hello World';
       controller.cursorPosition = 0;
       controller.moveCursorWordRight();
-      
+
       expect(controller.cursorPosition, equals(6));
     });
   });
@@ -151,7 +151,8 @@ void main() {
 
     test('FormScope provides FormState', () {
       final formState = FormState();
-      final formScope = FormScope(formState: formState, child: const Text('test'));
+      final formScope =
+          FormScope(formState: formState, child: const Text('test'));
       expect(formScope.formState, equals(formState));
     });
   });

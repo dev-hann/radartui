@@ -3,7 +3,6 @@ import 'edge_insets.dart';
 import 'size.dart';
 
 class BoxConstraints extends Constraints {
-
   const BoxConstraints({
     this.minWidth = 0,
     this.maxWidth = Constraints.infinity,
@@ -12,28 +11,28 @@ class BoxConstraints extends Constraints {
   });
 
   BoxConstraints.tight(Size size)
-    : minWidth = size.width,
-      maxWidth = size.width,
-      minHeight = size.height,
-      maxHeight = size.height;
+      : minWidth = size.width,
+        maxWidth = size.width,
+        minHeight = size.height,
+        maxHeight = size.height;
 
   BoxConstraints.loose(Size size)
-    : minWidth = 0,
-      maxWidth = size.width,
-      minHeight = 0,
-      maxHeight = size.height;
+      : minWidth = 0,
+        maxWidth = size.width,
+        minHeight = 0,
+        maxHeight = size.height;
 
   const BoxConstraints.expand({int? width, int? height})
-    : minWidth = width ?? Constraints.infinity,
-      maxWidth = width ?? Constraints.infinity,
-      minHeight = height ?? Constraints.infinity,
-      maxHeight = height ?? Constraints.infinity;
+      : minWidth = width ?? Constraints.infinity,
+        maxWidth = width ?? Constraints.infinity,
+        minHeight = height ?? Constraints.infinity,
+        maxHeight = height ?? Constraints.infinity;
 
   const BoxConstraints.tightFor({int? width, int? height})
-    : minWidth = width ?? 0,
-      maxWidth = width ?? Constraints.infinity,
-      minHeight = height ?? 0,
-      maxHeight = height ?? Constraints.infinity;
+      : minWidth = width ?? 0,
+        maxWidth = width ?? Constraints.infinity,
+        minHeight = height ?? 0,
+        maxHeight = height ?? Constraints.infinity;
   final int minWidth;
   final int maxWidth;
   final int minHeight;
@@ -80,10 +79,14 @@ class BoxConstraints extends Constraints {
     final horizontal = edge.left + edge.right;
     final vertical = edge.top + edge.bottom;
 
-    final deflatedMaxWidth = (maxWidth - horizontal).clamp(0, Constraints.infinity);
-    final deflatedMaxHeight = (maxHeight - vertical).clamp(0, Constraints.infinity);
-    final deflatedMinWidth = (minWidth - horizontal).clamp(0, Constraints.infinity);
-    final deflatedMinHeight = (minHeight - vertical).clamp(0, Constraints.infinity);
+    final deflatedMaxWidth =
+        (maxWidth - horizontal).clamp(0, Constraints.infinity);
+    final deflatedMaxHeight =
+        (maxHeight - vertical).clamp(0, Constraints.infinity);
+    final deflatedMinWidth =
+        (minWidth - horizontal).clamp(0, Constraints.infinity);
+    final deflatedMinHeight =
+        (minHeight - vertical).clamp(0, Constraints.infinity);
 
     return BoxConstraints(
       minWidth: deflatedMinWidth.clamp(0, deflatedMaxWidth),

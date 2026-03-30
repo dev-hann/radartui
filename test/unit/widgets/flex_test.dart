@@ -69,7 +69,7 @@ void main() {
       renderFlex.direction = Axis.vertical;
       renderFlex.mainAxisAlignment = MainAxisAlignment.end;
       renderFlex.crossAxisAlignment = CrossAxisAlignment.stretch;
-      
+
       expect(renderFlex.direction, equals(Axis.vertical));
       expect(renderFlex.mainAxisAlignment, equals(MainAxisAlignment.end));
       expect(renderFlex.crossAxisAlignment, equals(CrossAxisAlignment.stretch));
@@ -145,7 +145,8 @@ void main() {
       expanded.applyParentData(renderObject);
       expect(renderObject.parentData, isA<FlexParentData>());
       expect((renderObject.parentData as FlexParentData).flex, equals(1));
-      expect((renderObject.parentData as FlexParentData).fit, equals(FlexFit.tight));
+      expect((renderObject.parentData as FlexParentData).fit,
+          equals(FlexFit.tight));
     });
   });
 
@@ -174,7 +175,7 @@ void main() {
       data.flex = 2;
       data.fit = FlexFit.tight;
       data.offset = const Offset(10, 20);
-      
+
       expect(data.flex, equals(2));
       expect(data.fit, equals(FlexFit.tight));
       expect(data.offset, equals(const Offset(10, 20)));
@@ -187,7 +188,8 @@ void main() {
       expect(MainAxisAlignment.values, contains(MainAxisAlignment.start));
       expect(MainAxisAlignment.values, contains(MainAxisAlignment.end));
       expect(MainAxisAlignment.values, contains(MainAxisAlignment.center));
-      expect(MainAxisAlignment.values, contains(MainAxisAlignment.spaceBetween));
+      expect(
+          MainAxisAlignment.values, contains(MainAxisAlignment.spaceBetween));
       expect(MainAxisAlignment.values, contains(MainAxisAlignment.spaceAround));
       expect(MainAxisAlignment.values, contains(MainAxisAlignment.spaceEvenly));
     });
@@ -228,7 +230,8 @@ class _MockBuildContext implements BuildContext {
   T? dependOnInheritedWidgetOfExactType<T extends InheritedWidget>() => null;
 
   @override
-  InheritedElement? findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+  InheritedElement?
+      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _MockRenderBox extends RenderBox {

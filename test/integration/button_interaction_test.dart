@@ -82,7 +82,8 @@ void main() {
       expect(pressed, isFalse);
     });
 
-    testWidgets('Button without onPressed does not crash on Enter', (tester) async {
+    testWidgets('Button without onPressed does not crash on Enter',
+        (tester) async {
       tester.pumpWidget(
         const Button(
           text: 'Click',

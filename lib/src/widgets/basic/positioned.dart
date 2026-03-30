@@ -1,7 +1,6 @@
 import '../../../radartui.dart';
 
 class Positioned extends ParentDataWidget<StackParentData> {
-
   const Positioned({
     super.key,
     this.left,
@@ -16,12 +15,12 @@ class Positioned extends ParentDataWidget<StackParentData> {
   const Positioned.fill({
     super.key,
     required super.child,
-  }) : left = 0,
-       top = 0,
-       right = 0,
-       bottom = 0,
-       width = null,
-       height = null;
+  })  : left = 0,
+        top = 0,
+        right = 0,
+        bottom = 0,
+        width = null,
+        height = null;
   final int? left;
   final int? top;
   final int? right;

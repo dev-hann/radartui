@@ -2,11 +2,10 @@ import 'dart:async';
 import '../../../radartui.dart';
 
 class TextSelection {
-  
   const TextSelection({required this.start, required this.end});
   final int start;
   final int end;
-  
+
   bool get isValid => start >= 0 && end >= start;
   int get length => end - start;
   String textInRange(String fullText) {
@@ -17,15 +16,15 @@ class TextSelection {
 
 abstract class Clipboard {
   static String? _data;
-  
+
   static Future<void> setData(String text) async {
     _data = text;
   }
-  
+
   static Future<String?> getData() async {
     return _data;
   }
-  
+
   static bool get hasData => _data != null && _data!.isNotEmpty;
 }
 
@@ -37,12 +36,12 @@ class TextEditingController extends ChangeNotifier {
 
   String get text => _text;
   int get cursorPosition => _cursorPosition;
-  
+
   TextSelection? get selection {
     if (_selectionStart == null || _selectionEnd == null) return null;
     return TextSelection(start: _selectionStart!, end: _selectionEnd!);
   }
-  
+
   bool get hasSelection => _selectionStart != null && _selectionEnd != null;
 
   set text(String value) {
@@ -62,37 +61,37 @@ class TextEditingController extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
+
   void setSelection(int start, int end) {
     _selectionStart = start.clamp(0, _text.length);
     _selectionEnd = end.clamp(_selectionStart!, _text.length);
     notifyListeners();
   }
-  
+
   void clearSelection() {
     _selectionStart = null;
     _selectionEnd = null;
   }
-  
+
   void selectAll() {
     _selectionStart = 0;
     _selectionEnd = _text.length;
     notifyListeners();
   }
-  
+
   Future<void> copy() async {
     if (hasSelection) {
       await Clipboard.setData(selection!.textInRange(_text));
     }
   }
-  
+
   Future<void> cut() async {
     if (hasSelection) {
       await Clipboard.setData(selection!.textInRange(_text));
       deleteSelection();
     }
   }
-  
+
   Future<void> paste() async {
     final clipboardText = await Clipboard.getData();
     if (clipboardText != null && clipboardText.isNotEmpty) {
@@ -102,7 +101,7 @@ class TextEditingController extends ChangeNotifier {
       insertText(clipboardText);
     }
   }
-  
+
   void deleteSelection() {
     if (!hasSelection) return;
     final sel = selection!;
@@ -116,9 +115,9 @@ class TextEditingController extends ChangeNotifier {
     if (hasSelection) {
       deleteSelection();
     }
-    _text = _text.substring(0, _cursorPosition) + 
-            text + 
-            _text.substring(_cursorPosition);
+    _text = _text.substring(0, _cursorPosition) +
+        text +
+        _text.substring(_cursorPosition);
     _cursorPosition += text.length;
     notifyListeners();
   }
@@ -129,8 +128,8 @@ class TextEditingController extends ChangeNotifier {
       return;
     }
     if (_cursorPosition > 0) {
-      _text = _text.substring(0, _cursorPosition - 1) + 
-              _text.substring(_cursorPosition);
+      _text = _text.substring(0, _cursorPosition - 1) +
+          _text.substring(_cursorPosition);
       _cursorPosition--;
       notifyListeners();
     }
@@ -142,8 +141,8 @@ class TextEditingController extends ChangeNotifier {
       return;
     }
     if (_cursorPosition < _text.length) {
-      _text = _text.substring(0, _cursorPosition) + 
-              _text.substring(_cursorPosition + 1);
+      _text = _text.substring(0, _cursorPosition) +
+          _text.substring(_cursorPosition + 1);
       notifyListeners();
     }
   }
@@ -175,7 +174,7 @@ class TextEditingController extends ChangeNotifier {
     clearSelection();
     notifyListeners();
   }
-  
+
   void moveCursorWordLeft() {
     if (_cursorPosition == 0) return;
     int pos = _cursorPosition - 1;
@@ -186,7 +185,7 @@ class TextEditingController extends ChangeNotifier {
     clearSelection();
     notifyListeners();
   }
-  
+
   void moveCursorWordRight() {
     if (_cursorPosition >= _text.length) return;
     int pos = _cursorPosition;
@@ -213,7 +212,6 @@ class TextEditingController extends ChangeNotifier {
 }
 
 class TextField extends StatefulWidget {
-
   const TextField({
     super.key,
     this.controller,
@@ -242,16 +240,16 @@ class _TextFieldState extends State<TextField> {
   @override
   void initState() {
     super.initState();
-    
+
     if (widget.controller != null) {
       _controller = widget.controller!;
     } else {
       _controller = TextEditingController();
       _isControllerOwned = true;
     }
-    
+
     _controller.addListener(_onControllerChanged);
-    
+
     _focusNode = FocusNode();
     FocusManager.instance.registerNode(_focusNode);
     _focusNode.onKeyEvent = _handleKeyEvent;
@@ -261,14 +259,14 @@ class _TextFieldState extends State<TextField> {
   @override
   void didUpdateWidget(TextField oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
+
     if (widget.controller != oldWidget.controller) {
       _controller.removeListener(_onControllerChanged);
-      
+
       if (_isControllerOwned) {
         _controller.dispose();
       }
-      
+
       if (widget.controller != null) {
         _controller = widget.controller!;
         _isControllerOwned = false;
@@ -276,7 +274,7 @@ class _TextFieldState extends State<TextField> {
         _controller = TextEditingController();
         _isControllerOwned = true;
       }
-      
+
       _controller.addListener(_onControllerChanged);
     }
   }
@@ -287,7 +285,7 @@ class _TextFieldState extends State<TextField> {
     if (_isControllerOwned) {
       _controller.dispose();
     }
-    
+
     // Unregister from FocusManager before disposing
     FocusManager.instance.unregisterNode(_focusNode);
     _focusNode.dispose();
@@ -322,7 +320,8 @@ class _TextFieldState extends State<TextField> {
     switch (event.code) {
       case KeyCode.char:
         if (event.char != null) {
-          if (widget.maxLength == null || _controller.text.length < widget.maxLength!) {
+          if (widget.maxLength == null ||
+              _controller.text.length < widget.maxLength!) {
             _controller.insertText(event.char!);
           }
         }
@@ -369,7 +368,6 @@ class _TextFieldState extends State<TextField> {
 }
 
 class _TextField extends RenderObjectWidget {
-
   const _TextField({
     required this.text,
     required this.cursorPosition,
@@ -407,7 +405,6 @@ class _TextField extends RenderObjectWidget {
 }
 
 class RenderTextField extends RenderBox {
-
   RenderTextField({
     required this.text,
     required this.cursorPosition,
@@ -423,16 +420,19 @@ class RenderTextField extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    final displayText = text.isEmpty && placeholder != null ? placeholder! : text;
-    final desiredWidth = (displayText.length + 1).clamp(1, Constraints.infinity);
+    final displayText =
+        text.isEmpty && placeholder != null ? placeholder! : text;
+    final desiredWidth =
+        (displayText.length + 1).clamp(1, Constraints.infinity);
     final boxConstraints = constraints.asBoxConstraints;
     size = boxConstraints.constrain(Size(desiredWidth, 1));
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final displayText = text.isEmpty && placeholder != null ? placeholder! : text;
-    
+    final displayText =
+        text.isEmpty && placeholder != null ? placeholder! : text;
+
     // Enhanced styling for better TUI appearance
     final baseStyle = style ?? const TextStyle(color: Color.white);
     final placeholderStyle = TextStyle(
@@ -442,8 +442,9 @@ class RenderTextField extends RenderBox {
       italic: true,
       underline: false,
     );
-    final displayStyle = text.isEmpty && placeholder != null ? placeholderStyle : baseStyle;
-    
+    final displayStyle =
+        text.isEmpty && placeholder != null ? placeholderStyle : baseStyle;
+
     // Draw border if focused
     if (hasFocus) {
       _drawBorder(context, offset, size!);
@@ -451,7 +452,7 @@ class RenderTextField extends RenderBox {
 
     final availableWidth = size!.width;
     final textLength = displayText.length;
-    
+
     // Calculate scroll offset to keep cursor visible
     int scrollOffset = 0;
     if (textLength >= availableWidth) {
@@ -460,22 +461,24 @@ class RenderTextField extends RenderBox {
         scrollOffset = cursorPosition - availableWidth + 1;
       }
     }
-    
+
     // Render visible portion of text
     final visibleStart = scrollOffset;
     final visibleEnd = (scrollOffset + availableWidth).clamp(0, textLength);
-    
+
     for (int i = visibleStart; i < visibleEnd; i++) {
       final screenX = offset.x + i - scrollOffset;
-      context.buffer.writeStyled(screenX, offset.y, displayText[i], displayStyle);
+      context.buffer
+          .writeStyled(screenX, offset.y, displayText[i], displayStyle);
     }
 
     // Render enhanced cursor
     if (hasFocus) {
       final cursorScreenX = offset.x + cursorPosition - scrollOffset;
-      
+
       // Only render cursor if it's within visible area
-      if (cursorScreenX >= offset.x && cursorScreenX < offset.x + availableWidth) {
+      if (cursorScreenX >= offset.x &&
+          cursorScreenX < offset.x + availableWidth) {
         if (cursorPosition < text.length) {
           // Cursor on existing character - use reverse video effect
           const cursorStyle = TextStyle(
@@ -483,7 +486,8 @@ class RenderTextField extends RenderBox {
             backgroundColor: Color.cyan,
             bold: true,
           );
-          context.buffer.writeStyled(cursorScreenX, offset.y, text[cursorPosition], cursorStyle);
+          context.buffer.writeStyled(
+              cursorScreenX, offset.y, text[cursorPosition], cursorStyle);
         } else {
           // Cursor at end of text - show block cursor
           const cursorStyle = TextStyle(
@@ -496,7 +500,7 @@ class RenderTextField extends RenderBox {
       }
     }
   }
-  
+
   void _drawBorder(PaintingContext context, Offset offset, Size size) {
     const borderStyle = TextStyle(color: Color.cyan, bold: true);
     final width = size.width.toInt();
@@ -533,13 +537,15 @@ class RenderTextField extends RenderBox {
       context.buffer.writeStyled(offset.x - 1, offset.y - 1, '┌', borderStyle);
     }
     if (offset.x + width < bufferWidth && offset.y > 0) {
-      context.buffer.writeStyled(offset.x + width, offset.y - 1, '┐', borderStyle);
+      context.buffer
+          .writeStyled(offset.x + width, offset.y - 1, '┐', borderStyle);
     }
     if (offset.x > 0 && offset.y + 1 < bufferHeight) {
       context.buffer.writeStyled(offset.x - 1, offset.y + 1, '└', borderStyle);
     }
     if (offset.x + width < bufferWidth && offset.y + 1 < bufferHeight) {
-      context.buffer.writeStyled(offset.x + width, offset.y + 1, '┘', borderStyle);
+      context.buffer
+          .writeStyled(offset.x + width, offset.y + 1, '┘', borderStyle);
     }
   }
 }

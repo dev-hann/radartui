@@ -10,23 +10,22 @@ Widget _defaultUnselectedBuilder<T>(T item) {
 
 class ScrollController extends ChangeNotifier {
   int _offset = 0;
-  
+
   int get offset => _offset;
-  
+
   set offset(int value) {
     if (_offset != value) {
       _offset = value;
       notifyListeners();
     }
   }
-  
+
   void animateTo(int newOffset) {
     offset = newOffset;
   }
 }
 
 class ListView<T> extends StatefulWidget {
-
   const ListView({
     super.key,
     required this.items,
@@ -66,16 +65,16 @@ class _ListViewState<T> extends State<ListView<T>> {
       0,
       widget.items.length - 1,
     );
-    
+
     if (widget.controller != null) {
       _scrollController = widget.controller!;
     } else {
       _scrollController = ScrollController();
       _ownsController = true;
     }
-    
+
     _scrollController.addListener(_onScrollChanged);
-    
+
     FocusManager.instance.registerNode(_focusNode);
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChanged);
@@ -133,10 +132,10 @@ class _ListViewState<T> extends State<ListView<T>> {
 
   void _ensureVisible(int index) {
     if (_viewportHeight <= 0) return;
-    
+
     final scrollOffset = _scrollController.offset;
     final bottomVisible = scrollOffset + _viewportHeight - 1;
-    
+
     if (index < scrollOffset) {
       _scrollController.animateTo(index);
     } else if (index > bottomVisible) {
@@ -154,18 +153,18 @@ class _ListViewState<T> extends State<ListView<T>> {
   Widget build(BuildContext context) {
     final mediaQuery = context.findAncestorWidgetOfExactType<MediaQuery>();
     _viewportHeight = mediaQuery?.data.size.height ?? 24;
-    
+
     final itemCount = widget.items.length;
     if (itemCount == 0) {
       return const SizedBox();
     }
-    
+
     final scrollOffset = _scrollController.offset.clamp(0, itemCount - 1);
     final visibleCount = _viewportHeight.clamp(1, itemCount);
     final endIndex = (scrollOffset + visibleCount).clamp(0, itemCount);
-    
+
     final children = <Widget>[];
-    
+
     for (int i = scrollOffset; i < endIndex; i++) {
       final item = widget.items[i];
       final isSelected = i == selectedIndex && _hasFocus;

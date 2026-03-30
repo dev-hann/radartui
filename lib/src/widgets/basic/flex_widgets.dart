@@ -8,8 +8,8 @@ class Row extends Flex {
     super.crossAxisAlignment,
     super.mainAxisSize,
   }) : super(
-           direction: Axis.horizontal,
-         );
+          direction: Axis.horizontal,
+        );
 }
 
 class Column extends Flex {
@@ -20,12 +20,11 @@ class Column extends Flex {
     super.crossAxisAlignment,
     super.mainAxisSize,
   }) : super(
-           direction: Axis.vertical,
-         );
+          direction: Axis.vertical,
+        );
 }
 
 abstract class Flexible extends ParentDataWidget<FlexParentData> {
-
   const Flexible({
     super.key,
     required super.child,

@@ -1,7 +1,6 @@
 import '../../../radartui.dart';
 
 class Checkbox extends StatefulWidget {
-
   const Checkbox({
     super.key,
     required this.value,
@@ -63,7 +62,7 @@ class _CheckboxState extends State<Checkbox> {
   @override
   void didUpdateWidget(Checkbox oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
+
     // Force rebuild if value changed
     if (oldWidget.value != widget.value) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -86,7 +85,6 @@ class _CheckboxState extends State<Checkbox> {
 }
 
 class _CheckboxRenderWidget extends RenderObjectWidget {
-
   const _CheckboxRenderWidget({
     required this.value,
     required this.tristate,
@@ -119,14 +117,14 @@ class _CheckboxRenderWidget extends RenderObjectWidget {
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
     final checkbox = renderObject as RenderCheckbox;
     final oldValue = checkbox.value;
-    
+
     checkbox.value = value;
     checkbox.tristate = tristate;
     checkbox.focused = focused;
     checkbox.enabled = enabled;
     checkbox.activeColor = activeColor;
     checkbox.checkColor = checkColor;
-    
+
     // Force repaint if value changed
     if (oldValue != value) {
       checkbox.markNeedsLayout();
@@ -135,7 +133,6 @@ class _CheckboxRenderWidget extends RenderObjectWidget {
 }
 
 class RenderCheckbox extends RenderBox {
-
   RenderCheckbox({
     required this.value,
     required this.tristate,
