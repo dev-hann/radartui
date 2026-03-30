@@ -129,13 +129,21 @@ Check out the various examples included in the project to see the features of Ra
 
 ## 🗺️ Roadmap
 
-RadarTUI is continuously evolving, with plans for the following features:
+RadarTUI is continuously evolving. Many core features are already implemented:
 
-- [ ] **Animation System**: Smooth visual transitions for state changes.
-- [ ] **Focus Management System**: Keyboard navigation and focus control between widgets.
-- [ ] **Theme System**: Centralized management of colors and styles for the entire application.
-- [ ] **Widget Testing Framework**: Testing utilities for TUI applications.
-- [ ] **Advanced Layout Widgets**: More layout options like `Grid`, `Stack`, `ListView`.
+### ✅ Implemented
+- **Animation System**: Basic animation support with indicators
+- **Focus Management System**: Keyboard navigation and focus control between widgets
+- **Theme System**: Centralized management of colors and styles for the entire application
+- **Widget Testing Framework**: Testing utilities for TUI applications
+- **Advanced Layout Widgets**: `Grid`, `Stack`, `ListView`, `Wrap`, `IndexedStack`
+- **Rich Widgets**: `DataTable`, `TabBar`/`TabBarView`, `DropdownButton`, `Icon`
+- **Input Handling**: `Shortcuts`/`Actions` for keyboard shortcuts
+
+### 🚧 Planned
+- **Enhanced Animation System**: Smooth visual transitions for state changes
+- **Mouse Support**: Optional mouse event handling
+- **More Widgets**: Additional Flutter-compatible widgets
 
 ## 🤝 Contributing
 
