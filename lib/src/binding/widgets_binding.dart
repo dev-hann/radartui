@@ -9,7 +9,8 @@ import 'services_binding.dart';
 
 typedef ShutdownCallback = void Function();
 
-mixin WidgetsBinding on BindingBase, SchedulerBinding, ServicesBinding, RendererBinding {
+mixin WidgetsBinding
+    on BindingBase, SchedulerBinding, ServicesBinding, RendererBinding {
   static WidgetsBinding? _instance;
 
   static WidgetsBinding get instance => BindingBase.checkInstance(_instance);

@@ -45,7 +45,6 @@ class TypeFinder<T extends Widget> extends Finder {
 }
 
 class TextFinder extends Finder {
-
   const TextFinder(this.targetText);
   final String targetText;
 
@@ -70,7 +69,6 @@ class TextFinder extends Finder {
 }
 
 class KeyFinder extends Finder {
-
   const KeyFinder(this.key);
   final Key key;
 

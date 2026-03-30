@@ -1,24 +1,23 @@
 import '../../../radartui.dart';
 
 class FormScope extends InheritedWidget {
-  
   const FormScope({
     super.key,
     required this.formState,
     required super.child,
   });
   final FormState formState;
-  
+
   static FormScope? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<FormScope>();
   }
-  
+
   @override
-  bool updateShouldNotify(FormScope oldWidget) => formState != oldWidget.formState;
+  bool updateShouldNotify(FormScope oldWidget) =>
+      formState != oldWidget.formState;
 }
 
 class Form extends StatefulWidget {
-  
   const Form({
     super.key,
     required this.child,
@@ -28,7 +27,7 @@ class Form extends StatefulWidget {
   final Widget child;
   final VoidCallback? onSubmitted;
   final bool autovalidate;
-  
+
   @override
   State<Form> createState() => FormState();
 }
@@ -36,17 +35,17 @@ class Form extends StatefulWidget {
 class FormState extends State<Form> {
   final Set<FormFieldState> _fields = {};
   bool _isValid = true;
-  
+
   bool get isValid => _isValid;
-  
+
   void register(FormFieldState field) {
     _fields.add(field);
   }
-  
+
   void unregister(FormFieldState field) {
     _fields.remove(field);
   }
-  
+
   bool validate() {
     _isValid = true;
     for (final field in _fields) {
@@ -57,13 +56,13 @@ class FormState extends State<Form> {
     setState(() {});
     return _isValid;
   }
-  
+
   void save() {
     for (final field in _fields) {
       field.save();
     }
   }
-  
+
   void reset() {
     for (final field in _fields) {
       field.reset();
@@ -71,14 +70,14 @@ class FormState extends State<Form> {
     _isValid = true;
     setState(() {});
   }
-  
+
   void submit() {
     if (validate()) {
       save();
       widget.onSubmitted?.call();
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return FormScope(
@@ -89,7 +88,6 @@ class FormState extends State<Form> {
 }
 
 class FormField<T> extends StatefulWidget {
-  
   const FormField({
     super.key,
     required this.initialValue,
@@ -101,7 +99,7 @@ class FormField<T> extends StatefulWidget {
   final String? Function(T?)? validator;
   final void Function(T)? onSaved;
   final Widget Function(FormFieldState<T>) builder;
-  
+
   @override
   State<FormField<T>> createState() => FormFieldState<T>();
 }
@@ -109,17 +107,17 @@ class FormField<T> extends StatefulWidget {
 class FormFieldState<T> extends State<FormField<T>> {
   late T _value;
   String? _errorText;
-  
+
   T get value => _value;
   String? get errorText => _errorText;
   bool get hasError => _errorText != null;
   bool get isValid => _errorText == null;
-  
+
   void setValue(T value) {
     _value = value;
     setState(() {});
   }
-  
+
   bool validate() {
     if (widget.validator != null) {
       _errorText = widget.validator!(_value);
@@ -127,17 +125,17 @@ class FormFieldState<T> extends State<FormField<T>> {
     setState(() {});
     return _errorText == null;
   }
-  
+
   void save() {
     widget.onSaved?.call(_value);
   }
-  
+
   void reset() {
     _value = widget.initialValue;
     _errorText = null;
     setState(() {});
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -149,7 +147,7 @@ class FormFieldState<T> extends State<FormField<T>> {
       }
     });
   }
-  
+
   @override
   void dispose() {
     final formScope = FormScope.of(context);
@@ -158,7 +156,7 @@ class FormFieldState<T> extends State<FormField<T>> {
     }
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return widget.builder(this);
@@ -166,7 +164,6 @@ class FormFieldState<T> extends State<FormField<T>> {
 }
 
 class TextFormField extends StatefulWidget {
-  
   const TextFormField({
     super.key,
     this.controller,
@@ -184,7 +181,7 @@ class TextFormField extends StatefulWidget {
   final String? placeholder;
   final TextStyle? style;
   final int? maxLength;
-  
+
   @override
   State<TextFormField> createState() => _TextFormFieldState();
 }
@@ -193,7 +190,7 @@ class _TextFormFieldState extends State<TextFormField> {
   late TextEditingController _controller;
   bool _isControllerOwned = false;
   String? _errorText;
-  
+
   @override
   void initState() {
     super.initState();
@@ -208,7 +205,7 @@ class _TextFormFieldState extends State<TextFormField> {
     }
     _controller.addListener(_onControllerChanged);
   }
-  
+
   @override
   void dispose() {
     _controller.removeListener(_onControllerChanged);
@@ -217,11 +214,11 @@ class _TextFormFieldState extends State<TextFormField> {
     }
     super.dispose();
   }
-  
+
   void _onControllerChanged() {
     setState(() {});
   }
-  
+
   bool validate() {
     if (widget.validator != null) {
       _errorText = widget.validator!(_controller.text);
@@ -229,11 +226,11 @@ class _TextFormFieldState extends State<TextFormField> {
     setState(() {});
     return _errorText == null;
   }
-  
+
   void save() {
     widget.onSaved?.call(_controller.text);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Column(

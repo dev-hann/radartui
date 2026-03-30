@@ -36,18 +36,6 @@ void main() {
         final renderBox = _TestRenderBox();
         expect(renderBox.height, equals(0));
       });
-
-      test('widthInt returns integer width', () {
-        final renderBox = _TestRenderBox();
-        renderBox.layout(const BoxConstraints(maxWidth: 100, maxHeight: 100));
-        expect(renderBox.widthInt, equals(50));
-      });
-
-      test('heightInt returns integer height', () {
-        final renderBox = _TestRenderBox();
-        renderBox.layout(const BoxConstraints(maxWidth: 100, maxHeight: 100));
-        expect(renderBox.heightInt, equals(50));
-      });
     });
   });
 

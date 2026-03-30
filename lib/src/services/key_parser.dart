@@ -33,7 +33,6 @@ enum KeyCode {
 }
 
 class KeyEvent {
-
   const KeyEvent({
     required this.code,
     this.char,
@@ -57,7 +56,8 @@ class KeyEvent {
     if (isShiftPressed) modifiers.add('Shift');
     if (isMetaPressed) modifiers.add('Meta');
 
-    final modifierString = modifiers.isNotEmpty ? '${modifiers.join('+')}+' : '';
+    final modifierString =
+        modifiers.isNotEmpty ? '${modifiers.join('+')}+' : '';
 
     if (code == KeyCode.char) {
       return 'KeyEvent($modifierString${char ?? 'null'})';
@@ -78,7 +78,10 @@ class KeyParser {
     bool isMeta = false;
 
     if (rawData.length >= 3 && rawData[0] == 27 && rawData[1] == 91) {
-      if (rawData.length >= 4 && rawData[2] >= 48 && rawData[2] <= 57 && rawData[3] == 59) {
+      if (rawData.length >= 4 &&
+          rawData[2] >= 48 &&
+          rawData[2] <= 57 &&
+          rawData[3] == 59) {
         final modifierCode = rawData[2] - 48;
         if (modifierCode & 1 == 1) isShift = true;
         if (modifierCode & 2 == 2) isAlt = true;
@@ -154,7 +157,10 @@ class KeyParser {
       }
     }
 
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[3] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[3] == 126) {
       switch (rawData[2]) {
         case 50:
           return const KeyEvent(code: KeyCode.insert);
@@ -171,40 +177,108 @@ class KeyParser {
       }
     }
 
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 49 && rawData[3] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 49 &&
+        rawData[3] == 126) {
       return const KeyEvent(code: KeyCode.f1);
     }
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 50 && rawData[3] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 50 &&
+        rawData[3] == 126) {
       return const KeyEvent(code: KeyCode.f2);
     }
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 49 && rawData[3] == 51 && rawData.length >= 5 && rawData[4] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 49 &&
+        rawData[3] == 51 &&
+        rawData.length >= 5 &&
+        rawData[4] == 126) {
       return const KeyEvent(code: KeyCode.f3);
     }
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 49 && rawData[3] == 52 && rawData.length >= 5 && rawData[4] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 49 &&
+        rawData[3] == 52 &&
+        rawData.length >= 5 &&
+        rawData[4] == 126) {
       return const KeyEvent(code: KeyCode.f4);
     }
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 49 && rawData[3] == 53 && rawData.length >= 5 && rawData[4] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 49 &&
+        rawData[3] == 53 &&
+        rawData.length >= 5 &&
+        rawData[4] == 126) {
       return const KeyEvent(code: KeyCode.f5);
     }
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 49 && rawData[3] == 55 && rawData.length >= 5 && rawData[4] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 49 &&
+        rawData[3] == 55 &&
+        rawData.length >= 5 &&
+        rawData[4] == 126) {
       return const KeyEvent(code: KeyCode.f6);
     }
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 49 && rawData[3] == 56 && rawData.length >= 5 && rawData[4] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 49 &&
+        rawData[3] == 56 &&
+        rawData.length >= 5 &&
+        rawData[4] == 126) {
       return const KeyEvent(code: KeyCode.f7);
     }
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 49 && rawData[3] == 57 && rawData.length >= 5 && rawData[4] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 49 &&
+        rawData[3] == 57 &&
+        rawData.length >= 5 &&
+        rawData[4] == 126) {
       return const KeyEvent(code: KeyCode.f8);
     }
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 50 && rawData[3] == 48 && rawData.length >= 5 && rawData[4] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 50 &&
+        rawData[3] == 48 &&
+        rawData.length >= 5 &&
+        rawData[4] == 126) {
       return const KeyEvent(code: KeyCode.f9);
     }
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 50 && rawData[3] == 49 && rawData.length >= 5 && rawData[4] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 50 &&
+        rawData[3] == 49 &&
+        rawData.length >= 5 &&
+        rawData[4] == 126) {
       return const KeyEvent(code: KeyCode.f10);
     }
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 50 && rawData[3] == 51 && rawData.length >= 5 && rawData[4] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 50 &&
+        rawData[3] == 51 &&
+        rawData.length >= 5 &&
+        rawData[4] == 126) {
       return const KeyEvent(code: KeyCode.f11);
     }
-    if (rawData.length >= 4 && rawData[0] == 27 && rawData[1] == 91 && rawData[2] == 50 && rawData[3] == 52 && rawData.length >= 5 && rawData[4] == 126) {
+    if (rawData.length >= 4 &&
+        rawData[0] == 27 &&
+        rawData[1] == 91 &&
+        rawData[2] == 50 &&
+        rawData[3] == 52 &&
+        rawData.length >= 5 &&
+        rawData[4] == 126) {
       return const KeyEvent(code: KeyCode.f12);
     }
 

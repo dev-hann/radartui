@@ -70,9 +70,9 @@ void main() {
       );
       final renderObject = _TestRenderBox();
       renderObject.parentData = StackParentData();
-      
+
       positioned.applyParentData(renderObject);
-      
+
       final parentData = renderObject.parentData as StackParentData;
       expect(parentData.left, equals(10));
       expect(parentData.top, equals(5));

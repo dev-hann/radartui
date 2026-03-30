@@ -4,7 +4,8 @@ import '../services.dart';
 class PaintingContext {
   PaintingContext(this.buffer);
   final OutputBuffer buffer;
-  void paintChild(RenderObject child, Offset offset) => child.paint(this, offset);
+  void paintChild(RenderObject child, Offset offset) =>
+      child.paint(this, offset);
 }
 
 class ParentData {}
@@ -20,7 +21,7 @@ abstract class RenderObject {
   bool _relayoutBoundary = false;
 
   bool get isRelayoutBoundary => _relayoutBoundary;
-  
+
   void setRelayoutBoundary(bool value) {
     _relayoutBoundary = value;
   }
@@ -41,7 +42,7 @@ abstract class RenderObject {
     _constraints = constraints;
     performLayout(constraints);
     _needsLayout = false;
-    
+
     if (parentUsesSize && _parent != null && !_relayoutBoundary) {
       _parent!._needsLayout = true;
     }
@@ -53,9 +54,9 @@ abstract class RenderObject {
 
 abstract class Constraints {
   const Constraints();
-  
+
   static const int infinity = 999999;
-  
+
   BoxConstraints get asBoxConstraints {
     if (this is BoxConstraints) {
       return this as BoxConstraints;

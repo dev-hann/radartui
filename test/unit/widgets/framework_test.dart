@@ -56,7 +56,7 @@ void main() {
       final key = GlobalKey();
       final widget = _TestStatefulWidget(key: key);
       final element = widget.createElement();
-      
+
       element.mount(null);
       expect(key.currentElement, equals(element));
     });
@@ -65,10 +65,10 @@ void main() {
       final key = GlobalKey();
       final widget = _TestStatefulWidget(key: key);
       final element = widget.createElement();
-      
+
       element.mount(null);
       expect(key.currentElement, isNotNull);
-      
+
       element.unmount();
       expect(key.currentElement, isNull);
     });
@@ -77,7 +77,7 @@ void main() {
       final key = GlobalKey();
       final widget = _TestStatefulWidget(key: key);
       final element = widget.createElement();
-      
+
       element.mount(null);
       expect(key.currentWidget, equals(widget));
     });
@@ -100,15 +100,15 @@ void main() {
 
   group('UniqueKey', () {
     test('UniqueKey is only equal to itself', () {
-      const key1 = UniqueKey();
-      const key2 = UniqueKey();
+      final key1 = UniqueKey();
+      final key2 = UniqueKey();
       expect(key1, equals(key1));
       expect(key1, isNot(equals(key2)));
     });
 
     test('UniqueKey has unique hashCodes', () {
-      const key1 = UniqueKey();
-      const key2 = UniqueKey();
+      final key1 = UniqueKey();
+      final key2 = UniqueKey();
       expect(key1.hashCode, isNot(equals(key2.hashCode)));
     });
   });
@@ -153,7 +153,7 @@ void main() {
       const oldWidget = _TestInheritedWidget(value: 1, child: Text('a'));
       const newWidget = _TestInheritedWidget(value: 2, child: Text('b'));
       expect(newWidget.updateShouldNotify(oldWidget), isTrue);
-      
+
       const sameWidget = _TestInheritedWidget(value: 1, child: Text('b'));
       expect(sameWidget.updateShouldNotify(oldWidget), isFalse);
     });
@@ -193,7 +193,6 @@ class _TestStatefulWidgetState extends State<_TestStatefulWidget> {
 }
 
 class _TestInheritedWidget extends InheritedWidget {
-
   const _TestInheritedWidget({
     required this.value,
     required super.child,
@@ -201,5 +200,6 @@ class _TestInheritedWidget extends InheritedWidget {
   final int value;
 
   @override
-  bool updateShouldNotify(_TestInheritedWidget oldWidget) => value != oldWidget.value;
+  bool updateShouldNotify(_TestInheritedWidget oldWidget) =>
+      value != oldWidget.value;
 }

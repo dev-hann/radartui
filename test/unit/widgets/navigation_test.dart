@@ -4,7 +4,8 @@ import 'package:test/test.dart';
 void main() {
   group('RouteSettings', () {
     test('creates with name and arguments', () {
-      const settings = RouteSettings(name: '/test', arguments: {'key': 'value'});
+      const settings =
+          RouteSettings(name: '/test', arguments: {'key': 'value'});
       expect(settings.name, equals('/test'));
       expect(settings.arguments, equals({'key': 'value'}));
     });
@@ -117,9 +118,8 @@ class _MockBuildContext implements BuildContext {
   T? dependOnInheritedWidgetOfExactType<T extends InheritedWidget>() => null;
 
   @override
-  InheritedElement? findAncestorElementOfExactType<
-          T extends InheritedWidget>() =>
-      null;
+  InheritedElement?
+      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _MockBuildContextWithoutNavigator implements BuildContext {
@@ -130,9 +130,8 @@ class _MockBuildContextWithoutNavigator implements BuildContext {
   T? dependOnInheritedWidgetOfExactType<T extends InheritedWidget>() => null;
 
   @override
-  InheritedElement? findAncestorElementOfExactType<
-          T extends InheritedWidget>() =>
-      null;
+  InheritedElement?
+      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _TestNavigatorObserver extends NavigatorObserver {

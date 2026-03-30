@@ -15,15 +15,11 @@ abstract class RenderBox extends RenderObject {
   int get width => size?.width ?? 0;
 
   int get height => size?.height ?? 0;
-
-  int get widthInt => size?.width ?? 0;
-
-  int get heightInt => size?.height ?? 0;
 }
 
 mixin RenderObjectWithChildMixin<C extends RenderObject> on RenderObject {
   C? _child;
-  
+
   C? get child => _child;
   set child(C? value) {
     if (_child != null) {
@@ -34,20 +30,23 @@ mixin RenderObjectWithChildMixin<C extends RenderObject> on RenderObject {
       _child!.parent = this;
     }
   }
-  
+
   bool get hasChild => _child != null;
 }
 
-mixin ContainerRenderObjectMixin<C extends RenderObject, D extends ParentData> on RenderObject {
+mixin ContainerRenderObjectMixin<C extends RenderObject, D extends ParentData>
+    on RenderObject {
   final List<C> _children = [];
   void add(C child) {
     child.parent = this;
     _children.add(child);
   }
+
   void remove(C child) {
     _children.remove(child);
     child.parent = null;
   }
+
   void clear() => _children.clear();
   List<C> get children => _children;
 }

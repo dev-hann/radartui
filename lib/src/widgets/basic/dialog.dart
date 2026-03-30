@@ -2,7 +2,6 @@ import 'dart:async';
 import '../../../radartui.dart';
 
 class Dialog extends StatelessWidget {
-
   const Dialog({
     super.key,
     required this.child,
@@ -27,8 +26,7 @@ class Dialog extends StatelessWidget {
       columnChildren.add(
         Text(
           title!,
-          style: titleStyle ??
-              const TextStyle(color: Color.white, bold: true),
+          style: titleStyle ?? const TextStyle(color: Color.white, bold: true),
         ),
       );
       columnChildren.add(const Container(height: 1));
@@ -64,7 +62,6 @@ class Dialog extends StatelessWidget {
 }
 
 class ModalRoute<T> extends Route<T> {
-
   ModalRoute({
     required this.builder,
     this.barrierDismissible = true,
@@ -132,7 +129,6 @@ Future<T?> showDialog<T>({
 }
 
 class _ModalBarrier extends StatefulWidget {
-
   const _ModalBarrier({
     required this.child,
     required this.barrierDismissible,

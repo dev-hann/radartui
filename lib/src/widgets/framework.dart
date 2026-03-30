@@ -33,17 +33,20 @@ class GlobalKey extends Key {
   void _register(Element element) {
     _currentElement = element;
   }
+
   void _unregister(Element element) {
     if (_currentElement == element) {
       _currentElement = null;
     }
   }
+
   @override
   String toString() => 'GlobalKey#${hashCode.toRadixString(16)}';
 }
 
 class UniqueKey extends LocalKey {
-  const UniqueKey();
+  factory UniqueKey() => UniqueKey._internal();
+  const UniqueKey._internal();
   @override
   bool operator ==(Object other) => identical(this, other);
   @override
@@ -76,7 +79,7 @@ abstract class Element {
       key._register(this);
     }
   }
-  
+
   void update(Widget newWidget) {
     if (widget.key != newWidget.key) {
       if (widget.key case final GlobalKey key) {
@@ -88,13 +91,14 @@ abstract class Element {
     }
     widget = newWidget;
   }
+
   void unmount() {
     if (widget.key case final GlobalKey key) {
       key._unregister(this);
     }
     _clearDependencies();
   }
-  
+
   void _clearDependencies() {
     if (_dependencies != null) {
       for (final inherited in _dependencies!) {
@@ -103,6 +107,7 @@ abstract class Element {
       _dependencies = null;
     }
   }
+
   void visitChildren(void Function(Element e) visitor) {}
 
   void markNeedsBuild() {
@@ -146,7 +151,8 @@ abstract class Element {
     return null;
   }
 
-  InheritedElement? findAncestorElementOfExactType<T extends InheritedWidget>() {
+  InheritedElement?
+      findAncestorElementOfExactType<T extends InheritedWidget>() {
     Element? current = _parent;
     while (current != null) {
       if (current.widget is T && current is InheritedElement) {
@@ -196,6 +202,7 @@ abstract class State<T extends StatefulWidget> {
   void dispose() {}
 
   void setState(void Function() fn) {
+    assert(mounted, 'setState() called after dispose()');
     try {
       fn();
       _element?.markNeedsBuild();
@@ -249,7 +256,7 @@ class StatefulElement extends ComponentElement {
 abstract class ComponentElement extends Element implements BuildContext {
   ComponentElement(super.widget);
   Element? _child;
-  
+
   @override
   void mount(Element? parent) {
     super.mount(parent);
@@ -285,7 +292,7 @@ abstract class InheritedWidget extends Widget {
 class InheritedElement extends ComponentElement {
   InheritedElement(InheritedWidget super.widget);
   final Set<Element> _dependents = {};
-  
+
   @override
   void unmount() {
     for (final dependent in _dependents) {
@@ -294,14 +301,15 @@ class InheritedElement extends ComponentElement {
     _dependents.clear();
     super.unmount();
   }
-  
+
   @override
   Widget build() => (widget as InheritedWidget).child;
   @override
   void update(Widget newWidget) {
     final oldWidget = widget;
     super.update(newWidget);
-    if ((oldWidget as InheritedWidget).updateShouldNotify(newWidget as InheritedWidget)) {
+    if ((oldWidget as InheritedWidget)
+        .updateShouldNotify(newWidget as InheritedWidget)) {
       for (final dependent in _dependents) {
         dependent.markNeedsBuild();
       }
@@ -366,7 +374,7 @@ abstract class RenderObjectWidget extends Widget {
 
 class RenderObjectElement extends Element implements BuildContext {
   RenderObjectElement(RenderObjectWidget super.widget);
-  
+
   @override
   void mount(Element? parent) {
     super.mount(parent);
@@ -392,7 +400,7 @@ abstract class SingleChildRenderObjectWidget extends RenderObjectWidget {
 class SingleChildRenderObjectElement extends RenderObjectElement {
   SingleChildRenderObjectElement(SingleChildRenderObjectWidget super.widget);
   Element? _child;
-  
+
   @override
   void mount(Element? parent) {
     super.mount(parent);
@@ -400,7 +408,8 @@ class SingleChildRenderObjectElement extends RenderObjectElement {
     if (childWidget != null) {
       _child = updateChild(null, childWidget);
       if (_child?.renderObject != null) {
-        (renderObject as RenderObjectWithChildMixin<RenderObject>).child = _child!.renderObject!;
+        (renderObject as RenderObjectWithChildMixin<RenderObject>).child =
+            _child!.renderObject!;
       }
     }
   }
@@ -413,7 +422,8 @@ class SingleChildRenderObjectElement extends RenderObjectElement {
     if (childWidget != null) {
       _child = updateChild(_child, childWidget);
       if (oldChild != _child && _child?.renderObject != null) {
-        final container = renderObject as RenderObjectWithChildMixin<RenderObject>;
+        final container =
+            renderObject as RenderObjectWithChildMixin<RenderObject>;
         container.child = _child!.renderObject!;
       }
     } else if (oldChild != null) {
@@ -439,7 +449,7 @@ abstract class MultiChildRenderObjectWidget extends RenderObjectWidget {
 class MultiChildRenderObjectElement extends RenderObjectElement {
   MultiChildRenderObjectElement(MultiChildRenderObjectWidget super.widget);
   List<Element> _children = [];
-  
+
   @override
   void mount(Element? parent) {
     super.mount(parent);
@@ -460,20 +470,21 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
   void update(Widget newWidget) {
     super.update(newWidget);
     final newWidgetList = (newWidget as MultiChildRenderObjectWidget).children;
-    final container = renderObject as ContainerRenderObjectMixin<RenderObject, ParentData>;
-    
+    final container =
+        renderObject as ContainerRenderObjectMixin<RenderObject, ParentData>;
+
     final newChildren = <Element>[];
     final oldChildren = List<Element?>.from(_children);
-    
+
     container.clear();
-    
+
     for (int i = 0; i < newWidgetList.length; i++) {
       final newWidgetChild = newWidgetList[i];
       Element? child;
-      
+
       for (int j = 0; j < oldChildren.length; j++) {
         final oldChild = oldChildren[j];
-        if (oldChild != null && 
+        if (oldChild != null &&
             Widget.canUpdate(oldChild.widget, newWidgetChild)) {
           child = oldChild;
           child.update(newWidgetChild);
@@ -481,26 +492,26 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
           break;
         }
       }
-      
+
       if (child == null) {
         child = newWidgetChild.createElement();
         child.mount(this);
       }
-      
+
       newChildren.add(child);
-      
+
       if (child.renderObject != null) {
         container.setupParentData(child.renderObject!);
         container.add(child.renderObject!);
       }
     }
-    
+
     for (final oldChild in oldChildren) {
       if (oldChild != null) {
         oldChild.unmount();
       }
     }
-    
+
     _children = newChildren;
   }
 

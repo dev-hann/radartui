@@ -1,7 +1,6 @@
 import '../../../radartui.dart';
 
 class Container extends SingleChildRenderObjectWidget {
-
   const Container({
     super.key,
     Widget? child,
@@ -19,12 +18,12 @@ class Container extends SingleChildRenderObjectWidget {
 
   @override
   RenderContainer createRenderObject(BuildContext context) => RenderContainer(
-    color: color,
-    width: width,
-    height: height,
-    padding: padding,
-    margin: margin,
-  );
+        color: color,
+        width: width,
+        height: height,
+        padding: padding,
+        margin: margin,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -39,14 +38,14 @@ class Container extends SingleChildRenderObjectWidget {
 
 class RenderContainer extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
-
   RenderContainer({
     this.color,
     int? width,
     int? height,
     this.padding,
     this.margin,
-  })  : _width = width, _height = height;
+  })  : _width = width,
+        _height = height;
   Color? color;
   int? _width;
   int? _height;

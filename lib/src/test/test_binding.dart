@@ -6,7 +6,6 @@ import '../widgets.dart';
 
 class TestBinding extends BindingBase
     with SchedulerBinding, ServicesBinding, RendererBinding, WidgetsBinding {
-
   TestBinding({int width = 80, int height = 24})
       : terminal = TestTerminal(width: width, height: height),
         keyboard = TestKeyboard() {
@@ -116,7 +115,6 @@ class TestBinding extends BindingBase
 }
 
 class TestTerminal implements Terminal {
-
   TestTerminal({int width = 80, int height = 24})
       : _width = width,
         _height = height,
@@ -248,7 +246,6 @@ class TestTerminal implements Terminal {
 }
 
 class _TestTerminalBackend implements TerminalBackend {
-
   _TestTerminalBackend(this._terminal);
   final TestTerminal _terminal;
 
@@ -275,7 +272,6 @@ class _TestTerminalBackend implements TerminalBackend {
 }
 
 class TestOutputBuffer implements OutputBuffer {
-
   TestOutputBuffer(this.terminal);
   @override
   final TestTerminal terminal;

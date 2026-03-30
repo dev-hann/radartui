@@ -29,17 +29,17 @@ void main() {
       const text = Text('Hello', key: key);
       expect(text.key, equals(key));
     });
-    
+
     test('Text creates with softWrap', () {
       const text = Text('Hello', softWrap: false);
       expect(text.softWrap, isFalse);
     });
-    
+
     test('Text creates with maxLines', () {
       const text = Text('Hello', maxLines: 3);
       expect(text.maxLines, equals(3));
     });
-    
+
     test('Text creates with overflow', () {
       const text = Text('Hello', overflow: TextOverflow.ellipsis);
       expect(text.overflow, equals(TextOverflow.ellipsis));
@@ -71,7 +71,7 @@ void main() {
         minHeight: 0,
         maxHeight: Constraints.infinity,
       ));
-      
+
       expect(renderText.size, isNotNull);
       expect(renderText.size!.width, equals(5));
       expect(renderText.size!.height, equals(1));
@@ -85,7 +85,7 @@ void main() {
         minHeight: 0,
         maxHeight: Constraints.infinity,
       ));
-      
+
       expect(renderText.size!.width, equals(0));
       expect(renderText.size!.height, equals(1));
     });
@@ -93,7 +93,7 @@ void main() {
     test('RenderText text can be updated', () {
       final renderText = RenderText(text: 'Hello');
       expect(renderText.text, equals('Hello'));
-      
+
       renderText.text = 'World';
       expect(renderText.text, equals('World'));
     });
@@ -101,12 +101,12 @@ void main() {
     test('RenderText style can be updated', () {
       final renderText = RenderText(text: 'Hello');
       expect(renderText.style, isNull);
-      
+
       const newStyle = TextStyle(color: Color.blue);
       renderText.style = newStyle;
       expect(renderText.style, equals(newStyle));
     });
-    
+
     test('RenderText supports multiline', () {
       final renderText = RenderText(text: 'Hello\nWorld');
       renderText.layout(const BoxConstraints(
@@ -115,11 +115,11 @@ void main() {
         minHeight: 0,
         maxHeight: Constraints.infinity,
       ));
-      
+
       expect(renderText.size!.width, equals(5));
       expect(renderText.size!.height, equals(2));
     });
-    
+
     test('RenderText softWrap breaks long text', () {
       final renderText = RenderText(text: 'Hello World', softWrap: true);
       renderText.layout(const BoxConstraints(
@@ -128,10 +128,10 @@ void main() {
         minHeight: 0,
         maxHeight: Constraints.infinity,
       ));
-      
+
       expect(renderText.size!.height, greaterThan(1));
     });
-    
+
     test('RenderText maxLines limits lines', () {
       final renderText = RenderText(text: 'Hello\nWorld\nTest', maxLines: 2);
       renderText.layout(const BoxConstraints(
@@ -140,7 +140,7 @@ void main() {
         minHeight: 0,
         maxHeight: Constraints.infinity,
       ));
-      
+
       expect(renderText.size!.height, equals(2));
     });
   });
@@ -270,7 +270,7 @@ void main() {
       expect(FontFamily.values, contains(FontFamily.monospace));
     });
   });
-  
+
   group('TextOverflow', () {
     test('TextOverflow has all values', () {
       expect(TextOverflow.values.length, equals(3));
