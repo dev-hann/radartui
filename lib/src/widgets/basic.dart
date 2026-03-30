@@ -14,6 +14,7 @@ export 'basic/flex_widgets.dart';
 export 'basic/focus.dart';
 export 'basic/form.dart';
 export 'basic/future_builder.dart';
+export 'basic/grid_view.dart';
 export 'basic/indicator.dart';
 export 'basic/list_view.dart';
 export 'basic/media_query.dart';
