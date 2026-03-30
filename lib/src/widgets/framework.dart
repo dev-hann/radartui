@@ -72,6 +72,7 @@ abstract class Element {
   RenderObject? get renderObject => _renderObject;
   bool dirty = true;
   Element? _parent;
+  Element? get parent => _parent;
 
   void mount(Element? parent) {
     _parent = parent;
@@ -308,8 +309,9 @@ class InheritedElement extends ComponentElement {
   void update(Widget newWidget) {
     final oldWidget = widget;
     super.update(newWidget);
-    if ((oldWidget as InheritedWidget)
-        .updateShouldNotify(newWidget as InheritedWidget)) {
+    if ((oldWidget as InheritedWidget).updateShouldNotify(
+      newWidget as InheritedWidget,
+    )) {
       for (final dependent in _dependents) {
         dependent.markNeedsBuild();
       }

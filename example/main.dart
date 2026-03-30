@@ -18,6 +18,7 @@ import 'src/stack_example.dart';
 import 'src/style_example.dart';
 import 'src/textfield_example.dart';
 import 'src/theme_example.dart';
+import 'src/shortcuts_example.dart';
 import 'src/wrap_example.dart';
 
 void main() {
@@ -52,6 +53,7 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/style': (context) => const StyleExample(),
         '/textfield': (context) => const TextFieldExample(),
         '/theme': (context) => const ThemeExample(),
+        '/shortcuts': (context) => const ShortcutsExample(),
         '/wrap': (context) => const WrapExample(),
       },
     );
@@ -86,6 +88,7 @@ class _MenuScreenState extends State<MenuScreen> {
     'Text Styling',
     'TextField Widget',
     'Theme & MediaQuery',
+    'Shortcuts & Actions',
     'Wrap Widget',
   ];
 
@@ -109,6 +112,7 @@ class _MenuScreenState extends State<MenuScreen> {
     '/style',
     '/textfield',
     '/theme',
+    '/shortcuts',
     '/wrap',
   ];
 

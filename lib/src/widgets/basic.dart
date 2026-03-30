@@ -26,6 +26,7 @@ export 'basic/sized_box.dart';
 export 'basic/spacer.dart';
 export 'basic/stack.dart';
 export 'basic/stream_builder.dart';
+export 'basic/shortcuts.dart';
 export 'basic/text.dart';
 export 'basic/textfield.dart';
 export 'basic/theme.dart';
