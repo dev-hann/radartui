@@ -17,10 +17,13 @@ abstract class RenderObject {
   ParentData? parentData;
   Size? size;
   bool _needsLayout = true;
+  bool _needsPaint = true;
   Constraints? _constraints;
   bool _relayoutBoundary = false;
 
   bool get isRelayoutBoundary => _relayoutBoundary;
+
+  bool get needsPaint => _needsPaint;
 
   void setRelayoutBoundary(bool value) {
     _relayoutBoundary = value;
@@ -32,9 +35,18 @@ abstract class RenderObject {
 
   void markNeedsLayout() {
     _needsLayout = true;
+    _needsPaint = true;
     if (!_relayoutBoundary && _parent != null) {
       _parent!.markNeedsLayout();
     }
+  }
+
+  void markNeedsPaint() {
+    _needsPaint = true;
+  }
+
+  void clearNeedsPaint() {
+    _needsPaint = false;
   }
 
   void layout(Constraints constraints, {bool parentUsesSize = true}) {
@@ -42,9 +54,11 @@ abstract class RenderObject {
     _constraints = constraints;
     performLayout(constraints);
     _needsLayout = false;
+    _needsPaint = true;
 
     if (parentUsesSize && _parent != null && !_relayoutBoundary) {
       _parent!._needsLayout = true;
+      _parent!._needsPaint = true;
     }
   }
 
