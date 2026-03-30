@@ -89,14 +89,20 @@ class TextStyle {
       fontFamily == other.fontFamily;
 
   @override
-  int get hashCode => Object.hash(
-        color,
-        backgroundColor,
-        bold,
-        italic,
-        underline,
-        fontFamily,
-      );
+  int get hashCode =>
+      Object.hash(color, backgroundColor, bold, italic, underline, fontFamily);
+
+  TextStyle merge(TextStyle? other) {
+    if (other == null) return this;
+    return TextStyle(
+      color: other.color ?? color,
+      backgroundColor: other.backgroundColor ?? backgroundColor,
+      bold: other.bold || bold,
+      italic: other.italic || italic,
+      underline: other.underline || underline,
+      fontFamily: other.fontFamily,
+    );
+  }
 
   @override
   String toString() =>
