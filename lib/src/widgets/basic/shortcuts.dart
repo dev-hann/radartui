@@ -250,8 +250,6 @@ class _ShortcutActionsHandlerState extends State<ShortcutActionsHandler> {
   void initState() {
     super.initState();
     _focusNode = FocusNode();
-    FocusManager.instance.registerNode(_focusNode);
-    _focusNode.onKeyEvent = _handleKeyEvent;
   }
 
   @override
@@ -273,6 +271,7 @@ class _ShortcutActionsHandlerState extends State<ShortcutActionsHandler> {
   Widget build(BuildContext context) {
     return Focus(
       focusNode: _focusNode,
+      onKeyEvent: _handleKeyEvent,
       child: widget.child,
     );
   }
