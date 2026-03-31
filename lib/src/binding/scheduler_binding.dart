@@ -20,6 +20,7 @@ mixin SchedulerBinding on BindingBase {
 
   bool _frameScheduled = false;
   final List<FrameCallback> _postFrameCallbacks = [];
+  final List<FrameCallback> _persistentFrameCallbacks = [];
 
   void scheduleFrame() {
     if (_frameScheduled) return;
@@ -33,7 +34,16 @@ mixin SchedulerBinding on BindingBase {
   }
 
   void handleFrame() {
+    _executePersistentFrameCallbacks();
     _executePostFrameCallbacks();
+  }
+
+  void addPersistentFrameCallback(FrameCallback callback) {
+    _persistentFrameCallbacks.add(callback);
+  }
+
+  void removePersistentFrameCallback(FrameCallback callback) {
+    _persistentFrameCallbacks.remove(callback);
   }
 
   void addPostFrameCallback(FrameCallback callback) {
@@ -45,6 +55,15 @@ mixin SchedulerBinding on BindingBase {
     if (_postFrameCallbacks.isNotEmpty) {
       final callbacks = List<FrameCallback>.from(_postFrameCallbacks);
       _postFrameCallbacks.clear();
+      for (final callback in callbacks) {
+        callback(Duration.zero);
+      }
+    }
+  }
+
+  void _executePersistentFrameCallbacks() {
+    if (_persistentFrameCallbacks.isNotEmpty) {
+      final callbacks = List<FrameCallback>.from(_persistentFrameCallbacks);
       for (final callback in callbacks) {
         callback(Duration.zero);
       }
