@@ -44,11 +44,8 @@ class _StyleExampleState extends State<StyleExample> {
             ),
           ),
         ),
-
         SizedBox(height: 1),
-
         Text('Basic Colors:', style: TextStyle(bold: true, underline: true)),
-
         Row(
           children: [
             Text('Red: ', style: TextStyle(color: Color.red, bold: true)),
@@ -57,14 +54,11 @@ class _StyleExampleState extends State<StyleExample> {
             Text('Yellow: ', style: TextStyle(color: Color.yellow, bold: true)),
           ],
         ),
-
         SizedBox(height: 1),
-
         Text(
           'Background Colors:',
           style: TextStyle(bold: true, underline: true),
         ),
-
         Row(
           children: [
             Container(
@@ -83,11 +77,8 @@ class _StyleExampleState extends State<StyleExample> {
             ),
           ],
         ),
-
         SizedBox(height: 1),
-
         Text('Text Styles:', style: TextStyle(bold: true, underline: true)),
-
         Column(
           children: [
             Text('Bold Text', style: TextStyle(bold: true)),
@@ -104,14 +95,11 @@ class _StyleExampleState extends State<StyleExample> {
             ),
           ],
         ),
-
         SizedBox(height: 1),
-
         Text(
           'Container with Padding & Margin:',
           style: TextStyle(bold: true, underline: true),
         ),
-
         Container(
           margin: EdgeInsets.all(2),
           padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
@@ -121,9 +109,7 @@ class _StyleExampleState extends State<StyleExample> {
             style: TextStyle(color: Color.black, bold: true),
           ),
         ),
-
         SizedBox(height: 1),
-
         Text(
           'Press ESC to return to menu',
           style: TextStyle(color: Color.brightYellow, italic: true),

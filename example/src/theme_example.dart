@@ -33,7 +33,7 @@ class _ThemeExampleState extends State<ThemeExample> {
       child: Builder(
         builder: (context) {
           final currentTheme = Theme.of(context);
-          
+
           return Padding(
             padding: const EdgeInsets.all(2),
             child: Column(
@@ -45,12 +45,12 @@ class _ThemeExampleState extends State<ThemeExample> {
                   child: Center(
                     child: Text(
                       'Theme & MediaQuery Demo',
-                      style: TextStyle(color: currentTheme.textColor, bold: true),
+                      style:
+                          TextStyle(color: currentTheme.textColor, bold: true),
                     ),
                   ),
                 ),
                 const SizedBox(height: 2),
-
                 Container(
                   width: 60,
                   color: currentTheme.backgroundColor,
@@ -59,7 +59,8 @@ class _ThemeExampleState extends State<ThemeExample> {
                     children: [
                       Text(
                         'Current Theme: ${_useDarkTheme ? "Dark" : "Light"}',
-                        style: TextStyle(color: currentTheme.textColor, bold: true),
+                        style: TextStyle(
+                            color: currentTheme.textColor, bold: true),
                       ),
                       const SizedBox(height: 1),
                       Text(
@@ -77,9 +78,7 @@ class _ThemeExampleState extends State<ThemeExample> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 2),
-
                 Container(
                   width: 60,
                   color: Color.brightBlack,
@@ -89,7 +88,7 @@ class _ThemeExampleState extends State<ThemeExample> {
                       final mediaQuery = MediaQuery.maybeOf(context);
                       final size = mediaQuery.size;
                       final padding = mediaQuery.padding;
-                      
+
                       return Column(
                         children: [
                           const Text(
@@ -110,9 +109,7 @@ class _ThemeExampleState extends State<ThemeExample> {
                     },
                   ),
                 ),
-
                 const SizedBox(height: 2),
-
                 Container(
                   width: 60,
                   color: currentTheme.primaryColor,
@@ -125,7 +122,8 @@ class _ThemeExampleState extends State<ThemeExample> {
                       ),
                       const SizedBox(height: 1),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 2, vertical: 1),
                         color: currentTheme.selectedColor,
                         child: Text(
                           'Selected',
@@ -135,23 +133,21 @@ class _ThemeExampleState extends State<ThemeExample> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 2),
-
                 const Container(
                   width: 60,
                   color: Color.yellow,
                   padding: EdgeInsets.all(1),
                   child: Column(
                     children: [
-                      Text('Controls:', style: TextStyle(color: Color.black, bold: true)),
-                      Text('T: Toggle Theme | ESC: Return', style: TextStyle(color: Color.black)),
+                      Text('Controls:',
+                          style: TextStyle(color: Color.black, bold: true)),
+                      Text('T: Toggle Theme | ESC: Return',
+                          style: TextStyle(color: Color.black)),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 2),
-
                 Text(
                   'Theme propagates down the widget tree',
                   style: TextStyle(color: currentTheme.textColor),

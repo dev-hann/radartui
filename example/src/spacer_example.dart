@@ -36,7 +36,6 @@ class _SpacerExampleState extends State<SpacerExample> {
             ),
           ),
           SizedBox(height: 2),
-
           Container(
             width: 70,
             color: Color.brightBlack,
@@ -58,9 +57,7 @@ class _SpacerExampleState extends State<SpacerExample> {
               ],
             ),
           ),
-
           SizedBox(height: 2),
-
           Container(
             width: 70,
             color: Color.brightBlack,
@@ -84,9 +81,7 @@ class _SpacerExampleState extends State<SpacerExample> {
               ],
             ),
           ),
-
           SizedBox(height: 2),
-
           Container(
             width: 70,
             color: Color.brightBlack,
@@ -110,9 +105,7 @@ class _SpacerExampleState extends State<SpacerExample> {
               ],
             ),
           ),
-
           SizedBox(height: 2),
-
           Container(
             width: 70,
             color: Color.brightBlack,
@@ -138,9 +131,7 @@ class _SpacerExampleState extends State<SpacerExample> {
               ],
             ),
           ),
-
           SizedBox(height: 2),
-
           Container(
             width: 70,
             color: Color.brightBlack,
@@ -158,21 +149,27 @@ class _SpacerExampleState extends State<SpacerExample> {
                       flex: 1,
                       child: Container(
                         color: Color.red,
-                        child: Center(child: Text('1', style: TextStyle(color: Color.white))),
+                        child: Center(
+                            child: Text('1',
+                                style: TextStyle(color: Color.white))),
                       ),
                     ),
                     Expanded(
                       flex: 2,
                       child: Container(
                         color: Color.green,
-                        child: Center(child: Text('2', style: TextStyle(color: Color.white))),
+                        child: Center(
+                            child: Text('2',
+                                style: TextStyle(color: Color.white))),
                       ),
                     ),
                     Expanded(
                       flex: 1,
                       child: Container(
                         color: Color.blue,
-                        child: Center(child: Text('1', style: TextStyle(color: Color.white))),
+                        child: Center(
+                            child: Text('1',
+                                style: TextStyle(color: Color.white))),
                       ),
                     ),
                   ],
@@ -180,24 +177,23 @@ class _SpacerExampleState extends State<SpacerExample> {
               ],
             ),
           ),
-
           SizedBox(height: 2),
-
           Container(
             width: 70,
             color: Color.yellow,
             padding: EdgeInsets.all(1),
             child: Column(
               children: [
-                Text('Difference:', style: TextStyle(color: Color.black, bold: true)),
-                Text('Spacer: Empty space between items', style: TextStyle(color: Color.black)),
-                Text('Expanded: Widget that fills available space', style: TextStyle(color: Color.black)),
+                Text('Difference:',
+                    style: TextStyle(color: Color.black, bold: true)),
+                Text('Spacer: Empty space between items',
+                    style: TextStyle(color: Color.black)),
+                Text('Expanded: Widget that fills available space',
+                    style: TextStyle(color: Color.black)),
               ],
             ),
           ),
-
           SizedBox(height: 2),
-
           Text(
             'Press ESC to return',
             style: TextStyle(color: Color.brightGreen, italic: true),
