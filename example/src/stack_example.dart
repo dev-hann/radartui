@@ -41,7 +41,7 @@ class _StackExampleState extends State<StackExample> {
             ),
           ),
           SizedBox(height: 2),
-          
+
           // Stack Example 1: Basic Overlapping
           Container(
             color: Color.brightBlack,
@@ -93,9 +93,9 @@ class _StackExampleState extends State<StackExample> {
               ],
             ),
           ),
-          
+
           SizedBox(height: 2),
-          
+
           // Stack Example 2: Text Overlay
           Container(
             color: Color.brightBlack,
@@ -123,9 +123,9 @@ class _StackExampleState extends State<StackExample> {
               ],
             ),
           ),
-          
+
           SizedBox(height: 2),
-          
+
           // Navigation hint
           Text(
             'Press ESC to return to main menu',

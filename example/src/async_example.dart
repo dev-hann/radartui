@@ -27,11 +27,13 @@ class _AsyncExampleState extends State<AsyncExample> {
   }
 
   Stream<int> _createCounterStream() {
-    return Stream.periodic(const Duration(seconds: 1), (count) => count).take(10);
+    return Stream.periodic(const Duration(seconds: 1), (count) => count)
+        .take(10);
   }
 
   Future<String> _fetchData() {
-    return Future.delayed(const Duration(seconds: 2), () => 'Data loaded successfully!');
+    return Future.delayed(
+        const Duration(seconds: 2), () => 'Data loaded successfully!');
   }
 
   void _refreshFuture() {
@@ -58,7 +60,6 @@ class _AsyncExampleState extends State<AsyncExample> {
             ),
           ),
           const SizedBox(height: 2),
-          
           Container(
             width: 60,
             color: Color.brightBlack,
@@ -76,14 +77,17 @@ class _AsyncExampleState extends State<AsyncExample> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Row(
                         children: [
-                          LoadingIndicator(type: IndicatorType.spinner, color: Color.yellow),
+                          LoadingIndicator(
+                              type: IndicatorType.spinner, color: Color.yellow),
                           SizedBox(width: 2),
-                          Text('Loading...', style: TextStyle(color: Color.yellow)),
+                          Text('Loading...',
+                              style: TextStyle(color: Color.yellow)),
                         ],
                       );
                     }
                     if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}', style: const TextStyle(color: Color.red));
+                      return Text('Error: ${snapshot.error}',
+                          style: const TextStyle(color: Color.red));
                     }
                     if (snapshot.hasData) {
                       return Text(
@@ -91,15 +95,14 @@ class _AsyncExampleState extends State<AsyncExample> {
                         style: const TextStyle(color: Color.green, bold: true),
                       );
                     }
-                    return const Text('No data', style: TextStyle(color: Color.brightBlack));
+                    return const Text('No data',
+                        style: TextStyle(color: Color.brightBlack));
                   },
                 ),
               ],
             ),
           ),
-          
           const SizedBox(height: 2),
-          
           Container(
             width: 60,
             color: Color.brightBlack,
@@ -116,14 +119,17 @@ class _AsyncExampleState extends State<AsyncExample> {
                   initialData: 0,
                   builder: (context, snapshot) {
                     final count = snapshot.data ?? 0;
-                    final isDone = snapshot.connectionState == ConnectionState.done;
-                    
+                    final isDone =
+                        snapshot.connectionState == ConnectionState.done;
+
                     return Row(
                       children: [
                         if (!isDone)
-                          const LoadingIndicator(type: IndicatorType.dots, color: Color.cyan)
+                          const LoadingIndicator(
+                              type: IndicatorType.dots, color: Color.cyan)
                         else
-                          const Text('Done!', style: TextStyle(color: Color.green, bold: true)),
+                          const Text('Done!',
+                              style: TextStyle(color: Color.green, bold: true)),
                         const SizedBox(width: 2),
                         Text(
                           'Count: $count',
@@ -144,9 +150,7 @@ class _AsyncExampleState extends State<AsyncExample> {
               ],
             ),
           ),
-          
           const SizedBox(height: 2),
-          
           const Container(
             width: 60,
             color: Color.blue,
@@ -157,13 +161,12 @@ class _AsyncExampleState extends State<AsyncExample> {
                   'Controls:',
                   style: TextStyle(color: Color.white, bold: true),
                 ),
-                Text('R: Refresh Future | ESC: Return', style: TextStyle(color: Color.white)),
+                Text('R: Refresh Future | ESC: Return',
+                    style: TextStyle(color: Color.white)),
               ],
             ),
           ),
-          
           const SizedBox(height: 2),
-          
           const Text(
             'FutureBuilder: One-time async data loading',
             style: TextStyle(color: Color.yellow),
