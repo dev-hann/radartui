@@ -5,11 +5,11 @@ class DefaultTextStyleExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(1),
+    return const Padding(
+      padding: EdgeInsets.all(1),
       child: Column(
         children: [
-          const Container(
+          Container(
             width: 60,
             height: 3,
             color: Color.blue,
@@ -20,10 +20,10 @@ class DefaultTextStyleExample extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: 2),
           DefaultTextStyle(
-            style: const TextStyle(color: Color.cyan, bold: true),
-            child: const Column(
+            style: TextStyle(color: Color.cyan, bold: true),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Inherited cyan bold style'),
@@ -32,10 +32,10 @@ class DefaultTextStyleExample extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: 2),
           DefaultTextStyle(
-            style: const TextStyle(color: Color.green, italic: true),
-            child: const Column(
+            style: TextStyle(color: Color.green, italic: true),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Green italic style'),
@@ -47,12 +47,12 @@ class DefaultTextStyleExample extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: 2),
           DefaultTextStyle(
-            style: const TextStyle(color: Color.yellow),
+            style: TextStyle(color: Color.yellow),
             child: DefaultTextStyle(
-              style: const TextStyle(color: Color.magenta, underline: true),
-              child: const Column(
+              style: TextStyle(color: Color.magenta, underline: true),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Nested: magenta underline wins'),
@@ -61,8 +61,8 @@ class DefaultTextStyleExample extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 2),
-          const Text(
+          SizedBox(height: 2),
+          Text(
             'Press ESC to return',
             style: TextStyle(color: Color.brightBlack, italic: true),
           ),

@@ -35,7 +35,7 @@ void main() {
 
       test('style segments are preserved', () {
         final segments = <_TestSegment>[];
-        final textSpan = const TextSpan(
+        const textSpan = TextSpan(
           children: [
             TextSpan(
               text: 'Red',
@@ -63,7 +63,7 @@ void main() {
     group('bold/italic mixing', () {
       test('bold and italic segments', () {
         final segments = <_TestSegment>[];
-        final textSpan = const TextSpan(
+        const textSpan = TextSpan(
           children: [
             TextSpan(text: 'Bold', style: TextStyle(bold: true)),
             TextSpan(text: ' '),
@@ -85,7 +85,7 @@ void main() {
 
       test('inherited bold with child italic', () {
         final segments = <_TestSegment>[];
-        final textSpan = const TextSpan(
+        const textSpan = TextSpan(
           style: TextStyle(bold: true),
           children: [
             TextSpan(text: 'Inherited'),
@@ -184,7 +184,7 @@ void main() {
     group('complex nesting', () {
       test('deeply nested styles merge correctly', () {
         final segments = <_TestSegment>[];
-        final textSpan = const TextSpan(
+        const textSpan = TextSpan(
           style: TextStyle(color: Color.red, bold: true),
           children: [
             TextSpan(

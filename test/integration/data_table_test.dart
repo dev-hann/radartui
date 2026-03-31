@@ -5,12 +5,12 @@ void main() {
   group('DataTable rendering', () {
     testWidgets('DataTable renders columns and rows', (tester) async {
       tester.pumpWidget(
-        DataTable(
-          columns: const [
+        const DataTable(
+          columns: [
             DataColumn(label: 'Name'),
             DataColumn(label: 'Age'),
           ],
-          rows: const [
+          rows: [
             DataRow(cells: [DataCell('Alice'), DataCell('30')]),
             DataRow(cells: [DataCell('Bob'), DataCell('25')]),
           ],
