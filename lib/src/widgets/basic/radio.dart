@@ -21,52 +21,29 @@ class Radio<T> extends StatefulWidget {
   State<Radio<T>> createState() => _RadioState<T>();
 }
 
-class _RadioState<T> extends State<Radio<T>> {
-  late final FocusNode _focusNode;
+class _RadioState<T> extends State<Radio<T>> with FocusableState<Radio<T>> {
+  @override
+  FocusNode? get providedFocusNode => widget.focusNode;
 
   @override
-  void initState() {
-    super.initState();
-    _focusNode = widget.focusNode ?? FocusNode();
-    FocusManager.instance.registerNode(_focusNode);
-    _focusNode.onKeyEvent = _handleKeyEvent;
-    _focusNode.addListener(_onFocusChange);
-  }
+  void onKeyEvent(KeyEvent event) {
+    if (widget.onChanged == null) return;
 
-  @override
-  void dispose() {
-    FocusManager.instance.unregisterNode(_focusNode);
-    if (widget.focusNode == null) {
-      _focusNode.dispose();
-    } else {
-      _focusNode.removeListener(_onFocusChange);
+    if (event.code == KeyCode.enter ||
+        (event.code == KeyCode.char && event.char == ' ')) {
+      widget.onChanged!(widget.value);
     }
-    super.dispose();
-  }
-
-  void _onFocusChange() {
-    setState(() {});
   }
 
   @override
   void didUpdateWidget(Radio<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Force rebuild if selection state changed
     if (oldWidget.groupValue != widget.groupValue ||
         oldWidget.value != widget.value) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {});
       });
-    }
-  }
-
-  void _handleKeyEvent(KeyEvent event) {
-    if (widget.onChanged == null) return;
-
-    if (event.code == KeyCode.enter ||
-        (event.code == KeyCode.char && event.char == ' ')) {
-      widget.onChanged!(widget.value);
     }
   }
 
@@ -81,7 +58,7 @@ class _RadioState<T> extends State<Radio<T>> {
 
     return _RadioRenderWidget(
       selected: isSelected,
-      focused: _focusNode.hasFocus,
+      focused: hasFocus,
       enabled: widget.onChanged != null,
       activeColor: widget.activeColor ?? Color.blue,
       checkColor: widget.checkColor ?? Color.white,

@@ -19,34 +19,12 @@ class Button extends StatefulWidget {
   State<Button> createState() => _ButtonState();
 }
 
-class _ButtonState extends State<Button> {
-  late final FocusNode _focusNode;
+class _ButtonState extends State<Button> with FocusableState<Button> {
+  @override
+  FocusNode? get providedFocusNode => widget.focusNode;
 
   @override
-  void initState() {
-    super.initState();
-    _focusNode = widget.focusNode ?? FocusNode();
-    FocusManager.instance.registerNode(_focusNode);
-    _focusNode.onKeyEvent = _handleKeyEvent;
-    _focusNode.addListener(_onFocusChange);
-  }
-
-  @override
-  void dispose() {
-    FocusManager.instance.unregisterNode(_focusNode);
-    if (widget.focusNode == null) {
-      _focusNode.dispose();
-    } else {
-      _focusNode.removeListener(_onFocusChange);
-    }
-    super.dispose();
-  }
-
-  void _onFocusChange() {
-    setState(() {});
-  }
-
-  void _handleKeyEvent(KeyEvent event) {
+  void onKeyEvent(KeyEvent event) {
     if (!widget.enabled) return;
 
     if (event.code == KeyCode.enter ||
@@ -65,7 +43,7 @@ class _ButtonState extends State<Button> {
     return _ButtonRenderWidget(
       text: widget.text,
       enabled: widget.enabled,
-      focused: _focusNode.hasFocus,
+      focused: hasFocus,
       style: widget.style ?? const ButtonStyle(),
       onTap: _onTap,
     );
@@ -91,12 +69,12 @@ class _ButtonRenderWidget extends RenderObjectWidget {
 
   @override
   RenderButton createRenderObject(BuildContext context) => RenderButton(
-        text: text,
-        enabled: enabled,
-        focused: focused,
-        style: style,
-        onTap: onTap,
-      );
+    text: text,
+    enabled: enabled,
+    focused: focused,
+    style: style,
+    onTap: onTap,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -137,7 +115,6 @@ class RenderButton extends RenderBox {
     final textStyle = _getTextStyle();
     final backgroundColor = _getBackgroundColor();
 
-    // Draw background
     for (int y = 0; y < size!.height; y++) {
       for (int x = 0; x < size!.width; x++) {
         context.buffer.writeStyled(
@@ -149,12 +126,10 @@ class RenderButton extends RenderBox {
       }
     }
 
-    // Draw border if focused
     if (focused) {
       _drawBorder(context, offset);
     }
 
-    // Draw text
     final textX = offset.x + padding.left;
     final textY = offset.y + padding.top;
     for (int i = 0; i < text.length; i++) {
@@ -168,7 +143,6 @@ class RenderButton extends RenderBox {
       backgroundColor: _getBackgroundColor(),
     );
 
-    // Top and bottom borders
     for (int x = 0; x < size!.width; x++) {
       context.buffer.writeStyled(offset.x + x, offset.y, '─', borderStyle);
       context.buffer.writeStyled(
@@ -179,7 +153,6 @@ class RenderButton extends RenderBox {
       );
     }
 
-    // Left and right borders
     for (int y = 0; y < size!.height; y++) {
       context.buffer.writeStyled(offset.x, offset.y + y, '│', borderStyle);
       context.buffer.writeStyled(
@@ -190,7 +163,6 @@ class RenderButton extends RenderBox {
       );
     }
 
-    // Corners
     context.buffer.writeStyled(offset.x, offset.y, '┌', borderStyle);
     context.buffer.writeStyled(
       offset.x + size!.width - 1,

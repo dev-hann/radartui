@@ -21,37 +21,14 @@ class Checkbox extends StatefulWidget {
   State<Checkbox> createState() => _CheckboxState();
 }
 
-class _CheckboxState extends State<Checkbox> {
-  late final FocusNode _focusNode;
+class _CheckboxState extends State<Checkbox> with FocusableState<Checkbox> {
+  @override
+  FocusNode? get providedFocusNode => widget.focusNode;
 
   @override
-  void initState() {
-    super.initState();
-    _focusNode = widget.focusNode ?? FocusNode();
-    FocusManager.instance.registerNode(_focusNode);
-    _focusNode.onKeyEvent = _handleKeyEvent;
-    _focusNode.addListener(_onFocusChange);
-  }
-
-  @override
-  void dispose() {
-    FocusManager.instance.unregisterNode(_focusNode);
-    if (widget.focusNode == null) {
-      _focusNode.dispose();
-    } else {
-      _focusNode.removeListener(_onFocusChange);
-    }
-    super.dispose();
-  }
-
-  void _onFocusChange() {
-    setState(() {});
-  }
-
-  void _handleKeyEvent(KeyEvent event) {
+  void onKeyEvent(KeyEvent event) {
     if (widget.onChanged == null) return;
 
-    // Check for Enter key or Space key (which comes as KeyCode.char with ' ')
     if (event.code == KeyCode.enter ||
         (event.code == KeyCode.char && event.char == ' ')) {
       final newValue = !widget.value;
@@ -63,7 +40,6 @@ class _CheckboxState extends State<Checkbox> {
   void didUpdateWidget(Checkbox oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Force rebuild if value changed
     if (oldWidget.value != widget.value) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {});
@@ -76,7 +52,7 @@ class _CheckboxState extends State<Checkbox> {
     return _CheckboxRenderWidget(
       value: widget.value,
       tristate: widget.tristate,
-      focused: _focusNode.hasFocus,
+      focused: hasFocus,
       enabled: widget.onChanged != null,
       activeColor: widget.activeColor ?? Color.blue,
       checkColor: widget.checkColor ?? Color.white,
