@@ -36,7 +36,6 @@ class _WrapExampleState extends State<WrapExample> {
             ),
           ),
           const SizedBox(height: 2),
-
           Container(
             width: 60,
             color: Color.brightBlack,
@@ -65,9 +64,7 @@ class _WrapExampleState extends State<WrapExample> {
               ],
             ),
           ),
-
           const SizedBox(height: 2),
-
           Container(
             width: 60,
             color: Color.brightBlack,
@@ -94,9 +91,7 @@ class _WrapExampleState extends State<WrapExample> {
               ],
             ),
           ),
-
           const SizedBox(height: 2),
-
           Container(
             width: 60,
             color: Color.brightBlack,
@@ -121,25 +116,25 @@ class _WrapExampleState extends State<WrapExample> {
               ],
             ),
           ),
-
           const SizedBox(height: 2),
-
           const Container(
             width: 60,
             color: Color.yellow,
             padding: EdgeInsets.all(1),
             child: Column(
               children: [
-                Text('Properties:', style: TextStyle(color: Color.black, bold: true)),
-                Text('spacing: horizontal gap between items', style: TextStyle(color: Color.black)),
-                Text('runSpacing: vertical gap between rows', style: TextStyle(color: Color.black)),
-                Text('alignment: start/end/center/spaceBetween', style: TextStyle(color: Color.black)),
+                Text('Properties:',
+                    style: TextStyle(color: Color.black, bold: true)),
+                Text('spacing: horizontal gap between items',
+                    style: TextStyle(color: Color.black)),
+                Text('runSpacing: vertical gap between rows',
+                    style: TextStyle(color: Color.black)),
+                Text('alignment: start/end/center/spaceBetween',
+                    style: TextStyle(color: Color.black)),
               ],
             ),
           ),
-
           const SizedBox(height: 2),
-
           const Text(
             'Press ESC to return',
             style: TextStyle(color: Color.brightGreen, italic: true),

@@ -111,7 +111,8 @@ class _FormExampleState extends State<FormExample> {
                   placeholder: 'Enter your name (min 2 chars)',
                   style: const TextStyle(color: Color.white),
                 ),
-                if (_nameController.text.isNotEmpty && _validateName(_nameController.text) != null)
+                if (_nameController.text.isNotEmpty &&
+                    _validateName(_nameController.text) != null)
                   Text(
                     _validateName(_nameController.text)!,
                     style: const TextStyle(color: Color.red),
@@ -127,7 +128,8 @@ class _FormExampleState extends State<FormExample> {
                   placeholder: 'Enter your email (must contain @)',
                   style: const TextStyle(color: Color.white),
                 ),
-                if (_emailController.text.isNotEmpty && _validateEmail(_emailController.text) != null)
+                if (_emailController.text.isNotEmpty &&
+                    _validateEmail(_emailController.text) != null)
                   Text(
                     _validateEmail(_emailController.text)!,
                     style: const TextStyle(color: Color.red),
@@ -171,8 +173,10 @@ class _FormExampleState extends State<FormExample> {
                 Text(_status, style: const TextStyle(color: Color.white)),
                 if (_name.isNotEmpty || _email.isNotEmpty) ...[
                   const SizedBox(height: 1),
-                  Text('Name: $_name', style: const TextStyle(color: Color.yellow)),
-                  Text('Email: $_email', style: const TextStyle(color: Color.yellow)),
+                  Text('Name: $_name',
+                      style: const TextStyle(color: Color.yellow)),
+                  Text('Email: $_email',
+                      style: const TextStyle(color: Color.yellow)),
                 ],
               ],
             ),

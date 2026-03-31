@@ -34,8 +34,8 @@ class _FlexExampleState extends State<FlexExample> {
             style: TextStyle(color: Color.cyan, bold: true),
           ),
           SizedBox(height: 2),
-          
-          Text('Row with MainAxisAlignment.start:', style: TextStyle(color: Color.yellow)),
+          Text('Row with MainAxisAlignment.start:',
+              style: TextStyle(color: Color.yellow)),
           SizedBox(height: 1),
           Container(
             height: 1,
@@ -50,8 +50,8 @@ class _FlexExampleState extends State<FlexExample> {
             ),
           ),
           SizedBox(height: 2),
-
-          Text('Row with MainAxisAlignment.center:', style: TextStyle(color: Color.yellow)),
+          Text('Row with MainAxisAlignment.center:',
+              style: TextStyle(color: Color.yellow)),
           SizedBox(height: 1),
           Container(
             height: 1,
@@ -66,8 +66,8 @@ class _FlexExampleState extends State<FlexExample> {
             ),
           ),
           SizedBox(height: 2),
-
-          Text('Row with MainAxisAlignment.spaceBetween:', style: TextStyle(color: Color.yellow)),
+          Text('Row with MainAxisAlignment.spaceBetween:',
+              style: TextStyle(color: Color.yellow)),
           SizedBox(height: 1),
           Container(
             height: 1,
@@ -82,8 +82,8 @@ class _FlexExampleState extends State<FlexExample> {
             ),
           ),
           SizedBox(height: 2),
-
-          Text('Expanded widget (fills remaining space):', style: TextStyle(color: Color.yellow)),
+          Text('Expanded widget (fills remaining space):',
+              style: TextStyle(color: Color.yellow)),
           SizedBox(height: 1),
           Container(
             height: 1,
@@ -92,15 +92,16 @@ class _FlexExampleState extends State<FlexExample> {
               children: [
                 Text('[Fixed]'),
                 Expanded(
-                  child: Text('[EXPANDED - fills remaining space]', style: TextStyle(color: Color.green)),
+                  child: Text('[EXPANDED - fills remaining space]',
+                      style: TextStyle(color: Color.green)),
                 ),
                 Text('[End]'),
               ],
             ),
           ),
           SizedBox(height: 2),
-
-          Text('Multiple Expanded with flex ratios (1:2:1):', style: TextStyle(color: Color.yellow)),
+          Text('Multiple Expanded with flex ratios (1:2:1):',
+              style: TextStyle(color: Color.yellow)),
           SizedBox(height: 1),
           Container(
             height: 1,
@@ -113,7 +114,8 @@ class _FlexExampleState extends State<FlexExample> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: Text('[2 - larger]', style: TextStyle(color: Color.green)),
+                  child: Text('[2 - larger]',
+                      style: TextStyle(color: Color.green)),
                 ),
                 Expanded(
                   flex: 1,
@@ -123,8 +125,8 @@ class _FlexExampleState extends State<FlexExample> {
             ),
           ),
           SizedBox(height: 2),
-
-          Text('Column with CrossAxisAlignment:', style: TextStyle(color: Color.yellow)),
+          Text('Column with CrossAxisAlignment:',
+              style: TextStyle(color: Color.yellow)),
           SizedBox(height: 1),
           Container(
             height: 5,
@@ -159,7 +161,6 @@ class _FlexExampleState extends State<FlexExample> {
             ),
           ),
           SizedBox(height: 2),
-
           Text(
             'Press ESC to return',
             style: TextStyle(color: Color.brightGreen, italic: true),

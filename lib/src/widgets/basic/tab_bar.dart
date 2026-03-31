@@ -2,8 +2,8 @@ import '../../../radartui.dart';
 
 class TabController extends ChangeNotifier {
   TabController({required this.length, int initialIndex = 0})
-    : _index = initialIndex,
-      _previousIndex = initialIndex;
+      : _index = initialIndex,
+        _previousIndex = initialIndex;
 
   final int length;
   int _index;
