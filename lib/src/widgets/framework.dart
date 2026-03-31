@@ -45,6 +45,7 @@ class GlobalKey extends Key {
 }
 
 class UniqueKey extends LocalKey {
+  // ignore: prefer_const_constructors
   factory UniqueKey() => UniqueKey._internal();
   const UniqueKey._internal();
   @override

@@ -7,7 +7,7 @@ void main() {
   group('AppLogger', () {
     tearDown(() async {
       try {
-        await Future<void>.delayed(Duration(milliseconds: 50));
+        await Future<void>.delayed(const Duration(milliseconds: 50));
         final f = File('radartui.log');
         if (f.existsSync()) f.deleteSync();
       } catch (_) {}
@@ -17,7 +17,7 @@ void main() {
       AppLogger.initialize();
       AppLogger.log('Test message');
       AppLogger.dispose();
-      await Future<void>.delayed(Duration(milliseconds: 100));
+      await Future<void>.delayed(const Duration(milliseconds: 100));
 
       final logFile = File('radartui.log');
       expect(logFile.existsSync(), isTrue);
@@ -34,7 +34,7 @@ void main() {
       AppLogger.log('Second');
       AppLogger.log('Third');
       AppLogger.dispose();
-      await Future<void>.delayed(Duration(milliseconds: 100));
+      await Future<void>.delayed(const Duration(milliseconds: 100));
 
       final logFile = File('radartui.log');
       expect(logFile.existsSync(), isTrue);

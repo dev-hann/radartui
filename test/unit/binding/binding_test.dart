@@ -1,5 +1,4 @@
 import 'package:radartui/radartui_test.dart';
-import 'package:radartui/src/binding/binding_base.dart';
 import 'package:test/test.dart';
 
 void main() {

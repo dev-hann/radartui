@@ -16,13 +16,13 @@ import 'src/icon_example.dart';
 import 'src/indexed_stack_example.dart';
 import 'src/radio_example.dart';
 import 'src/rich_text_example.dart';
+import 'src/shortcuts_example.dart';
 import 'src/spacer_example.dart';
 import 'src/spinner_example.dart';
 import 'src/stack_example.dart';
 import 'src/style_example.dart';
 import 'src/textfield_example.dart';
 import 'src/theme_example.dart';
-import 'src/shortcuts_example.dart';
 import 'src/wrap_example.dart';
 
 void main() {
