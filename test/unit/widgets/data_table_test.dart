@@ -1,17 +1,17 @@
-import 'package:test/test.dart';
 import 'package:radartui/radartui.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('DataColumn', () {
     test('creates with required label', () {
-      final column = DataColumn(label: 'Name');
+      const column = DataColumn(label: 'Name');
       expect(column.label, equals('Name'));
       expect(column.numeric, isFalse);
       expect(column.onSort, isNull);
     });
 
     test('creates with numeric flag', () {
-      final column = DataColumn(label: 'Age', numeric: true);
+      const column = DataColumn(label: 'Age', numeric: true);
       expect(column.numeric, isTrue);
     });
 
@@ -33,31 +33,31 @@ void main() {
 
   group('DataCell', () {
     test('creates with string value', () {
-      final cell = DataCell('John');
+      const cell = DataCell('John');
       expect(cell.value, equals('John'));
     });
 
     test('creates with empty string', () {
-      final cell = DataCell('');
+      const cell = DataCell('');
       expect(cell.value, equals(''));
     });
   });
 
   group('DataRow', () {
     test('creates with cells', () {
-      final row = DataRow(cells: [DataCell('John'), DataCell('25')]);
+      const row = DataRow(cells: [DataCell('John'), DataCell('25')]);
       expect(row.cells.length, equals(2));
       expect(row.cells[0].value, equals('John'));
       expect(row.cells[1].value, equals('25'));
     });
 
     test('creates with selected false by default', () {
-      final row = DataRow(cells: []);
+      const row = DataRow(cells: []);
       expect(row.selected, isFalse);
     });
 
     test('creates with selected true', () {
-      final row = DataRow(cells: [], selected: true);
+      const row = DataRow(cells: [], selected: true);
       expect(row.selected, isTrue);
     });
 
@@ -76,7 +76,7 @@ void main() {
 
   group('DataTable', () {
     test('creates with columns and rows', () {
-      final table = DataTable(
+      const table = DataTable(
         columns: [
           DataColumn(label: 'Name'),
           DataColumn(label: 'Age'),
@@ -90,7 +90,7 @@ void main() {
     });
 
     test('creates with sortColumnIndex', () {
-      final table = DataTable(
+      const table = DataTable(
         columns: [DataColumn(label: 'Name')],
         rows: [],
         sortColumnIndex: 0,
@@ -99,7 +99,7 @@ void main() {
     });
 
     test('creates with sortAscending false', () {
-      final table = DataTable(
+      const table = DataTable(
         columns: [DataColumn(label: 'Name')],
         rows: [],
         sortAscending: false,
@@ -108,7 +108,7 @@ void main() {
     });
 
     test('creates with showCheckboxColumn true', () {
-      final table = DataTable(
+      const table = DataTable(
         columns: [DataColumn(label: 'Name')],
         rows: [],
         showCheckboxColumn: true,
@@ -117,7 +117,7 @@ void main() {
     });
 
     test('default values are correct', () {
-      final table = DataTable(columns: [], rows: []);
+      const table = DataTable(columns: [], rows: []);
       expect(table.sortColumnIndex, isNull);
       expect(table.sortAscending, isTrue);
       expect(table.showCheckboxColumn, isFalse);

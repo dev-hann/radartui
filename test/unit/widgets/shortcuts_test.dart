@@ -21,7 +21,7 @@ void main() {
   group('ShortcutActivator', () {
     group('accepts()', () {
       test('matches key code only when no modifiers specified', () {
-        final activator = const ShortcutActivator(key: KeyCode.enter);
+        const activator = ShortcutActivator(key: KeyCode.enter);
 
         expect(
           activator.accepts(const KeyEvent(code: KeyCode.enter)),
@@ -34,7 +34,7 @@ void main() {
       });
 
       test('matches with ctrl modifier', () {
-        final activator = const ShortcutActivator(
+        const activator = ShortcutActivator(
           key: KeyCode.char,
           ctrl: true,
         );
@@ -58,7 +58,7 @@ void main() {
       });
 
       test('matches with alt modifier', () {
-        final activator = const ShortcutActivator(
+        const activator = ShortcutActivator(
           key: KeyCode.char,
           alt: true,
         );
@@ -82,7 +82,7 @@ void main() {
       });
 
       test('matches with shift modifier', () {
-        final activator = const ShortcutActivator(
+        const activator = ShortcutActivator(
           key: KeyCode.arrowUp,
           shift: true,
         );
@@ -104,7 +104,7 @@ void main() {
       });
 
       test('matches with multiple modifiers', () {
-        final activator = const ShortcutActivator(
+        const activator = ShortcutActivator(
           key: KeyCode.char,
           ctrl: true,
           shift: true,
@@ -131,7 +131,7 @@ void main() {
       });
 
       test('requires exact modifier match', () {
-        final activator = const ShortcutActivator(
+        const activator = ShortcutActivator(
           key: KeyCode.enter,
           ctrl: true,
         );
@@ -149,16 +149,16 @@ void main() {
 
     group('equality', () {
       test('equal activators have same hashCode', () {
-        final a1 = const ShortcutActivator(key: KeyCode.enter, ctrl: true);
-        final a2 = const ShortcutActivator(key: KeyCode.enter, ctrl: true);
+        const a1 = ShortcutActivator(key: KeyCode.enter, ctrl: true);
+        const a2 = ShortcutActivator(key: KeyCode.enter, ctrl: true);
 
         expect(a1, equals(a2));
         expect(a1.hashCode, equals(a2.hashCode));
       });
 
       test('different activators are not equal', () {
-        final a1 = const ShortcutActivator(key: KeyCode.enter);
-        final a2 = const ShortcutActivator(key: KeyCode.escape);
+        const a1 = ShortcutActivator(key: KeyCode.enter);
+        const a2 = ShortcutActivator(key: KeyCode.escape);
 
         expect(a1, isNot(equals(a2)));
       });
@@ -174,7 +174,7 @@ void main() {
 
   group('Action', () {
     test('invoke returns null by default', () {
-      final action = const _TestAction();
+      const action = _TestAction();
       expect(action.invoke(const _TestIntent()), isNull);
     });
   });
@@ -214,7 +214,7 @@ void main() {
 
   group('ActionDispatcher', () {
     test('invokes action with intent', () {
-      final dispatcher = const ActionDispatcher();
+      const dispatcher = ActionDispatcher();
       var invoked = false;
 
       final action = CallbackAction(

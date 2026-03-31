@@ -1,4 +1,3 @@
-import 'package:radartui/radartui.dart';
 import 'package:radartui/radartui_test.dart';
 import 'package:test/test.dart';
 

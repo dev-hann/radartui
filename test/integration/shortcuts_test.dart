@@ -37,8 +37,8 @@ void main() {
                 },
               ),
             },
-            child: ShortcutActionsHandler(
-              child: const Text('Test'),
+            child: const ShortcutActionsHandler(
+              child: Text('Test'),
             ),
           ),
         ),
@@ -81,8 +81,8 @@ void main() {
                 const ShortcutActivator(key: KeyCode.enter):
                     const _SaveIntent(),
               },
-              child: ShortcutActionsHandler(
-                child: const Text('Nested'),
+              child: const ShortcutActionsHandler(
+                child: Text('Nested'),
               ),
             ),
           ),
@@ -150,8 +150,8 @@ void main() {
                 },
               ),
             },
-            child: ShortcutActionsHandler(
-              child: const Text('Copy'),
+            child: const ShortcutActionsHandler(
+              child: Text('Copy'),
             ),
           ),
         ),
@@ -169,8 +169,6 @@ void main() {
     });
 
     testWidgets('Alt modifier works', (tester) async {
-      var pasted = false;
-
       tester.pumpWidget(
         Shortcuts(
           shortcuts: {
@@ -181,7 +179,6 @@ void main() {
             actions: {
               _PasteIntent: CallbackAction(
                 onInvoke: (intent) {
-                  pasted = true;
                   return null;
                 },
               ),
@@ -193,19 +190,19 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final altEvent = KeyEvent(
+      const altEvent = KeyEvent(
         code: KeyCode.char,
         char: 'p',
         isAltPressed: true,
       );
 
-      final nonAltEvent = KeyEvent(
+      const nonAltEvent = KeyEvent(
         code: KeyCode.char,
         char: 'p',
         isAltPressed: false,
       );
 
-      final activator = const ShortcutActivator(key: KeyCode.char, alt: true);
+      const activator = ShortcutActivator(key: KeyCode.char, alt: true);
       expect(activator.accepts(altEvent), isTrue);
       expect(activator.accepts(nonAltEvent), isFalse);
     });
@@ -223,14 +220,14 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final shiftEvent = KeyEvent(code: KeyCode.arrowUp, isShiftPressed: true);
+      const shiftEvent = KeyEvent(code: KeyCode.arrowUp, isShiftPressed: true);
 
-      final nonShiftEvent = KeyEvent(
+      const nonShiftEvent = KeyEvent(
         code: KeyCode.arrowUp,
         isShiftPressed: false,
       );
 
-      final activator = const ShortcutActivator(
+      const activator = ShortcutActivator(
         key: KeyCode.arrowUp,
         shift: true,
       );
@@ -274,15 +271,15 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final ctrlActivator = const ShortcutActivator(
+      const ctrlActivator = ShortcutActivator(
         key: KeyCode.char,
         ctrl: true,
       );
-      final altActivator = const ShortcutActivator(
+      const altActivator = ShortcutActivator(
         key: KeyCode.char,
         alt: true,
       );
-      final escActivator = const ShortcutActivator(key: KeyCode.escape);
+      const escActivator = ShortcutActivator(key: KeyCode.escape);
 
       expect(
         ctrlActivator.accepts(

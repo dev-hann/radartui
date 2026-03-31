@@ -31,11 +31,11 @@ class _RichTextExampleState extends State<RichTextExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(1),
+    return const Padding(
+      padding: EdgeInsets.all(1),
       child: Column(
         children: [
-          const Container(
+          Container(
             width: 60,
             height: 3,
             color: Color.blue,
@@ -46,21 +46,21 @@ class _RichTextExampleState extends State<RichTextExample> {
               ),
             ),
           ),
-          const SizedBox(height: 1),
+          SizedBox(height: 1),
           Container(
             width: 60,
-            padding: const EdgeInsets.all(1),
+            padding: EdgeInsets.all(1),
             color: Color.brightBlack,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   '1. Multiple Colors in One Line:',
                   style: TextStyle(bold: true, underline: true),
                 ),
-                const SizedBox(height: 1),
+                SizedBox(height: 1),
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     children: [
                       TextSpan(
                         text: 'Red ',
@@ -81,14 +81,14 @@ class _RichTextExampleState extends State<RichTextExample> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 2),
-                const Text(
+                SizedBox(height: 2),
+                Text(
                   '2. Style Mixing:',
                   style: TextStyle(bold: true, underline: true),
                 ),
-                const SizedBox(height: 1),
+                SizedBox(height: 1),
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     children: [
                       TextSpan(text: 'Bold ', style: TextStyle(bold: true)),
                       TextSpan(text: 'Italic ', style: TextStyle(italic: true)),
@@ -108,14 +108,14 @@ class _RichTextExampleState extends State<RichTextExample> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 2),
-                const Text(
+                SizedBox(height: 2),
+                Text(
                   '3. Syntax Highlighting Example:',
                   style: TextStyle(bold: true, underline: true),
                 ),
-                const SizedBox(height: 1),
+                SizedBox(height: 1),
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     style: TextStyle(color: Color.white),
                     children: [
                       TextSpan(
@@ -150,14 +150,14 @@ class _RichTextExampleState extends State<RichTextExample> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 2),
-                const Text(
+                SizedBox(height: 2),
+                Text(
                   '4. Inherited Styles:',
                   style: TextStyle(bold: true, underline: true),
                 ),
-                const SizedBox(height: 1),
+                SizedBox(height: 1),
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     style: TextStyle(color: Color.cyan),
                     children: [
                       TextSpan(text: 'Parent color (cyan) '),
@@ -169,16 +169,16 @@ class _RichTextExampleState extends State<RichTextExample> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 2),
-                const Text(
+                SizedBox(height: 2),
+                Text(
                   '5. maxLines with ellipsis:',
                   style: TextStyle(bold: true, underline: true),
                 ),
-                const SizedBox(height: 1),
+                SizedBox(height: 1),
                 SizedBox(
                   width: 40,
                   child: RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       text: 'This is a very long text that will be truncated '
                           'when maxLines is set and overflow is ellipsis.',
                       style: TextStyle(color: Color.white),
@@ -190,8 +190,8 @@ class _RichTextExampleState extends State<RichTextExample> {
               ],
             ),
           ),
-          const Spacer(),
-          const Text(
+          Spacer(),
+          Text(
             'Press ESC to return to menu',
             style: TextStyle(color: Color.brightYellow, italic: true),
           ),

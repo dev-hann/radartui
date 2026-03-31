@@ -10,7 +10,7 @@ class DataTableExample extends StatefulWidget {
 class _DataTableExampleState extends State<DataTableExample> {
   int? _sortColumnIndex;
   bool _sortAscending = true;
-  List<_Person> _people = [
+  final List<_Person> _people = [
     _Person('Alice', 30, 'Engineering'),
     _Person('Bob', 25, 'Marketing'),
     _Person('Charlie', 35, 'Engineering'),
@@ -68,11 +68,11 @@ class _DataTableExampleState extends State<DataTableExample> {
       padding: const EdgeInsets.all(1),
       child: Column(
         children: [
-          Container(
+          const Container(
             width: 70,
             height: 3,
             color: Color.blue,
-            child: const Center(
+            child: Center(
               child: Text(
                 'DataTable Example',
                 style: TextStyle(color: Color.white, bold: true),
@@ -117,10 +117,10 @@ class _DataTableExampleState extends State<DataTableExample> {
 }
 
 class _Person {
+  _Person(this.name, this.age, this.department);
+
   final String name;
   final int age;
   final String department;
-  bool selected;
-
-  _Person(this.name, this.age, this.department, {this.selected = false});
+  bool selected = false;
 }
