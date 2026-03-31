@@ -45,7 +45,7 @@ class _RadioExampleState extends State<RadioExample> {
             ),
           ),
           const SizedBox(height: 2),
-          
+
           // Theme Selection
           Container(
             color: Color.brightBlack,
@@ -57,7 +57,6 @@ class _RadioExampleState extends State<RadioExample> {
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
                 const SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Radio<String>(
@@ -73,9 +72,7 @@ class _RadioExampleState extends State<RadioExample> {
                     const Text('Dark Theme'),
                   ],
                 ),
-                
                 const SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Radio<String>(
@@ -91,9 +88,7 @@ class _RadioExampleState extends State<RadioExample> {
                     const Text('Light Theme'),
                   ],
                 ),
-                
                 const SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Radio<String>(
@@ -113,9 +108,9 @@ class _RadioExampleState extends State<RadioExample> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 2),
-          
+
           // Priority Selection
           Container(
             color: Color.brightBlack,
@@ -127,7 +122,6 @@ class _RadioExampleState extends State<RadioExample> {
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
                 const SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Radio<int>(
@@ -144,9 +138,7 @@ class _RadioExampleState extends State<RadioExample> {
                     const Text('High Priority'),
                   ],
                 ),
-                
                 const SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Radio<int>(
@@ -163,9 +155,7 @@ class _RadioExampleState extends State<RadioExample> {
                     const Text('Medium Priority'),
                   ],
                 ),
-                
                 const SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Radio<int>(
@@ -185,9 +175,9 @@ class _RadioExampleState extends State<RadioExample> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 2),
-          
+
           // Programming Language Selection
           Container(
             color: Color.brightBlack,
@@ -199,7 +189,6 @@ class _RadioExampleState extends State<RadioExample> {
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
                 const SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Radio<String>(
@@ -215,9 +204,7 @@ class _RadioExampleState extends State<RadioExample> {
                     const Text('Dart'),
                   ],
                 ),
-                
                 const SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Radio<String>(
@@ -236,9 +223,9 @@ class _RadioExampleState extends State<RadioExample> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 2),
-          
+
           // Disabled Radio Example
           const Container(
             color: Color.brightBlack,
@@ -250,7 +237,6 @@ class _RadioExampleState extends State<RadioExample> {
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
                 SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Radio<String>(
@@ -262,9 +248,7 @@ class _RadioExampleState extends State<RadioExample> {
                     Text('Disabled Unselected'),
                   ],
                 ),
-                
                 SizedBox(height: 1),
-                
                 Row(
                   children: [
                     Radio<String>(
@@ -279,9 +263,9 @@ class _RadioExampleState extends State<RadioExample> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 2),
-          
+
           // Status Display
           Container(
             color: Color.brightBlack,
@@ -308,9 +292,9 @@ class _RadioExampleState extends State<RadioExample> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 2),
-          
+
           // Navigation hint
           const Text(
             'Use Tab to navigate, Space/Enter to select',

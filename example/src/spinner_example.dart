@@ -64,8 +64,7 @@ class _SpinnerExampleState extends State<SpinnerExample> {
       setState(() {
         if (_progress < 100) {
           _progress += 2;
-          _status =
-              _statusMessages[(_progress / 20).floor().clamp(
+          _status = _statusMessages[(_progress / 20).floor().clamp(
                 0,
                 _statusMessages.length - 1,
               )];
@@ -80,7 +79,8 @@ class _SpinnerExampleState extends State<SpinnerExample> {
   void _switchIndicator() {
     setState(() {
       final currentIndex = _indicatorTypes.indexOf(_currentIndicator);
-      _currentIndicator = _indicatorTypes[(currentIndex + 1) % _indicatorTypes.length];
+      _currentIndicator =
+          _indicatorTypes[(currentIndex + 1) % _indicatorTypes.length];
     });
   }
 
@@ -125,9 +125,7 @@ class _SpinnerExampleState extends State<SpinnerExample> {
               ),
             ),
           ),
-
           const SizedBox(height: 2),
-
           Container(
             width: 50,
             height: 8,
@@ -151,24 +149,18 @@ class _SpinnerExampleState extends State<SpinnerExample> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 1),
-
                 ProgressIndicator(
                   progress: _progress,
                   fillColor: Color.green,
                   backgroundColor: Color.brightBlack,
                 ),
-
                 const SizedBox(height: 1),
-
                 Text(
                   'Current: ${_getIndicatorName()}',
                   style: const TextStyle(color: Color.cyan, italic: true),
                 ),
-
                 const SizedBox(height: 1),
-
                 if (!_isLoading) ...[
                   const Text(
                     '✓ Loading Complete!',
@@ -188,9 +180,7 @@ class _SpinnerExampleState extends State<SpinnerExample> {
               ],
             ),
           ),
-
           const SizedBox(height: 2),
-
           const Container(
             width: 50,
             color: Color.blue,
@@ -205,7 +195,8 @@ class _SpinnerExampleState extends State<SpinnerExample> {
                   '• Multiple indicator types',
                   style: TextStyle(color: Color.white),
                 ),
-                Text('• Animated progress bar', style: TextStyle(color: Color.white)),
+                Text('• Animated progress bar',
+                    style: TextStyle(color: Color.white)),
                 Text('• Status updates', style: TextStyle(color: Color.white)),
                 Text(
                   '• S: Switch indicators | ESC: Return',

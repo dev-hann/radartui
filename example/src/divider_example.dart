@@ -41,7 +41,7 @@ class _DividerExampleState extends State<DividerExample> {
             ),
           ),
           SizedBox(height: 2),
-          
+
           // Horizontal Dividers
           Container(
             color: Color.brightBlack,
@@ -53,22 +53,18 @@ class _DividerExampleState extends State<DividerExample> {
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
                 SizedBox(height: 1),
-                
                 Text('Section 1: Default Divider'),
                 Divider(),
-                
                 Text('Section 2: Thick Red Divider'),
                 Divider(
                   thickness: 2,
                   color: Color.red,
                 ),
-                
                 Text('Section 3: Custom Character Divider'),
                 Divider(
                   character: '=',
                   color: Color.yellow,
                 ),
-                
                 Text('Section 4: Double Line Divider'),
                 Divider(
                   character: '═',
@@ -77,9 +73,9 @@ class _DividerExampleState extends State<DividerExample> {
               ],
             ),
           ),
-          
+
           SizedBox(height: 2),
-          
+
           // Vertical Divider in Row
           Container(
             color: Color.brightBlack,
@@ -106,9 +102,9 @@ class _DividerExampleState extends State<DividerExample> {
               ],
             ),
           ),
-          
+
           SizedBox(height: 2),
-          
+
           // Navigation hint
           Text(
             'Press ESC to return to main menu',
