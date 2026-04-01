@@ -18,7 +18,6 @@ import 'src/radio_example.dart';
 import 'src/rich_text_example.dart';
 import 'src/shortcuts_example.dart';
 import 'src/spacer_example.dart';
-import 'src/spinner_example.dart';
 import 'src/stack_example.dart';
 import 'src/style_example.dart';
 import 'src/textfield_example.dart';
@@ -56,7 +55,6 @@ class RadarTUIExamplesApp extends StatelessWidget {
         '/radio': (context) => const RadioExample(),
         '/richtext': (context) => const RichTextExample(),
         '/spacer': (context) => const SpacerExample(),
-        '/spinner': (context) => const SpinnerExample(),
         '/stack': (context) => const StackExample(),
         '/style': (context) => const StyleExample(),
         '/textfield': (context) => const TextFieldExample(),
@@ -95,7 +93,6 @@ class _MenuScreenState extends State<MenuScreen> {
     'Radio Button',
     'RichText Widget',
     'Spacer & Flexible',
-    'Spinner & Progress',
     'Stack Widget',
     'Text Styling',
     'TextField Widget',
@@ -123,7 +120,6 @@ class _MenuScreenState extends State<MenuScreen> {
     '/radio',
     '/richtext',
     '/spacer',
-    '/spinner',
     '/stack',
     '/style',
     '/textfield',

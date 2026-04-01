@@ -19,7 +19,22 @@ class ColorTween extends Tween<Color> {
 
   @override
   Color lerp(double t) {
+    final int beginValue = begin.value;
+    final int endValue = end.value;
+
+    if (beginValue == endValue) return begin;
+
+    final int startIdx = beginValue % 16;
+    final int endIdx = end.value % 16;
+
+    if (startIdx == endIdx) return begin;
+
     return t < 0.5 ? begin : end;
+  }
+
+  static Color nearColorTo(double t) {
+    final int idx = (t * 15).round().clamp(0, 15);
+    return Color(idx);
   }
 }
 

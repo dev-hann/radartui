@@ -1,5 +1,4 @@
 import '../../../radartui.dart';
-import '../../animation/animation.dart';
 
 class Radio<T> extends StatefulWidget {
   const Radio({

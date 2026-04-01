@@ -35,6 +35,7 @@ import 'src/binding.dart';
 import 'src/services.dart';
 import 'src/widgets.dart';
 
+export 'src/animation/animation.dart';
 export 'src/binding.dart';
 export 'src/foundation.dart';
 export 'src/rendering.dart';
