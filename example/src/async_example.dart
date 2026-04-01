@@ -75,15 +75,8 @@ class _AsyncExampleState extends State<AsyncExample> {
                   future: _dataFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Row(
-                        children: [
-                          LoadingIndicator(
-                              type: IndicatorType.spinner, color: Color.yellow),
-                          SizedBox(width: 2),
-                          Text('Loading...',
-                              style: TextStyle(color: Color.yellow)),
-                        ],
-                      );
+                      return const Text('Loading...',
+                          style: TextStyle(color: Color.yellow));
                     }
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}',
@@ -125,8 +118,7 @@ class _AsyncExampleState extends State<AsyncExample> {
                     return Row(
                       children: [
                         if (!isDone)
-                          const LoadingIndicator(
-                              type: IndicatorType.dots, color: Color.cyan)
+                          const Text('...', style: TextStyle(color: Color.cyan))
                         else
                           const Text('Done!',
                               style: TextStyle(color: Color.green, bold: true)),
