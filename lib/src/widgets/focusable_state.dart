@@ -16,10 +16,14 @@ mixin FocusableState<T extends StatefulWidget> on State<T> {
 
   FocusNode get focusNode => _focusNode;
 
+  void onFocusChange(bool focused) {}
+
   void _onFocusChange() {
+    final bool focused = _focusNode.hasFocus;
     setState(() {
-      _hasFocus = _focusNode.hasFocus;
+      _hasFocus = focused;
     });
+    onFocusChange(focused);
   }
 
   @override
