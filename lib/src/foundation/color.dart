@@ -69,6 +69,7 @@ class TextStyle {
     this.bold = false,
     this.italic = false,
     this.underline = false,
+    this.dim = false,
     this.fontFamily = FontFamily.monospace,
   });
   final Color? color;
@@ -76,6 +77,7 @@ class TextStyle {
   final bool bold;
   final bool italic;
   final bool underline;
+  final bool dim;
   final FontFamily fontFamily;
 
   @override
@@ -86,11 +88,12 @@ class TextStyle {
       bold == other.bold &&
       italic == other.italic &&
       underline == other.underline &&
+      dim == other.dim &&
       fontFamily == other.fontFamily;
 
   @override
-  int get hashCode =>
-      Object.hash(color, backgroundColor, bold, italic, underline, fontFamily);
+  int get hashCode => Object.hash(
+      color, backgroundColor, bold, italic, underline, dim, fontFamily);
 
   TextStyle merge(TextStyle? other) {
     if (other == null) return this;
@@ -100,11 +103,12 @@ class TextStyle {
       bold: other.bold || bold,
       italic: other.italic || italic,
       underline: other.underline || underline,
+      dim: other.dim || dim,
       fontFamily: other.fontFamily,
     );
   }
 
   @override
   String toString() =>
-      'TextStyle(color: $color, bg: $backgroundColor, bold: $bold, font: $fontFamily)';
+      'TextStyle(color: $color, bg: $backgroundColor, bold: $bold, dim: $dim, font: $fontFamily)';
 }

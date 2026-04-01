@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class FocusExample extends StatefulWidget {
@@ -11,16 +12,24 @@ class _FocusExampleState extends State<FocusExample> {
   String selectedAction = '';
   String selectedFile = '';
   String selectedOption = '';
+  StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
 
-    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class FormExample extends StatefulWidget {
@@ -14,11 +15,13 @@ class _FormExampleState extends State<FormExample> {
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       }
@@ -27,6 +30,7 @@ class _FormExampleState extends State<FormExample> {
 
   @override
   void dispose() {
+    _keySubscription?.cancel();
     _nameController.dispose();
     _emailController.dispose();
     super.dispose();

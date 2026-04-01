@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class RadioExample extends StatefulWidget {
@@ -11,13 +12,21 @@ class _RadioExampleState extends State<RadioExample> {
   String? _selectedTheme = 'dark';
   int? _selectedPriority = 2;
   String? _selectedLanguage = 'dart';
+  StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
   }
 
   void _handleKeyEvent(KeyEvent keyEvent) {

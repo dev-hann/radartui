@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class SpacerExample extends StatefulWidget {
@@ -8,14 +9,23 @@ class SpacerExample extends StatefulWidget {
 }
 
 class _SpacerExampleState extends State<SpacerExample> {
+  StreamSubscription? _keySubscription;
+
   @override
   void initState() {
     super.initState();
-    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
   }
 
   @override

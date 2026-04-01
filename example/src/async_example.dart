@@ -11,19 +11,27 @@ class AsyncExample extends StatefulWidget {
 class _AsyncExampleState extends State<AsyncExample> {
   late Stream<int> _counterStream;
   Future<String>? _dataFuture;
+  StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
     _counterStream = _createCounterStream();
     _dataFuture = _fetchData();
-    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       } else if (key.code == KeyCode.char && key.char == 'r') {
         _refreshFuture();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
   }
 
   Stream<int> _createCounterStream() {

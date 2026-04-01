@@ -107,9 +107,15 @@ class TestBinding extends BindingBase
   }
 
   Future<void> pumpAndSettle() async {
+    var previousOutput = terminal.getPlainText();
     for (int i = 0; i < 100; i++) {
       pump();
       await Future<void>.delayed(Duration.zero);
+      final currentOutput = terminal.getPlainText();
+      if (currentOutput == previousOutput && i > 0) {
+        break;
+      }
+      previousOutput = currentOutput;
     }
   }
 }

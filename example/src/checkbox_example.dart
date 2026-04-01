@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class CheckboxExample extends StatefulWidget {
@@ -12,13 +13,21 @@ class _CheckboxExampleState extends State<CheckboxExample> {
   bool _option2 = true;
   bool _option3 = false;
   bool _option4 = true;
+  StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
   }
 
   void _handleKeyEvent(KeyEvent keyEvent) {

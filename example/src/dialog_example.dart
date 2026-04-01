@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class DialogExample extends StatefulWidget {
@@ -11,13 +12,21 @@ class _DialogExampleState extends State<DialogExample> {
   String _lastResult = 'Press buttons to show dialogs!';
   final String _instruction =
       'Use Tab to navigate, Enter to select, Escape to exit';
+  StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
   }
 
   void _handleKeyEvent(KeyEvent keyEvent) {

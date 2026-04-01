@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class StackExample extends StatefulWidget {
@@ -8,12 +9,21 @@ class StackExample extends StatefulWidget {
 }
 
 class _StackExampleState extends State<StackExample> {
+  StreamSubscription? _keySubscription;
+
   @override
   void initState() {
     super.initState();
-    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
   }
 
   void _handleKeyEvent(KeyEvent keyEvent) {

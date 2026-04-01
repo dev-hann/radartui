@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class ButtonExample extends StatefulWidget {
@@ -10,13 +11,21 @@ class ButtonExample extends StatefulWidget {
 class _ButtonExampleState extends State<ButtonExample> {
   String _message = 'Press a button!';
   int _counter = 0;
+  StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
   }
 
   void _handleKeyEvent(KeyEvent keyEvent) {
