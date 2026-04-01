@@ -10,6 +10,7 @@ library foundation;
 
 export 'foundation/alignment.dart';
 export 'foundation/axis.dart';
+export 'foundation/border.dart';
 export 'foundation/box_constraints.dart';
 export 'foundation/change_notifier.dart';
 export 'foundation/color.dart';
