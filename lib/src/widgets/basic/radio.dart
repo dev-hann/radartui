@@ -1,4 +1,5 @@
 import '../../../radartui.dart';
+import '../../animation/animation.dart';
 
 class Radio<T> extends StatefulWidget {
   const Radio({
@@ -22,8 +23,26 @@ class Radio<T> extends StatefulWidget {
 }
 
 class _RadioState<T> extends State<Radio<T>> with FocusableState<Radio<T>> {
+  late AnimationController _controller;
+  late Animation<Color> _colorAnim;
+
   @override
   FocusNode? get providedFocusNode => widget.focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    final isSelected = widget.value == widget.groupValue;
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 100),
+      initialValue: isSelected ? 1.0 : 0.0,
+    );
+    _colorAnim = ColorTween(
+      begin: Color.black,
+      end: widget.activeColor ?? Color.blue,
+    ).animate(_controller);
+    _controller.addListener(() => setState(() {}));
+  }
 
   @override
   void onKeyEvent(KeyEvent event) {
@@ -39,11 +58,22 @@ class _RadioState<T> extends State<Radio<T>> with FocusableState<Radio<T>> {
   void didUpdateWidget(Radio<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.groupValue != widget.groupValue ||
-        oldWidget.value != widget.value) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
-      });
+    final wasSelected = oldWidget.value == oldWidget.groupValue;
+    final isSelected = widget.value == widget.groupValue;
+
+    if (wasSelected != isSelected) {
+      if (isSelected) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    }
+
+    if (oldWidget.activeColor != widget.activeColor) {
+      _colorAnim = ColorTween(
+        begin: Color.black,
+        end: widget.activeColor ?? Color.blue,
+      ).animate(_controller);
     }
   }
 
@@ -55,15 +85,22 @@ class _RadioState<T> extends State<Radio<T>> with FocusableState<Radio<T>> {
   @override
   Widget build(BuildContext context) {
     final isSelected = widget.value == widget.groupValue;
+    final currentBackgroundColor = _colorAnim.value;
 
     return _RadioRenderWidget(
       selected: isSelected,
       focused: hasFocus,
       enabled: widget.onChanged != null,
-      activeColor: widget.activeColor ?? Color.blue,
+      activeColor: currentBackgroundColor,
       checkColor: widget.checkColor ?? Color.white,
       onTap: _onTap,
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
 
