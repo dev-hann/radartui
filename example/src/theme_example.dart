@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class ThemeExample extends StatefulWidget {
@@ -9,11 +10,13 @@ class ThemeExample extends StatefulWidget {
 
 class _ThemeExampleState extends State<ThemeExample> {
   bool _useDarkTheme = true;
+  StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       } else if (key.code == KeyCode.char && key.char == 't') {
@@ -22,6 +25,12 @@ class _ThemeExampleState extends State<ThemeExample> {
         });
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
   }
 
   @override

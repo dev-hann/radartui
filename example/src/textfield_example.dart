@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class TextFieldExample extends StatefulWidget {
@@ -10,12 +11,14 @@ class TextFieldExample extends StatefulWidget {
 class _TextFieldExampleState extends State<TextFieldExample> {
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController _controller2 = TextEditingController();
+  StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
     _controller1.text = 'Initial text';
-    ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }
@@ -29,6 +32,7 @@ class _TextFieldExampleState extends State<TextFieldExample> {
 
   @override
   void dispose() {
+    _keySubscription?.cancel();
     _controller1.dispose();
     _controller2.dispose();
     super.dispose();

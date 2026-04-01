@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class DataTableExample extends StatefulWidget {
@@ -10,6 +11,7 @@ class DataTableExample extends StatefulWidget {
 class _DataTableExampleState extends State<DataTableExample> {
   int? _sortColumnIndex;
   bool _sortAscending = true;
+  StreamSubscription? _keySubscription;
   final List<_Person> _people = [
     _Person('Alice', 30, 'Engineering'),
     _Person('Bob', 25, 'Marketing'),
@@ -18,6 +20,23 @@ class _DataTableExampleState extends State<DataTableExample> {
     _Person('Eve', 32, 'Marketing'),
     _Person('Frank', 40, 'Engineering'),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+      if (key.code == KeyCode.escape) {
+        Navigator.of(context).pop();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
+  }
 
   List<DataRow> _buildRows() {
     return _people.map((person) {

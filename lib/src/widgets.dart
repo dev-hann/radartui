@@ -15,3 +15,4 @@ export 'widgets/focusable_state.dart';
 export 'widgets/framework.dart';
 export 'widgets/navigation.dart';
 export 'widgets/navigator_observer.dart';
+export 'widgets/overlay.dart';

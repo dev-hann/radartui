@@ -121,6 +121,7 @@ class OutputBuffer {
     final List<String> codes = ['0'];
 
     if (style.bold) codes.add('1');
+    if (style.dim) codes.add('2');
     if (style.italic) codes.add('3');
     if (style.underline) codes.add('4');
 

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class IndexedStackExample extends StatefulWidget {
@@ -11,11 +12,19 @@ class _IndexedStackExampleState extends State<IndexedStackExample> {
   int _currentIndex = 0;
   static const _pageColors = [Color.red, Color.green, Color.blue];
   static const _pageNames = ['Red Page', 'Green Page', 'Blue Page'];
+  StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    ServicesBinding.instance.keyboard.keyEvents.listen(_handleKeyEvent);
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen(_handleKeyEvent);
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
   }
 
   void _handleKeyEvent(KeyEvent keyEvent) {
