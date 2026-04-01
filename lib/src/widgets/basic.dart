@@ -19,7 +19,6 @@ export 'basic/future_builder.dart';
 export 'basic/grid_view.dart';
 export 'basic/icon.dart';
 export 'basic/indexed_stack.dart';
-export 'basic/indicator.dart';
 export 'basic/list_view.dart';
 export 'basic/media_query.dart';
 export 'basic/padding.dart';
