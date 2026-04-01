@@ -1,4 +1,5 @@
 import '../../../radartui.dart';
+import '../../animation/animation.dart';
 
 class Checkbox extends StatefulWidget {
   const Checkbox({
@@ -22,8 +23,25 @@ class Checkbox extends StatefulWidget {
 }
 
 class _CheckboxState extends State<Checkbox> with FocusableState<Checkbox> {
+  late AnimationController _controller;
+  late Animation<Color> _colorAnim;
+
   @override
   FocusNode? get providedFocusNode => widget.focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 100),
+      initialValue: widget.value ? 1.0 : 0.0,
+    );
+    _colorAnim = ColorTween(
+      begin: Color.black,
+      end: widget.activeColor ?? Color.blue,
+    ).animate(_controller);
+    _controller.addListener(() => setState(() {}));
+  }
 
   @override
   void onKeyEvent(KeyEvent event) {
@@ -41,22 +59,39 @@ class _CheckboxState extends State<Checkbox> with FocusableState<Checkbox> {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.value != widget.value) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
-      });
+      if (widget.value) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    }
+
+    if (oldWidget.activeColor != widget.activeColor) {
+      _colorAnim = ColorTween(
+        begin: Color.black,
+        end: widget.activeColor ?? Color.blue,
+      ).animate(_controller);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentBackgroundColor = _colorAnim.value;
+
     return _CheckboxRenderWidget(
       value: widget.value,
       tristate: widget.tristate,
       focused: hasFocus,
       enabled: widget.onChanged != null,
-      activeColor: widget.activeColor ?? Color.blue,
+      activeColor: currentBackgroundColor,
       checkColor: widget.checkColor ?? Color.white,
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
 
