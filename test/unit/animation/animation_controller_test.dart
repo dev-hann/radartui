@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:radartui/radartui_test.dart';
 import 'package:radartui/src/animation/animation.dart';
-import 'package:radartui/src/animation/animation_controller.dart';
 import 'package:test/test.dart';
 
 void main() {

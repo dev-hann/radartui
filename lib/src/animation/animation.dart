@@ -1,4 +1,11 @@
-typedef VoidCallback = void Function();
+import '../foundation/typedefs.dart';
+export '../foundation/typedefs.dart' show VoidCallback;
+
+export 'animation_controller.dart';
+export 'curved_animation.dart';
+export 'curves.dart';
+export 'tween.dart';
+
 typedef AnimationStatusListener = void Function(AnimationStatus status);
 
 enum AnimationStatus {

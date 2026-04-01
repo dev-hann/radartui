@@ -1,5 +1,4 @@
 import 'animation.dart';
-import 'curves.dart';
 
 class CurvedAnimation extends Animation<double> {
   CurvedAnimation({
