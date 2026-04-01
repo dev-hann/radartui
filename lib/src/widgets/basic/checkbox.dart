@@ -1,5 +1,4 @@
 import '../../../radartui.dart';
-import '../../animation/animation.dart';
 
 class Checkbox extends StatefulWidget {
   const Checkbox({

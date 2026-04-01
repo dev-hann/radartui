@@ -143,5 +143,5 @@ Zero tolerance for errors, warnings, and hints.
 |---------|--------|
 | Mouse events | N/A (terminal limitation) |
 | Scrolling | Basic (limited ListView) |
-| Animations | Basic (simple indicators only) |
+| Animations | Full animation system (AnimationController, Tween, CurvedAnimation, Curves) |
 | Key system | No `super.key` support yet |
