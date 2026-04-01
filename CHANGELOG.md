@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-04-01: Phase 4 Animation System
+
+### Core Animation Classes
+- `Animation<T>` abstract base with value/status getters and listener management
+- `AnimationController` timeline controller (0.0 → 1.0) using SchedulerBinding
+- `Tween<T>` / `ColorTween` value interpolation (TUI: snaps at midpoint for discrete ANSI colors)
+- `CurvedAnimation` applies easing curves to parent animation
+- `Curve` / `Curves` - linear, easeIn, easeOut easing functions
+
+### Widget Integration
+- `Button` - focus/unfocus color animation (150ms, easeOut)
+- `Checkbox` - check/uncheck color animation (100ms)
+- `Radio` - select/deselect color animation (100ms)
+
+### Infrastructure
+- Added persistent frame callbacks to `SchedulerBinding`
+- `FocusableState` mixin - added `onFocusChange` hook
+
+### Test Coverage
+- 856 tests passing (829 → 856)
+
 ## 2026-03-31: Phase 1 Widgets
 
 - `IndexedStack` widget
