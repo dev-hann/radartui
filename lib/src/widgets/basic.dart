@@ -11,7 +11,6 @@ export 'basic/data_table.dart';
 export 'basic/default_text_style.dart';
 export 'basic/dialog.dart';
 export 'basic/divider.dart';
-export 'basic/dropdown_button.dart';
 export 'basic/flex.dart';
 export 'basic/flex_widgets.dart';
 export 'basic/focus.dart';
