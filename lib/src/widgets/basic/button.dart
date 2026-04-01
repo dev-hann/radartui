@@ -1,4 +1,5 @@
 import '../../../radartui.dart';
+import '../../animation/animation.dart';
 
 class Button extends StatefulWidget {
   const Button({
@@ -20,8 +21,37 @@ class Button extends StatefulWidget {
 }
 
 class _ButtonState extends State<Button> with FocusableState<Button> {
+  late AnimationController _controller;
+  late Animation<Color> _colorAnim;
+
   @override
   FocusNode? get providedFocusNode => widget.focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 150),
+    );
+    _colorAnim = ColorTween(
+      begin: widget.style?.backgroundColor ?? Color.blue,
+      end: widget.style?.focusBackgroundColor ?? Color.brightBlue,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOut,
+    ));
+    _controller.addListener(() => setState(() {}));
+  }
+
+  @override
+  void onFocusChange(bool focused) {
+    super.onFocusChange(focused);
+    if (focused) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+  }
 
   @override
   void onKeyEvent(KeyEvent event) {
@@ -40,13 +70,24 @@ class _ButtonState extends State<Button> with FocusableState<Button> {
 
   @override
   Widget build(BuildContext context) {
+    final currentBackgroundColor = _colorAnim.value;
+    final style = (widget.style ?? const ButtonStyle()).copyWith(
+      backgroundColor: currentBackgroundColor,
+    );
+
     return _ButtonRenderWidget(
       text: widget.text,
       enabled: widget.enabled,
       focused: hasFocus,
-      style: widget.style ?? const ButtonStyle(),
+      style: style,
       onTap: _onTap,
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
 
@@ -69,12 +110,12 @@ class _ButtonRenderWidget extends RenderObjectWidget {
 
   @override
   RenderButton createRenderObject(BuildContext context) => RenderButton(
-    text: text,
-    enabled: enabled,
-    focused: focused,
-    style: style,
-    onTap: onTap,
-  );
+        text: text,
+        enabled: enabled,
+        focused: focused,
+        style: style,
+        onTap: onTap,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -231,4 +272,27 @@ class ButtonStyle {
   final Color disabledBackgroundColor;
   final EdgeInsets padding;
   final bool bold;
+
+  ButtonStyle copyWith({
+    Color? foregroundColor,
+    Color? backgroundColor,
+    Color? focusColor,
+    Color? focusBackgroundColor,
+    Color? disabledColor,
+    Color? disabledBackgroundColor,
+    EdgeInsets? padding,
+    bool? bold,
+  }) {
+    return ButtonStyle(
+      foregroundColor: foregroundColor ?? this.foregroundColor,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      focusColor: focusColor ?? this.focusColor,
+      focusBackgroundColor: focusBackgroundColor ?? this.focusBackgroundColor,
+      disabledColor: disabledColor ?? this.disabledColor,
+      disabledBackgroundColor:
+          disabledBackgroundColor ?? this.disabledBackgroundColor,
+      padding: padding ?? this.padding,
+      bold: bold ?? this.bold,
+    );
+  }
 }
