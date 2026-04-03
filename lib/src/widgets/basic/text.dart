@@ -88,9 +88,8 @@ class RenderText extends RenderBox {
       }
     }
 
-    final effectiveMaxHeight = boxConstraints.maxHeight > 0
-        ? boxConstraints.maxHeight
-        : 1;
+    final effectiveMaxHeight =
+        boxConstraints.maxHeight > 0 ? boxConstraints.maxHeight : 1;
     final width = computedWidth.clamp(
       boxConstraints.minWidth,
       boxConstraints.maxWidth,
@@ -111,38 +110,38 @@ class RenderText extends RenderBox {
     for (final paragraph in paragraphs) {
       if (paragraph.isEmpty) {
         lines.add('');
-        continue;
-      }
-
-      if (paragraph.length <= maxWidth) {
+      } else if (paragraph.length <= maxWidth) {
         lines.add(paragraph);
-        continue;
-      }
-
-      if (softWrap) {
-        int start = 0;
-        while (start < paragraph.length) {
-          final int end = start + maxWidth;
-          if (end >= paragraph.length) {
-            lines.add(paragraph.substring(start));
-            break;
-          }
-
-          final int lastSpace = paragraph.lastIndexOf(' ', end);
-          if (lastSpace > start) {
-            lines.add(paragraph.substring(start, lastSpace));
-            start = lastSpace + 1;
-          } else {
-            lines.add(paragraph.substring(start, end));
-            start = end;
-          }
-        }
+      } else if (softWrap) {
+        lines.addAll(_wrapParagraph(paragraph, maxWidth));
       } else {
         lines.add(paragraph.substring(0, maxWidth));
       }
     }
 
     return lines.isEmpty ? [''] : lines;
+  }
+
+  List<String> _wrapParagraph(String paragraph, int maxWidth) {
+    final wrappedLines = <String>[];
+    int start = 0;
+    while (start < paragraph.length) {
+      final int end = start + maxWidth;
+      if (end >= paragraph.length) {
+        wrappedLines.add(paragraph.substring(start));
+        break;
+      }
+
+      final int lastSpace = paragraph.lastIndexOf(' ', end);
+      if (lastSpace > start) {
+        wrappedLines.add(paragraph.substring(start, lastSpace));
+        start = lastSpace + 1;
+      } else {
+        wrappedLines.add(paragraph.substring(start, end));
+        start = end;
+      }
+    }
+    return wrappedLines;
   }
 
   @override
