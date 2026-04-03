@@ -150,26 +150,9 @@ class RenderRichText extends RenderBox {
     _text._collectStyledSegments(_segments, null);
 
     _lines = _wrapLines(_segments, maxWidth);
+    _applyOverflow();
 
-    if (_maxLines != null && _lines.length > _maxLines!) {
-      _lines = _lines.sublist(0, _maxLines!);
-      if (_overflow == TextOverflow.ellipsis && _lines.isNotEmpty) {
-        final lastLine = _lines.last;
-        if (lastLine.length >= 3) {
-          _lines[_lines.length - 1] = lastLine.copyWithEllipsis();
-        } else {
-          _lines[_lines.length - 1] = _StyledLine.ellipsis();
-        }
-      }
-    }
-
-    int computedWidth = 0;
-    for (final line in _lines) {
-      if (line.length > computedWidth) {
-        computedWidth = line.length;
-      }
-    }
-
+    final computedWidth = _computeMaxLineWidth();
     final effectiveMaxHeight =
         boxConstraints.maxHeight > 0 ? boxConstraints.maxHeight : 1;
     final width = computedWidth.clamp(
@@ -180,6 +163,28 @@ class RenderRichText extends RenderBox {
         _lines.isEmpty ? 1 : _lines.length.clamp(1, effectiveMaxHeight);
 
     size = Size(width, height);
+  }
+
+  void _applyOverflow() {
+    if (_maxLines == null || _lines.length <= _maxLines!) return;
+    _lines = _lines.sublist(0, _maxLines!);
+    if (_overflow != TextOverflow.ellipsis || _lines.isEmpty) return;
+    final lastLine = _lines.last;
+    if (lastLine.length >= 3) {
+      _lines[_lines.length - 1] = lastLine.copyWithEllipsis();
+    } else {
+      _lines[_lines.length - 1] = _StyledLine.ellipsis();
+    }
+  }
+
+  int _computeMaxLineWidth() {
+    int computedWidth = 0;
+    for (final line in _lines) {
+      if (line.length > computedWidth) {
+        computedWidth = line.length;
+      }
+    }
+    return computedWidth;
   }
 
   List<_StyledLine> _wrapLines(List<_StyledSegment> segments, int maxWidth) {
@@ -201,24 +206,15 @@ class RenderRichText extends RenderBox {
           currentX = 0;
         }
 
-        String remaining = segmentLines[lineIdx];
-        while (remaining.isNotEmpty) {
-          final available = maxWidth - currentX;
-
-          if (remaining.length <= available) {
-            currentLine.add(remaining, segment.style);
-            currentX += remaining.length;
-            remaining = '';
-          } else {
-            if (available > 0) {
-              currentLine.add(remaining.substring(0, available), segment.style);
-              remaining = remaining.substring(available);
-            }
-            lines.add(currentLine);
-            currentLine = _StyledLine.empty();
-            currentX = 0;
-          }
-        }
+        currentLine = _wrapSegmentText(
+          segmentLines[lineIdx],
+          segment.style,
+          maxWidth,
+          lines,
+          currentLine,
+          currentX,
+        );
+        currentX = currentLine.length;
       }
     }
 
@@ -227,6 +223,35 @@ class RenderRichText extends RenderBox {
     }
 
     return lines;
+  }
+
+  _StyledLine _wrapSegmentText(
+    String text,
+    TextStyle? style,
+    int maxWidth,
+    List<_StyledLine> lines,
+    _StyledLine currentLine,
+    int currentX,
+  ) {
+    String remaining = text;
+    while (remaining.isNotEmpty) {
+      final available = maxWidth - currentX;
+
+      if (remaining.length <= available) {
+        currentLine.add(remaining, style);
+        currentX += remaining.length;
+        remaining = '';
+      } else {
+        if (available > 0) {
+          currentLine.add(remaining.substring(0, available), style);
+          remaining = remaining.substring(available);
+        }
+        lines.add(currentLine);
+        currentLine = _StyledLine.empty();
+        currentX = 0;
+      }
+    }
+    return currentLine;
   }
 
   List<_StyledLine> _buildLinesWithoutWrap(List<_StyledSegment> segments) {
