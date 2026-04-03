@@ -8,12 +8,7 @@ export 'tween.dart';
 
 typedef AnimationStatusListener = void Function(AnimationStatus status);
 
-enum AnimationStatus {
-  dismissed,
-  forward,
-  reverse,
-  completed,
-}
+enum AnimationStatus { dismissed, forward, reverse, completed }
 
 abstract class Animation<T> {
   T get value;

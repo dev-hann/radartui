@@ -18,8 +18,9 @@ class _CheckboxExampleState extends State<CheckboxExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       _handleKeyEvent(key);
     });
   }
@@ -119,20 +120,14 @@ class _CheckboxExampleState extends State<CheckboxExample> {
           ),
           const Row(
             children: [
-              Checkbox(
-                value: false,
-                onChanged: null,
-              ),
+              Checkbox(value: false, onChanged: null),
               SizedBox(width: 2),
               Text('Disabled unchecked'),
             ],
           ),
           const Row(
             children: [
-              Checkbox(
-                value: true,
-                onChanged: null,
-              ),
+              Checkbox(value: true, onChanged: null),
               SizedBox(width: 2),
               Text('Disabled checked'),
             ],
@@ -144,15 +139,11 @@ class _CheckboxExampleState extends State<CheckboxExample> {
           ),
           Text(
             'Notifications: ${_option1 ? "ON" : "OFF"}',
-            style: TextStyle(
-              color: _option1 ? Color.green : Color.red,
-            ),
+            style: TextStyle(color: _option1 ? Color.green : Color.red),
           ),
           Text(
             'Auto-save: ${_option2 ? "ON" : "OFF"}',
-            style: TextStyle(
-              color: _option2 ? Color.green : Color.red,
-            ),
+            style: TextStyle(color: _option2 ? Color.green : Color.red),
           ),
         ],
       ),

@@ -26,15 +26,15 @@ class AsyncSnapshot<T> {
 
   /// Creates an [AsyncSnapshot] in [ConnectionState.none] with null data and error.
   const AsyncSnapshot.nothing()
-      : this._(ConnectionState.none, null, null, null);
+    : this._(ConnectionState.none, null, null, null);
 
   /// Creates an [AsyncSnapshot] in [ConnectionState.waiting] with null data and error.
   const AsyncSnapshot.waiting()
-      : this._(ConnectionState.waiting, null, null, null);
+    : this._(ConnectionState.waiting, null, null, null);
 
   /// Creates an [AsyncSnapshot] in the specified [state] and with the specified [data].
   const AsyncSnapshot.withData(ConnectionState state, T data)
-      : this._(state, data, null, null);
+    : this._(state, data, null, null);
 
   /// Creates an [AsyncSnapshot] in the specified [state] with the specified [error]
   /// and optional [stackTrace].

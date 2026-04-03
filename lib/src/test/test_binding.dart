@@ -7,8 +7,8 @@ import '../widgets.dart';
 class TestBinding extends BindingBase
     with SchedulerBinding, ServicesBinding, RendererBinding, WidgetsBinding {
   TestBinding({int width = 80, int height = 24})
-      : terminal = TestTerminal(width: width, height: height),
-        keyboard = TestKeyboard() {
+    : terminal = TestTerminal(width: width, height: height),
+      keyboard = TestKeyboard() {
     outputBuffer = TestOutputBuffer(terminal);
   }
   static TestBinding? _testInstance;
@@ -106,7 +106,7 @@ class TestBinding extends BindingBase
   }
 
   Future<void> pumpAndSettle() async {
-    var previousOutput = terminal.getPlainText();
+    String previousOutput = terminal.getPlainText();
     for (int i = 0; i < 100; i++) {
       await pump();
       await Future<void>.delayed(Duration.zero);
@@ -121,12 +121,9 @@ class TestBinding extends BindingBase
 
 class TestTerminal implements Terminal {
   TestTerminal({int width = 80, int height = 24})
-      : _width = width,
-        _height = height,
-        _grid = List.generate(
-          height,
-          (_) => List.generate(width, (_) => ' '),
-        );
+    : _width = width,
+      _height = height,
+      _grid = List.generate(height, (_) => List.generate(width, (_) => ' '));
   int _width;
   int _height;
   final List<List<String>> _grid;
@@ -144,13 +141,13 @@ class TestTerminal implements Terminal {
       newHeight,
       (_) => List.generate(newWidth, (_) => ' '),
     );
-    for (var y = 0; y < _height && y < newHeight; y++) {
-      for (var x = 0; x < _width && x < newWidth; x++) {
+    for (int y = 0; y < _height && y < newHeight; y++) {
+      for (int x = 0; x < _width && x < newWidth; x++) {
         newGrid[y][x] = _grid[y][x];
       }
     }
-    for (var y = 0; y < _height; y++) {
-      for (var x = 0; x < _width; x++) {
+    for (int y = 0; y < _height; y++) {
+      for (int x = 0; x < _width; x++) {
         _grid[y][x] = newGrid[y][x];
       }
     }
@@ -160,8 +157,8 @@ class TestTerminal implements Terminal {
 
   @override
   void clear() {
-    for (var y = 0; y < _height; y++) {
-      for (var x = 0; x < _width; x++) {
+    for (int y = 0; y < _height; y++) {
+      for (int x = 0; x < _width; x++) {
         _grid[y][x] = ' ';
       }
     }
@@ -218,7 +215,7 @@ class TestTerminal implements Terminal {
 
   String getPlainText() {
     final buffer = StringBuffer();
-    for (var y = 0; y < _height; y++) {
+    for (int y = 0; y < _height; y++) {
       final line = _grid[y].join('').trimRight();
       buffer.writeln(line);
     }
@@ -342,11 +339,9 @@ class TestKeyboard implements RawKeyboard {
   }
 
   void sendKey(KeyCode code, {String? char, bool isShiftPressed = false}) {
-    sendKeyEvent(KeyEvent(
-      code: code,
-      char: char,
-      isShiftPressed: isShiftPressed,
-    ));
+    sendKeyEvent(
+      KeyEvent(code: code, char: char, isShiftPressed: isShiftPressed),
+    );
   }
 
   void sendChar(String char) {

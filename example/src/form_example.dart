@@ -20,8 +20,9 @@ class _FormExampleState extends State<FormExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       }
@@ -105,10 +106,7 @@ class _FormExampleState extends State<FormExample> {
             padding: const EdgeInsets.all(2),
             child: Column(
               children: [
-                const Text(
-                  'Name Field:',
-                  style: TextStyle(color: Color.cyan),
-                ),
+                const Text('Name Field:', style: TextStyle(color: Color.cyan)),
                 const SizedBox(height: 1),
                 TextField(
                   controller: _nameController,
@@ -122,10 +120,7 @@ class _FormExampleState extends State<FormExample> {
                     style: const TextStyle(color: Color.red),
                   ),
                 const SizedBox(height: 2),
-                const Text(
-                  'Email Field:',
-                  style: TextStyle(color: Color.cyan),
-                ),
+                const Text('Email Field:', style: TextStyle(color: Color.cyan)),
                 const SizedBox(height: 1),
                 TextField(
                   controller: _emailController,
@@ -177,10 +172,14 @@ class _FormExampleState extends State<FormExample> {
                 Text(_status, style: const TextStyle(color: Color.white)),
                 if (_name.isNotEmpty || _email.isNotEmpty) ...[
                   const SizedBox(height: 1),
-                  Text('Name: $_name',
-                      style: const TextStyle(color: Color.yellow)),
-                  Text('Email: $_email',
-                      style: const TextStyle(color: Color.yellow)),
+                  Text(
+                    'Name: $_name',
+                    style: const TextStyle(color: Color.yellow),
+                  ),
+                  Text(
+                    'Email: $_email',
+                    style: const TextStyle(color: Color.yellow),
+                  ),
                 ],
               ],
             ),

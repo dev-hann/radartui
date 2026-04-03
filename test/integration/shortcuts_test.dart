@@ -37,9 +37,7 @@ void main() {
                 },
               ),
             },
-            child: const ShortcutActionsHandler(
-              child: Text('Test'),
-            ),
+            child: const ShortcutActionsHandler(child: Text('Test')),
           ),
         ),
       );
@@ -48,11 +46,9 @@ void main() {
 
       expect(saved, isFalse);
 
-      tester.sendKeyEvent(const KeyEvent(
-        code: KeyCode.char,
-        char: 's',
-        isCtrlPressed: true,
-      ));
+      tester.sendKeyEvent(
+        const KeyEvent(code: KeyCode.char, char: 's', isCtrlPressed: true),
+      );
 
       await tester.pumpAndSettle();
 
@@ -81,9 +77,7 @@ void main() {
                 const ShortcutActivator(key: KeyCode.enter):
                     const _SaveIntent(),
               },
-              child: const ShortcutActionsHandler(
-                child: Text('Nested'),
-              ),
+              child: const ShortcutActionsHandler(child: Text('Nested')),
             ),
           ),
         ),
@@ -150,9 +144,7 @@ void main() {
                 },
               ),
             },
-            child: const ShortcutActionsHandler(
-              child: Text('Copy'),
-            ),
+            child: const ShortcutActionsHandler(child: Text('Copy')),
           ),
         ),
       );
@@ -227,10 +219,7 @@ void main() {
         isShiftPressed: false,
       );
 
-      const activator = ShortcutActivator(
-        key: KeyCode.arrowUp,
-        shift: true,
-      );
+      const activator = ShortcutActivator(key: KeyCode.arrowUp, shift: true);
       expect(activator.accepts(shiftEvent), isTrue);
       expect(activator.accepts(nonShiftEvent), isFalse);
     });
@@ -271,14 +260,8 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      const ctrlActivator = ShortcutActivator(
-        key: KeyCode.char,
-        ctrl: true,
-      );
-      const altActivator = ShortcutActivator(
-        key: KeyCode.char,
-        alt: true,
-      );
+      const ctrlActivator = ShortcutActivator(key: KeyCode.char, ctrl: true);
+      const altActivator = ShortcutActivator(key: KeyCode.char, alt: true);
       const escActivator = ShortcutActivator(key: KeyCode.escape);
 
       expect(

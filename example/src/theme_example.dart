@@ -15,8 +15,9 @@ class _ThemeExampleState extends State<ThemeExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       } else if (key.code == KeyCode.char && key.char == 't') {
@@ -54,8 +55,10 @@ class _ThemeExampleState extends State<ThemeExample> {
                   child: Center(
                     child: Text(
                       'Theme & MediaQuery Demo',
-                      style:
-                          TextStyle(color: currentTheme.textColor, bold: true),
+                      style: TextStyle(
+                        color: currentTheme.textColor,
+                        bold: true,
+                      ),
                     ),
                   ),
                 ),
@@ -69,7 +72,9 @@ class _ThemeExampleState extends State<ThemeExample> {
                       Text(
                         'Current Theme: ${_useDarkTheme ? "Dark" : "Light"}',
                         style: TextStyle(
-                            color: currentTheme.textColor, bold: true),
+                          color: currentTheme.textColor,
+                          bold: true,
+                        ),
                       ),
                       const SizedBox(height: 1),
                       Text(
@@ -132,7 +137,9 @@ class _ThemeExampleState extends State<ThemeExample> {
                       const SizedBox(height: 1),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 2, vertical: 1),
+                          horizontal: 2,
+                          vertical: 1,
+                        ),
                         color: currentTheme.selectedColor,
                         child: Text(
                           'Selected',
@@ -149,10 +156,14 @@ class _ThemeExampleState extends State<ThemeExample> {
                   padding: EdgeInsets.all(1),
                   child: Column(
                     children: [
-                      Text('Controls:',
-                          style: TextStyle(color: Color.black, bold: true)),
-                      Text('T: Toggle Theme | ESC: Return',
-                          style: TextStyle(color: Color.black)),
+                      Text(
+                        'Controls:',
+                        style: TextStyle(color: Color.black, bold: true),
+                      ),
+                      Text(
+                        'T: Toggle Theme | ESC: Return',
+                        style: TextStyle(color: Color.black),
+                      ),
                     ],
                   ),
                 ),

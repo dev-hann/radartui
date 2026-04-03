@@ -36,8 +36,8 @@ class ListView<T> extends StatefulWidget {
     this.wrapAroundNavigation = false,
     this.controller,
     this.itemExtent,
-  })  : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
-        unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
+  }) : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
+       unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
   final List<T> items;
   final Widget Function(T item) selectedBuilder;
   final Widget Function(T item) unselectedBuilder;

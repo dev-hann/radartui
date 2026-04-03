@@ -1,11 +1,7 @@
 import '../../../radartui.dart';
 
 class FormScope extends InheritedWidget {
-  const FormScope({
-    super.key,
-    required this.formState,
-    required super.child,
-  });
+  const FormScope({super.key, required this.formState, required super.child});
   final FormState formState;
 
   static FormScope? of(BuildContext context) {
@@ -80,10 +76,7 @@ class FormState extends State<Form> {
 
   @override
   Widget build(BuildContext context) {
-    return FormScope(
-      formState: this,
-      child: widget.child,
-    );
+    return FormScope(formState: this, child: widget.child);
   }
 }
 

@@ -1,17 +1,11 @@
 import '../../../radartui.dart';
 
 class MediaQueryData {
-  const MediaQueryData({
-    required this.size,
-    this.padding = EdgeInsets.zero,
-  });
+  const MediaQueryData({required this.size, this.padding = EdgeInsets.zero});
   final Size size;
   final EdgeInsets padding;
 
-  MediaQueryData copyWith({
-    Size? size,
-    EdgeInsets? padding,
-  }) {
+  MediaQueryData copyWith({Size? size, EdgeInsets? padding}) {
     return MediaQueryData(
       size: size ?? this.size,
       padding: padding ?? this.padding,
@@ -34,11 +28,7 @@ class MediaQueryData {
 }
 
 class MediaQuery extends InheritedWidget {
-  const MediaQuery({
-    super.key,
-    required this.data,
-    required super.child,
-  });
+  const MediaQuery({super.key, required this.data, required super.child});
   final MediaQueryData data;
 
   static MediaQueryData of(BuildContext context) {

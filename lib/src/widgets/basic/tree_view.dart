@@ -2,7 +2,7 @@ import '../../../radartui.dart';
 
 class TreeController extends ChangeNotifier {
   TreeController({Set<Object>? initialExpandedKeys})
-      : _expandedKeys = Set<Object>.from(initialExpandedKeys ?? <Object>{});
+    : _expandedKeys = Set<Object>.from(initialExpandedKeys ?? <Object>{});
 
   Set<Object> _expandedKeys;
 
@@ -146,7 +146,8 @@ class _TreeViewState<T> extends State<TreeView<T>>
     if (_selectedIndex < 0 || _selectedIndex >= flatNodes.length) return;
     final flat = flatNodes[_selectedIndex];
     final key = widget.nodeKey(flat.node);
-    final canExpand = widget.isExpandable?.call(flat.node) ??
+    final canExpand =
+        widget.isExpandable?.call(flat.node) ??
         widget.getChildren(flat.node).isNotEmpty;
     if (canExpand) {
       _controller.toggleExpansion(key);

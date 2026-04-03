@@ -93,7 +93,14 @@ class TextStyle {
 
   @override
   int get hashCode => Object.hash(
-      color, backgroundColor, bold, italic, underline, dim, fontFamily);
+    color,
+    backgroundColor,
+    bold,
+    italic,
+    underline,
+    dim,
+    fontFamily,
+  );
 
   TextStyle merge(TextStyle? other) {
     if (other == null) return this;

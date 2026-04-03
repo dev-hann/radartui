@@ -10,10 +10,7 @@ void main() {
       });
 
       test('creates with title', () {
-        const dialog = Dialog(
-          child: Text('Content'),
-          title: 'Dialog Title',
-        );
+        const dialog = Dialog(child: Text('Content'), title: 'Dialog Title');
         expect(dialog.title, equals('Dialog Title'));
       });
 
@@ -63,10 +60,7 @@ void main() {
 
     group('build', () {
       test('builds dialog with title and content', () {
-        const dialog = Dialog(
-          child: Text('Content'),
-          title: 'Title',
-        );
+        const dialog = Dialog(child: Text('Content'), title: 'Title');
         final widget = dialog.build(_MockBuildContext());
         expect(widget, isA<Widget>());
       });
@@ -74,9 +68,7 @@ void main() {
       test('builds dialog with actions', () {
         final dialog = Dialog(
           child: const Text('Content'),
-          actions: [
-            Button(text: 'OK', onPressed: () {}),
-          ],
+          actions: [Button(text: 'OK', onPressed: () {})],
         );
         final widget = dialog.build(_MockBuildContext());
         expect(widget, isA<Widget>());
@@ -152,9 +144,7 @@ void main() {
     });
 
     test('fullScreenRender defaults to true', () {
-      final route = PageRoute(
-        builder: (context) => const Text('Test'),
-      );
+      final route = PageRoute(builder: (context) => const Text('Test'));
       expect(route.fullScreenRender, isTrue);
     });
   });
@@ -175,5 +165,5 @@ class _MockBuildContext implements BuildContext {
 
   @override
   InheritedElement?
-      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+  findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }

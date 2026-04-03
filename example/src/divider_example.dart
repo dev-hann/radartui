@@ -14,8 +14,9 @@ class _DividerExampleState extends State<DividerExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       _handleKeyEvent(key);
     });
   }
@@ -66,20 +67,11 @@ class _DividerExampleState extends State<DividerExample> {
                 Text('Section 1: Default Divider'),
                 Divider(),
                 Text('Section 2: Thick Red Divider'),
-                Divider(
-                  thickness: 2,
-                  color: Color.red,
-                ),
+                Divider(thickness: 2, color: Color.red),
                 Text('Section 3: Custom Character Divider'),
-                Divider(
-                  character: '=',
-                  color: Color.yellow,
-                ),
+                Divider(character: '=', color: Color.yellow),
                 Text('Section 4: Double Line Divider'),
-                Divider(
-                  character: '═',
-                  color: Color.green,
-                ),
+                Divider(character: '═', color: Color.green),
               ],
             ),
           ),
@@ -102,10 +94,7 @@ class _DividerExampleState extends State<DividerExample> {
                     Text('Left Column'),
                     VerticalDivider(color: Color.white),
                     Text('Middle Column'),
-                    VerticalDivider(
-                      color: Color.red,
-                      character: '┃',
-                    ),
+                    VerticalDivider(color: Color.red, character: '┃'),
                     Text('Right Column'),
                   ],
                 ),

@@ -23,10 +23,7 @@ void main() {
       test('matches key code only when no modifiers specified', () {
         const activator = ShortcutActivator(key: KeyCode.enter);
 
-        expect(
-          activator.accepts(const KeyEvent(code: KeyCode.enter)),
-          isTrue,
-        );
+        expect(activator.accepts(const KeyEvent(code: KeyCode.enter)), isTrue);
         expect(
           activator.accepts(const KeyEvent(code: KeyCode.escape)),
           isFalse,
@@ -34,71 +31,52 @@ void main() {
       });
 
       test('matches with ctrl modifier', () {
-        const activator = ShortcutActivator(
-          key: KeyCode.char,
-          ctrl: true,
-        );
+        const activator = ShortcutActivator(key: KeyCode.char, ctrl: true);
 
         expect(
-          activator.accepts(const KeyEvent(
-            code: KeyCode.char,
-            char: 's',
-            isCtrlPressed: true,
-          )),
+          activator.accepts(
+            const KeyEvent(code: KeyCode.char, char: 's', isCtrlPressed: true),
+          ),
           isTrue,
         );
         expect(
-          activator.accepts(const KeyEvent(
-            code: KeyCode.char,
-            char: 's',
-            isCtrlPressed: false,
-          )),
+          activator.accepts(
+            const KeyEvent(code: KeyCode.char, char: 's', isCtrlPressed: false),
+          ),
           isFalse,
         );
       });
 
       test('matches with alt modifier', () {
-        const activator = ShortcutActivator(
-          key: KeyCode.char,
-          alt: true,
-        );
+        const activator = ShortcutActivator(key: KeyCode.char, alt: true);
 
         expect(
-          activator.accepts(const KeyEvent(
-            code: KeyCode.char,
-            char: 'a',
-            isAltPressed: true,
-          )),
+          activator.accepts(
+            const KeyEvent(code: KeyCode.char, char: 'a', isAltPressed: true),
+          ),
           isTrue,
         );
         expect(
-          activator.accepts(const KeyEvent(
-            code: KeyCode.char,
-            char: 'a',
-            isAltPressed: false,
-          )),
+          activator.accepts(
+            const KeyEvent(code: KeyCode.char, char: 'a', isAltPressed: false),
+          ),
           isFalse,
         );
       });
 
       test('matches with shift modifier', () {
-        const activator = ShortcutActivator(
-          key: KeyCode.arrowUp,
-          shift: true,
-        );
+        const activator = ShortcutActivator(key: KeyCode.arrowUp, shift: true);
 
         expect(
-          activator.accepts(const KeyEvent(
-            code: KeyCode.arrowUp,
-            isShiftPressed: true,
-          )),
+          activator.accepts(
+            const KeyEvent(code: KeyCode.arrowUp, isShiftPressed: true),
+          ),
           isTrue,
         );
         expect(
-          activator.accepts(const KeyEvent(
-            code: KeyCode.arrowUp,
-            isShiftPressed: false,
-          )),
+          activator.accepts(
+            const KeyEvent(code: KeyCode.arrowUp, isShiftPressed: false),
+          ),
           isFalse,
         );
       });
@@ -111,37 +89,40 @@ void main() {
         );
 
         expect(
-          activator.accepts(const KeyEvent(
-            code: KeyCode.char,
-            char: 's',
-            isCtrlPressed: true,
-            isShiftPressed: true,
-          )),
+          activator.accepts(
+            const KeyEvent(
+              code: KeyCode.char,
+              char: 's',
+              isCtrlPressed: true,
+              isShiftPressed: true,
+            ),
+          ),
           isTrue,
         );
         expect(
-          activator.accepts(const KeyEvent(
-            code: KeyCode.char,
-            char: 's',
-            isCtrlPressed: true,
-            isShiftPressed: false,
-          )),
+          activator.accepts(
+            const KeyEvent(
+              code: KeyCode.char,
+              char: 's',
+              isCtrlPressed: true,
+              isShiftPressed: false,
+            ),
+          ),
           isFalse,
         );
       });
 
       test('requires exact modifier match', () {
-        const activator = ShortcutActivator(
-          key: KeyCode.enter,
-          ctrl: true,
-        );
+        const activator = ShortcutActivator(key: KeyCode.enter, ctrl: true);
 
         expect(
-          activator.accepts(const KeyEvent(
-            code: KeyCode.enter,
-            isCtrlPressed: true,
-            isAltPressed: true,
-          )),
+          activator.accepts(
+            const KeyEvent(
+              code: KeyCode.enter,
+              isCtrlPressed: true,
+              isAltPressed: true,
+            ),
+          ),
           isTrue,
         );
       });

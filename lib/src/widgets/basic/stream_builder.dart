@@ -38,7 +38,9 @@ class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
     _snapshot = widget.initialData == null
         ? const AsyncSnapshot<Never>.nothing() as AsyncSnapshot<T>
         : AsyncSnapshot<T>.withData(
-            ConnectionState.none, widget.initialData as T);
+            ConnectionState.none,
+            widget.initialData as T,
+          );
     _subscribe();
   }
 

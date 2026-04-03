@@ -1,12 +1,7 @@
 import '../../../radartui.dart';
 
 class ShortcutActivator {
-  const ShortcutActivator({
-    required this.key,
-    this.ctrl,
-    this.alt,
-    this.shift,
-  });
+  const ShortcutActivator({required this.key, this.ctrl, this.alt, this.shift});
 
   final KeyCode key;
   final bool? ctrl;
@@ -85,10 +80,7 @@ class ActionDispatcher {
 }
 
 class _ShortcutsScope extends InheritedWidget {
-  const _ShortcutsScope({
-    required this.shortcuts,
-    required super.child,
-  });
+  const _ShortcutsScope({required this.shortcuts, required super.child});
 
   final Map<ShortcutActivator, Intent> shortcuts;
 
@@ -104,11 +96,7 @@ class _ShortcutsScope extends InheritedWidget {
 }
 
 class Shortcuts extends StatefulWidget {
-  const Shortcuts({
-    super.key,
-    required this.shortcuts,
-    required this.child,
-  });
+  const Shortcuts({super.key, required this.shortcuts, required this.child});
 
   final Map<ShortcutActivator, Intent> shortcuts;
   final Widget child;
@@ -142,18 +130,12 @@ class Shortcuts extends StatefulWidget {
 class _ShortcutsState extends State<Shortcuts> {
   @override
   Widget build(BuildContext context) {
-    return _ShortcutsScope(
-      shortcuts: widget.shortcuts,
-      child: widget.child,
-    );
+    return _ShortcutsScope(shortcuts: widget.shortcuts, child: widget.child);
   }
 }
 
 class _ActionsScope extends InheritedWidget {
-  const _ActionsScope({
-    required this.actions,
-    required super.child,
-  });
+  const _ActionsScope({required this.actions, required super.child});
 
   final Map<Type, Action> actions;
 
@@ -169,11 +151,7 @@ class _ActionsScope extends InheritedWidget {
 }
 
 class Actions extends StatefulWidget {
-  const Actions({
-    super.key,
-    required this.actions,
-    required this.child,
-  });
+  const Actions({super.key, required this.actions, required this.child});
 
   final Map<Type, Action> actions;
   final Widget child;
@@ -224,18 +202,12 @@ class Actions extends StatefulWidget {
 class _ActionsState extends State<Actions> {
   @override
   Widget build(BuildContext context) {
-    return _ActionsScope(
-      actions: widget.actions,
-      child: widget.child,
-    );
+    return _ActionsScope(actions: widget.actions, child: widget.child);
   }
 }
 
 class ShortcutActionsHandler extends StatefulWidget {
-  const ShortcutActionsHandler({
-    super.key,
-    required this.child,
-  });
+  const ShortcutActionsHandler({super.key, required this.child});
 
   final Widget child;
 

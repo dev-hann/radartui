@@ -17,8 +17,9 @@ class _TextFieldExampleState extends State<TextFieldExample> {
   void initState() {
     super.initState();
     _controller1.text = 'Initial text';
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       _handleKeyEvent(key);
     });
   }

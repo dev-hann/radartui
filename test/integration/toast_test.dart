@@ -19,10 +19,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      Toast.show(
-        descendantContext,
-        message: 'Hello Toast',
-      );
+      Toast.show(descendantContext, message: 'Hello Toast');
       await tester.pumpAndSettle();
 
       expect(tester.contains('Hello Toast'), isTrue);
@@ -72,10 +69,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      Toast.show(
-        descendantContext,
-        message: 'Should not appear',
-      );
+      Toast.show(descendantContext, message: 'Should not appear');
       await tester.pumpAndSettle();
 
       expect(tester.contains('Should not appear'), isFalse);

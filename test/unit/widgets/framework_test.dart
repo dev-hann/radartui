@@ -193,10 +193,7 @@ class _TestStatefulWidgetState extends State<_TestStatefulWidget> {
 }
 
 class _TestInheritedWidget extends InheritedWidget {
-  const _TestInheritedWidget({
-    required this.value,
-    required super.child,
-  });
+  const _TestInheritedWidget({required this.value, required super.child});
   final int value;
 
   @override

@@ -150,12 +150,13 @@ class WidgetTester {
 
   void assertBufferLines(List<String> expected) {
     final actual = lines;
-    final maxHeight =
-        actual.length > expected.length ? actual.length : expected.length;
+    final maxHeight = actual.length > expected.length
+        ? actual.length
+        : expected.length;
     final diffs = <String>[];
-    var hasDiff = false;
+    bool hasDiff = false;
 
-    for (var i = 0; i < maxHeight; i++) {
+    for (int i = 0; i < maxHeight; i++) {
       final actualLine = i < actual.length ? actual[i] : '';
       final expectedLine = i < expected.length ? expected[i] : '';
 
@@ -175,27 +176,29 @@ class WidgetTester {
   void assertBuffer(List<List<String>> expected) {
     final actual = terminal.grid;
     final diffs = <String>[];
-    var hasDiff = false;
+    bool hasDiff = false;
 
-    for (var y = 0; y < actual.length || y < expected.length; y++) {
+    for (int y = 0; y < actual.length || y < expected.length; y++) {
       final actualRow = y < actual.length ? actual[y] : <String>[];
       final expectedRow = y < expected.length ? expected[y] : <String>[];
 
-      for (var x = 0; x < actualRow.length || x < expectedRow.length; x++) {
+      for (int x = 0; x < actualRow.length || x < expectedRow.length; x++) {
         final actualCell = x < actualRow.length ? actualRow[x] : '';
         final expectedCell = x < expectedRow.length ? expectedRow[x] : '';
 
         if (actualCell != expectedCell) {
           hasDiff = true;
           diffs.add(
-              'Cell ($x, $y): Expected "$expectedCell", Actual "$actualCell"');
+            'Cell ($x, $y): Expected "$expectedCell", Actual "$actualCell"',
+          );
         }
       }
     }
 
     if (hasDiff) {
       throw AssertionError(
-          'Buffer does not match:\n${diffs.take(20).join('\n')}');
+        'Buffer does not match:\n${diffs.take(20).join('\n')}',
+      );
     }
   }
 
@@ -203,19 +206,22 @@ class WidgetTester {
     final actualLines = lines;
     if (lineIndex >= actualLines.length) {
       throw AssertionError(
-          'Line $lineIndex out of range (max: ${actualLines.length - 1})');
+        'Line $lineIndex out of range (max: ${actualLines.length - 1})',
+      );
     }
     final actual = actualLines[lineIndex];
     if (actual != expected) {
       throw AssertionError(
-          'Line $lineIndex does not match:\n  Expected: "$expected"\n  Actual:   "$actual"');
+        'Line $lineIndex does not match:\n  Expected: "$expected"\n  Actual:   "$actual"',
+      );
     }
   }
 
   void assertContains(String text) {
     if (!contains(text)) {
       throw AssertionError(
-          'Buffer does not contain "$text"\nActual output:\n${getPlainText()}');
+        'Buffer does not contain "$text"\nActual output:\n${getPlainText()}',
+      );
     }
   }
 
@@ -223,7 +229,8 @@ class WidgetTester {
     final actual = cellAt(x, y);
     if (actual != expected) {
       throw AssertionError(
-          'Cell at ($x, $y) does not match:\n  Expected: "$expected"\n  Actual:   "$actual"');
+        'Cell at ($x, $y) does not match:\n  Expected: "$expected"\n  Actual:   "$actual"',
+      );
     }
   }
 }

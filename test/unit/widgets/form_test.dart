@@ -151,8 +151,10 @@ void main() {
 
     test('FormScope provides FormState', () {
       final formState = FormState();
-      final formScope =
-          FormScope(formState: formState, child: const Text('test'));
+      final formScope = FormScope(
+        formState: formState,
+        child: const Text('test'),
+      );
       expect(formScope.formState, equals(formState));
     });
   });

@@ -5,11 +5,7 @@ void main() {
   group('Center rendering', () {
     testWidgets('Center centers child', (tester) async {
       tester.pumpWidget(
-        const SizedBox(
-          width: 10,
-          height: 5,
-          child: Center(child: Text('X')),
-        ),
+        const SizedBox(width: 10, height: 5, child: Center(child: Text('X'))),
       );
 
       await tester.pumpAndSettle();
@@ -18,9 +14,7 @@ void main() {
     });
 
     testWidgets('Center empty', (tester) async {
-      tester.pumpWidget(
-        const Center(),
-      );
+      tester.pumpWidget(const Center());
 
       await tester.pumpAndSettle();
 
@@ -34,10 +28,7 @@ void main() {
         const SizedBox(
           width: 10,
           height: 5,
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Text('TL'),
-          ),
+          child: Align(alignment: Alignment.topLeft, child: Text('TL')),
         ),
       );
 
@@ -51,10 +42,7 @@ void main() {
         const SizedBox(
           width: 10,
           height: 5,
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: Text('BR'),
-          ),
+          child: Align(alignment: Alignment.bottomRight, child: Text('BR')),
         ),
       );
 
@@ -68,10 +56,7 @@ void main() {
         const SizedBox(
           width: 10,
           height: 5,
-          child: Align(
-            alignment: Alignment.center,
-            child: Text('C'),
-          ),
+          child: Align(alignment: Alignment.center, child: Text('C')),
         ),
       );
 
@@ -83,9 +68,7 @@ void main() {
 
   group('SizedBox rendering', () {
     testWidgets('SizedBox with fixed size and child', (tester) async {
-      tester.pumpWidget(
-        const SizedBox(width: 5, height: 1, child: Text('Hi')),
-      );
+      tester.pumpWidget(const SizedBox(width: 5, height: 1, child: Text('Hi')));
 
       await tester.pumpAndSettle();
 
@@ -94,13 +77,7 @@ void main() {
 
     testWidgets('SizedBox empty shrinks to zero', (tester) async {
       tester.pumpWidget(
-        const Column(
-          children: [
-            Text('Before'),
-            SizedBox(),
-            Text('After'),
-          ],
-        ),
+        const Column(children: [Text('Before'), SizedBox(), Text('After')]),
       );
 
       await tester.pumpAndSettle();
@@ -110,12 +87,7 @@ void main() {
     });
 
     testWidgets('SizedBox with width constraint', (tester) async {
-      tester.pumpWidget(
-        const SizedBox(
-          width: 10,
-          child: Text('Wide'),
-        ),
-      );
+      tester.pumpWidget(const SizedBox(width: 10, child: Text('Wide')));
 
       await tester.pumpAndSettle();
 
@@ -125,9 +97,7 @@ void main() {
 
   group('Align interaction', () {
     testWidgets('Center can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Center(child: Text('X')),
-      );
+      tester.pumpWidget(const Center(child: Text('X')));
 
       expect(find.byType<Center>().exists, isTrue);
     });
@@ -141,9 +111,7 @@ void main() {
     });
 
     testWidgets('SizedBox can be found by type', (tester) async {
-      tester.pumpWidget(
-        const SizedBox(),
-      );
+      tester.pumpWidget(const SizedBox());
 
       expect(find.byType<SizedBox>().exists, isTrue);
     });

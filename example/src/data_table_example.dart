@@ -21,8 +21,9 @@ class _DataTableExampleState extends State<DataTableExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       }
@@ -97,19 +98,9 @@ class _DataTableExampleState extends State<DataTableExample> {
           const SizedBox(height: 1),
           DataTable(
             columns: [
-              DataColumn(
-                label: 'Name',
-                onSort: _handleSort,
-              ),
-              DataColumn(
-                label: 'Age',
-                numeric: true,
-                onSort: _handleSort,
-              ),
-              DataColumn(
-                label: 'Department',
-                onSort: _handleSort,
-              ),
+              DataColumn(label: 'Name', onSort: _handleSort),
+              DataColumn(label: 'Age', numeric: true, onSort: _handleSort),
+              DataColumn(label: 'Department', onSort: _handleSort),
             ],
             rows: _buildRows(),
             sortColumnIndex: _sortColumnIndex,

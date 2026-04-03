@@ -17,8 +17,9 @@ class _IndexedStackExampleState extends State<IndexedStackExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen(_handleKeyEvent);
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen(
+      _handleKeyEvent,
+    );
   }
 
   @override
@@ -65,10 +66,7 @@ class _IndexedStackExampleState extends State<IndexedStackExample> {
             width: 50,
             height: 10,
             color: Color.brightBlack,
-            child: IndexedStack(
-              index: _currentIndex,
-              children: _buildPages(),
-            ),
+            child: IndexedStack(index: _currentIndex, children: _buildPages()),
           ),
           const SizedBox(height: 2),
           Text(

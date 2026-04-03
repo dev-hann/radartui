@@ -1,11 +1,7 @@
 import '../../../radartui.dart';
 
 class DataColumn {
-  const DataColumn({
-    required this.label,
-    this.numeric = false,
-    this.onSort,
-  });
+  const DataColumn({required this.label, this.numeric = false, this.onSort});
 
   final String label;
   final bool numeric;
@@ -90,13 +86,17 @@ class _DataTableState extends State<DataTable> {
       _moveSelection(1);
     } else if (event.code == KeyCode.arrowLeft) {
       setState(() {
-        _focusedColumnIndex =
-            (_focusedColumnIndex - 1).clamp(0, widget.columns.length - 1);
+        _focusedColumnIndex = (_focusedColumnIndex - 1).clamp(
+          0,
+          widget.columns.length - 1,
+        );
       });
     } else if (event.code == KeyCode.arrowRight) {
       setState(() {
-        _focusedColumnIndex =
-            (_focusedColumnIndex + 1).clamp(0, widget.columns.length - 1);
+        _focusedColumnIndex = (_focusedColumnIndex + 1).clamp(
+          0,
+          widget.columns.length - 1,
+        );
       });
     } else if (event.code == KeyCode.enter) {
       _triggerSort();
@@ -108,8 +108,10 @@ class _DataTableState extends State<DataTable> {
 
   void _moveSelection(int direction) {
     setState(() {
-      _focusedRowIndex =
-          (_focusedRowIndex + direction).clamp(0, widget.rows.length - 1);
+      _focusedRowIndex = (_focusedRowIndex + direction).clamp(
+        0,
+        widget.rows.length - 1,
+      );
       _ensureVisible(_focusedRowIndex);
     });
   }
@@ -162,12 +164,7 @@ class _DataTableState extends State<DataTable> {
       visibleRows.add(_buildDataRow(i, columnWidths));
     }
 
-    return Column(
-      children: [
-        headerRow,
-        ...visibleRows,
-      ],
-    );
+    return Column(children: [headerRow, ...visibleRows]);
   }
 
   List<int> _calculateColumnWidths() {
@@ -201,7 +198,7 @@ class _DataTableState extends State<DataTable> {
     for (int i = 0; i < widget.columns.length; i++) {
       final column = widget.columns[i];
       final width = columnWidths[i];
-      var label = column.label;
+      final String label = column.label;
 
       if (widget.sortColumnIndex == i) {
         final sortIndicator = widget.sortAscending ? '▲' : '▼';
@@ -242,9 +239,13 @@ class _DataTableState extends State<DataTable> {
     final rowText = parts.join(' | ');
 
     if (isRowFocused) {
-      return Text('> $rowText',
-          style: const TextStyle(
-              color: Color.black, backgroundColor: Color.white));
+      return Text(
+        '> $rowText',
+        style: const TextStyle(
+          color: Color.black,
+          backgroundColor: Color.white,
+        ),
+      );
     } else if (row.selected) {
       return Text('* $rowText');
     } else {

@@ -14,8 +14,9 @@ class _SpacerExampleState extends State<SpacerExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       }
@@ -160,8 +161,11 @@ class _SpacerExampleState extends State<SpacerExample> {
                       child: Container(
                         color: Color.red,
                         child: Center(
-                            child: Text('1',
-                                style: TextStyle(color: Color.white))),
+                          child: Text(
+                            '1',
+                            style: TextStyle(color: Color.white),
+                          ),
+                        ),
                       ),
                     ),
                     Expanded(
@@ -169,8 +173,11 @@ class _SpacerExampleState extends State<SpacerExample> {
                       child: Container(
                         color: Color.green,
                         child: Center(
-                            child: Text('2',
-                                style: TextStyle(color: Color.white))),
+                          child: Text(
+                            '2',
+                            style: TextStyle(color: Color.white),
+                          ),
+                        ),
                       ),
                     ),
                     Expanded(
@@ -178,8 +185,11 @@ class _SpacerExampleState extends State<SpacerExample> {
                       child: Container(
                         color: Color.blue,
                         child: Center(
-                            child: Text('1',
-                                style: TextStyle(color: Color.white))),
+                          child: Text(
+                            '1',
+                            style: TextStyle(color: Color.white),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -194,12 +204,18 @@ class _SpacerExampleState extends State<SpacerExample> {
             padding: EdgeInsets.all(1),
             child: Column(
               children: [
-                Text('Difference:',
-                    style: TextStyle(color: Color.black, bold: true)),
-                Text('Spacer: Empty space between items',
-                    style: TextStyle(color: Color.black)),
-                Text('Expanded: Widget that fills available space',
-                    style: TextStyle(color: Color.black)),
+                Text(
+                  'Difference:',
+                  style: TextStyle(color: Color.black, bold: true),
+                ),
+                Text(
+                  'Spacer: Empty space between items',
+                  style: TextStyle(color: Color.black),
+                ),
+                Text(
+                  'Expanded: Widget that fills available space',
+                  style: TextStyle(color: Color.black),
+                ),
               ],
             ),
           ),

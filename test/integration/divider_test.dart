@@ -4,9 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Divider rendering', () {
     testWidgets('Divider renders horizontal line', (tester) async {
-      tester.pumpWidget(
-        const Divider(),
-      );
+      tester.pumpWidget(const Divider());
 
       await tester.pumpAndSettle();
 
@@ -14,9 +12,7 @@ void main() {
     });
 
     testWidgets('Divider with custom character', (tester) async {
-      tester.pumpWidget(
-        const Divider(character: '='),
-      );
+      tester.pumpWidget(const Divider(character: '='));
 
       await tester.pumpAndSettle();
 
@@ -24,9 +20,7 @@ void main() {
     });
 
     testWidgets('Divider with thickness', (tester) async {
-      tester.pumpWidget(
-        const Divider(thickness: 2),
-      );
+      tester.pumpWidget(const Divider(thickness: 2));
 
       await tester.pumpAndSettle();
 
@@ -37,11 +31,7 @@ void main() {
   group('VerticalDivider rendering', () {
     testWidgets('VerticalDivider renders vertical line', (tester) async {
       tester.pumpWidget(
-        const SizedBox(
-          width: 10,
-          height: 5,
-          child: VerticalDivider(),
-        ),
+        const SizedBox(width: 10, height: 5, child: VerticalDivider()),
       );
 
       await tester.pumpAndSettle();
@@ -66,20 +56,13 @@ void main() {
 
   group('Divider interaction', () {
     testWidgets('Divider can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Divider(),
-      );
+      tester.pumpWidget(const Divider());
 
       expect(find.byType<Divider>().exists, isTrue);
     });
 
     testWidgets('VerticalDivider can be found by type', (tester) async {
-      tester.pumpWidget(
-        const SizedBox(
-          height: 5,
-          child: VerticalDivider(),
-        ),
-      );
+      tester.pumpWidget(const SizedBox(height: 5, child: VerticalDivider()));
 
       expect(find.byType<VerticalDivider>().exists, isTrue);
     });

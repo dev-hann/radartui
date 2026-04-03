@@ -39,10 +39,7 @@ void main() {
     });
 
     test('Flex creates RenderFlex', () {
-      const flex = Flex(
-        direction: Axis.horizontal,
-        children: [Text('a')],
-      );
+      const flex = Flex(direction: Axis.horizontal, children: [Text('a')]);
       final renderObject = flex.createRenderObject(_MockBuildContext());
       expect(renderObject, isA<RenderFlex>());
     });
@@ -145,8 +142,10 @@ void main() {
       expanded.applyParentData(renderObject);
       expect(renderObject.parentData, isA<FlexParentData>());
       expect((renderObject.parentData as FlexParentData).flex, equals(1));
-      expect((renderObject.parentData as FlexParentData).fit,
-          equals(FlexFit.tight));
+      expect(
+        (renderObject.parentData as FlexParentData).fit,
+        equals(FlexFit.tight),
+      );
     });
   });
 
@@ -189,7 +188,9 @@ void main() {
       expect(MainAxisAlignment.values, contains(MainAxisAlignment.end));
       expect(MainAxisAlignment.values, contains(MainAxisAlignment.center));
       expect(
-          MainAxisAlignment.values, contains(MainAxisAlignment.spaceBetween));
+        MainAxisAlignment.values,
+        contains(MainAxisAlignment.spaceBetween),
+      );
       expect(MainAxisAlignment.values, contains(MainAxisAlignment.spaceAround));
       expect(MainAxisAlignment.values, contains(MainAxisAlignment.spaceEvenly));
     });
@@ -231,7 +232,7 @@ class _MockBuildContext implements BuildContext {
 
   @override
   InheritedElement?
-      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+  findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _MockRenderBox extends RenderBox {

@@ -59,8 +59,8 @@ class OutputBuffer {
   }
 
   void clear() {
-    for (var y = 0; y < terminal.height; y++) {
-      for (var x = 0; x < terminal.width; x++) {
+    for (int y = 0; y < terminal.height; y++) {
+      for (int x = 0; x < terminal.width; x++) {
         _grid[y][x] = Cell.empty;
       }
     }
@@ -69,8 +69,8 @@ class OutputBuffer {
   void clearAll() {
     terminal.clear();
 
-    for (var y = 0; y < terminal.height; y++) {
-      for (var x = 0; x < terminal.width; x++) {
+    for (int y = 0; y < terminal.height; y++) {
+      for (int x = 0; x < terminal.width; x++) {
         _grid[y][x] = Cell.empty;
         _previousGrid[y][x] = const Cell('');
       }
@@ -78,8 +78,8 @@ class OutputBuffer {
   }
 
   void smartClear() {
-    for (var y = 0; y < terminal.height; y++) {
-      for (var x = 0; x < terminal.width; x++) {
+    for (int y = 0; y < terminal.height; y++) {
+      for (int x = 0; x < terminal.width; x++) {
         _grid[y][x] = Cell.empty;
       }
     }
@@ -91,8 +91,8 @@ class OutputBuffer {
     int currentContent = 0;
     int previousContent = 0;
 
-    for (var y = 0; y < terminal.height; y++) {
-      for (var x = 0; x < terminal.width; x++) {
+    for (int y = 0; y < terminal.height; y++) {
+      for (int x = 0; x < terminal.width; x++) {
         if (_grid[y][x].char != ' ') currentContent++;
         if (_previousGrid[y][x].char != ' ') previousContent++;
       }
@@ -152,8 +152,8 @@ class OutputBuffer {
     terminal.hideCursor();
     TextStyle? currentStyle;
 
-    for (var y = 0; y < terminal.height; y++) {
-      for (var x = 0; x < terminal.width; x++) {
+    for (int y = 0; y < terminal.height; y++) {
+      for (int x = 0; x < terminal.width; x++) {
         if (_grid[y][x] != _previousGrid[y][x]) {
           terminal.setCursorPosition(x, y);
 

@@ -125,13 +125,13 @@ class _RadioRenderWidget extends RenderObjectWidget {
 
   @override
   RenderRadio createRenderObject(BuildContext context) => RenderRadio(
-        selected: selected,
-        focused: focused,
-        enabled: enabled,
-        activeColor: activeColor,
-        checkColor: checkColor,
-        onTap: onTap,
-      );
+    selected: selected,
+    focused: focused,
+    enabled: enabled,
+    activeColor: activeColor,
+    checkColor: checkColor,
+    onTap: onTap,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -178,8 +178,9 @@ class RenderRadio extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     final backgroundColor = _getBackgroundColor();
     final foregroundColor = _getForegroundColor();
-    final borderColor =
-        focused ? activeColor : (enabled ? Color.white : Color.brightBlack);
+    final borderColor = focused
+        ? activeColor
+        : (enabled ? Color.white : Color.brightBlack);
 
     // Draw radio background
     for (int x = 0; x < 3; x++) {

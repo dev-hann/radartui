@@ -77,8 +77,9 @@ void main() {
           text: 'Hi',
           enabled: true,
           focused: false,
-          style:
-              const ButtonStyle(padding: EdgeInsets.symmetric(horizontal: 2)),
+          style: const ButtonStyle(
+            padding: EdgeInsets.symmetric(horizontal: 2),
+          ),
           onTap: null,
         );
         renderButton.layout(const BoxConstraints());

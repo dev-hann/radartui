@@ -6,9 +6,7 @@ void main() {
     testWidgets('TextField renders typed text', (tester) async {
       final controller = TextEditingController();
 
-      tester.pumpWidget(
-        TextField(controller: controller),
-      );
+      tester.pumpWidget(TextField(controller: controller));
 
       tester.typeText('world');
       await tester.pumpAndSettle();
@@ -19,9 +17,7 @@ void main() {
     testWidgets('TextField accepts text input', (tester) async {
       final controller = TextEditingController();
 
-      tester.pumpWidget(
-        TextField(controller: controller),
-      );
+      tester.pumpWidget(TextField(controller: controller));
 
       tester.typeText('hello');
       await tester.pumpAndSettle();
@@ -32,9 +28,7 @@ void main() {
     testWidgets('TextField handles backspace', (tester) async {
       final controller = TextEditingController();
 
-      tester.pumpWidget(
-        TextField(controller: controller),
-      );
+      tester.pumpWidget(TextField(controller: controller));
 
       tester.typeText('hello');
       tester.sendBackspace();
@@ -46,9 +40,7 @@ void main() {
     testWidgets('TextField handles cursor movement', (tester) async {
       final controller = TextEditingController();
 
-      tester.pumpWidget(
-        TextField(controller: controller),
-      );
+      tester.pumpWidget(TextField(controller: controller));
 
       tester.typeText('hello');
       tester.sendArrowLeft();
@@ -62,9 +54,7 @@ void main() {
     testWidgets('TextField handles Home and End keys', (tester) async {
       final controller = TextEditingController();
 
-      tester.pumpWidget(
-        TextField(controller: controller),
-      );
+      tester.pumpWidget(TextField(controller: controller));
 
       tester.typeText('hello');
       tester.sendHome();
@@ -83,9 +73,7 @@ void main() {
     testWidgets('TextField handles delete key', (tester) async {
       final controller = TextEditingController();
 
-      tester.pumpWidget(
-        TextField(controller: controller),
-      );
+      tester.pumpWidget(TextField(controller: controller));
 
       tester.typeText('hello');
       tester.sendHome();
@@ -134,12 +122,7 @@ void main() {
     testWidgets('TextField respects maxLength', (tester) async {
       final controller = TextEditingController();
 
-      tester.pumpWidget(
-        TextField(
-          controller: controller,
-          maxLength: 5,
-        ),
-      );
+      tester.pumpWidget(TextField(controller: controller, maxLength: 5));
 
       tester.typeText('hello world');
       await tester.pumpAndSettle();
@@ -150,9 +133,7 @@ void main() {
     testWidgets('TextField can be found by type', (tester) async {
       final controller = TextEditingController();
 
-      tester.pumpWidget(
-        TextField(controller: controller),
-      );
+      tester.pumpWidget(TextField(controller: controller));
 
       expect(find.byType<TextField>().exists, isTrue);
     });

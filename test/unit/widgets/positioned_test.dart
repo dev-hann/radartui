@@ -22,9 +22,7 @@ void main() {
     });
 
     test('Positioned.fill creates with zero offsets', () {
-      const positioned = Positioned.fill(
-        child: Text('test'),
-      );
+      const positioned = Positioned.fill(child: Text('test'));
       expect(positioned.left, equals(0));
       expect(positioned.top, equals(0));
       expect(positioned.right, equals(0));
@@ -34,11 +32,7 @@ void main() {
     });
 
     test('Positioned creates with partial parameters', () {
-      const positioned = Positioned(
-        left: 10,
-        top: 5,
-        child: Text('test'),
-      );
+      const positioned = Positioned(left: 10, top: 5, child: Text('test'));
       expect(positioned.left, equals(10));
       expect(positioned.top, equals(5));
       expect(positioned.right, isNull);
@@ -48,26 +42,17 @@ void main() {
     });
 
     test('Positioned child is accessible', () {
-      const positioned = Positioned(
-        left: 10,
-        child: Text('test'),
-      );
+      const positioned = Positioned(left: 10, child: Text('test'));
       expect(positioned.child, isA<Text>());
     });
 
     test('Positioned is a ParentDataWidget', () {
-      const positioned = Positioned(
-        child: Text('test'),
-      );
+      const positioned = Positioned(child: Text('test'));
       expect(positioned, isA<ParentDataWidget>());
     });
 
     test('Positioned.applyParentData sets StackParentData', () {
-      const positioned = Positioned(
-        left: 10,
-        top: 5,
-        child: Text('test'),
-      );
+      const positioned = Positioned(left: 10, top: 5, child: Text('test'));
       final renderObject = _TestRenderBox();
       renderObject.parentData = StackParentData();
 

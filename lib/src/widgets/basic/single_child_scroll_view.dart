@@ -106,8 +106,10 @@ class _SingleChildScrollViewState extends State<SingleChildScrollView>
     }
 
     if (delta != 0) {
-      _scrollController.offset =
-          (_scrollController.offset + delta).clamp(0, maxScroll);
+      _scrollController.offset = (_scrollController.offset + delta).clamp(
+        0,
+        maxScroll,
+      );
     }
   }
 
@@ -115,10 +117,7 @@ class _SingleChildScrollViewState extends State<SingleChildScrollView>
   Widget build(BuildContext context) {
     Widget effectiveChild = widget.child;
     if (widget.padding != null) {
-      effectiveChild = Padding(
-        padding: widget.padding!,
-        child: effectiveChild,
-      );
+      effectiveChild = Padding(padding: widget.padding!, child: effectiveChild);
     }
 
     return _ScrollViewport(
@@ -211,8 +210,9 @@ class _RenderScrollViewport extends RenderBox
     final int childExtent = scrollDirection == Axis.vertical
         ? child!.size!.height
         : child!.size!.width;
-    final int viewportExtent =
-        scrollDirection == Axis.vertical ? size!.height : size!.width;
+    final int viewportExtent = scrollDirection == Axis.vertical
+        ? size!.height
+        : size!.width;
     final int maxOffset = (childExtent - viewportExtent).clamp(0, 999999);
     final int effectiveOffset = scrollOffset.clamp(0, maxOffset);
 

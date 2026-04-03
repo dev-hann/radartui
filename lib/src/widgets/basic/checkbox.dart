@@ -116,13 +116,13 @@ class _CheckboxRenderWidget extends RenderObjectWidget {
 
   @override
   RenderCheckbox createRenderObject(BuildContext context) => RenderCheckbox(
-        value: value,
-        tristate: tristate,
-        focused: focused,
-        enabled: enabled,
-        activeColor: activeColor,
-        checkColor: checkColor,
-      );
+    value: value,
+    tristate: tristate,
+    focused: focused,
+    enabled: enabled,
+    activeColor: activeColor,
+    checkColor: checkColor,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -169,8 +169,9 @@ class RenderCheckbox extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     final backgroundColor = _getBackgroundColor();
     final foregroundColor = _getForegroundColor();
-    final borderColor =
-        focused ? activeColor : (enabled ? Color.white : Color.brightBlack);
+    final borderColor = focused
+        ? activeColor
+        : (enabled ? Color.white : Color.brightBlack);
 
     // Draw checkbox background
     for (int x = 0; x < 3; x++) {

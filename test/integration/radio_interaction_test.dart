@@ -5,17 +5,12 @@ void main() {
   group('Radio rendering', () {
     testWidgets('Radio renders unselected state', (tester) async {
       tester.pumpWidget(
-        const Radio<String>(
-          value: 'option1',
-          groupValue: null,
-        ),
+        const Radio<String>(value: 'option1', groupValue: null),
       );
 
       await tester.pumpAndSettle();
 
-      tester.assertBufferLines([
-        '( )',
-      ]);
+      tester.assertBufferLines(['( )']);
     });
 
     testWidgets('Radio renders selected state', (tester) async {
@@ -29,9 +24,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertBufferLines([
-        '(●)',
-      ]);
+      tester.assertBufferLines(['(●)']);
     });
   });
 
@@ -113,12 +106,7 @@ void main() {
     });
 
     testWidgets('Radio can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Radio<String>(
-          value: 'test',
-          groupValue: null,
-        ),
-      );
+      tester.pumpWidget(const Radio<String>(value: 'test', groupValue: null));
 
       expect(find.byType<Radio<String>>().exists, isTrue);
     });

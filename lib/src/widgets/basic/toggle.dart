@@ -72,13 +72,13 @@ class _ToggleRenderWidget extends RenderObjectWidget {
 
   @override
   RenderToggle createRenderObject(BuildContext context) => RenderToggle(
-        value: value,
-        focused: focused,
-        enabled: enabled,
-        activeColor: activeColor,
-        inactiveColor: inactiveColor,
-        label: label,
-      );
+    value: value,
+    focused: focused,
+    enabled: enabled,
+    activeColor: activeColor,
+    inactiveColor: inactiveColor,
+    label: label,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {

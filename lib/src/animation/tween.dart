@@ -92,8 +92,9 @@ class _TweenAnimation<T> extends Animation<T> {
   }
 
   void _notifyStatusListeners(AnimationStatus status) {
-    for (final listener
-        in List<AnimationStatusListener>.from(_statusListeners)) {
+    for (final listener in List<AnimationStatusListener>.from(
+      _statusListeners,
+    )) {
       listener(status);
     }
   }

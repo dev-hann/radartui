@@ -115,7 +115,8 @@ class TextEditingController extends ChangeNotifier {
     if (hasSelection) {
       deleteSelection();
     }
-    _text = _text.substring(0, _cursorPosition) +
+    _text =
+        _text.substring(0, _cursorPosition) +
         text +
         _text.substring(_cursorPosition);
     _cursorPosition += text.length;
@@ -128,7 +129,8 @@ class TextEditingController extends ChangeNotifier {
       return;
     }
     if (_cursorPosition > 0) {
-      _text = _text.substring(0, _cursorPosition - 1) +
+      _text =
+          _text.substring(0, _cursorPosition - 1) +
           _text.substring(_cursorPosition);
       _cursorPosition--;
       notifyListeners();
@@ -141,7 +143,8 @@ class TextEditingController extends ChangeNotifier {
       return;
     }
     if (_cursorPosition < _text.length) {
-      _text = _text.substring(0, _cursorPosition) +
+      _text =
+          _text.substring(0, _cursorPosition) +
           _text.substring(_cursorPosition + 1);
       notifyListeners();
     }
@@ -386,12 +389,12 @@ class _TextField extends RenderObjectWidget {
 
   @override
   RenderTextField createRenderObject(BuildContext context) => RenderTextField(
-        text: text,
-        cursorPosition: cursorPosition,
-        placeholder: placeholder,
-        style: style,
-        hasFocus: hasFocus,
-      );
+    text: text,
+    cursorPosition: cursorPosition,
+    placeholder: placeholder,
+    style: style,
+    hasFocus: hasFocus,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -420,18 +423,22 @@ class RenderTextField extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    final displayText =
-        text.isEmpty && placeholder != null ? placeholder! : text;
-    final desiredWidth =
-        (displayText.length + 1).clamp(1, Constraints.infinity);
+    final displayText = text.isEmpty && placeholder != null
+        ? placeholder!
+        : text;
+    final desiredWidth = (displayText.length + 1).clamp(
+      1,
+      Constraints.infinity,
+    );
     final boxConstraints = constraints.asBoxConstraints;
     size = boxConstraints.constrain(Size(desiredWidth, 1));
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final displayText =
-        text.isEmpty && placeholder != null ? placeholder! : text;
+    final displayText = text.isEmpty && placeholder != null
+        ? placeholder!
+        : text;
 
     // Enhanced styling for better TUI appearance
     final baseStyle = style ?? const TextStyle(color: Color.white);
@@ -442,8 +449,9 @@ class RenderTextField extends RenderBox {
       italic: true,
       underline: false,
     );
-    final displayStyle =
-        text.isEmpty && placeholder != null ? placeholderStyle : baseStyle;
+    final displayStyle = text.isEmpty && placeholder != null
+        ? placeholderStyle
+        : baseStyle;
 
     // Draw border if focused
     if (hasFocus) {
@@ -468,8 +476,12 @@ class RenderTextField extends RenderBox {
 
     for (int i = visibleStart; i < visibleEnd; i++) {
       final screenX = offset.x + i - scrollOffset;
-      context.buffer
-          .writeStyled(screenX, offset.y, displayText[i], displayStyle);
+      context.buffer.writeStyled(
+        screenX,
+        offset.y,
+        displayText[i],
+        displayStyle,
+      );
     }
 
     // Render enhanced cursor
@@ -487,7 +499,11 @@ class RenderTextField extends RenderBox {
             bold: true,
           );
           context.buffer.writeStyled(
-              cursorScreenX, offset.y, text[cursorPosition], cursorStyle);
+            cursorScreenX,
+            offset.y,
+            text[cursorPosition],
+            cursorStyle,
+          );
         } else {
           // Cursor at end of text - show block cursor
           const cursorStyle = TextStyle(
@@ -537,15 +553,23 @@ class RenderTextField extends RenderBox {
       context.buffer.writeStyled(offset.x - 1, offset.y - 1, '┌', borderStyle);
     }
     if (offset.x + width < bufferWidth && offset.y > 0) {
-      context.buffer
-          .writeStyled(offset.x + width, offset.y - 1, '┐', borderStyle);
+      context.buffer.writeStyled(
+        offset.x + width,
+        offset.y - 1,
+        '┐',
+        borderStyle,
+      );
     }
     if (offset.x > 0 && offset.y + 1 < bufferHeight) {
       context.buffer.writeStyled(offset.x - 1, offset.y + 1, '└', borderStyle);
     }
     if (offset.x + width < bufferWidth && offset.y + 1 < bufferHeight) {
-      context.buffer
-          .writeStyled(offset.x + width, offset.y + 1, '┘', borderStyle);
+      context.buffer.writeStyled(
+        offset.x + width,
+        offset.y + 1,
+        '┘',
+        borderStyle,
+      );
     }
   }
 }

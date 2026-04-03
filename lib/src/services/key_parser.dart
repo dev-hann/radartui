@@ -57,8 +57,9 @@ class KeyEvent {
     if (isShiftPressed) modifiers.add('Shift');
     if (isMetaPressed) modifiers.add('Meta');
 
-    final modifierString =
-        modifiers.isNotEmpty ? '${modifiers.join('+')}+' : '';
+    final modifierString = modifiers.isNotEmpty
+        ? '${modifiers.join('+')}+'
+        : '';
 
     if (code == KeyCode.char) {
       return 'KeyEvent($modifierString${char ?? 'null'})';
@@ -223,12 +224,12 @@ class KeyParser {
   }
 
   static KeyCode? _arrowKeyCode(int byte) => switch (byte) {
-        65 => KeyCode.arrowUp,
-        66 => KeyCode.arrowDown,
-        67 => KeyCode.arrowRight,
-        68 => KeyCode.arrowLeft,
-        _ => null,
-      };
+    65 => KeyCode.arrowUp,
+    66 => KeyCode.arrowDown,
+    67 => KeyCode.arrowRight,
+    68 => KeyCode.arrowLeft,
+    _ => null,
+  };
 
   static bool _startsWith(List<int> data, List<int> prefix, int minLen) {
     if (data.length < minLen) return false;

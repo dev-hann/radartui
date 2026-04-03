@@ -1,10 +1,7 @@
 import '../../../radartui.dart';
 
 class IndexedStack extends MultiChildRenderObjectWidget {
-  const IndexedStack({
-    this.index = 0,
-    required super.children,
-  });
+  const IndexedStack({this.index = 0, required super.children});
 
   final int index;
 

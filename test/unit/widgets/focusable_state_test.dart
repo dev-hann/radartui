@@ -17,7 +17,9 @@ void main() {
       tester.pumpWidget(widget);
 
       expect(
-          tester.state<_TestFocusableState>()!.focusNode, same(externalNode));
+        tester.state<_TestFocusableState>()!.focusNode,
+        same(externalNode),
+      );
     });
 
     testWidgets('hasFocus is true for first registered node', (tester) async {
@@ -59,11 +61,13 @@ void main() {
 
     testWidgets('onKeyEvent receives key events when focused', (tester) async {
       KeyEvent? receivedEvent;
-      tester.pumpWidget(_TestFocusableWidget(
-        onKeyEvent: (event) {
-          receivedEvent = event;
-        },
-      ));
+      tester.pumpWidget(
+        _TestFocusableWidget(
+          onKeyEvent: (event) {
+            receivedEvent = event;
+          },
+        ),
+      );
       await tester.pumpAndSettle();
 
       tester.sendKeyEvent(const KeyEvent(code: KeyCode.enter));

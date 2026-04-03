@@ -5,13 +5,7 @@ void main() {
   group('Wrap rendering', () {
     testWidgets('Wrap lays out children horizontally', (tester) async {
       tester.pumpWidget(
-        const Wrap(
-          children: [
-            Text('A'),
-            Text('B'),
-            Text('C'),
-          ],
-        ),
+        const Wrap(children: [Text('A'), Text('B'), Text('C')]),
       );
 
       await tester.pumpAndSettle();
@@ -23,13 +17,7 @@ void main() {
 
     testWidgets('Wrap with spacing', (tester) async {
       tester.pumpWidget(
-        const Wrap(
-          spacing: 2,
-          children: [
-            Text('X'),
-            Text('Y'),
-          ],
-        ),
+        const Wrap(spacing: 2, children: [Text('X'), Text('Y')]),
       );
 
       await tester.pumpAndSettle();
@@ -40,13 +28,7 @@ void main() {
 
     testWidgets('Wrap with runSpacing', (tester) async {
       tester.pumpWidget(
-        const Wrap(
-          runSpacing: 1,
-          children: [
-            Text('1'),
-            Text('2'),
-          ],
-        ),
+        const Wrap(runSpacing: 1, children: [Text('1'), Text('2')]),
       );
 
       await tester.pumpAndSettle();
@@ -56,9 +38,7 @@ void main() {
     });
 
     testWidgets('Wrap empty', (tester) async {
-      tester.pumpWidget(
-        const Wrap(children: []),
-      );
+      tester.pumpWidget(const Wrap(children: []));
 
       await tester.pumpAndSettle();
 
@@ -68,9 +48,7 @@ void main() {
 
   group('Wrap interaction', () {
     testWidgets('Wrap can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Wrap(children: [Text('Test')]),
-      );
+      tester.pumpWidget(const Wrap(children: [Text('Test')]));
 
       expect(find.byType<Wrap>().exists, isTrue);
     });

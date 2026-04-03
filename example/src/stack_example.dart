@@ -14,8 +14,9 @@ class _StackExampleState extends State<StackExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       _handleKeyEvent(key);
     });
   }
@@ -119,11 +120,7 @@ class _StackExampleState extends State<StackExample> {
                 SizedBox(height: 1),
                 Stack(
                   children: [
-                    Container(
-                      width: 30,
-                      height: 4,
-                      color: Color.magenta,
-                    ),
+                    Container(width: 30, height: 4, color: Color.magenta),
                     Text(
                       'Overlaid Text on Background',
                       style: TextStyle(color: Color.white, bold: true),

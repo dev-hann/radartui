@@ -14,8 +14,9 @@ class _FlexExampleState extends State<FlexExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       _handleKeyEvent(key);
     });
   }
@@ -44,56 +45,52 @@ class _FlexExampleState extends State<FlexExample> {
             style: TextStyle(color: Color.cyan, bold: true),
           ),
           SizedBox(height: 2),
-          Text('Row with MainAxisAlignment.start:',
-              style: TextStyle(color: Color.yellow)),
+          Text(
+            'Row with MainAxisAlignment.start:',
+            style: TextStyle(color: Color.yellow),
+          ),
           SizedBox(height: 1),
           Container(
             height: 1,
             color: Color.brightBlack,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text('[A]'),
-                Text('[B]'),
-                Text('[C]'),
-              ],
+              children: [Text('[A]'), Text('[B]'), Text('[C]')],
             ),
           ),
           SizedBox(height: 2),
-          Text('Row with MainAxisAlignment.center:',
-              style: TextStyle(color: Color.yellow)),
+          Text(
+            'Row with MainAxisAlignment.center:',
+            style: TextStyle(color: Color.yellow),
+          ),
           SizedBox(height: 1),
           Container(
             height: 1,
             color: Color.brightBlack,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('[A]'),
-                Text('[B]'),
-                Text('[C]'),
-              ],
+              children: [Text('[A]'), Text('[B]'), Text('[C]')],
             ),
           ),
           SizedBox(height: 2),
-          Text('Row with MainAxisAlignment.spaceBetween:',
-              style: TextStyle(color: Color.yellow)),
+          Text(
+            'Row with MainAxisAlignment.spaceBetween:',
+            style: TextStyle(color: Color.yellow),
+          ),
           SizedBox(height: 1),
           Container(
             height: 1,
             color: Color.brightBlack,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('[A]'),
-                Text('[B]'),
-                Text('[C]'),
-              ],
+              children: [Text('[A]'), Text('[B]'), Text('[C]')],
             ),
           ),
           SizedBox(height: 2),
-          Text('Expanded widget (fills remaining space):',
-              style: TextStyle(color: Color.yellow)),
+          Text(
+            'Expanded widget (fills remaining space):',
+            style: TextStyle(color: Color.yellow),
+          ),
           SizedBox(height: 1),
           Container(
             height: 1,
@@ -102,16 +99,20 @@ class _FlexExampleState extends State<FlexExample> {
               children: [
                 Text('[Fixed]'),
                 Expanded(
-                  child: Text('[EXPANDED - fills remaining space]',
-                      style: TextStyle(color: Color.green)),
+                  child: Text(
+                    '[EXPANDED - fills remaining space]',
+                    style: TextStyle(color: Color.green),
+                  ),
                 ),
                 Text('[End]'),
               ],
             ),
           ),
           SizedBox(height: 2),
-          Text('Multiple Expanded with flex ratios (1:2:1):',
-              style: TextStyle(color: Color.yellow)),
+          Text(
+            'Multiple Expanded with flex ratios (1:2:1):',
+            style: TextStyle(color: Color.yellow),
+          ),
           SizedBox(height: 1),
           Container(
             height: 1,
@@ -124,8 +125,10 @@ class _FlexExampleState extends State<FlexExample> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: Text('[2 - larger]',
-                      style: TextStyle(color: Color.green)),
+                  child: Text(
+                    '[2 - larger]',
+                    style: TextStyle(color: Color.green),
+                  ),
                 ),
                 Expanded(
                   flex: 1,
@@ -135,8 +138,10 @@ class _FlexExampleState extends State<FlexExample> {
             ),
           ),
           SizedBox(height: 2),
-          Text('Column with CrossAxisAlignment:',
-              style: TextStyle(color: Color.yellow)),
+          Text(
+            'Column with CrossAxisAlignment:',
+            style: TextStyle(color: Color.yellow),
+          ),
           SizedBox(height: 1),
           Container(
             height: 5,
@@ -146,26 +151,17 @@ class _FlexExampleState extends State<FlexExample> {
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Start'),
-                    Text('Aligned'),
-                  ],
+                  children: [Text('Start'), Text('Aligned')],
                 ),
                 SizedBox(width: 4),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text('Center'),
-                    Text('Aligned'),
-                  ],
+                  children: [Text('Center'), Text('Aligned')],
                 ),
                 SizedBox(width: 4),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text('End'),
-                    Text('Aligned'),
-                  ],
+                  children: [Text('End'), Text('Aligned')],
                 ),
               ],
             ),

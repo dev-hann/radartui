@@ -88,8 +88,9 @@ class RenderText extends RenderBox {
       }
     }
 
-    final effectiveMaxHeight =
-        boxConstraints.maxHeight > 0 ? boxConstraints.maxHeight : 1;
+    final effectiveMaxHeight = boxConstraints.maxHeight > 0
+        ? boxConstraints.maxHeight
+        : 1;
     final width = computedWidth.clamp(
       boxConstraints.minWidth,
       boxConstraints.maxWidth,

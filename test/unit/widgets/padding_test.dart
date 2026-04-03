@@ -4,10 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Padding', () {
     test('Padding creates with required padding and child', () {
-      const padding = Padding(
-        padding: EdgeInsets.all(4),
-        child: Text('a'),
-      );
+      const padding = Padding(padding: EdgeInsets.all(4), child: Text('a'));
       expect(padding.padding, equals(const EdgeInsets.all(4)));
       expect(padding.child, isA<Text>());
     });
@@ -35,19 +32,13 @@ void main() {
     });
 
     test('Padding creates RenderPadding', () {
-      const padding = Padding(
-        padding: EdgeInsets.all(4),
-        child: Text('a'),
-      );
+      const padding = Padding(padding: EdgeInsets.all(4), child: Text('a'));
       final renderObject = padding.createRenderObject(_MockBuildContext());
       expect(renderObject, isA<RenderPadding>());
     });
 
     test('Padding updateRenderObject sets padding', () {
-      const padding = Padding(
-        padding: EdgeInsets.all(4),
-        child: Text('a'),
-      );
+      const padding = Padding(padding: EdgeInsets.all(4), child: Text('a'));
       final renderObject = padding.createRenderObject(_MockBuildContext());
       expect(renderObject.padding, equals(const EdgeInsets.all(4)));
     });
@@ -73,8 +64,9 @@ void main() {
         minHeight: 0,
         maxHeight: 50,
       );
-      final childConstraints =
-          renderPadding.getConstraintsForChild(constraints);
+      final childConstraints = renderPadding.getConstraintsForChild(
+        constraints,
+      );
       expect(childConstraints.maxWidth, equals(92));
       expect(childConstraints.maxHeight, equals(42));
     });
@@ -146,8 +138,9 @@ void main() {
         minHeight: 0,
         maxHeight: 50,
       );
-      final childConstraints =
-          renderPadding.getConstraintsForChild(constraints);
+      final childConstraints = renderPadding.getConstraintsForChild(
+        constraints,
+      );
       expect(childConstraints.maxWidth, equals(100));
       expect(childConstraints.maxHeight, equals(50));
     });
@@ -175,5 +168,5 @@ class _MockBuildContext implements BuildContext {
 
   @override
   InheritedElement?
-      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+  findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
