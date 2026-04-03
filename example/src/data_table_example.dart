@@ -16,9 +16,6 @@ class _DataTableExampleState extends State<DataTableExample> {
     _Person('Alice', 30, 'Engineering'),
     _Person('Bob', 25, 'Marketing'),
     _Person('Charlie', 35, 'Engineering'),
-    _Person('Diana', 28, 'Sales'),
-    _Person('Eve', 32, 'Marketing'),
-    _Person('Frank', 40, 'Engineering'),
   ];
 
   @override
@@ -86,48 +83,38 @@ class _DataTableExampleState extends State<DataTableExample> {
     return Padding(
       padding: const EdgeInsets.all(1),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Container(
-            width: 70,
-            height: 3,
-            color: Color.blue,
-            child: Center(
-              child: Text(
-                'DataTable Example',
-                style: TextStyle(color: Color.white, bold: true),
-              ),
-            ),
+          const Text(
+            'DataTable Example',
+            style: TextStyle(color: Color.brightCyan, bold: true),
           ),
           const SizedBox(height: 1),
-          Container(
-            width: 70,
-            padding: const EdgeInsets.all(1),
-            child: DataTable(
-              columns: [
-                DataColumn(
-                  label: 'Name',
-                  onSort: _handleSort,
-                ),
-                DataColumn(
-                  label: 'Age',
-                  numeric: true,
-                  onSort: _handleSort,
-                ),
-                DataColumn(
-                  label: 'Department',
-                  onSort: _handleSort,
-                ),
-              ],
-              rows: _buildRows(),
-              sortColumnIndex: _sortColumnIndex,
-              sortAscending: _sortAscending,
-              showCheckboxColumn: true,
-            ),
-          ),
-          const SizedBox(height: 2),
           const Text(
-            'Arrow keys: navigate | Enter: sort | Space: select | ESC: back',
+            'Arrow keys: navigate | Enter: sort | Space: select',
             style: TextStyle(color: Color.yellow, italic: true),
+          ),
+          const SizedBox(height: 1),
+          DataTable(
+            columns: [
+              DataColumn(
+                label: 'Name',
+                onSort: _handleSort,
+              ),
+              DataColumn(
+                label: 'Age',
+                numeric: true,
+                onSort: _handleSort,
+              ),
+              DataColumn(
+                label: 'Department',
+                onSort: _handleSort,
+              ),
+            ],
+            rows: _buildRows(),
+            sortColumnIndex: _sortColumnIndex,
+            sortAscending: _sortAscending,
+            showCheckboxColumn: true,
           ),
         ],
       ),
