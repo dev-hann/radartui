@@ -13,12 +13,12 @@ class Positioned extends ParentDataWidget<StackParentData> {
   });
 
   const Positioned.fill({super.key, required super.child})
-    : left = 0,
-      top = 0,
-      right = 0,
-      bottom = 0,
-      width = null,
-      height = null;
+      : left = 0,
+        top = 0,
+        right = 0,
+        bottom = 0,
+        width = null,
+        height = null;
   final int? left;
   final int? top;
   final int? right;
@@ -29,35 +29,38 @@ class Positioned extends ParentDataWidget<StackParentData> {
   @override
   void applyParentData(RenderObject renderObject) {
     final parentData = renderObject.parentData;
-    if (parentData is StackParentData) {
-      bool needsLayout = false;
-      if (parentData.left != left) {
-        parentData.left = left;
-        needsLayout = true;
-      }
-      if (parentData.top != top) {
-        parentData.top = top;
-        needsLayout = true;
-      }
-      if (parentData.right != right) {
-        parentData.right = right;
-        needsLayout = true;
-      }
-      if (parentData.bottom != bottom) {
-        parentData.bottom = bottom;
-        needsLayout = true;
-      }
-      if (parentData.width != width) {
-        parentData.width = width;
-        needsLayout = true;
-      }
-      if (parentData.height != height) {
-        parentData.height = height;
-        needsLayout = true;
-      }
-      if (needsLayout) {
-        renderObject.markNeedsLayout();
-      }
+    if (parentData is! StackParentData) return;
+
+    bool needsLayout = false;
+    needsLayout =
+        _updateField(parentData.left, left, (v) => parentData.left = v) ||
+            needsLayout;
+    needsLayout =
+        _updateField(parentData.top, top, (v) => parentData.top = v) ||
+            needsLayout;
+    needsLayout =
+        _updateField(parentData.right, right, (v) => parentData.right = v) ||
+            needsLayout;
+    needsLayout =
+        _updateField(parentData.bottom, bottom, (v) => parentData.bottom = v) ||
+            needsLayout;
+    needsLayout =
+        _updateField(parentData.width, width, (v) => parentData.width = v) ||
+            needsLayout;
+    needsLayout =
+        _updateField(parentData.height, height, (v) => parentData.height = v) ||
+            needsLayout;
+
+    if (needsLayout) {
+      renderObject.markNeedsLayout();
     }
+  }
+
+  bool _updateField(int? current, int? newValue, void Function(int?) setter) {
+    if (current != newValue) {
+      setter(newValue);
+      return true;
+    }
+    return false;
   }
 }
