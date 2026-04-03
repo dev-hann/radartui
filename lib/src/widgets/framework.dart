@@ -154,7 +154,7 @@ abstract class Element {
   }
 
   InheritedElement?
-  findAncestorElementOfExactType<T extends InheritedWidget>() {
+      findAncestorElementOfExactType<T extends InheritedWidget>() {
     Element? current = _parent;
     while (current != null) {
       if (current.widget is T && current is InheritedElement) {
@@ -456,9 +456,8 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
   @override
   void mount(Element? parent) {
     super.mount(parent);
-    final renderObject =
-        this.renderObject
-            as ContainerRenderObjectMixin<RenderObject, ParentData>;
+    final renderObject = this.renderObject
+        as ContainerRenderObjectMixin<RenderObject, ParentData>;
     _children = (widget as MultiChildRenderObjectWidget).children.map((w) {
       final child = w.createElement();
       child.mount(this);
@@ -484,24 +483,7 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
 
     for (int i = 0; i < newWidgetList.length; i++) {
       final newWidgetChild = newWidgetList[i];
-      Element? child;
-
-      for (int j = 0; j < oldChildren.length; j++) {
-        final oldChild = oldChildren[j];
-        if (oldChild != null &&
-            Widget.canUpdate(oldChild.widget, newWidgetChild)) {
-          child = oldChild;
-          child.update(newWidgetChild);
-          oldChildren[j] = null;
-          break;
-        }
-      }
-
-      if (child == null) {
-        child = newWidgetChild.createElement();
-        child.mount(this);
-      }
-
+      final child = _findOrCreateChild(newWidgetChild, oldChildren);
       newChildren.add(child);
 
       if (child.renderObject != null) {
@@ -510,13 +492,35 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
       }
     }
 
+    _unmountOldChildren(oldChildren);
+    _children = newChildren;
+  }
+
+  Element _findOrCreateChild(
+    Widget newWidgetChild,
+    List<Element?> oldChildren,
+  ) {
+    for (int j = 0; j < oldChildren.length; j++) {
+      final oldChild = oldChildren[j];
+      if (oldChild != null &&
+          Widget.canUpdate(oldChild.widget, newWidgetChild)) {
+        oldChild.update(newWidgetChild);
+        oldChildren[j] = null;
+        return oldChild;
+      }
+    }
+
+    final child = newWidgetChild.createElement();
+    child.mount(this);
+    return child;
+  }
+
+  void _unmountOldChildren(List<Element?> oldChildren) {
     for (final oldChild in oldChildren) {
       if (oldChild != null) {
         oldChild.unmount();
       }
     }
-
-    _children = newChildren;
   }
 
   @override
