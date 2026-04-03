@@ -50,7 +50,7 @@ void main() {
       expect(tester.contains('Bye Toast'), isTrue);
 
       await Future<void>.delayed(const Duration(milliseconds: 100));
-      tester.pump();
+      await tester.pump();
       await tester.pumpAndSettle();
 
       expect(tester.contains('Bye Toast'), isFalse);
