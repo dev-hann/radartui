@@ -81,43 +81,25 @@ void main() {
 
   group('Theme', () {
     test('Theme creates with data and child', () {
-      final theme = Theme(
-        data: ThemeData.dark,
-        child: const Text('test'),
-      );
+      final theme = Theme(data: ThemeData.dark, child: const Text('test'));
       expect(theme.data, equals(ThemeData.dark));
       expect(theme.child, isA<Text>());
     });
 
     test('Theme updateShouldNotify returns true when data changes', () {
-      final oldWidget = Theme(
-        data: ThemeData.dark,
-        child: const Text('a'),
-      );
-      final newWidget = Theme(
-        data: ThemeData.light,
-        child: const Text('b'),
-      );
+      final oldWidget = Theme(data: ThemeData.dark, child: const Text('a'));
+      final newWidget = Theme(data: ThemeData.light, child: const Text('b'));
       expect(newWidget.updateShouldNotify(oldWidget), isTrue);
     });
 
     test('Theme updateShouldNotify returns false when data is same', () {
-      final oldWidget = Theme(
-        data: ThemeData.dark,
-        child: const Text('a'),
-      );
-      final newWidget = Theme(
-        data: ThemeData.dark,
-        child: const Text('b'),
-      );
+      final oldWidget = Theme(data: ThemeData.dark, child: const Text('a'));
+      final newWidget = Theme(data: ThemeData.dark, child: const Text('b'));
       expect(newWidget.updateShouldNotify(oldWidget), isFalse);
     });
 
     test('Theme is an InheritedWidget', () {
-      final theme = Theme(
-        data: ThemeData.dark,
-        child: const Text('test'),
-      );
+      final theme = Theme(data: ThemeData.dark, child: const Text('test'));
       expect(theme, isA<InheritedWidget>());
     });
   });

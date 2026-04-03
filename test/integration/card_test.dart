@@ -4,9 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Card rendering', () {
     testWidgets('Card renders with border', (tester) async {
-      tester.pumpWidget(
-        const Card(child: Text('Hi')),
-      );
+      tester.pumpWidget(const Card(child: Text('Hi')));
 
       await tester.pumpAndSettle();
 
@@ -18,9 +16,7 @@ void main() {
     });
 
     testWidgets('Card renders empty', (tester) async {
-      tester.pumpWidget(
-        const Card(),
-      );
+      tester.pumpWidget(const Card());
 
       await tester.pumpAndSettle();
 
@@ -30,10 +26,7 @@ void main() {
 
     testWidgets('Card with padding', (tester) async {
       tester.pumpWidget(
-        const Card(
-          padding: EdgeInsets.all(2),
-          child: Text('X'),
-        ),
+        const Card(padding: EdgeInsets.all(2), child: Text('X')),
       );
 
       await tester.pumpAndSettle();
@@ -44,9 +37,7 @@ void main() {
 
   group('Card interaction', () {
     testWidgets('Card can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Card(child: Text('Content')),
-      );
+      tester.pumpWidget(const Card(child: Text('Content')));
 
       expect(find.byType<Card>().exists, isTrue);
     });

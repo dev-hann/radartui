@@ -327,10 +327,7 @@ void main() {
       });
 
       test('formats special key with modifiers', () {
-        const event = KeyEvent(
-          code: KeyCode.arrowUp,
-          isShiftPressed: true,
-        );
+        const event = KeyEvent(code: KeyCode.arrowUp, isShiftPressed: true);
         expect(event.toString(), equals('KeyEvent(Shift+arrowUp)'));
       });
 

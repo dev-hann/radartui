@@ -10,8 +10,8 @@ class DefaultTextStyle extends InheritedWidget {
   final TextStyle style;
 
   static TextStyle of(BuildContext context) {
-    final widget =
-        context.dependOnInheritedWidgetOfExactType<DefaultTextStyle>();
+    final widget = context
+        .dependOnInheritedWidgetOfExactType<DefaultTextStyle>();
     if (widget != null) {
       return widget.style;
     }
@@ -19,8 +19,8 @@ class DefaultTextStyle extends InheritedWidget {
   }
 
   static TextStyle maybeOf(BuildContext context) {
-    final widget =
-        context.dependOnInheritedWidgetOfExactType<DefaultTextStyle>();
+    final widget = context
+        .dependOnInheritedWidgetOfExactType<DefaultTextStyle>();
     return widget?.style ?? const TextStyle();
   }
 

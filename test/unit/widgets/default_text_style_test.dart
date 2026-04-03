@@ -137,11 +137,7 @@ void main() {
         italic: false,
         underline: false,
       );
-      const other = TextStyle(
-        color: Color.blue,
-        bold: true,
-        italic: true,
-      );
+      const other = TextStyle(color: Color.blue, bold: true, italic: true);
       final merged = original.merge(other);
       expect(merged.color, equals(Color.blue));
       expect(merged.backgroundColor, equals(Color.green));

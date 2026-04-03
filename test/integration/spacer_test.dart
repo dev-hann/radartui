@@ -4,15 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Spacer rendering', () {
     testWidgets('Spacer takes remaining space in Row', (tester) async {
-      tester.pumpWidget(
-        const Row(
-          children: [
-            Text('A'),
-            Spacer(),
-            Text('B'),
-          ],
-        ),
-      );
+      tester.pumpWidget(const Row(children: [Text('A'), Spacer(), Text('B')]));
 
       await tester.pumpAndSettle();
 
@@ -22,13 +14,7 @@ void main() {
 
     testWidgets('Spacer with custom flex', (tester) async {
       tester.pumpWidget(
-        const Row(
-          children: [
-            Text('X'),
-            Spacer(flex: 2),
-            Text('Y'),
-          ],
-        ),
+        const Row(children: [Text('X'), Spacer(flex: 2), Text('Y')]),
       );
 
       await tester.pumpAndSettle();
@@ -40,13 +26,7 @@ void main() {
     testWidgets('Multiple Spacers', (tester) async {
       tester.pumpWidget(
         const Row(
-          children: [
-            Text('1'),
-            Spacer(),
-            Text('2'),
-            Spacer(),
-            Text('3'),
-          ],
+          children: [Text('1'), Spacer(), Text('2'), Spacer(), Text('3')],
         ),
       );
 
@@ -110,17 +90,13 @@ void main() {
 
   group('Spacer interaction', () {
     testWidgets('Spacer can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Row(children: [Spacer()]),
-      );
+      tester.pumpWidget(const Row(children: [Spacer()]));
 
       expect(find.byType<Spacer>().exists, isTrue);
     });
 
     testWidgets('Expanded can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Row(children: [Expanded(child: Text('X'))]),
-      );
+      tester.pumpWidget(const Row(children: [Expanded(child: Text('X'))]));
 
       expect(find.byType<Expanded>().exists, isTrue);
     });

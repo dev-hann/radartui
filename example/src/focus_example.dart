@@ -18,8 +18,9 @@ class _FocusExampleState extends State<FocusExample> {
   void initState() {
     super.initState();
 
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       }

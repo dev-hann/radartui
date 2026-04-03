@@ -4,7 +4,7 @@ enum MainAxisAlignment {
   center,
   spaceBetween,
   spaceAround,
-  spaceEvenly
+  spaceEvenly,
 }
 
 enum CrossAxisAlignment { start, end, center, stretch }

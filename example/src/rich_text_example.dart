@@ -179,7 +179,8 @@ class _RichTextExampleState extends State<RichTextExample> {
                   width: 40,
                   child: RichText(
                     text: TextSpan(
-                      text: 'This is a very long text that will be truncated '
+                      text:
+                          'This is a very long text that will be truncated '
                           'when maxLines is set and overflow is ellipsis.',
                       style: TextStyle(color: Color.white),
                     ),

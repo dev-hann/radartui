@@ -6,9 +6,6 @@ class Spacer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: flex,
-      child: const SizedBox.shrink(),
-    );
+    return Expanded(flex: flex, child: const SizedBox.shrink());
   }
 }

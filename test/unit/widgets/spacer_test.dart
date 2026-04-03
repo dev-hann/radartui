@@ -51,5 +51,5 @@ class BuildContextMock implements BuildContext {
 
   @override
   InheritedElement?
-      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+  findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }

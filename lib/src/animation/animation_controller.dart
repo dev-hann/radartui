@@ -60,8 +60,8 @@ class AnimationController extends Animation<double> {
     _status = _value <= lowerBound
         ? AnimationStatus.dismissed
         : _value >= upperBound
-            ? AnimationStatus.completed
-            : _status;
+        ? AnimationStatus.completed
+        : _status;
     _startTime = null;
     _listeners.notifyStatusListeners(_status);
   }

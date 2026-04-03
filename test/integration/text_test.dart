@@ -4,21 +4,15 @@ import 'package:test/test.dart';
 void main() {
   group('Text rendering', () {
     testWidgets('Text renders single line', (tester) async {
-      tester.pumpWidget(
-        const Text('Hello'),
-      );
+      tester.pumpWidget(const Text('Hello'));
 
       await tester.pumpAndSettle();
 
-      tester.assertBufferLines([
-        'Hello',
-      ]);
+      tester.assertBufferLines(['Hello']);
     });
 
     testWidgets('Text renders empty string', (tester) async {
-      tester.pumpWidget(
-        const Text(''),
-      );
+      tester.pumpWidget(const Text(''));
 
       await tester.pumpAndSettle();
 
@@ -26,9 +20,7 @@ void main() {
     });
 
     testWidgets('Text with newline splits into lines', (tester) async {
-      tester.pumpWidget(
-        const Text('Line1\nLine2'),
-      );
+      tester.pumpWidget(const Text('Line1\nLine2'));
 
       await tester.pumpAndSettle();
 
@@ -37,9 +29,7 @@ void main() {
     });
 
     testWidgets('Text with softWrap wraps long text', (tester) async {
-      tester.pumpWidget(
-        const Text('Hello World'),
-      );
+      tester.pumpWidget(const Text('Hello World'));
 
       await tester.pumpAndSettle();
 
@@ -49,17 +39,13 @@ void main() {
 
   group('Text interaction', () {
     testWidgets('Text can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Text('Test'),
-      );
+      tester.pumpWidget(const Text('Test'));
 
       expect(find.byType<Text>().exists, isTrue);
     });
 
     testWidgets('Text can be found by content', (tester) async {
-      tester.pumpWidget(
-        const Text('UniqueText'),
-      );
+      tester.pumpWidget(const Text('UniqueText'));
 
       await tester.pumpAndSettle();
 

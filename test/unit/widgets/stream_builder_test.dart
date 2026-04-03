@@ -69,10 +69,7 @@ void main() {
           return const Text('loading');
         },
       );
-      expect(
-        streamBuilder.createState(),
-        isA<State<StreamBuilder<String>>>(),
-      );
+      expect(streamBuilder.createState(), isA<State<StreamBuilder<String>>>());
     });
   });
 }

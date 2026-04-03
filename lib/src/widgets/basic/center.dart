@@ -7,9 +7,6 @@ class Center extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.center,
-      child: child,
-    );
+    return Align(alignment: Alignment.center, child: child);
   }
 }

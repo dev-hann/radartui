@@ -4,24 +4,18 @@ import 'package:test/test.dart';
 void main() {
   group('LayoutBuilder', () {
     test('is a StatelessWidget', () {
-      const layoutBuilder = LayoutBuilder(
-        builder: _returnEmptyContainer,
-      );
+      const layoutBuilder = LayoutBuilder(builder: _returnEmptyContainer);
       expect(layoutBuilder, isA<StatelessWidget>());
     });
 
     test('build returns _LayoutBuilderWidget', () {
-      const layoutBuilder = LayoutBuilder(
-        builder: _returnEmptyContainer,
-      );
+      const layoutBuilder = LayoutBuilder(builder: _returnEmptyContainer);
       final result = layoutBuilder.build(_MockBuildContext());
       expect(result, isA<RenderObjectWidget>());
     });
 
     test('stores builder callback', () {
-      const layoutBuilder = LayoutBuilder(
-        builder: _returnEmptyContainer,
-      );
+      const layoutBuilder = LayoutBuilder(builder: _returnEmptyContainer);
       expect(layoutBuilder.builder, isNotNull);
     });
   });
@@ -36,9 +30,7 @@ void main() {
         },
         buildContext: _MockBuildContext(),
       );
-      renderObject.performLayout(
-        BoxConstraints.tight(const Size(20, 20)),
-      );
+      renderObject.performLayout(BoxConstraints.tight(const Size(20, 20)));
       expect(received, isNotNull);
       expect(received!.isTight, isTrue);
       expect(received!.minWidth, equals(20));
@@ -114,10 +106,7 @@ void main() {
           maxHeight: 80,
         ),
       );
-      expect(
-        (lastReturned as SizedBox).width,
-        equals(60),
-      );
+      expect((lastReturned as SizedBox).width, equals(60));
 
       renderObject.performLayout(
         const BoxConstraints(
@@ -127,10 +116,7 @@ void main() {
           maxHeight: 40,
         ),
       );
-      expect(
-        (lastReturned as SizedBox).width,
-        equals(30),
-      );
+      expect((lastReturned as SizedBox).width, equals(30));
     });
 
     test('sizes to child when child has render object', () {
@@ -212,7 +198,7 @@ class _MockBuildContext implements BuildContext {
 
   @override
   InheritedElement?
-      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+  findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _NoRenderWidget extends Widget {

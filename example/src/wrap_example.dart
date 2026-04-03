@@ -14,8 +14,9 @@ class _WrapExampleState extends State<WrapExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       }
@@ -133,14 +134,22 @@ class _WrapExampleState extends State<WrapExample> {
             padding: EdgeInsets.all(1),
             child: Column(
               children: [
-                Text('Properties:',
-                    style: TextStyle(color: Color.black, bold: true)),
-                Text('spacing: horizontal gap between items',
-                    style: TextStyle(color: Color.black)),
-                Text('runSpacing: vertical gap between rows',
-                    style: TextStyle(color: Color.black)),
-                Text('alignment: start/end/center/spaceBetween',
-                    style: TextStyle(color: Color.black)),
+                Text(
+                  'Properties:',
+                  style: TextStyle(color: Color.black, bold: true),
+                ),
+                Text(
+                  'spacing: horizontal gap between items',
+                  style: TextStyle(color: Color.black),
+                ),
+                Text(
+                  'runSpacing: vertical gap between rows',
+                  style: TextStyle(color: Color.black),
+                ),
+                Text(
+                  'alignment: start/end/center/spaceBetween',
+                  style: TextStyle(color: Color.black),
+                ),
               ],
             ),
           ),

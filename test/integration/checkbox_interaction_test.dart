@@ -4,27 +4,19 @@ import 'package:test/test.dart';
 void main() {
   group('Checkbox rendering', () {
     testWidgets('Checkbox renders unchecked state', (tester) async {
-      tester.pumpWidget(
-        const Checkbox(value: false),
-      );
+      tester.pumpWidget(const Checkbox(value: false));
 
       await tester.pumpAndSettle();
 
-      tester.assertBufferLines([
-        '[ ]',
-      ]);
+      tester.assertBufferLines(['[ ]']);
     });
 
     testWidgets('Checkbox renders checked state', (tester) async {
-      tester.pumpWidget(
-        Checkbox(value: true, onChanged: (_) {}),
-      );
+      tester.pumpWidget(Checkbox(value: true, onChanged: (_) {}));
 
       await tester.pumpAndSettle();
 
-      tester.assertBufferLines([
-        '[✓]',
-      ]);
+      tester.assertBufferLines(['[✓]']);
     });
   });
 
@@ -33,10 +25,7 @@ void main() {
       var value = false;
 
       tester.pumpWidget(
-        Checkbox(
-          value: value,
-          onChanged: (newValue) => value = newValue!,
-        ),
+        Checkbox(value: value, onChanged: (newValue) => value = newValue!),
       );
 
       tester.sendSpace();
@@ -49,10 +38,7 @@ void main() {
       var value = true;
 
       tester.pumpWidget(
-        Checkbox(
-          value: value,
-          onChanged: (newValue) => value = newValue!,
-        ),
+        Checkbox(value: value, onChanged: (newValue) => value = newValue!),
       );
 
       tester.sendSpace();
@@ -65,10 +51,7 @@ void main() {
       var value = false;
 
       tester.pumpWidget(
-        Checkbox(
-          value: value,
-          onChanged: (newValue) => value = newValue!,
-        ),
+        Checkbox(value: value, onChanged: (newValue) => value = newValue!),
       );
 
       tester.sendEnter();
@@ -80,12 +63,7 @@ void main() {
     testWidgets('Disabled checkbox does not respond to input', (tester) async {
       const value = false;
 
-      tester.pumpWidget(
-        const Checkbox(
-          value: value,
-          onChanged: null,
-        ),
-      );
+      tester.pumpWidget(const Checkbox(value: value, onChanged: null));
 
       tester.sendSpace();
       await tester.pumpAndSettle();
@@ -94,9 +72,7 @@ void main() {
     });
 
     testWidgets('Checkbox can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Checkbox(value: false),
-      );
+      tester.pumpWidget(const Checkbox(value: false));
 
       expect(find.byType<Checkbox>().exists, isTrue);
     });
@@ -108,14 +84,8 @@ void main() {
       tester.pumpWidget(
         Row(
           children: [
-            Checkbox(
-              value: value1,
-              onChanged: (v) => value1 = v!,
-            ),
-            Checkbox(
-              value: value2,
-              onChanged: (v) => value2 = v!,
-            ),
+            Checkbox(value: value1, onChanged: (v) => value1 = v!),
+            Checkbox(value: value2, onChanged: (v) => value2 = v!),
           ],
         ),
       );

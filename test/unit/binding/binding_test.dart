@@ -15,10 +15,7 @@ void main() {
 
     test('checkInstance throws when not initialized', () {
       TestBinding? nil;
-      expect(
-        () => BindingBase.checkInstance(nil),
-        throwsStateError,
-      );
+      expect(() => BindingBase.checkInstance(nil), throwsStateError);
     });
   });
 

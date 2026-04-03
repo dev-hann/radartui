@@ -20,8 +20,8 @@ class GridView<T> extends StatefulWidget {
     this.initialSelectedIndex = 0,
     this.onItemSelected,
     this.wrapAroundNavigation = false,
-  })  : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
-        unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
+  }) : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
+       unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
 
   final List<T> items;
   final Widget Function(T item) selectedBuilder;
@@ -45,8 +45,10 @@ class _GridViewState<T> extends State<GridView<T>> {
   @override
   void initState() {
     super.initState();
-    selectedIndex =
-        widget.initialSelectedIndex.clamp(0, widget.items.length - 1);
+    selectedIndex = widget.initialSelectedIndex.clamp(
+      0,
+      widget.items.length - 1,
+    );
     FocusManager.instance.registerNode(_focusNode);
     _focusNode.onKeyEvent = _handleKeyEvent;
     _focusNode.addListener(_onFocusChanged);
@@ -141,16 +143,13 @@ class _GridRenderWidget extends MultiChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) => RenderGridView(
-        crossAxisCount: crossAxisCount,
-        mainAxisSpacing: mainAxisSpacing,
-        crossAxisSpacing: crossAxisSpacing,
-      );
+    crossAxisCount: crossAxisCount,
+    mainAxisSpacing: mainAxisSpacing,
+    crossAxisSpacing: crossAxisSpacing,
+  );
 
   @override
-  void updateRenderObject(
-    BuildContext context,
-    RenderObject renderObject,
-  ) {
+  void updateRenderObject(BuildContext context, RenderObject renderObject) {
     final renderGrid = renderObject as RenderGridView;
     renderGrid.crossAxisCount = crossAxisCount;
     renderGrid.mainAxisSpacing = mainAxisSpacing;

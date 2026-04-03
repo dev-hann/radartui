@@ -52,10 +52,7 @@ class Dialog extends StatelessWidget {
     final effectivePadding = padding ?? const EdgeInsets.all(2);
     dialogContent = Padding(padding: effectivePadding, child: dialogContent);
 
-    dialogContent = Container(
-      color: backgroundColor,
-      child: dialogContent,
-    );
+    dialogContent = Container(color: backgroundColor, child: dialogContent);
 
     return dialogContent;
   }

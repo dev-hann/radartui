@@ -20,13 +20,13 @@ class Container extends SingleChildRenderObjectWidget {
 
   @override
   RenderContainer createRenderObject(BuildContext context) => RenderContainer(
-        color: color,
-        width: width,
-        height: height,
-        padding: padding,
-        margin: margin,
-        border: border,
-      );
+    color: color,
+    width: width,
+    height: height,
+    padding: padding,
+    margin: margin,
+    border: border,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -49,8 +49,8 @@ class RenderContainer extends RenderBox
     this.padding,
     this.margin,
     this.border,
-  })  : _width = width,
-        _height = height;
+  }) : _width = width,
+       _height = height;
   Color? color;
   int? _width;
   int? _height;
@@ -90,11 +90,13 @@ class RenderContainer extends RenderBox
 
     if (child != null) {
       final childConstraint = BoxConstraints(
-        maxWidth: containerW -
+        maxWidth:
+            containerW -
             totalPadding.left -
             totalPadding.right -
             _borderHorizontal,
-        maxHeight: containerH -
+        maxHeight:
+            containerH -
             totalPadding.top -
             totalPadding.bottom -
             _borderVertical,
@@ -102,13 +104,15 @@ class RenderContainer extends RenderBox
       child!.layout(childConstraint);
 
       if (_width == null) {
-        containerW = child!.size!.width +
+        containerW =
+            child!.size!.width +
             totalPadding.left +
             totalPadding.right +
             _borderHorizontal;
       }
       if (_height == null) {
-        containerH = child!.size!.height +
+        containerH =
+            child!.size!.height +
             totalPadding.top +
             totalPadding.bottom +
             _borderVertical;

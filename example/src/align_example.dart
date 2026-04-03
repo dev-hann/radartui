@@ -14,8 +14,9 @@ class _AlignExampleState extends State<AlignExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       _handleKeyEvent(key);
     });
   }
@@ -41,11 +42,8 @@ class _AlignExampleState extends State<AlignExample> {
         children: [
           Column(
             children: [
-              Align(
-                alignment: Alignment.topCenter,
-                child: Text('Top Center'),
-              ),
-              Text('Bottom Center')
+              Align(alignment: Alignment.topCenter, child: Text('Top Center')),
+              Text('Bottom Center'),
             ],
           ),
           Container(
@@ -92,10 +90,7 @@ class _AlignExampleState extends State<AlignExample> {
                         alignment: Alignment.centerLeft,
                         child: Text('CenterLeft'),
                       ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text('Center'),
-                      ),
+                      Align(alignment: Alignment.center, child: Text('Center')),
                       Align(
                         alignment: Alignment.centerRight,
                         child: Text('CenterRight'),

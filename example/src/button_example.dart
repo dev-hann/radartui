@@ -16,8 +16,9 @@ class _ButtonExampleState extends State<ButtonExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       _handleKeyEvent(key);
     });
   }

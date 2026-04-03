@@ -12,15 +12,13 @@ class Positioned extends ParentDataWidget<StackParentData> {
     required super.child,
   });
 
-  const Positioned.fill({
-    super.key,
-    required super.child,
-  })  : left = 0,
-        top = 0,
-        right = 0,
-        bottom = 0,
-        width = null,
-        height = null;
+  const Positioned.fill({super.key, required super.child})
+    : left = 0,
+      top = 0,
+      right = 0,
+      bottom = 0,
+      width = null,
+      height = null;
   final int? left;
   final int? top;
   final int? right;

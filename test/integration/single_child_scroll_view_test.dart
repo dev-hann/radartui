@@ -5,9 +5,7 @@ void main() {
   group('SingleChildScrollView', () {
     testWidgets('renders child content within viewport', (tester) async {
       tester.pumpWidget(
-        const SingleChildScrollView(
-          child: Text('Hello World'),
-        ),
+        const SingleChildScrollView(child: Text('Hello World')),
       );
 
       await tester.pumpAndSettle();
@@ -22,10 +20,7 @@ void main() {
 
       tester.pumpWidget(
         SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
-          ),
+          child: Column(mainAxisSize: MainAxisSize.min, children: children),
         ),
       );
 
@@ -50,10 +45,7 @@ void main() {
 
       tester.pumpWidget(
         SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
-          ),
+          child: Column(mainAxisSize: MainAxisSize.min, children: children),
         ),
       );
 
@@ -79,10 +71,7 @@ void main() {
 
       tester.pumpWidget(
         SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
-          ),
+          child: Column(mainAxisSize: MainAxisSize.min, children: children),
         ),
       );
 
@@ -107,10 +96,7 @@ void main() {
 
       tester.pumpWidget(
         SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
-          ),
+          child: Column(mainAxisSize: MainAxisSize.min, children: children),
         ),
       );
 
@@ -131,11 +117,7 @@ void main() {
         const SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('LineA'),
-              Text('LineB'),
-              Text('LineC'),
-            ],
+            children: [Text('LineA'), Text('LineB'), Text('LineC')],
           ),
         ),
       );
@@ -183,10 +165,7 @@ void main() {
       tester.pumpWidget(
         SingleChildScrollView(
           controller: controller,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
-          ),
+          child: Column(mainAxisSize: MainAxisSize.min, children: children),
         ),
       );
 
@@ -215,10 +194,7 @@ void main() {
 
       tester.pumpWidget(
         SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
-          ),
+          child: Column(mainAxisSize: MainAxisSize.min, children: children),
         ),
       );
 
@@ -241,10 +217,7 @@ void main() {
 
       tester.pumpWidget(
         SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
-          ),
+          child: Column(mainAxisSize: MainAxisSize.min, children: children),
         ),
       );
 
@@ -262,21 +235,13 @@ void main() {
     });
 
     testWidgets('renders empty child without error', (tester) async {
-      tester.pumpWidget(
-        const SingleChildScrollView(
-          child: SizedBox(),
-        ),
-      );
+      tester.pumpWidget(const SingleChildScrollView(child: SizedBox()));
 
       await tester.pumpAndSettle();
     });
 
     testWidgets('can be found by type', (tester) async {
-      tester.pumpWidget(
-        const SingleChildScrollView(
-          child: Text('test'),
-        ),
-      );
+      tester.pumpWidget(const SingleChildScrollView(child: Text('test')));
 
       await tester.pumpAndSettle();
 
@@ -287,11 +252,7 @@ void main() {
       tester.pumpWidget(
         const SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: SizedBox(
-            width: 150,
-            height: 1,
-            child: Text('ABCDEFGHIJ'),
-          ),
+          child: SizedBox(width: 150, height: 1, child: Text('ABCDEFGHIJ')),
         ),
       );
 

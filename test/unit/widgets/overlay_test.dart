@@ -4,9 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('OverlayEntry', () {
     test('creates with builder and opaque defaults to false', () {
-      final entry = OverlayEntry(
-        builder: (context) => const Text('test'),
-      );
+      final entry = OverlayEntry(builder: (context) => const Text('test'));
       expect(entry.opaque, isFalse);
     });
 
@@ -19,9 +17,7 @@ void main() {
     });
 
     test('remove does nothing when not in overlay', () {
-      final entry = OverlayEntry(
-        builder: (context) => const Text('test'),
-      );
+      final entry = OverlayEntry(builder: (context) => const Text('test'));
       entry.remove();
     });
   });
@@ -43,9 +39,7 @@ void main() {
     test('OverlayState insert adds entry', () {
       const overlay = Overlay(child: Text('child'));
       final state = overlay.createElement().state as OverlayState;
-      final entry = OverlayEntry(
-        builder: (context) => const Text('overlay'),
-      );
+      final entry = OverlayEntry(builder: (context) => const Text('overlay'));
       state.insert(entry);
       expect(state.entries.length, equals(1));
     });
@@ -54,18 +48,12 @@ void main() {
       const overlay = Overlay(child: Text('child'));
       final state = overlay.createElement().state as OverlayState;
 
-      final entry1 = OverlayEntry(
-        builder: (context) => const Text('first'),
-      );
-      final entry2 = OverlayEntry(
-        builder: (context) => const Text('second'),
-      );
+      final entry1 = OverlayEntry(builder: (context) => const Text('first'));
+      final entry2 = OverlayEntry(builder: (context) => const Text('second'));
       state.insert(entry1);
       state.insert(entry2);
 
-      final entry3 = OverlayEntry(
-        builder: (context) => const Text('below'),
-      );
+      final entry3 = OverlayEntry(builder: (context) => const Text('below'));
       state.insert(entry3, below: entry2);
 
       expect(state.entries.length, equals(3));
@@ -78,18 +66,12 @@ void main() {
       const overlay = Overlay(child: Text('child'));
       final state = overlay.createElement().state as OverlayState;
 
-      final entry1 = OverlayEntry(
-        builder: (context) => const Text('first'),
-      );
-      final entry2 = OverlayEntry(
-        builder: (context) => const Text('second'),
-      );
+      final entry1 = OverlayEntry(builder: (context) => const Text('first'));
+      final entry2 = OverlayEntry(builder: (context) => const Text('second'));
       state.insert(entry1);
       state.insert(entry2);
 
-      final entry3 = OverlayEntry(
-        builder: (context) => const Text('above'),
-      );
+      final entry3 = OverlayEntry(builder: (context) => const Text('above'));
       state.insert(entry3, above: entry1);
 
       expect(state.entries.length, equals(3));
@@ -102,9 +84,7 @@ void main() {
       const overlay = Overlay(child: Text('child'));
       final state = overlay.createElement().state as OverlayState;
 
-      final entry = OverlayEntry(
-        builder: (context) => const Text('test'),
-      );
+      final entry = OverlayEntry(builder: (context) => const Text('test'));
       state.insert(entry);
       expect(state.entries.length, equals(1));
 
@@ -116,9 +96,7 @@ void main() {
       const overlay = Overlay(child: Text('child'));
       final state = overlay.createElement().state as OverlayState;
 
-      final entry = OverlayEntry(
-        builder: (context) => const Text('test'),
-      );
+      final entry = OverlayEntry(builder: (context) => const Text('test'));
       state.insert(entry);
       entry.remove();
 

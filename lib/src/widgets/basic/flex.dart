@@ -16,11 +16,11 @@ class Flex extends MultiChildRenderObjectWidget {
 
   @override
   RenderFlex createRenderObject(BuildContext context) => RenderFlex(
-        direction: direction,
-        mainAxisAlignment: mainAxisAlignment,
-        crossAxisAlignment: crossAxisAlignment,
-        mainAxisSize: mainAxisSize,
-      );
+    direction: direction,
+    mainAxisAlignment: mainAxisAlignment,
+    crossAxisAlignment: crossAxisAlignment,
+    mainAxisSize: mainAxisSize,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -68,10 +68,12 @@ class RenderFlex extends RenderBox
       }
     }
 
-    final maxMainAxisExtent =
-        isHorizontal ? boxConstraints.maxWidth : boxConstraints.maxHeight;
-    final crossAxisExtent =
-        isHorizontal ? boxConstraints.maxHeight : boxConstraints.maxWidth;
+    final maxMainAxisExtent = isHorizontal
+        ? boxConstraints.maxWidth
+        : boxConstraints.maxHeight;
+    final crossAxisExtent = isHorizontal
+        ? boxConstraints.maxHeight
+        : boxConstraints.maxWidth;
 
     final nonFlexChildren = <RenderBox>[];
     for (final child in children) {
@@ -86,8 +88,9 @@ class RenderFlex extends RenderBox
       child.layout(innerConstraints);
       final childExtent = isHorizontal ? child.size!.width : child.size!.height;
       nonFlexExtent += childExtent;
-      final childCrossExtent =
-          isHorizontal ? child.size!.height : child.size!.width;
+      final childCrossExtent = isHorizontal
+          ? child.size!.height
+          : child.size!.width;
       if (childCrossExtent > maxCrossAxisExtent) {
         maxCrossAxisExtent = childCrossExtent;
       }
@@ -102,13 +105,18 @@ class RenderFlex extends RenderBox
       if (flex > 0) {
         final maxChildExtent = spacePerFlex * flex;
         final innerConstraints = _getConstraintsForFlexChild(
-            boxConstraints, maxChildExtent, _getFit(child));
+          boxConstraints,
+          maxChildExtent,
+          _getFit(child),
+        );
         child.layout(innerConstraints);
-        final childExtent =
-            isHorizontal ? child.size!.width : child.size!.height;
+        final childExtent = isHorizontal
+            ? child.size!.width
+            : child.size!.height;
         allocatedFlexSpace += childExtent;
-        final childCrossExtent =
-            isHorizontal ? child.size!.height : child.size!.width;
+        final childCrossExtent = isHorizontal
+            ? child.size!.height
+            : child.size!.width;
         if (childCrossExtent > maxCrossAxisExtent) {
           maxCrossAxisExtent = childCrossExtent;
         }
@@ -123,15 +131,21 @@ class RenderFlex extends RenderBox
 
     final effectiveCrossAxisExtent = crossAxisExtent < 0 ? 0 : crossAxisExtent;
     final actualSize = isHorizontal
-        ? Size(totalMainAxisExtent,
-            maxCrossAxisExtent.clamp(0, effectiveCrossAxisExtent))
-        : Size(maxCrossAxisExtent.clamp(0, effectiveCrossAxisExtent),
-            totalMainAxisExtent);
+        ? Size(
+            totalMainAxisExtent,
+            maxCrossAxisExtent.clamp(0, effectiveCrossAxisExtent),
+          )
+        : Size(
+            maxCrossAxisExtent.clamp(0, effectiveCrossAxisExtent),
+            totalMainAxisExtent,
+          );
 
-    final actualCrossAxisExtent =
-        isHorizontal ? actualSize.height : actualSize.width;
-    final actualMainAxisExtent =
-        isHorizontal ? actualSize.width : actualSize.height;
+    final actualCrossAxisExtent = isHorizontal
+        ? actualSize.height
+        : actualSize.width;
+    final actualMainAxisExtent = isHorizontal
+        ? actualSize.width
+        : actualSize.height;
 
     int leadingSpace = 0;
     int betweenSpace = 0;
@@ -169,10 +183,12 @@ class RenderFlex extends RenderBox
     int mainAxisPosition = leadingSpace;
     for (final child in children) {
       final childParentData = child.parentData as FlexParentData;
-      final childMainExtent =
-          isHorizontal ? child.size!.width : child.size!.height;
-      final childCrossExtent =
-          isHorizontal ? child.size!.height : child.size!.width;
+      final childMainExtent = isHorizontal
+          ? child.size!.width
+          : child.size!.height;
+      final childCrossExtent = isHorizontal
+          ? child.size!.height
+          : child.size!.width;
 
       int crossAxisPosition;
       switch (crossAxisAlignment) {
@@ -231,11 +247,16 @@ class RenderFlex extends RenderBox
   }
 
   BoxConstraints _getConstraintsForFlexChild(
-      BoxConstraints constraints, int maxExtent, FlexFit fit) {
+    BoxConstraints constraints,
+    int maxExtent,
+    FlexFit fit,
+  ) {
     if (direction == Axis.horizontal) {
       if (fit == FlexFit.tight) {
         return BoxConstraints.tightFor(
-            width: maxExtent, height: constraints.maxHeight);
+          width: maxExtent,
+          height: constraints.maxHeight,
+        );
       } else {
         return BoxConstraints(
           minWidth: 0,
@@ -247,7 +268,9 @@ class RenderFlex extends RenderBox
     } else {
       if (fit == FlexFit.tight) {
         return BoxConstraints.tightFor(
-            width: constraints.maxWidth, height: maxExtent);
+          width: constraints.maxWidth,
+          height: maxExtent,
+        );
       } else {
         return BoxConstraints(
           minWidth: 0,

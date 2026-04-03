@@ -23,13 +23,7 @@ void main() {
     });
 
     testWidgets('Container without border works as before', (tester) async {
-      tester.pumpWidget(
-        const Container(
-          width: 5,
-          height: 1,
-          child: Text('X'),
-        ),
-      );
+      tester.pumpWidget(const Container(width: 5, height: 1, child: Text('X')));
 
       await tester.pumpAndSettle();
 
@@ -88,8 +82,9 @@ void main() {
       tester.assertContains('┌');
     });
 
-    testWidgets('Container with Border.only renders partial border',
-        (tester) async {
+    testWidgets('Container with Border.only renders partial border', (
+      tester,
+    ) async {
       tester.pumpWidget(
         Container(
           width: 5,
@@ -106,12 +101,7 @@ void main() {
     });
 
     testWidgets('Container with border auto-sizes to child', (tester) async {
-      tester.pumpWidget(
-        const Container(
-          border: Border.all,
-          child: Text('Hi'),
-        ),
-      );
+      tester.pumpWidget(const Container(border: Border.all, child: Text('Hi')));
 
       await tester.pumpAndSettle();
 

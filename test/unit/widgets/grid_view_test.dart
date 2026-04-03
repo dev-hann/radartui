@@ -5,9 +5,7 @@ void main() {
   group('GridView', () {
     group('constructor', () {
       test('creates with required parameters', () {
-        const gridView = GridView<String>(
-          items: ['a', 'b', 'c'],
-        );
+        const gridView = GridView<String>(items: ['a', 'b', 'c']);
         expect(gridView.items, equals(['a', 'b', 'c']));
         expect(gridView.crossAxisCount, equals(2));
         expect(gridView.mainAxisSpacing, equals(0));
@@ -51,26 +49,20 @@ void main() {
       });
 
       test('supports generic types', () {
-        const gridView = GridView<int>(
-          items: [1, 2, 3],
-        );
+        const gridView = GridView<int>(items: [1, 2, 3]);
         expect(gridView.items, equals([1, 2, 3]));
       });
     });
 
     group('builders', () {
       test('uses default selected builder', () {
-        const gridView = GridView<String>(
-          items: ['test'],
-        );
+        const gridView = GridView<String>(items: ['test']);
         final widget = gridView.selectedBuilder('test');
         expect(widget, isA<Text>());
       });
 
       test('uses default unselected builder', () {
-        const gridView = GridView<String>(
-          items: ['test'],
-        );
+        const gridView = GridView<String>(items: ['test']);
         final widget = gridView.unselectedBuilder('test');
         expect(widget, isA<Text>());
       });

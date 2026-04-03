@@ -21,8 +21,10 @@ class Toast {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
             color: backgroundColor ?? Color.black,
-            child: Text(message,
-                style: TextStyle(color: textColor ?? Color.white)),
+            child: Text(
+              message,
+              style: TextStyle(color: textColor ?? Color.white),
+            ),
           ),
         ),
       ),

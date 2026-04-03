@@ -9,18 +9,12 @@ void main() {
     });
 
     test('Wrap creates with direction', () {
-      const wrap = Wrap(
-        direction: Axis.vertical,
-        children: [Text('a')],
-      );
+      const wrap = Wrap(direction: Axis.vertical, children: [Text('a')]);
       expect(wrap.direction, equals(Axis.vertical));
     });
 
     test('Wrap creates with alignment', () {
-      const wrap = Wrap(
-        alignment: WrapAlignment.center,
-        children: [Text('a')],
-      );
+      const wrap = Wrap(alignment: WrapAlignment.center, children: [Text('a')]);
       expect(wrap.alignment, equals(WrapAlignment.center));
     });
 
@@ -142,7 +136,7 @@ class _MockBuildContext implements BuildContext {
 
   @override
   InheritedElement?
-      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+  findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _MockRenderBox extends RenderBox {

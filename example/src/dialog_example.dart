@@ -17,8 +17,9 @@ class _DialogExampleState extends State<DialogExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription =
-        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
+      key,
+    ) {
       _handleKeyEvent(key);
     });
   }
@@ -139,8 +140,9 @@ class _DialogExampleState extends State<DialogExample> {
     );
 
     setState(() {
-      _lastResult =
-          result != null ? 'Number returned: $result' : 'No number returned';
+      _lastResult = result != null
+          ? 'Number returned: $result'
+          : 'No number returned';
     });
   }
 

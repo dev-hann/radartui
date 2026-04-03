@@ -216,26 +216,18 @@ void main() {
 
   group('Focus widget', () {
     test('Focus widget creates with child', () {
-      const focus = Focus(
-        child: Text('test'),
-      );
+      const focus = Focus(child: Text('test'));
       expect(focus.child, isA<Text>());
     });
 
     test('Focus widget accepts optional focusNode', () {
       final node = FocusNode();
-      final focus = Focus(
-        focusNode: node,
-        child: const Text('test'),
-      );
+      final focus = Focus(focusNode: node, child: const Text('test'));
       expect(focus.focusNode, equals(node));
     });
 
     test('Focus widget accepts optional onKeyEvent', () {
-      final focus = Focus(
-        onKeyEvent: (_) {},
-        child: const Text('test'),
-      );
+      final focus = Focus(onKeyEvent: (_) {}, child: const Text('test'));
       expect(focus.onKeyEvent, isNotNull);
     });
   });

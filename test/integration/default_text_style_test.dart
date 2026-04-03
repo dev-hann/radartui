@@ -57,10 +57,7 @@ void main() {
         italic: true,
         underline: false,
       );
-      const explicitStyle = TextStyle(
-        color: Color.blue,
-        bold: true,
-      );
+      const explicitStyle = TextStyle(color: Color.blue, bold: true);
       final merged = defaultStyle.merge(explicitStyle);
       expect(merged.color, equals(Color.blue));
       expect(merged.bold, isTrue);

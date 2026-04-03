@@ -4,9 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Container rendering', () {
     testWidgets('Container with fixed size', (tester) async {
-      tester.pumpWidget(
-        const Container(width: 5, height: 1, child: Text('X')),
-      );
+      tester.pumpWidget(const Container(width: 5, height: 1, child: Text('X')));
 
       await tester.pumpAndSettle();
 
@@ -14,11 +12,7 @@ void main() {
     });
 
     testWidgets('Container with child', (tester) async {
-      tester.pumpWidget(
-        const Container(
-          child: Text('Inside'),
-        ),
-      );
+      tester.pumpWidget(const Container(child: Text('Inside')));
 
       await tester.pumpAndSettle();
 
@@ -27,10 +21,7 @@ void main() {
 
     testWidgets('Container with padding', (tester) async {
       tester.pumpWidget(
-        const Container(
-          padding: EdgeInsets.all(1),
-          child: Text('P'),
-        ),
+        const Container(padding: EdgeInsets.all(1), child: Text('P')),
       );
 
       await tester.pumpAndSettle();
@@ -40,10 +31,7 @@ void main() {
 
     testWidgets('Container with margin', (tester) async {
       tester.pumpWidget(
-        const Container(
-          margin: EdgeInsets.all(1),
-          child: Text('M'),
-        ),
+        const Container(margin: EdgeInsets.all(1), child: Text('M')),
       );
 
       await tester.pumpAndSettle();
@@ -54,9 +42,7 @@ void main() {
 
   group('Container interaction', () {
     testWidgets('Container can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Container(),
-      );
+      tester.pumpWidget(const Container());
 
       expect(find.byType<Container>().exists, isTrue);
     });

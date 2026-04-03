@@ -1,20 +1,14 @@
 import '../../../radartui.dart';
 
 class Card extends SingleChildRenderObjectWidget {
-  const Card({
-    super.key,
-    Widget? child,
-    this.color,
-    this.padding,
-  }) : super(child: child ?? const SizedBox());
+  const Card({super.key, Widget? child, this.color, this.padding})
+    : super(child: child ?? const SizedBox());
   final Color? color;
   final EdgeInsets? padding;
 
   @override
-  RenderCard createRenderObject(BuildContext context) => RenderCard(
-        color: color,
-        padding: padding,
-      );
+  RenderCard createRenderObject(BuildContext context) =>
+      RenderCard(color: color, padding: padding);
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -25,10 +19,7 @@ class Card extends SingleChildRenderObjectWidget {
 }
 
 class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
-  RenderCard({
-    this.color,
-    this.padding,
-  });
+  RenderCard({this.color, this.padding});
   Color? color;
   EdgeInsets? padding;
 
@@ -61,7 +52,8 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
       if (boxConstraints.minWidth >= boxConstraints.maxWidth) {
         cardWidth = boxConstraints.maxWidth;
       } else {
-        cardWidth = child!.size!.width +
+        cardWidth =
+            child!.size!.width +
             totalPadding.left +
             totalPadding.right +
             borderSize;
@@ -70,7 +62,8 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
       if (boxConstraints.minHeight >= boxConstraints.maxHeight) {
         cardHeight = boxConstraints.maxHeight;
       } else {
-        cardHeight = child!.size!.height +
+        cardHeight =
+            child!.size!.height +
             totalPadding.top +
             totalPadding.bottom +
             borderSize;
@@ -117,24 +110,44 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     for (int x = 1; x < width - 1; x++) {
       context.buffer.writeStyled(offset.x + x, offset.y, '─', borderStyle);
     }
-    context.buffer
-        .writeStyled(offset.x + width - 1, offset.y, '┐', borderStyle);
+    context.buffer.writeStyled(
+      offset.x + width - 1,
+      offset.y,
+      '┐',
+      borderStyle,
+    );
 
     // Draw side borders: │ │
     for (int y = 1; y < height - 1; y++) {
       context.buffer.writeStyled(offset.x, offset.y + y, '│', borderStyle);
-      context.buffer
-          .writeStyled(offset.x + width - 1, offset.y + y, '│', borderStyle);
+      context.buffer.writeStyled(
+        offset.x + width - 1,
+        offset.y + y,
+        '│',
+        borderStyle,
+      );
     }
 
     // Draw bottom border: └─┘
-    context.buffer
-        .writeStyled(offset.x, offset.y + height - 1, '└', borderStyle);
+    context.buffer.writeStyled(
+      offset.x,
+      offset.y + height - 1,
+      '└',
+      borderStyle,
+    );
     for (int x = 1; x < width - 1; x++) {
-      context.buffer
-          .writeStyled(offset.x + x, offset.y + height - 1, '─', borderStyle);
+      context.buffer.writeStyled(
+        offset.x + x,
+        offset.y + height - 1,
+        '─',
+        borderStyle,
+      );
     }
     context.buffer.writeStyled(
-        offset.x + width - 1, offset.y + height - 1, '┘', borderStyle);
+      offset.x + width - 1,
+      offset.y + height - 1,
+      '┘',
+      borderStyle,
+    );
   }
 }

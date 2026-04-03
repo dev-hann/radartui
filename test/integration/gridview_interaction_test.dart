@@ -52,7 +52,7 @@ void main() {
         'Item 3',
         'Item 4',
         'Item 5',
-        'Item 6'
+        'Item 6',
       ];
       var selectedIndex = -1;
 
@@ -111,7 +111,7 @@ void main() {
         'Item 3',
         'Item 4',
         'Item 5',
-        'Item 6'
+        'Item 6',
       ];
       var selectedIndex = -1;
 
@@ -212,8 +212,9 @@ void main() {
       expect(selectedIndex, equals(2));
     });
 
-    testWidgets('GridView wrapAroundNavigation wraps to last from first',
-        (tester) async {
+    testWidgets('GridView wrapAroundNavigation wraps to last from first', (
+      tester,
+    ) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
       var selectedIndex = -1;
 
@@ -240,8 +241,9 @@ void main() {
       expect(selectedIndex, equals(2));
     });
 
-    testWidgets('GridView wrapAroundNavigation wraps to first from last',
-        (tester) async {
+    testWidgets('GridView wrapAroundNavigation wraps to first from last', (
+      tester,
+    ) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
       var selectedIndex = -1;
 
@@ -269,11 +271,7 @@ void main() {
     });
 
     testWidgets('GridView can be found by type', (tester) async {
-      tester.pumpWidget(
-        const GridView<String>(
-          items: ['Item 1'],
-        ),
-      );
+      tester.pumpWidget(const GridView<String>(items: ['Item 1']));
 
       expect(find.byType<GridView<String>>().exists, isTrue);
     });

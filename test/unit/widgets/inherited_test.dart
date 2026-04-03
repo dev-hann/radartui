@@ -4,10 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('InheritedWidget', () {
     test('InheritedWidget child is accessible', () {
-      const inherited = _TestInheritedWidget(
-        value: 42,
-        child: Text('test'),
-      );
+      const inherited = _TestInheritedWidget(value: 42, child: Text('test'));
       expect(inherited.child, isA<Text>());
     });
 
@@ -127,34 +124,19 @@ void main() {
 
   group('Theme', () {
     test('Theme creates widget with data', () {
-      final theme = Theme(
-        data: ThemeData.dark,
-        child: const Text('test'),
-      );
+      final theme = Theme(data: ThemeData.dark, child: const Text('test'));
       expect(theme.data, equals(ThemeData.dark));
     });
 
     test('Theme updateShouldNotify returns true on data change', () {
-      final oldWidget = Theme(
-        data: ThemeData.dark,
-        child: const Text('a'),
-      );
-      final newWidget = Theme(
-        data: ThemeData.light,
-        child: const Text('b'),
-      );
+      final oldWidget = Theme(data: ThemeData.dark, child: const Text('a'));
+      final newWidget = Theme(data: ThemeData.light, child: const Text('b'));
       expect(newWidget.updateShouldNotify(oldWidget), isTrue);
     });
 
     test('Theme updateShouldNotify returns false on same data', () {
-      final oldWidget = Theme(
-        data: ThemeData.dark,
-        child: const Text('a'),
-      );
-      final newWidget = Theme(
-        data: ThemeData.dark,
-        child: const Text('b'),
-      );
+      final oldWidget = Theme(data: ThemeData.dark, child: const Text('a'));
+      final newWidget = Theme(data: ThemeData.dark, child: const Text('b'));
       expect(newWidget.updateShouldNotify(oldWidget), isFalse);
     });
   });
@@ -170,10 +152,7 @@ void main() {
 }
 
 class _TestInheritedWidget extends InheritedWidget {
-  const _TestInheritedWidget({
-    required this.value,
-    required super.child,
-  });
+  const _TestInheritedWidget({required this.value, required super.child});
   final int value;
 
   @override

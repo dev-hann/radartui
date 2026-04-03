@@ -1,9 +1,7 @@
 import '../../../radartui.dart';
 
-typedef LayoutWidgetBuilder = Widget Function(
-  BuildContext context,
-  BoxConstraints constraints,
-);
+typedef LayoutWidgetBuilder =
+    Widget Function(BuildContext context, BoxConstraints constraints);
 
 class LayoutBuilder extends StatelessWidget {
   const LayoutBuilder({super.key, required this.builder});

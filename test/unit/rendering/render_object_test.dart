@@ -22,8 +22,9 @@ void main() {
     group('layout', () {
       test('markNeedsLayout sets needsLayout flag', () {
         final renderObject = _TestRenderObject();
-        renderObject
-            .layout(const BoxConstraints(maxWidth: 100, maxHeight: 100));
+        renderObject.layout(
+          const BoxConstraints(maxWidth: 100, maxHeight: 100),
+        );
 
         renderObject.markNeedsLayout();
       });
@@ -53,8 +54,9 @@ void main() {
     group('size', () {
       test('size can be set during layout', () {
         final renderObject = _TestRenderObject();
-        renderObject
-            .layout(const BoxConstraints(maxWidth: 100, maxHeight: 100));
+        renderObject.layout(
+          const BoxConstraints(maxWidth: 100, maxHeight: 100),
+        );
 
         expect(renderObject.size, isNotNull);
       });

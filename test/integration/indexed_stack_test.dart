@@ -7,11 +7,7 @@ void main() {
       tester.pumpWidget(
         const IndexedStack(
           index: 1,
-          children: [
-            Text('First'),
-            Text('Second'),
-            Text('Third'),
-          ],
+          children: [Text('First'), Text('Second'), Text('Third')],
         ),
       );
 
@@ -24,12 +20,7 @@ void main() {
 
     testWidgets('renders first child with default index 0', (tester) async {
       tester.pumpWidget(
-        const IndexedStack(
-          children: [
-            Text('Alpha'),
-            Text('Beta'),
-          ],
-        ),
+        const IndexedStack(children: [Text('Alpha'), Text('Beta')]),
       );
 
       await tester.pumpAndSettle();
@@ -40,13 +31,7 @@ void main() {
 
     testWidgets('handles out of bounds index - negative', (tester) async {
       tester.pumpWidget(
-        const IndexedStack(
-          index: -1,
-          children: [
-            Text('A'),
-            Text('B'),
-          ],
-        ),
+        const IndexedStack(index: -1, children: [Text('A'), Text('B')]),
       );
 
       await tester.pumpAndSettle();
@@ -56,13 +41,7 @@ void main() {
 
     testWidgets('handles out of bounds index - too high', (tester) async {
       tester.pumpWidget(
-        const IndexedStack(
-          index: 100,
-          children: [
-            Text('X'),
-            Text('Y'),
-          ],
-        ),
+        const IndexedStack(index: 100, children: [Text('X'), Text('Y')]),
       );
 
       await tester.pumpAndSettle();
@@ -71,9 +50,7 @@ void main() {
     });
 
     testWidgets('renders nothing with empty children', (tester) async {
-      tester.pumpWidget(
-        const IndexedStack(children: []),
-      );
+      tester.pumpWidget(const IndexedStack(children: []));
 
       await tester.pumpAndSettle();
 
@@ -83,9 +60,7 @@ void main() {
 
   group('IndexedStack interaction', () {
     testWidgets('can be found by type', (tester) async {
-      tester.pumpWidget(
-        const IndexedStack(children: [Text('Test')]),
-      );
+      tester.pumpWidget(const IndexedStack(children: [Text('Test')]));
 
       expect(find.byType<IndexedStack>().exists, isTrue);
     });
@@ -128,11 +103,7 @@ class _SwitchableIndexedStackState extends State<_SwitchableIndexedStack> {
   Widget build(BuildContext context) {
     return IndexedStack(
       index: _index,
-      children: const [
-        Text('Page 0'),
-        Text('Page 1'),
-        Text('Page 2'),
-      ],
+      children: const [Text('Page 0'), Text('Page 1'), Text('Page 2')],
     );
   }
 }

@@ -6,11 +6,7 @@ void main() {
     testWidgets('Form renders TextField', (tester) async {
       final controller = TextEditingController();
 
-      tester.pumpWidget(
-        Form(
-          child: TextField(controller: controller),
-        ),
-      );
+      tester.pumpWidget(Form(child: TextField(controller: controller)));
 
       await tester.pumpAndSettle();
 
@@ -18,8 +14,9 @@ void main() {
       tester.assertContains('─');
     });
 
-    testWidgets('Form renders error text on validation failure',
-        (tester) async {
+    testWidgets('Form renders error text on validation failure', (
+      tester,
+    ) async {
       final formKey = GlobalKey();
 
       tester.pumpWidget(
@@ -38,8 +35,10 @@ void main() {
                 children: [
                   const TextField(),
                   if (state.errorText != null)
-                    Text(state.errorText!,
-                        style: const TextStyle(color: Color.red)),
+                    Text(
+                      state.errorText!,
+                      style: const TextStyle(color: Color.red),
+                    ),
                 ],
               );
             },
@@ -97,8 +96,9 @@ void main() {
       expect(isValid, isTrue);
     });
 
-    testWidgets('Form validate returns false for invalid fields',
-        (tester) async {
+    testWidgets('Form validate returns false for invalid fields', (
+      tester,
+    ) async {
       final formKey = GlobalKey();
       final controller = TextEditingController();
 
@@ -114,9 +114,7 @@ void main() {
               return null;
             },
             builder: (state) {
-              return TextField(
-                controller: controller,
-              );
+              return TextField(controller: controller);
             },
           ),
         ),
@@ -168,8 +166,9 @@ void main() {
       expect(submitted, isTrue);
     });
 
-    testWidgets('Form submit does not call onSubmitted when invalid',
-        (tester) async {
+    testWidgets('Form submit does not call onSubmitted when invalid', (
+      tester,
+    ) async {
       final formKey = GlobalKey();
       var submitted = false;
       final controller = TextEditingController();
@@ -187,9 +186,7 @@ void main() {
               return null;
             },
             builder: (state) {
-              return TextField(
-                controller: controller,
-              );
+              return TextField(controller: controller);
             },
           ),
         ),
@@ -249,8 +246,10 @@ void main() {
                 children: [
                   const TextField(),
                   if (state.errorText != null)
-                    Text(state.errorText!,
-                        style: const TextStyle(color: Color.red)),
+                    Text(
+                      state.errorText!,
+                      style: const TextStyle(color: Color.red),
+                    ),
                 ],
               );
             },
@@ -268,11 +267,7 @@ void main() {
     });
 
     testWidgets('Form can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Form(
-          child: Text('Form'),
-        ),
-      );
+      tester.pumpWidget(const Form(child: Text('Form')));
 
       expect(find.byType<Form>().exists, isTrue);
     });

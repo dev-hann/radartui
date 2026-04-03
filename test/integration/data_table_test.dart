@@ -28,9 +28,7 @@ void main() {
     testWidgets('DataTable shows sort indicator', (tester) async {
       tester.pumpWidget(
         const DataTable(
-          columns: [
-            DataColumn(label: 'Name'),
-          ],
+          columns: [DataColumn(label: 'Name')],
           rows: [
             DataRow(cells: [DataCell('Alice')]),
           ],
@@ -47,9 +45,7 @@ void main() {
     testWidgets('DataTable shows descending sort indicator', (tester) async {
       tester.pumpWidget(
         const DataTable(
-          columns: [
-            DataColumn(label: 'Name'),
-          ],
+          columns: [DataColumn(label: 'Name')],
           rows: [
             DataRow(cells: [DataCell('Alice')]),
           ],
@@ -66,9 +62,7 @@ void main() {
     testWidgets('DataTable shows checkbox column when enabled', (tester) async {
       tester.pumpWidget(
         const DataTable(
-          columns: [
-            DataColumn(label: 'Name'),
-          ],
+          columns: [DataColumn(label: 'Name')],
           rows: [
             DataRow(cells: [DataCell('Alice')], selected: true),
           ],
@@ -84,9 +78,7 @@ void main() {
     testWidgets('DataTable shows unchecked checkbox', (tester) async {
       tester.pumpWidget(
         const DataTable(
-          columns: [
-            DataColumn(label: 'Name'),
-          ],
+          columns: [DataColumn(label: 'Name')],
           rows: [
             DataRow(cells: [DataCell('Alice')], selected: false),
           ],
@@ -104,9 +96,7 @@ void main() {
     testWidgets('DataTable navigates with arrow keys', (tester) async {
       tester.pumpWidget(
         const DataTable(
-          columns: [
-            DataColumn(label: 'Name'),
-          ],
+          columns: [DataColumn(label: 'Name')],
           rows: [
             DataRow(cells: [DataCell('Alice')]),
             DataRow(cells: [DataCell('Bob')]),
@@ -158,9 +148,7 @@ void main() {
 
       tester.pumpWidget(
         DataTable(
-          columns: const [
-            DataColumn(label: 'Name'),
-          ],
+          columns: const [DataColumn(label: 'Name')],
           rows: [
             DataRow(
               cells: const [DataCell('Alice')],
@@ -181,8 +169,9 @@ void main() {
       expect(selected, isTrue);
     });
 
-    testWidgets('DataTable navigates columns with left/right arrows',
-        (tester) async {
+    testWidgets('DataTable navigates columns with left/right arrows', (
+      tester,
+    ) async {
       var sortColumnIndex = -1;
 
       tester.pumpWidget(

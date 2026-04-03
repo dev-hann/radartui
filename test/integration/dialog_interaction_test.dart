@@ -4,12 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Dialog rendering', () {
     testWidgets('Dialog renders title and content', (tester) async {
-      tester.pumpWidget(
-        const Dialog(
-          title: 'Title',
-          child: Text('Content'),
-        ),
-      );
+      tester.pumpWidget(const Dialog(title: 'Title', child: Text('Content')));
 
       await tester.pumpAndSettle();
 
@@ -21,9 +16,7 @@ void main() {
       tester.pumpWidget(
         const Dialog(
           child: Text('Body'),
-          actions: [
-            Button(text: 'OK'),
-          ],
+          actions: [Button(text: 'OK')],
         ),
       );
 
@@ -37,10 +30,7 @@ void main() {
   group('Dialog interaction', () {
     testWidgets('Dialog shows title', (tester) async {
       tester.pumpWidget(
-        const Dialog(
-          title: 'Dialog Title',
-          child: Text('Content'),
-        ),
+        const Dialog(title: 'Dialog Title', child: Text('Content')),
       );
 
       await tester.pumpAndSettle();
@@ -49,11 +39,7 @@ void main() {
     });
 
     testWidgets('Dialog shows child content', (tester) async {
-      tester.pumpWidget(
-        const Dialog(
-          child: Text('Dialog Content'),
-        ),
-      );
+      tester.pumpWidget(const Dialog(child: Text('Dialog Content')));
 
       await tester.pumpAndSettle();
 
@@ -77,19 +63,14 @@ void main() {
     });
 
     testWidgets('Dialog can be found by type', (tester) async {
-      tester.pumpWidget(
-        const Dialog(child: Text('Content')),
-      );
+      tester.pumpWidget(const Dialog(child: Text('Content')));
 
       expect(find.byType<Dialog>().exists, isTrue);
     });
 
     testWidgets('Dialog with custom padding', (tester) async {
       tester.pumpWidget(
-        const Dialog(
-          padding: EdgeInsets.all(4),
-          child: Text('Content'),
-        ),
+        const Dialog(padding: EdgeInsets.all(4), child: Text('Content')),
       );
 
       await tester.pumpAndSettle();
@@ -99,10 +80,7 @@ void main() {
 
     testWidgets('Dialog with custom background color', (tester) async {
       tester.pumpWidget(
-        const Dialog(
-          backgroundColor: Color.blue,
-          child: Text('Content'),
-        ),
+        const Dialog(backgroundColor: Color.blue, child: Text('Content')),
       );
 
       await tester.pumpAndSettle();

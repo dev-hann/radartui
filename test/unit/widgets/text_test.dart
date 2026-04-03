@@ -65,12 +65,14 @@ void main() {
 
     test('RenderText layout size based on text length', () {
       final renderText = RenderText(text: 'Hello');
-      renderText.layout(const BoxConstraints(
-        minWidth: 0,
-        maxWidth: Constraints.infinity,
-        minHeight: 0,
-        maxHeight: Constraints.infinity,
-      ));
+      renderText.layout(
+        const BoxConstraints(
+          minWidth: 0,
+          maxWidth: Constraints.infinity,
+          minHeight: 0,
+          maxHeight: Constraints.infinity,
+        ),
+      );
 
       expect(renderText.size, isNotNull);
       expect(renderText.size!.width, equals(5));
@@ -79,12 +81,14 @@ void main() {
 
     test('RenderText layout with empty string', () {
       final renderText = RenderText(text: '');
-      renderText.layout(const BoxConstraints(
-        minWidth: 0,
-        maxWidth: Constraints.infinity,
-        minHeight: 0,
-        maxHeight: Constraints.infinity,
-      ));
+      renderText.layout(
+        const BoxConstraints(
+          minWidth: 0,
+          maxWidth: Constraints.infinity,
+          minHeight: 0,
+          maxHeight: Constraints.infinity,
+        ),
+      );
 
       expect(renderText.size!.width, equals(0));
       expect(renderText.size!.height, equals(1));
@@ -109,12 +113,14 @@ void main() {
 
     test('RenderText supports multiline', () {
       final renderText = RenderText(text: 'Hello\nWorld');
-      renderText.layout(const BoxConstraints(
-        minWidth: 0,
-        maxWidth: Constraints.infinity,
-        minHeight: 0,
-        maxHeight: Constraints.infinity,
-      ));
+      renderText.layout(
+        const BoxConstraints(
+          minWidth: 0,
+          maxWidth: Constraints.infinity,
+          minHeight: 0,
+          maxHeight: Constraints.infinity,
+        ),
+      );
 
       expect(renderText.size!.width, equals(5));
       expect(renderText.size!.height, equals(2));
@@ -122,24 +128,28 @@ void main() {
 
     test('RenderText softWrap breaks long text', () {
       final renderText = RenderText(text: 'Hello World', softWrap: true);
-      renderText.layout(const BoxConstraints(
-        minWidth: 0,
-        maxWidth: 6,
-        minHeight: 0,
-        maxHeight: Constraints.infinity,
-      ));
+      renderText.layout(
+        const BoxConstraints(
+          minWidth: 0,
+          maxWidth: 6,
+          minHeight: 0,
+          maxHeight: Constraints.infinity,
+        ),
+      );
 
       expect(renderText.size!.height, greaterThan(1));
     });
 
     test('RenderText maxLines limits lines', () {
       final renderText = RenderText(text: 'Hello\nWorld\nTest', maxLines: 2);
-      renderText.layout(const BoxConstraints(
-        minWidth: 0,
-        maxWidth: Constraints.infinity,
-        minHeight: 0,
-        maxHeight: Constraints.infinity,
-      ));
+      renderText.layout(
+        const BoxConstraints(
+          minWidth: 0,
+          maxWidth: Constraints.infinity,
+          minHeight: 0,
+          maxHeight: Constraints.infinity,
+        ),
+      );
 
       expect(renderText.size!.height, equals(2));
     });

@@ -107,9 +107,9 @@ class RenderRichText extends RenderBox {
     required TextSpan text,
     int? maxLines,
     TextOverflow overflow = TextOverflow.clip,
-  })  : _text = text,
-        _maxLines = maxLines,
-        _overflow = overflow;
+  }) : _text = text,
+       _maxLines = maxLines,
+       _overflow = overflow;
 
   TextSpan _text;
   TextSpan get text => _text;
@@ -170,14 +170,16 @@ class RenderRichText extends RenderBox {
       }
     }
 
-    final effectiveMaxHeight =
-        boxConstraints.maxHeight > 0 ? boxConstraints.maxHeight : 1;
+    final effectiveMaxHeight = boxConstraints.maxHeight > 0
+        ? boxConstraints.maxHeight
+        : 1;
     final width = computedWidth.clamp(
       boxConstraints.minWidth,
       boxConstraints.maxWidth,
     );
-    final height =
-        _lines.isEmpty ? 1 : _lines.length.clamp(1, effectiveMaxHeight);
+    final height = _lines.isEmpty
+        ? 1
+        : _lines.length.clamp(1, effectiveMaxHeight);
 
     size = Size(width, height);
   }
@@ -188,8 +190,8 @@ class RenderRichText extends RenderBox {
     }
 
     final lines = <_StyledLine>[];
-    var currentLine = _StyledLine.empty();
-    var currentX = 0;
+    final currentLine = _StyledLine.empty();
+    int currentX = 0;
 
     for (final segment in segments) {
       final segmentLines = segment.text.split('\n');
@@ -201,7 +203,7 @@ class RenderRichText extends RenderBox {
           currentX = 0;
         }
 
-        var remaining = segmentLines[lineIdx];
+        String remaining = segmentLines[lineIdx];
         while (remaining.isNotEmpty) {
           final available = maxWidth - currentX;
 
@@ -231,7 +233,7 @@ class RenderRichText extends RenderBox {
 
   List<_StyledLine> _buildLinesWithoutWrap(List<_StyledSegment> segments) {
     final lines = <_StyledLine>[];
-    var currentLine = _StyledLine.empty();
+    final currentLine = _StyledLine.empty();
 
     for (final segment in segments) {
       final segmentLines = segment.text.split('\n');
@@ -253,7 +255,7 @@ class RenderRichText extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     for (int lineIndex = 0; lineIndex < _lines.length; lineIndex++) {
       final line = _lines[lineIndex];
-      var x = offset.x;
+      int x = offset.x;
 
       for (final run in line.runs) {
         for (int charIdx = 0; charIdx < run.text.length; charIdx++) {
@@ -292,7 +294,7 @@ class _StyledLine {
   }
 
   _StyledLine copyWithEllipsis() {
-    var totalLength = length;
+    int totalLength = length;
     final newRuns = <_StyledRun>[];
 
     for (final run in runs) {

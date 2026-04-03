@@ -9,26 +9,24 @@ class Border {
   factory Border.symmetric({
     required String horizontal,
     required String vertical,
-  }) =>
-      Border(
-        top: horizontal,
-        left: vertical,
-        right: vertical,
-        bottom: horizontal,
-      );
+  }) => Border(
+    top: horizontal,
+    left: vertical,
+    right: vertical,
+    bottom: horizontal,
+  );
 
   factory Border.only({
     String? top,
     String? right,
     String? bottom,
     String? left,
-  }) =>
-      Border(
-        top: top ?? '',
-        right: right ?? '',
-        bottom: bottom ?? '',
-        left: left ?? '',
-      );
+  }) => Border(
+    top: top ?? '',
+    right: right ?? '',
+    bottom: bottom ?? '',
+    left: left ?? '',
+  );
 
   final String top;
   final String right;
@@ -42,10 +40,5 @@ class Border {
     bottom: '─',
   );
 
-  static const Border none = Border(
-    top: '',
-    left: '',
-    right: '',
-    bottom: '',
-  );
+  static const Border none = Border(top: '', left: '', right: '', bottom: '');
 }

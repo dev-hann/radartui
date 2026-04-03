@@ -5,9 +5,7 @@ void main() {
   group('SingleChildScrollView', () {
     group('constructor', () {
       test('creates with required child', () {
-        const scrollView = SingleChildScrollView(
-          child: Text('hello'),
-        );
+        const scrollView = SingleChildScrollView(child: Text('hello'));
         expect(scrollView.child, isA<Text>());
         expect(scrollView.scrollDirection, equals(Axis.vertical));
         expect(scrollView.controller, isNull);

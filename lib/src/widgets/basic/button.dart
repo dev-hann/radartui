@@ -35,10 +35,7 @@ class _ButtonState extends State<Button> with FocusableState<Button> {
     _colorAnim = ColorTween(
       begin: widget.style?.backgroundColor ?? Color.blue,
       end: widget.style?.focusBackgroundColor ?? Color.brightBlue,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    ));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
     _controller.addListener(() => setState(() {}));
   }
 
@@ -110,12 +107,12 @@ class _ButtonRenderWidget extends RenderObjectWidget {
 
   @override
   RenderButton createRenderObject(BuildContext context) => RenderButton(
-        text: text,
-        enabled: enabled,
-        focused: focused,
-        style: style,
-        onTap: onTap,
-      );
+    text: text,
+    enabled: enabled,
+    focused: focused,
+    style: style,
+    onTap: onTap,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {

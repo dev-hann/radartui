@@ -21,8 +21,8 @@ class CurvedAnimation extends Animation<double> {
   double get value {
     final Curve activeCurve =
         parent.status == AnimationStatus.reverse && reverseCurve != null
-            ? reverseCurve!
-            : curve;
+        ? reverseCurve!
+        : curve;
     return activeCurve.transform(parent.value);
   }
 
@@ -56,8 +56,9 @@ class CurvedAnimation extends Animation<double> {
   }
 
   void _notifyStatusListeners(AnimationStatus status) {
-    for (final listener
-        in List<AnimationStatusListener>.from(_statusListeners)) {
+    for (final listener in List<AnimationStatusListener>.from(
+      _statusListeners,
+    )) {
       listener(status);
     }
   }

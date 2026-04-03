@@ -5,9 +5,7 @@ void main() {
   group('ListView', () {
     group('constructor', () {
       test('creates with required parameters', () {
-        const listView = ListView<String>(
-          items: ['a', 'b', 'c'],
-        );
+        const listView = ListView<String>(items: ['a', 'b', 'c']);
         expect(listView.items, equals(['a', 'b', 'c']));
         expect(listView.initialSelectedIndex, equals(0));
         expect(listView.wrapAroundNavigation, isFalse);
@@ -30,26 +28,20 @@ void main() {
       });
 
       test('supports generic types', () {
-        const listView = ListView<int>(
-          items: [1, 2, 3],
-        );
+        const listView = ListView<int>(items: [1, 2, 3]);
         expect(listView.items, equals([1, 2, 3]));
       });
     });
 
     group('builders', () {
       test('uses default selected builder', () {
-        const listView = ListView<String>(
-          items: ['test'],
-        );
+        const listView = ListView<String>(items: ['test']);
         final widget = listView.selectedBuilder('test');
         expect(widget, isA<Text>());
       });
 
       test('uses default unselected builder', () {
-        const listView = ListView<String>(
-          items: ['test'],
-        );
+        const listView = ListView<String>(items: ['test']);
         final widget = listView.unselectedBuilder('test');
         expect(widget, isA<Text>());
       });

@@ -2,10 +2,7 @@ import 'basic/stack.dart';
 import 'framework.dart';
 
 class OverlayEntry {
-  OverlayEntry({
-    required this.builder,
-    this.opaque = false,
-  });
+  OverlayEntry({required this.builder, this.opaque = false});
 
   final Widget Function(BuildContext) builder;
   final bool opaque;
@@ -71,10 +68,8 @@ class OverlayState extends State<Overlay> {
 }
 
 class _OverlayScope extends InheritedWidget {
-  const _OverlayScope({
-    required OverlayState state,
-    required super.child,
-  }) : _state = state;
+  const _OverlayScope({required OverlayState state, required super.child})
+    : _state = state;
 
   final OverlayState _state;
 

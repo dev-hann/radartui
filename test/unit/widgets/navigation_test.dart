@@ -4,8 +4,10 @@ import 'package:test/test.dart';
 void main() {
   group('RouteSettings', () {
     test('creates with name and arguments', () {
-      const settings =
-          RouteSettings(name: '/test', arguments: {'key': 'value'});
+      const settings = RouteSettings(
+        name: '/test',
+        arguments: {'key': 'value'},
+      );
       expect(settings.name, equals('/test'));
       expect(settings.arguments, equals({'key': 'value'}));
     });
@@ -27,16 +29,12 @@ void main() {
     });
 
     test('fullScreenRender defaults to true', () {
-      final route = PageRoute(
-        builder: (context) => const Text('Test'),
-      );
+      final route = PageRoute(builder: (context) => const Text('Test'));
       expect(route.fullScreenRender, isTrue);
     });
 
     test('buildPage returns widget from builder', () {
-      final route = PageRoute(
-        builder: (context) => const Text('Test'),
-      );
+      final route = PageRoute(builder: (context) => const Text('Test'));
       final widget = route.buildPage(_MockBuildContext());
       expect(widget, isA<Text>());
     });
@@ -60,16 +58,12 @@ void main() {
     });
 
     test('canPop defaults to true', () {
-      final route = PageRoute(
-        builder: (context) => const Text('Test'),
-      );
+      final route = PageRoute(builder: (context) => const Text('Test'));
       expect(route.canPop, isTrue);
     });
 
     test('fullScreenRender defaults to true', () {
-      final route = PageRoute(
-        builder: (context) => const Text('Test'),
-      );
+      final route = PageRoute(builder: (context) => const Text('Test'));
       expect(route.fullScreenRender, isTrue);
     });
   });
@@ -102,10 +96,7 @@ void main() {
 
     test('of throws when Navigator not in context', () {
       final context = _MockBuildContextWithoutNavigator();
-      expect(
-        () => Navigator.of(context),
-        throwsA(isA<RadartuiError>()),
-      );
+      expect(() => Navigator.of(context), throwsA(isA<RadartuiError>()));
     });
   });
 }
@@ -119,7 +110,7 @@ class _MockBuildContext implements BuildContext {
 
   @override
   InheritedElement?
-      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+  findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _MockBuildContextWithoutNavigator implements BuildContext {
@@ -131,7 +122,7 @@ class _MockBuildContextWithoutNavigator implements BuildContext {
 
   @override
   InheritedElement?
-      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+  findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _TestNavigatorObserver extends NavigatorObserver {

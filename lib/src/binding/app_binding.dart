@@ -8,8 +8,8 @@ import 'widgets_binding.dart';
 class AppBinding extends BindingBase
     with SchedulerBinding, ServicesBinding, RendererBinding, WidgetsBinding {
   AppBinding([TerminalBackend? terminalBackend])
-      : _terminalBackend = terminalBackend ?? RealTerminalBackend(),
-        _terminal = _TerminalImpl() {
+    : _terminalBackend = terminalBackend ?? RealTerminalBackend(),
+      _terminal = _TerminalImpl() {
     _terminal.setBackend(_terminalBackend);
     outputBuffer = OutputBuffer(_terminal);
   }

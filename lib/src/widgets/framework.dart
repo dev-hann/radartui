@@ -154,7 +154,7 @@ abstract class Element {
   }
 
   InheritedElement?
-      findAncestorElementOfExactType<T extends InheritedWidget>() {
+  findAncestorElementOfExactType<T extends InheritedWidget>() {
     Element? current = _parent;
     while (current != null) {
       if (current.widget is T && current is InheritedElement) {
@@ -456,8 +456,9 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
   @override
   void mount(Element? parent) {
     super.mount(parent);
-    final renderObject = this.renderObject
-        as ContainerRenderObjectMixin<RenderObject, ParentData>;
+    final renderObject =
+        this.renderObject
+            as ContainerRenderObjectMixin<RenderObject, ParentData>;
     _children = (widget as MultiChildRenderObjectWidget).children.map((w) {
       final child = w.createElement();
       child.mount(this);
