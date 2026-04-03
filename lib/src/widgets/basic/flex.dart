@@ -16,11 +16,11 @@ class Flex extends MultiChildRenderObjectWidget {
 
   @override
   RenderFlex createRenderObject(BuildContext context) => RenderFlex(
-    direction: direction,
-    mainAxisAlignment: mainAxisAlignment,
-    crossAxisAlignment: crossAxisAlignment,
-    mainAxisSize: mainAxisSize,
-  );
+        direction: direction,
+        mainAxisAlignment: mainAxisAlignment,
+        crossAxisAlignment: crossAxisAlignment,
+        mainAxisSize: mainAxisSize,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -56,166 +56,200 @@ class RenderFlex extends RenderBox
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
     final isHorizontal = direction == Axis.horizontal;
+    final totalFlex = _computeTotalFlex();
+    final maxMainAxisExtent =
+        isHorizontal ? boxConstraints.maxWidth : boxConstraints.maxHeight;
+    final crossAxisExtent =
+        isHorizontal ? boxConstraints.maxHeight : boxConstraints.maxWidth;
 
-    int totalFlex = 0;
-    int nonFlexExtent = 0;
-    int maxCrossAxisExtent = 0;
+    final nonFlexResult = _measureNonFlexChildren(
+      isHorizontal,
+      boxConstraints,
+    );
+    final flexResult = _measureFlexChildren(
+      isHorizontal,
+      boxConstraints,
+      totalFlex,
+      maxMainAxisExtent - nonFlexResult.mainExtent,
+      nonFlexResult.crossExtent,
+    );
 
+    final totalNonFlexExtent = nonFlexResult.mainExtent;
+    final totalFlexExtent = flexResult.mainExtent;
+    final maxCrossExtent = flexResult.crossExtent;
+
+    size = _computeSize(
+      isHorizontal,
+      totalNonFlexExtent,
+      totalFlexExtent,
+      maxMainAxisExtent,
+      crossAxisExtent,
+      maxCrossExtent,
+    );
+
+    final actualCrossAxisExtent = isHorizontal ? size!.height : size!.width;
+    final actualMainAxisExtent = isHorizontal ? size!.width : size!.height;
+    final alignment = _computeMainAxisAlignment(
+      actualMainAxisExtent - totalNonFlexExtent - totalFlexExtent,
+    );
+
+    _positionChildren(
+      isHorizontal,
+      actualCrossAxisExtent,
+      alignment.leading,
+      alignment.between,
+    );
+  }
+
+  int _computeTotalFlex() {
+    int total = 0;
     for (final child in children) {
       final flex = _getFlex(child);
       if (flex > 0) {
-        totalFlex += flex;
+        total += flex;
       }
     }
+    return total;
+  }
 
-    final maxMainAxisExtent = isHorizontal
-        ? boxConstraints.maxWidth
-        : boxConstraints.maxHeight;
-    final crossAxisExtent = isHorizontal
-        ? boxConstraints.maxHeight
-        : boxConstraints.maxWidth;
-
-    final nonFlexChildren = <RenderBox>[];
+  _FlexMeasurement _measureNonFlexChildren(
+    bool isHorizontal,
+    BoxConstraints boxConstraints,
+  ) {
+    int mainExtent = 0;
+    int crossExtent = 0;
     for (final child in children) {
-      final flex = _getFlex(child);
-      if (flex == 0) {
-        nonFlexChildren.add(child);
+      if (_getFlex(child) != 0) continue;
+      child.layout(_getConstraintsForNonFlexChild(boxConstraints));
+      mainExtent += isHorizontal ? child.size!.width : child.size!.height;
+      final childCross = isHorizontal ? child.size!.height : child.size!.width;
+      if (childCross > crossExtent) {
+        crossExtent = childCross;
       }
     }
+    return _FlexMeasurement(mainExtent: mainExtent, crossExtent: crossExtent);
+  }
 
-    for (final child in nonFlexChildren) {
-      final innerConstraints = _getConstraintsForNonFlexChild(boxConstraints);
-      child.layout(innerConstraints);
-      final childExtent = isHorizontal ? child.size!.width : child.size!.height;
-      nonFlexExtent += childExtent;
-      final childCrossExtent = isHorizontal
-          ? child.size!.height
-          : child.size!.width;
-      if (childCrossExtent > maxCrossAxisExtent) {
-        maxCrossAxisExtent = childCrossExtent;
-      }
-    }
-
-    final freeSpace = maxMainAxisExtent - nonFlexExtent;
+  _FlexMeasurement _measureFlexChildren(
+    bool isHorizontal,
+    BoxConstraints boxConstraints,
+    int totalFlex,
+    int freeSpace,
+    int initialCrossExtent,
+  ) {
     final spacePerFlex = totalFlex > 0 ? freeSpace ~/ totalFlex : 0;
-    int allocatedFlexSpace = 0;
+    int allocatedSpace = 0;
+    int maxCrossExtent = initialCrossExtent;
 
     for (final child in children) {
       final flex = _getFlex(child);
-      if (flex > 0) {
-        final maxChildExtent = spacePerFlex * flex;
-        final innerConstraints = _getConstraintsForFlexChild(
+      if (flex <= 0) continue;
+      final maxChildExtent = spacePerFlex * flex;
+      child.layout(
+        _getConstraintsForFlexChild(
           boxConstraints,
           maxChildExtent,
           _getFit(child),
-        );
-        child.layout(innerConstraints);
-        final childExtent = isHorizontal
-            ? child.size!.width
-            : child.size!.height;
-        allocatedFlexSpace += childExtent;
-        final childCrossExtent = isHorizontal
-            ? child.size!.height
-            : child.size!.width;
-        if (childCrossExtent > maxCrossAxisExtent) {
-          maxCrossAxisExtent = childCrossExtent;
-        }
+        ),
+      );
+      allocatedSpace += isHorizontal ? child.size!.width : child.size!.height;
+      final childCross = isHorizontal ? child.size!.height : child.size!.width;
+      if (childCross > maxCrossExtent) {
+        maxCrossExtent = childCross;
       }
     }
+    return _FlexMeasurement(
+      mainExtent: allocatedSpace,
+      crossExtent: maxCrossExtent,
+    );
+  }
 
-    int totalMainAxisExtent = nonFlexExtent + allocatedFlexSpace;
-
+  Size _computeSize(
+    bool isHorizontal,
+    int nonFlexExtent,
+    int flexExtent,
+    int maxMainAxisExtent,
+    int crossAxisExtent,
+    int maxCrossExtent,
+  ) {
+    int totalMain = nonFlexExtent + flexExtent;
     if (mainAxisSize == MainAxisSize.max) {
-      totalMainAxisExtent = maxMainAxisExtent;
+      totalMain = maxMainAxisExtent;
     }
+    final effectiveCross = crossAxisExtent < 0 ? 0 : crossAxisExtent;
+    if (isHorizontal) {
+      return Size(totalMain, maxCrossExtent.clamp(0, effectiveCross));
+    }
+    return Size(maxCrossExtent.clamp(0, effectiveCross), totalMain);
+  }
 
-    final effectiveCrossAxisExtent = crossAxisExtent < 0 ? 0 : crossAxisExtent;
-    final actualSize = isHorizontal
-        ? Size(
-            totalMainAxisExtent,
-            maxCrossAxisExtent.clamp(0, effectiveCrossAxisExtent),
-          )
-        : Size(
-            maxCrossAxisExtent.clamp(0, effectiveCrossAxisExtent),
-            totalMainAxisExtent,
-          );
-
-    final actualCrossAxisExtent = isHorizontal
-        ? actualSize.height
-        : actualSize.width;
-    final actualMainAxisExtent = isHorizontal
-        ? actualSize.width
-        : actualSize.height;
-
-    int leadingSpace = 0;
-    int betweenSpace = 0;
-    final freeMainAxisSpace =
-        actualMainAxisExtent - nonFlexExtent - allocatedFlexSpace;
-
+  ({int leading, int between}) _computeMainAxisAlignment(int freeSpace) {
+    int leading = 0;
+    int between = 0;
     switch (mainAxisAlignment) {
       case MainAxisAlignment.start:
         break;
       case MainAxisAlignment.end:
-        leadingSpace = freeMainAxisSpace;
-        break;
+        leading = freeSpace;
       case MainAxisAlignment.center:
-        leadingSpace = freeMainAxisSpace ~/ 2;
-        break;
+        leading = freeSpace ~/ 2;
       case MainAxisAlignment.spaceBetween:
         if (children.length > 1) {
-          betweenSpace = freeMainAxisSpace ~/ (children.length - 1);
+          between = freeSpace ~/ (children.length - 1);
         }
-        break;
       case MainAxisAlignment.spaceAround:
         if (children.isNotEmpty) {
-          betweenSpace = freeMainAxisSpace ~/ children.length;
-          leadingSpace = betweenSpace ~/ 2;
+          between = freeSpace ~/ children.length;
+          leading = between ~/ 2;
         }
-        break;
       case MainAxisAlignment.spaceEvenly:
         if (children.isNotEmpty) {
-          betweenSpace = freeMainAxisSpace ~/ (children.length + 1);
-          leadingSpace = betweenSpace;
+          between = freeSpace ~/ (children.length + 1);
+          leading = between;
         }
-        break;
     }
+    return (leading: leading, between: between);
+  }
 
+  void _positionChildren(
+    bool isHorizontal,
+    int actualCrossAxisExtent,
+    int leadingSpace,
+    int betweenSpace,
+  ) {
     int mainAxisPosition = leadingSpace;
     for (final child in children) {
       final childParentData = child.parentData as FlexParentData;
-      final childMainExtent = isHorizontal
-          ? child.size!.width
-          : child.size!.height;
-      final childCrossExtent = isHorizontal
-          ? child.size!.height
-          : child.size!.width;
+      final childMainExtent =
+          isHorizontal ? child.size!.width : child.size!.height;
+      final childCrossExtent =
+          isHorizontal ? child.size!.height : child.size!.width;
 
-      int crossAxisPosition;
-      switch (crossAxisAlignment) {
-        case CrossAxisAlignment.start:
-          crossAxisPosition = 0;
-          break;
-        case CrossAxisAlignment.end:
-          crossAxisPosition = actualCrossAxisExtent - childCrossExtent;
-          break;
-        case CrossAxisAlignment.center:
-          crossAxisPosition = (actualCrossAxisExtent - childCrossExtent) ~/ 2;
-          break;
-        case CrossAxisAlignment.stretch:
-          crossAxisPosition = 0;
-          break;
-      }
+      final crossAxisPosition = _crossAxisPosition(
+        actualCrossAxisExtent,
+        childCrossExtent,
+      );
 
       if (isHorizontal) {
         childParentData.offset = Offset(mainAxisPosition, crossAxisPosition);
       } else {
         childParentData.offset = Offset(crossAxisPosition, mainAxisPosition);
       }
-
       mainAxisPosition += childMainExtent + betweenSpace;
     }
+  }
 
-    size = actualSize;
+  int _crossAxisPosition(int actualCrossExtent, int childCrossExtent) {
+    switch (crossAxisAlignment) {
+      case CrossAxisAlignment.start:
+        return 0;
+      case CrossAxisAlignment.end:
+        return actualCrossExtent - childCrossExtent;
+      case CrossAxisAlignment.center:
+        return (actualCrossExtent - childCrossExtent) ~/ 2;
+      case CrossAxisAlignment.stretch:
+        return 0;
+    }
   }
 
   int _getFlex(RenderBox child) {
@@ -289,4 +323,13 @@ class RenderFlex extends RenderBox
       context.paintChild(child, offset + childParentData.offset);
     }
   }
+}
+
+class _FlexMeasurement {
+  const _FlexMeasurement({
+    required this.mainExtent,
+    required this.crossExtent,
+  });
+  final int mainExtent;
+  final int crossExtent;
 }
