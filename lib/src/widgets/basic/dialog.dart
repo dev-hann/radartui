@@ -36,25 +36,26 @@ class Dialog extends StatelessWidget {
 
     if (actions != null && actions!.isNotEmpty) {
       columnChildren.add(const Container(height: 1));
-
-      final actionWidgets = <Widget>[];
-      for (int i = 0; i < actions!.length; i++) {
-        if (i > 0) {
-          actionWidgets.add(const Container(width: 2));
-        }
-        actionWidgets.add(actions![i]);
-      }
-      columnChildren.add(Row(children: actionWidgets));
+      columnChildren.add(_buildActionRow());
     }
 
     Widget dialogContent = Column(children: columnChildren);
-
     final effectivePadding = padding ?? const EdgeInsets.all(2);
     dialogContent = Padding(padding: effectivePadding, child: dialogContent);
-
     dialogContent = Container(color: backgroundColor, child: dialogContent);
 
     return dialogContent;
+  }
+
+  Widget _buildActionRow() {
+    final actionWidgets = <Widget>[];
+    for (int i = 0; i < actions!.length; i++) {
+      if (i > 0) {
+        actionWidgets.add(const Container(width: 2));
+      }
+      actionWidgets.add(actions![i]);
+    }
+    return Row(children: actionWidgets);
   }
 }
 
