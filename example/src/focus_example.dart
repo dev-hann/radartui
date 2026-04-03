@@ -44,7 +44,6 @@ class _FocusExampleState extends State<FocusExample> {
           const SizedBox(height: 1),
           Row(
             children: [
-              // 첫 번째 ListView: Actions
               Container(
                 padding: const EdgeInsets.all(1),
                 child: Column(
@@ -61,10 +60,7 @@ class _FocusExampleState extends State<FocusExample> {
                   ],
                 ),
               ),
-
               const SizedBox(width: 2),
-
-              // 두 번째 ListView: Files
               Container(
                 padding: const EdgeInsets.all(1),
                 child: Column(
@@ -86,10 +82,7 @@ class _FocusExampleState extends State<FocusExample> {
                   ],
                 ),
               ),
-
               const SizedBox(width: 2),
-
-              // 세 번째 ListView: Options
               Container(
                 padding: const EdgeInsets.all(1),
                 child: Column(
@@ -108,10 +101,7 @@ class _FocusExampleState extends State<FocusExample> {
               ),
             ],
           ),
-
           const SizedBox(height: 2),
-
-          // 선택된 항목들 표시
           Container(
             padding: const EdgeInsets.all(1),
             child: Column(

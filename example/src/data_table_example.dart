@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:radartui/radartui.dart';
 
 class DataTableExample extends StatefulWidget {
-  const DataTableExample({super.key});
+  const DataTableExample();
 
   @override
   State<DataTableExample> createState() => _DataTableExampleState();

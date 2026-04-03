@@ -359,7 +359,7 @@ class TestKeyboard implements RawKeyboard {
   }
 
   void sendSpace() {
-    sendKeyEvent(const KeyEvent(code: KeyCode.char, char: ' '));
+    sendKeyEvent(const KeyEvent(code: KeyCode.space));
   }
 
   void sendTab() {

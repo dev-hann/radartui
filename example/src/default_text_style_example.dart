@@ -1,7 +1,33 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
-class DefaultTextStyleExample extends StatelessWidget {
+class DefaultTextStyleExample extends StatefulWidget {
   const DefaultTextStyleExample();
+
+  @override
+  State<DefaultTextStyleExample> createState() =>
+      _DefaultTextStyleExampleState();
+}
+
+class _DefaultTextStyleExampleState extends State<DefaultTextStyleExample> {
+  StreamSubscription? _keySubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+      if (key.code == KeyCode.escape) {
+        Navigator.of(context).pop();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _keySubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
