@@ -107,12 +107,12 @@ class _ButtonRenderWidget extends RenderObjectWidget {
 
   @override
   RenderButton createRenderObject(BuildContext context) => RenderButton(
-    text: text,
-    enabled: enabled,
-    focused: focused,
-    style: style,
-    onTap: onTap,
-  );
+        text: text,
+        enabled: enabled,
+        focused: focused,
+        style: style,
+        onTap: onTap,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -181,6 +181,15 @@ class RenderButton extends RenderBox {
       backgroundColor: _getBackgroundColor(),
     );
 
+    _drawBorderEdges(context, offset, borderStyle);
+    _drawBorderCorners(context, offset, borderStyle);
+  }
+
+  void _drawBorderEdges(
+    PaintingContext context,
+    Offset offset,
+    TextStyle borderStyle,
+  ) {
     for (int x = 0; x < size!.width; x++) {
       context.buffer.writeStyled(offset.x + x, offset.y, '─', borderStyle);
       context.buffer.writeStyled(
@@ -200,7 +209,13 @@ class RenderButton extends RenderBox {
         borderStyle,
       );
     }
+  }
 
+  void _drawBorderCorners(
+    PaintingContext context,
+    Offset offset,
+    TextStyle borderStyle,
+  ) {
     context.buffer.writeStyled(offset.x, offset.y, '┌', borderStyle);
     context.buffer.writeStyled(
       offset.x + size!.width - 1,
