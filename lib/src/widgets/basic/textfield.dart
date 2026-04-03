@@ -319,38 +319,33 @@ class _TextFieldState extends State<TextField> {
   void _handleKeyEvent(KeyEvent event) {
     switch (event.code) {
       case KeyCode.char:
-        if (event.char != null) {
-          if (widget.maxLength == null ||
-              _controller.text.length < widget.maxLength!) {
-            _controller.insertText(event.char!);
-          }
-        }
-        break;
+        _handleCharInput(event.char);
       case KeyCode.backspace:
         _controller.deleteBackward();
-        break;
       case KeyCode.delete:
         _controller.deleteForward();
-        break;
       case KeyCode.arrowLeft:
         _controller.moveCursorLeft();
-        break;
       case KeyCode.arrowRight:
         _controller.moveCursorRight();
-        break;
       case KeyCode.home:
         _controller.moveCursorToStart();
-        break;
       case KeyCode.end:
         _controller.moveCursorToEnd();
-        break;
       case KeyCode.enter:
         if (widget.onSubmitted != null) {
           widget.onSubmitted!(_controller.text);
         }
-        break;
       default:
         break;
+    }
+  }
+
+  void _handleCharInput(String? char) {
+    if (char == null) return;
+    if (widget.maxLength == null ||
+        _controller.text.length < widget.maxLength!) {
+      _controller.insertText(char);
     }
   }
 
