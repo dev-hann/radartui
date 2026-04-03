@@ -67,27 +67,9 @@ class RenderText extends RenderBox {
     final maxWidth = boxConstraints.maxWidth;
 
     _lines = _wrapText(text, maxWidth);
+    _applyOverflow();
 
-    if (maxLines != null && _lines.length > maxLines!) {
-      _lines = _lines.sublist(0, maxLines!);
-      if (overflow == TextOverflow.ellipsis && _lines.isNotEmpty) {
-        final lastLine = _lines.last;
-        if (lastLine.length >= 3) {
-          _lines[_lines.length - 1] =
-              '${lastLine.substring(0, lastLine.length - 3)}...';
-        } else {
-          _lines[_lines.length - 1] = '...';
-        }
-      }
-    }
-
-    int computedWidth = 0;
-    for (final line in _lines) {
-      if (line.length > computedWidth) {
-        computedWidth = line.length;
-      }
-    }
-
+    final computedWidth = _maxLineWidth();
     final effectiveMaxHeight =
         boxConstraints.maxHeight > 0 ? boxConstraints.maxHeight : 1;
     final width = computedWidth.clamp(
@@ -97,6 +79,30 @@ class RenderText extends RenderBox {
     final height = _lines.length.clamp(1, effectiveMaxHeight);
 
     size = Size(width, height);
+  }
+
+  void _applyOverflow() {
+    if (maxLines == null || _lines.length <= maxLines!) return;
+    _lines = _lines.sublist(0, maxLines!);
+    if (overflow != TextOverflow.ellipsis || _lines.isEmpty) return;
+
+    final lastLine = _lines.last;
+    if (lastLine.length >= 3) {
+      _lines[_lines.length - 1] =
+          '${lastLine.substring(0, lastLine.length - 3)}...';
+    } else {
+      _lines[_lines.length - 1] = '...';
+    }
+  }
+
+  int _maxLineWidth() {
+    int computedWidth = 0;
+    for (final line in _lines) {
+      if (line.length > computedWidth) {
+        computedWidth = line.length;
+      }
+    }
+    return computedWidth;
   }
 
   List<String> _wrapText(String text, int maxWidth) {
