@@ -72,13 +72,13 @@ class _ToggleRenderWidget extends RenderObjectWidget {
 
   @override
   RenderToggle createRenderObject(BuildContext context) => RenderToggle(
-    value: value,
-    focused: focused,
-    enabled: enabled,
-    activeColor: activeColor,
-    inactiveColor: inactiveColor,
-    label: label,
-  );
+        value: value,
+        focused: focused,
+        enabled: enabled,
+        activeColor: activeColor,
+        inactiveColor: inactiveColor,
+        label: label,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -134,6 +134,17 @@ class RenderToggle extends RenderBox {
     final indicatorColor = _getIndicatorColor();
     final borderColor = _getBorderColor();
 
+    _paintBackground(context, offset, backgroundColor);
+    _paintBorder(context, offset, borderColor, backgroundColor);
+    _paintIndicator(context, offset, indicatorColor, backgroundColor);
+    _paintLabel(context, offset);
+  }
+
+  void _paintBackground(
+    PaintingContext context,
+    Offset offset,
+    Color backgroundColor,
+  ) {
     for (int x = 0; x < 3; x++) {
       context.buffer.writeStyled(
         offset.x + x,
@@ -142,7 +153,14 @@ class RenderToggle extends RenderBox {
         TextStyle(backgroundColor: backgroundColor),
       );
     }
+  }
 
+  void _paintBorder(
+    PaintingContext context,
+    Offset offset,
+    Color borderColor,
+    Color backgroundColor,
+  ) {
     context.buffer.writeStyled(
       offset.x,
       offset.y,
@@ -155,7 +173,14 @@ class RenderToggle extends RenderBox {
       ']',
       TextStyle(color: borderColor, backgroundColor: backgroundColor),
     );
+  }
 
+  void _paintIndicator(
+    PaintingContext context,
+    Offset offset,
+    Color indicatorColor,
+    Color backgroundColor,
+  ) {
     final indicatorChar = value ? '●' : '○';
     context.buffer.writeStyled(
       offset.x + 1,
@@ -163,17 +188,19 @@ class RenderToggle extends RenderBox {
       indicatorChar,
       TextStyle(color: indicatorColor, backgroundColor: backgroundColor),
     );
+  }
 
-    if (label != null && label!.isNotEmpty) {
-      final int labelX = offset.x + 4;
-      for (int i = 0; i < label!.length; i++) {
-        context.buffer.writeStyled(
-          labelX + i,
-          offset.y,
-          label![i],
-          TextStyle(color: enabled ? Color.white : Color.brightBlack),
-        );
-      }
+  void _paintLabel(PaintingContext context, Offset offset) {
+    if (label == null || label!.isEmpty) return;
+    final int labelX = offset.x + 4;
+    final labelColor = enabled ? Color.white : Color.brightBlack;
+    for (int i = 0; i < label!.length; i++) {
+      context.buffer.writeStyled(
+        labelX + i,
+        offset.y,
+        label![i],
+        TextStyle(color: labelColor),
+      );
     }
   }
 
