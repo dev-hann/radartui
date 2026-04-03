@@ -93,7 +93,7 @@ class TestBinding extends BindingBase
     element.visitChildren(_layout);
   }
 
-  void pump([Duration? duration]) {
+  Future<void> pump([Duration? duration]) async {
     if (_rootElement != null) {
       _build(_rootElement!);
       _layout(_rootElement!);
@@ -101,15 +101,14 @@ class TestBinding extends BindingBase
       paintElement(_rootElement!);
     }
     if (duration != null) {
-      final endTime = DateTime.now().add(duration);
-      while (DateTime.now().isBefore(endTime)) {}
+      await Future<void>.delayed(duration);
     }
   }
 
   Future<void> pumpAndSettle() async {
     var previousOutput = terminal.getPlainText();
     for (int i = 0; i < 100; i++) {
-      pump();
+      await pump();
       await Future<void>.delayed(Duration.zero);
       final currentOutput = terminal.getPlainText();
       if (currentOutput == previousOutput && i > 0) {

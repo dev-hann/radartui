@@ -106,6 +106,7 @@ class _ListViewState<T> extends State<ListView<T>> {
         (event.code == KeyCode.char && event.char == 'j')) {
       _moveSelection(1);
     } else if (event.code == KeyCode.enter ||
+        event.code == KeyCode.space ||
         (event.code == KeyCode.char && event.char == ' ')) {
       if (selectedIndex >= 0 && selectedIndex < widget.items.length) {
         widget.onItemSelected?.call(selectedIndex, widget.items[selectedIndex]);

@@ -57,6 +57,7 @@ class _ButtonState extends State<Button> with FocusableState<Button> {
     if (!widget.enabled) return;
 
     if (event.code == KeyCode.enter ||
+        event.code == KeyCode.space ||
         (event.code == KeyCode.char && event.char == ' ')) {
       widget.onPressed?.call();
     }

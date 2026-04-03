@@ -59,6 +59,9 @@ class TextFinder extends Finder {
       final widget = element.widget;
       if (widget is Text && widget.data == targetText) {
         result.add(element);
+      } else if (widget is RichText &&
+          widget.text.plainText.contains(targetText)) {
+        result.add(element);
       }
       element.visitChildren(visit);
     }
