@@ -198,7 +198,7 @@ class _DataTableState extends State<DataTable> {
     for (int i = 0; i < widget.columns.length; i++) {
       final column = widget.columns[i];
       final width = columnWidths[i];
-      final String label = column.label;
+      String label = column.label;
 
       if (widget.sortColumnIndex == i) {
         final sortIndicator = widget.sortAscending ? '▲' : '▼';

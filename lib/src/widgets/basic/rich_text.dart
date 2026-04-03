@@ -107,9 +107,9 @@ class RenderRichText extends RenderBox {
     required TextSpan text,
     int? maxLines,
     TextOverflow overflow = TextOverflow.clip,
-  }) : _text = text,
-       _maxLines = maxLines,
-       _overflow = overflow;
+  })  : _text = text,
+        _maxLines = maxLines,
+        _overflow = overflow;
 
   TextSpan _text;
   TextSpan get text => _text;
@@ -170,16 +170,14 @@ class RenderRichText extends RenderBox {
       }
     }
 
-    final effectiveMaxHeight = boxConstraints.maxHeight > 0
-        ? boxConstraints.maxHeight
-        : 1;
+    final effectiveMaxHeight =
+        boxConstraints.maxHeight > 0 ? boxConstraints.maxHeight : 1;
     final width = computedWidth.clamp(
       boxConstraints.minWidth,
       boxConstraints.maxWidth,
     );
-    final height = _lines.isEmpty
-        ? 1
-        : _lines.length.clamp(1, effectiveMaxHeight);
+    final height =
+        _lines.isEmpty ? 1 : _lines.length.clamp(1, effectiveMaxHeight);
 
     size = Size(width, height);
   }
@@ -190,7 +188,7 @@ class RenderRichText extends RenderBox {
     }
 
     final lines = <_StyledLine>[];
-    final currentLine = _StyledLine.empty();
+    _StyledLine currentLine = _StyledLine.empty();
     int currentX = 0;
 
     for (final segment in segments) {
@@ -233,7 +231,7 @@ class RenderRichText extends RenderBox {
 
   List<_StyledLine> _buildLinesWithoutWrap(List<_StyledSegment> segments) {
     final lines = <_StyledLine>[];
-    final currentLine = _StyledLine.empty();
+    _StyledLine currentLine = _StyledLine.empty();
 
     for (final segment in segments) {
       final segmentLines = segment.text.split('\n');
