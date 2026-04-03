@@ -32,108 +32,121 @@ class RenderStack extends RenderBox
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
-    int stackWidth = 0;
-    int stackHeight = 0;
-
     final childConstraints = boxConstraints.loosen();
 
-    for (final child in children) {
-      setupParentData(child);
+    final dimensions = _layoutChildren(boxConstraints, childConstraints);
 
-      final childParentData = child.parentData as StackParentData;
-
-      if (childParentData.width != null && childParentData.height != null) {
-        child.layout(
-          BoxConstraints.tight(
-            Size(childParentData.width!, childParentData.height!),
-          ),
-        );
-      } else if (childParentData.width != null) {
-        child.layout(
-          BoxConstraints(
-            minWidth: childParentData.width!,
-            maxWidth: childParentData.width!,
-            minHeight: 0,
-            maxHeight: boxConstraints.maxHeight,
-          ),
-        );
-      } else if (childParentData.height != null) {
-        child.layout(
-          BoxConstraints(
-            minWidth: 0,
-            maxWidth: boxConstraints.maxWidth,
-            minHeight: childParentData.height!,
-            maxHeight: childParentData.height!,
-          ),
-        );
-      } else {
-        child.layout(childConstraints);
-      }
-
-      stackWidth = stackWidth > child.size!.width
-          ? stackWidth
-          : child.size!.width;
-      stackHeight = stackHeight > child.size!.height
-          ? stackHeight
-          : child.size!.height;
-    }
-
-    final finalWidth = stackWidth > 0 ? stackWidth : boxConstraints.minWidth;
-    final finalHeight = stackHeight > 0
-        ? stackHeight
-        : boxConstraints.minHeight;
+    final int finalWidth =
+        dimensions.width > 0 ? dimensions.width : boxConstraints.minWidth;
+    final int finalHeight =
+        dimensions.height > 0 ? dimensions.height : boxConstraints.minHeight;
     size = boxConstraints.constrain(Size(finalWidth, finalHeight));
 
+    _positionChildren(finalWidth, finalHeight);
+  }
+
+  Size _layoutChildren(
+    BoxConstraints boxConstraints,
+    BoxConstraints childConstraints,
+  ) {
+    int maxWidth = 0;
+    int maxHeight = 0;
+    for (final child in children) {
+      setupParentData(child);
+      final childParentData = child.parentData as StackParentData;
+      _layoutChild(child, childParentData, boxConstraints, childConstraints);
+      if (child.size!.width > maxWidth) maxWidth = child.size!.width;
+      if (child.size!.height > maxHeight) maxHeight = child.size!.height;
+    }
+    return Size(maxWidth, maxHeight);
+  }
+
+  void _layoutChild(
+    RenderBox child,
+    StackParentData data,
+    BoxConstraints boxConstraints,
+    BoxConstraints childConstraints,
+  ) {
+    if (data.width != null && data.height != null) {
+      child.layout(BoxConstraints.tight(Size(data.width!, data.height!)));
+    } else if (data.width != null) {
+      child.layout(BoxConstraints(
+        minWidth: data.width!,
+        maxWidth: data.width!,
+        minHeight: 0,
+        maxHeight: boxConstraints.maxHeight,
+      ));
+    } else if (data.height != null) {
+      child.layout(BoxConstraints(
+        minWidth: 0,
+        maxWidth: boxConstraints.maxWidth,
+        minHeight: data.height!,
+        maxHeight: data.height!,
+      ));
+    } else {
+      child.layout(childConstraints);
+    }
+  }
+
+  void _positionChildren(int finalWidth, int finalHeight) {
     for (final child in children) {
       final childParentData = child.parentData as StackParentData;
-      final childWidth = child.size!.width;
-      final childHeight = child.size!.height;
-
-      int left;
-      int top;
-
-      if (childParentData.left != null && childParentData.right != null) {
-        final width =
-            finalWidth - childParentData.right! - childParentData.left!;
-        left = childParentData.left!;
-        if (width != childWidth) {
-          child.layout(
-            BoxConstraints.tightFor(width: width, height: childHeight),
-          );
-        }
-      } else if (childParentData.left != null) {
-        left = childParentData.left!;
-      } else if (childParentData.right != null) {
-        left = (finalWidth - childParentData.right! - childWidth).clamp(
-          0,
-          finalWidth,
-        );
-      } else {
-        left = 0;
-      }
-
-      if (childParentData.top != null && childParentData.bottom != null) {
-        final height =
-            finalHeight - childParentData.bottom! - childParentData.top!;
-        top = childParentData.top!;
-        if (height != childHeight) {
-          child.layout(
-            BoxConstraints.tightFor(width: child.size!.width, height: height),
-          );
-        }
-      } else if (childParentData.top != null) {
-        top = childParentData.top!;
-      } else if (childParentData.bottom != null) {
-        top = (finalHeight - childParentData.bottom! - childHeight).clamp(
-          0,
-          finalHeight,
-        );
-      } else {
-        top = 0;
-      }
-
+      final left = _computeHorizontalPosition(
+        child,
+        childParentData,
+        finalWidth,
+      );
+      final top = _computeVerticalPosition(
+        child,
+        childParentData,
+        finalHeight,
+      );
       childParentData.offset = Offset(left, top);
     }
+  }
+
+  int _computeHorizontalPosition(
+    RenderBox child,
+    StackParentData data,
+    int finalWidth,
+  ) {
+    if (data.left != null && data.right != null) {
+      final width = finalWidth - data.right! - data.left!;
+      if (width != child.size!.width) {
+        child.layout(
+          BoxConstraints.tightFor(width: width, height: child.size!.height),
+        );
+      }
+      return data.left!;
+    } else if (data.left != null) {
+      return data.left!;
+    } else if (data.right != null) {
+      return (finalWidth - data.right! - child.size!.width)
+          .clamp(0, finalWidth);
+    }
+    return 0;
+  }
+
+  int _computeVerticalPosition(
+    RenderBox child,
+    StackParentData data,
+    int finalHeight,
+  ) {
+    if (data.top != null && data.bottom != null) {
+      final height = finalHeight - data.bottom! - data.top!;
+      if (height != child.size!.height) {
+        child.layout(
+          BoxConstraints.tightFor(width: child.size!.width, height: height),
+        );
+      }
+      return data.top!;
+    } else if (data.top != null) {
+      return data.top!;
+    } else if (data.bottom != null) {
+      return (finalHeight - data.bottom! - child.size!.height)
+          .clamp(0, finalHeight);
+    }
+    return 0;
   }
 
   @override
