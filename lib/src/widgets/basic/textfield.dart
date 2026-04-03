@@ -115,8 +115,7 @@ class TextEditingController extends ChangeNotifier {
     if (hasSelection) {
       deleteSelection();
     }
-    _text =
-        _text.substring(0, _cursorPosition) +
+    _text = _text.substring(0, _cursorPosition) +
         text +
         _text.substring(_cursorPosition);
     _cursorPosition += text.length;
@@ -129,8 +128,7 @@ class TextEditingController extends ChangeNotifier {
       return;
     }
     if (_cursorPosition > 0) {
-      _text =
-          _text.substring(0, _cursorPosition - 1) +
+      _text = _text.substring(0, _cursorPosition - 1) +
           _text.substring(_cursorPosition);
       _cursorPosition--;
       notifyListeners();
@@ -143,8 +141,7 @@ class TextEditingController extends ChangeNotifier {
       return;
     }
     if (_cursorPosition < _text.length) {
-      _text =
-          _text.substring(0, _cursorPosition) +
+      _text = _text.substring(0, _cursorPosition) +
           _text.substring(_cursorPosition + 1);
       notifyListeners();
     }
@@ -389,12 +386,12 @@ class _TextField extends RenderObjectWidget {
 
   @override
   RenderTextField createRenderObject(BuildContext context) => RenderTextField(
-    text: text,
-    cursorPosition: cursorPosition,
-    placeholder: placeholder,
-    style: style,
-    hasFocus: hasFocus,
-  );
+        text: text,
+        cursorPosition: cursorPosition,
+        placeholder: placeholder,
+        style: style,
+        hasFocus: hasFocus,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -423,9 +420,8 @@ class RenderTextField extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    final displayText = text.isEmpty && placeholder != null
-        ? placeholder!
-        : text;
+    final displayText =
+        text.isEmpty && placeholder != null ? placeholder! : text;
     final desiredWidth = (displayText.length + 1).clamp(
       1,
       Constraints.infinity,
@@ -436,93 +432,126 @@ class RenderTextField extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final displayText = text.isEmpty && placeholder != null
-        ? placeholder!
-        : text;
+    final displayText =
+        text.isEmpty && placeholder != null ? placeholder! : text;
+    final displayStyle = _resolveDisplayStyle();
 
-    // Enhanced styling for better TUI appearance
-    final baseStyle = style ?? const TextStyle(color: Color.white);
-    final placeholderStyle = TextStyle(
-      color: Color.brightBlack,
-      backgroundColor: baseStyle.backgroundColor,
-      bold: false,
-      italic: true,
-      underline: false,
-    );
-    final displayStyle = text.isEmpty && placeholder != null
-        ? placeholderStyle
-        : baseStyle;
-
-    // Draw border if focused
     if (hasFocus) {
       _drawBorder(context, offset, size!);
     }
 
-    final availableWidth = size!.width;
-    final textLength = displayText.length;
+    final scrollOffset = _computeScrollOffset(displayText.length);
+    _paintText(context, offset, displayText, displayStyle, scrollOffset);
 
-    // Calculate scroll offset to keep cursor visible
-    int scrollOffset = 0;
-    if (textLength >= availableWidth) {
-      // Ensure cursor is visible within the available width
-      if (cursorPosition >= availableWidth) {
-        scrollOffset = cursorPosition - availableWidth + 1;
-      }
-    }
-
-    // Render visible portion of text
-    final visibleStart = scrollOffset;
-    final visibleEnd = (scrollOffset + availableWidth).clamp(0, textLength);
-
-    for (int i = visibleStart; i < visibleEnd; i++) {
-      final screenX = offset.x + i - scrollOffset;
-      context.buffer.writeStyled(
-        screenX,
-        offset.y,
-        displayText[i],
-        displayStyle,
-      );
-    }
-
-    // Render enhanced cursor
     if (hasFocus) {
-      final cursorScreenX = offset.x + cursorPosition - scrollOffset;
-
-      // Only render cursor if it's within visible area
-      if (cursorScreenX >= offset.x &&
-          cursorScreenX < offset.x + availableWidth) {
-        if (cursorPosition < text.length) {
-          // Cursor on existing character - use reverse video effect
-          const cursorStyle = TextStyle(
-            color: Color.black,
-            backgroundColor: Color.cyan,
-            bold: true,
-          );
-          context.buffer.writeStyled(
-            cursorScreenX,
-            offset.y,
-            text[cursorPosition],
-            cursorStyle,
-          );
-        } else {
-          // Cursor at end of text - show block cursor
-          const cursorStyle = TextStyle(
-            color: Color.black,
-            backgroundColor: Color.cyan,
-            bold: true,
-          );
-          context.buffer.writeStyled(cursorScreenX, offset.y, '█', cursorStyle);
-        }
-      }
+      _paintCursor(context, offset, displayText, scrollOffset);
     }
   }
 
-  void _drawBorder(PaintingContext context, Offset offset, Size size) {
-    const borderStyle = TextStyle(color: Color.cyan, bold: true);
-    final width = size.width.toInt();
-    final bufferHeight = context.buffer.terminal.height;
-    final bufferWidth = context.buffer.terminal.width;
+  TextStyle _resolveDisplayStyle() {
+    final baseStyle = style ?? const TextStyle(color: Color.white);
+    if (text.isEmpty && placeholder != null) {
+      return TextStyle(
+        color: Color.brightBlack,
+        backgroundColor: baseStyle.backgroundColor,
+        bold: false,
+        italic: true,
+        underline: false,
+      );
+    }
+    return baseStyle;
+  }
 
+  int _computeScrollOffset(int textLength) {
+    final availableWidth = size!.width;
+    if (textLength >= availableWidth && cursorPosition >= availableWidth) {
+      return cursorPosition - availableWidth + 1;
+    }
+    return 0;
+  }
+
+  void _paintText(
+    PaintingContext context,
+    Offset offset,
+    String displayText,
+    TextStyle displayStyle,
+    int scrollOffset,
+  ) {
+    final availableWidth = size!.width;
+    final textLength = displayText.length;
+    final visibleEnd = (scrollOffset + availableWidth).clamp(0, textLength);
+
+    for (int i = scrollOffset; i < visibleEnd; i++) {
+      final screenX = offset.x + i - scrollOffset;
+      context.buffer
+          .writeStyled(screenX, offset.y, displayText[i], displayStyle);
+    }
+  }
+
+  void _paintCursor(
+    PaintingContext context,
+    Offset offset,
+    String displayText,
+    int scrollOffset,
+  ) {
+    final availableWidth = size!.width;
+    final cursorScreenX = offset.x + cursorPosition - scrollOffset;
+
+    if (cursorScreenX < offset.x ||
+        cursorScreenX >= offset.x + availableWidth) {
+      return;
+    }
+
+    const cursorStyle = TextStyle(
+      color: Color.black,
+      backgroundColor: Color.cyan,
+      bold: true,
+    );
+
+    if (cursorPosition < text.length) {
+      context.buffer.writeStyled(
+        cursorScreenX,
+        offset.y,
+        text[cursorPosition],
+        cursorStyle,
+      );
+    } else {
+      context.buffer.writeStyled(cursorScreenX, offset.y, '█', cursorStyle);
+    }
+  }
+
+  void _drawBorder(PaintingContext context, Offset offset, Size borderSize) {
+    const borderStyle = TextStyle(color: Color.cyan, bold: true);
+    final int width = borderSize.width.toInt();
+    final int bufferHeight = context.buffer.terminal.height;
+    final int bufferWidth = context.buffer.terminal.width;
+
+    _drawBorderEdges(
+      context,
+      offset,
+      width,
+      bufferHeight,
+      bufferWidth,
+      borderStyle,
+    );
+    _drawBorderCorners(
+      context,
+      offset,
+      width,
+      bufferHeight,
+      bufferWidth,
+      borderStyle,
+    );
+  }
+
+  void _drawBorderEdges(
+    PaintingContext context,
+    Offset offset,
+    int width,
+    int bufferHeight,
+    int bufferWidth,
+    TextStyle borderStyle,
+  ) {
     if (offset.y > 0) {
       for (int x = 0; x < width; x++) {
         final posX = offset.x + x;
@@ -548,28 +577,29 @@ class RenderTextField extends RenderBox {
     if (offset.x + width < bufferWidth) {
       context.buffer.writeStyled(offset.x + width, offset.y, '│', borderStyle);
     }
+  }
 
+  void _drawBorderCorners(
+    PaintingContext context,
+    Offset offset,
+    int width,
+    int bufferHeight,
+    int bufferWidth,
+    TextStyle borderStyle,
+  ) {
     if (offset.x > 0 && offset.y > 0) {
       context.buffer.writeStyled(offset.x - 1, offset.y - 1, '┌', borderStyle);
     }
     if (offset.x + width < bufferWidth && offset.y > 0) {
-      context.buffer.writeStyled(
-        offset.x + width,
-        offset.y - 1,
-        '┐',
-        borderStyle,
-      );
+      context.buffer
+          .writeStyled(offset.x + width, offset.y - 1, '┐', borderStyle);
     }
     if (offset.x > 0 && offset.y + 1 < bufferHeight) {
       context.buffer.writeStyled(offset.x - 1, offset.y + 1, '└', borderStyle);
     }
     if (offset.x + width < bufferWidth && offset.y + 1 < bufferHeight) {
-      context.buffer.writeStyled(
-        offset.x + width,
-        offset.y + 1,
-        '┘',
-        borderStyle,
-      );
+      context.buffer
+          .writeStyled(offset.x + width, offset.y + 1, '┘', borderStyle);
     }
   }
 }
