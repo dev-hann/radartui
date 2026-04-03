@@ -48,6 +48,7 @@ class _RadioState<T> extends State<Radio<T>> with FocusableState<Radio<T>> {
     if (widget.onChanged == null) return;
 
     if (event.code == KeyCode.enter ||
+        event.code == KeyCode.space ||
         (event.code == KeyCode.char && event.char == ' ')) {
       widget.onChanged!(widget.value);
     }

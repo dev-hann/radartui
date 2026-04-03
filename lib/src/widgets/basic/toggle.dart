@@ -31,6 +31,7 @@ class _ToggleState extends State<Toggle> with FocusableState<Toggle> {
     if (widget.onChanged == null) return;
 
     if (event.code == KeyCode.enter ||
+        event.code == KeyCode.space ||
         (event.code == KeyCode.char && event.char == ' ')) {
       widget.onChanged!(!widget.value);
     }

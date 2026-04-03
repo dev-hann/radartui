@@ -47,6 +47,7 @@ class _CheckboxState extends State<Checkbox> with FocusableState<Checkbox> {
     if (widget.onChanged == null) return;
 
     if (event.code == KeyCode.enter ||
+        event.code == KeyCode.space ||
         (event.code == KeyCode.char && event.char == ' ')) {
       final newValue = !widget.value;
       widget.onChanged!(newValue);

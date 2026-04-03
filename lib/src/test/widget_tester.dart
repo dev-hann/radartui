@@ -13,8 +13,8 @@ class WidgetTester {
     binding.runWidget(widget);
   }
 
-  void pump([Duration? duration]) {
-    binding.pump(duration);
+  Future<void> pump([Duration? duration]) async {
+    await binding.pump(duration);
   }
 
   Future<void> pumpAndSettle() async {
