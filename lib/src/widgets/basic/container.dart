@@ -20,13 +20,13 @@ class Container extends SingleChildRenderObjectWidget {
 
   @override
   RenderContainer createRenderObject(BuildContext context) => RenderContainer(
-    color: color,
-    width: width,
-    height: height,
-    padding: padding,
-    margin: margin,
-    border: border,
-  );
+        color: color,
+        width: width,
+        height: height,
+        padding: padding,
+        margin: margin,
+        border: border,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -49,8 +49,8 @@ class RenderContainer extends RenderBox
     this.padding,
     this.margin,
     this.border,
-  }) : _width = width,
-       _height = height;
+  })  : _width = width,
+        _height = height;
   Color? color;
   int? _width;
   int? _height;
@@ -90,13 +90,11 @@ class RenderContainer extends RenderBox
 
     if (child != null) {
       final childConstraint = BoxConstraints(
-        maxWidth:
-            containerW -
+        maxWidth: containerW -
             totalPadding.left -
             totalPadding.right -
             _borderHorizontal,
-        maxHeight:
-            containerH -
+        maxHeight: containerH -
             totalPadding.top -
             totalPadding.bottom -
             _borderVertical,
@@ -104,15 +102,13 @@ class RenderContainer extends RenderBox
       child!.layout(childConstraint);
 
       if (_width == null) {
-        containerW =
-            child!.size!.width +
+        containerW = child!.size!.width +
             totalPadding.left +
             totalPadding.right +
             _borderHorizontal;
       }
       if (_height == null) {
-        containerH =
-            child!.size!.height +
+        containerH = child!.size!.height +
             totalPadding.top +
             totalPadding.bottom +
             _borderVertical;
@@ -130,123 +126,171 @@ class RenderContainer extends RenderBox
     final totalMargin = margin ?? const EdgeInsets.all(0);
     final totalPadding = padding ?? const EdgeInsets.all(0);
     final innerOffset = offset + Offset(totalMargin.left, totalMargin.top);
-
     final innerWidth = size!.width - totalMargin.left - totalMargin.right;
     final innerHeight = size!.height - totalMargin.top - totalMargin.bottom;
 
-    if (color != null) {
-      final bgStyle = TextStyle(backgroundColor: color);
-
-      for (int y = 0; y < innerHeight; y++) {
-        for (int x = 0; x < innerWidth; x++) {
-          context.buffer.writeStyled(
-            innerOffset.x + x,
-            innerOffset.y + y,
-            ' ',
-            bgStyle,
-          );
-        }
-      }
-    }
+    _paintBackground(context, innerOffset, innerWidth, innerHeight);
 
     if (child != null) {
       final int borderLeft = _hasBorder && border!.left.isNotEmpty ? 1 : 0;
       final int borderTop = _hasBorder && border!.top.isNotEmpty ? 1 : 0;
-
       context.paintChild(
         child!,
         innerOffset +
             Offset(
-              borderLeft + totalPadding.left,
-              borderTop + totalPadding.top,
-            ),
+                borderLeft + totalPadding.left, borderTop + totalPadding.top),
       );
     }
 
     if (_hasBorder) {
-      final borderStyle = TextStyle(backgroundColor: color);
-      final int hasLeft = border!.left.isNotEmpty ? 1 : 0;
-      final int hasRight = border!.right.isNotEmpty ? 1 : 0;
-      final int hasTop = border!.top.isNotEmpty ? 1 : 0;
-      final int hasBottom = border!.bottom.isNotEmpty ? 1 : 0;
+      _paintBorder(context, innerOffset, innerWidth, innerHeight);
+    }
+  }
 
-      if (hasTop == 1) {
-        final String topLeft = hasLeft == 1 ? '┌' : '╶';
-        final String topRight = hasRight == 1 ? '┐' : '╴';
-
+  void _paintBackground(
+    PaintingContext context,
+    Offset innerOffset,
+    int innerWidth,
+    int innerHeight,
+  ) {
+    if (color == null) return;
+    final bgStyle = TextStyle(backgroundColor: color);
+    for (int y = 0; y < innerHeight; y++) {
+      for (int x = 0; x < innerWidth; x++) {
         context.buffer.writeStyled(
-          innerOffset.x,
-          innerOffset.y,
-          topLeft,
-          borderStyle,
-        );
-        for (int x = 1; x < innerWidth - 1; x++) {
-          context.buffer.writeStyled(
-            innerOffset.x + x,
-            innerOffset.y,
-            border!.top,
-            borderStyle,
-          );
-        }
-        context.buffer.writeStyled(
-          innerOffset.x + innerWidth - 1,
-          innerOffset.y,
-          topRight,
-          borderStyle,
+          innerOffset.x + x,
+          innerOffset.y + y,
+          ' ',
+          bgStyle,
         );
       }
+    }
+  }
 
-      if (hasBottom == 1) {
-        final String bottomLeft = hasLeft == 1 ? '└' : '╶';
-        final String bottomRight = hasRight == 1 ? '┘' : '╴';
+  void _paintBorder(
+    PaintingContext context,
+    Offset innerOffset,
+    int innerWidth,
+    int innerHeight,
+  ) {
+    final borderStyle = TextStyle(backgroundColor: color);
+    final int hasLeft = border!.left.isNotEmpty ? 1 : 0;
+    final int hasRight = border!.right.isNotEmpty ? 1 : 0;
+    final int hasTop = border!.top.isNotEmpty ? 1 : 0;
+    final int hasBottom = border!.bottom.isNotEmpty ? 1 : 0;
 
-        context.buffer.writeStyled(
-          innerOffset.x,
-          innerOffset.y + innerHeight - 1,
-          bottomLeft,
-          borderStyle,
-        );
-        for (int x = 1; x < innerWidth - 1; x++) {
-          context.buffer.writeStyled(
-            innerOffset.x + x,
-            innerOffset.y + innerHeight - 1,
-            border!.bottom,
-            borderStyle,
-          );
-        }
-        context.buffer.writeStyled(
-          innerOffset.x + innerWidth - 1,
-          innerOffset.y + innerHeight - 1,
-          bottomRight,
-          borderStyle,
-        );
-      }
+    if (hasTop == 1) {
+      _paintHorizontalBorder(
+        context,
+        innerOffset,
+        innerWidth,
+        hasLeft,
+        hasRight,
+        border!.top,
+        isTop: true,
+        borderStyle: borderStyle,
+      );
+    }
 
-      if (hasLeft == 1) {
-        final int yStart = hasTop == 1 ? 1 : 0;
-        final int yEnd = hasBottom == 1 ? innerHeight - 1 : innerHeight;
-        for (int y = yStart; y < yEnd; y++) {
-          context.buffer.writeStyled(
-            innerOffset.x,
-            innerOffset.y + y,
-            border!.left,
-            borderStyle,
-          );
-        }
-      }
+    if (hasBottom == 1) {
+      _paintHorizontalBorder(
+        context,
+        innerOffset,
+        innerWidth,
+        hasLeft,
+        hasRight,
+        border!.bottom,
+        isTop: false,
+        innerHeight: innerHeight,
+        borderStyle: borderStyle,
+      );
+    }
 
-      if (hasRight == 1) {
-        final int yStart = hasTop == 1 ? 1 : 0;
-        final int yEnd = hasBottom == 1 ? innerHeight - 1 : innerHeight;
-        for (int y = yStart; y < yEnd; y++) {
-          context.buffer.writeStyled(
-            innerOffset.x + innerWidth - 1,
-            innerOffset.y + y,
-            border!.right,
-            borderStyle,
-          );
-        }
-      }
+    if (hasLeft == 1) {
+      _paintVerticalBorder(
+        context,
+        innerOffset,
+        innerHeight,
+        hasTop,
+        hasBottom,
+        border!.left,
+        isLeft: true,
+        innerWidth: innerWidth,
+        borderStyle: borderStyle,
+      );
+    }
+
+    if (hasRight == 1) {
+      _paintVerticalBorder(
+        context,
+        innerOffset,
+        innerHeight,
+        hasTop,
+        hasBottom,
+        border!.right,
+        isLeft: false,
+        innerWidth: innerWidth,
+        borderStyle: borderStyle,
+      );
+    }
+  }
+
+  void _paintHorizontalBorder(
+    PaintingContext context,
+    Offset innerOffset,
+    int innerWidth,
+    int hasLeft,
+    int hasRight,
+    String character, {
+    required bool isTop,
+    required TextStyle borderStyle,
+    int innerHeight = 0,
+  }) {
+    final int y = isTop ? 0 : innerHeight - 1;
+    final String leftCorner =
+        isTop ? (hasLeft == 1 ? '┌' : '╶') : (hasLeft == 1 ? '└' : '╶');
+    final String rightCorner =
+        isTop ? (hasRight == 1 ? '┐' : '╴') : (hasRight == 1 ? '┘' : '╴');
+
+    context.buffer
+        .writeStyled(innerOffset.x, innerOffset.y + y, leftCorner, borderStyle);
+    for (int x = 1; x < innerWidth - 1; x++) {
+      context.buffer.writeStyled(
+        innerOffset.x + x,
+        innerOffset.y + y,
+        character,
+        borderStyle,
+      );
+    }
+    context.buffer.writeStyled(
+      innerOffset.x + innerWidth - 1,
+      innerOffset.y + y,
+      rightCorner,
+      borderStyle,
+    );
+  }
+
+  void _paintVerticalBorder(
+    PaintingContext context,
+    Offset innerOffset,
+    int innerHeight,
+    int hasTop,
+    int hasBottom,
+    String character, {
+    required bool isLeft,
+    required int innerWidth,
+    required TextStyle borderStyle,
+  }) {
+    final int x = isLeft ? 0 : innerWidth - 1;
+    final int yStart = hasTop == 1 ? 1 : 0;
+    final int yEnd = hasBottom == 1 ? innerHeight - 1 : innerHeight;
+    for (int y = yStart; y < yEnd; y++) {
+      context.buffer.writeStyled(
+        innerOffset.x + x,
+        innerOffset.y + y,
+        character,
+        borderStyle,
+      );
     }
   }
 }
