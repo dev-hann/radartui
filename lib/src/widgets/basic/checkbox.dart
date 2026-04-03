@@ -116,13 +116,13 @@ class _CheckboxRenderWidget extends RenderObjectWidget {
 
   @override
   RenderCheckbox createRenderObject(BuildContext context) => RenderCheckbox(
-    value: value,
-    tristate: tristate,
-    focused: focused,
-    enabled: enabled,
-    activeColor: activeColor,
-    checkColor: checkColor,
-  );
+        value: value,
+        tristate: tristate,
+        focused: focused,
+        enabled: enabled,
+        activeColor: activeColor,
+        checkColor: checkColor,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -169,11 +169,24 @@ class RenderCheckbox extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     final backgroundColor = _getBackgroundColor();
     final foregroundColor = _getForegroundColor();
-    final borderColor = focused
-        ? activeColor
-        : (enabled ? Color.white : Color.brightBlack);
+    final borderColor =
+        focused ? activeColor : (enabled ? Color.white : Color.brightBlack);
 
-    // Draw checkbox background
+    _paintBackground(context, offset, backgroundColor);
+    _paintBorder(context, offset, borderColor, backgroundColor);
+
+    final checkChar = _getCheckChar();
+    if (checkChar.isNotEmpty) {
+      _paintIndicator(
+          context, offset, checkChar, foregroundColor, backgroundColor);
+    }
+  }
+
+  void _paintBackground(
+    PaintingContext context,
+    Offset offset,
+    Color backgroundColor,
+  ) {
     for (int x = 0; x < 3; x++) {
       context.buffer.writeStyled(
         offset.x + x,
@@ -182,31 +195,33 @@ class RenderCheckbox extends RenderBox {
         TextStyle(backgroundColor: backgroundColor),
       );
     }
+  }
 
-    // Draw border
-    context.buffer.writeStyled(
-      offset.x,
-      offset.y,
-      '[',
-      TextStyle(color: borderColor, backgroundColor: backgroundColor),
-    );
-    context.buffer.writeStyled(
-      offset.x + 2,
-      offset.y,
-      ']',
-      TextStyle(color: borderColor, backgroundColor: backgroundColor),
-    );
+  void _paintBorder(
+    PaintingContext context,
+    Offset offset,
+    Color borderColor,
+    Color backgroundColor,
+  ) {
+    final borderStyle =
+        TextStyle(color: borderColor, backgroundColor: backgroundColor);
+    context.buffer.writeStyled(offset.x, offset.y, '[', borderStyle);
+    context.buffer.writeStyled(offset.x + 2, offset.y, ']', borderStyle);
+  }
 
-    // Draw check mark
-    final checkChar = _getCheckChar();
-    if (checkChar.isNotEmpty) {
-      context.buffer.writeStyled(
-        offset.x + 1,
-        offset.y,
-        checkChar,
-        TextStyle(color: foregroundColor, backgroundColor: backgroundColor),
-      );
-    }
+  void _paintIndicator(
+    PaintingContext context,
+    Offset offset,
+    String checkChar,
+    Color foregroundColor,
+    Color backgroundColor,
+  ) {
+    context.buffer.writeStyled(
+      offset.x + 1,
+      offset.y,
+      checkChar,
+      TextStyle(color: foregroundColor, backgroundColor: backgroundColor),
+    );
   }
 
   Color _getBackgroundColor() {
