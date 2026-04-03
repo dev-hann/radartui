@@ -121,13 +121,10 @@ class RenderWrap extends RenderBox
     final runs = <_WrapRun>[];
     List<RenderBox> currentRun = <RenderBox>[];
     int currentRunExtent = 0;
-    int runMaxCrossExtent = 0;
 
     for (final child in children) {
       final childMainExtent =
           isHorizontal ? child.size!.width : child.size!.height;
-      final childCrossExtent =
-          isHorizontal ? child.size!.height : child.size!.width;
       final spacingToAdd = currentRun.isEmpty ? 0 : spacing;
 
       if (currentRunExtent + spacingToAdd + childMainExtent > mainAxisLimit &&
@@ -135,14 +132,10 @@ class RenderWrap extends RenderBox
         runs.add(_computeRunExtent(isHorizontal, currentRun));
         currentRun = <RenderBox>[];
         currentRunExtent = 0;
-        runMaxCrossExtent = 0;
       }
 
       currentRun.add(child);
       currentRunExtent += spacingToAdd + childMainExtent;
-      if (childCrossExtent > runMaxCrossExtent) {
-        runMaxCrossExtent = childCrossExtent;
-      }
     }
 
     if (currentRun.isNotEmpty) {
