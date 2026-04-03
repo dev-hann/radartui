@@ -220,6 +220,12 @@ class _DataTableState extends State<DataTable> {
 
   Widget _buildDataRow(int rowIndex, List<int> columnWidths) {
     final row = widget.rows[rowIndex];
+    final parts = _buildCellParts(row, columnWidths);
+    final rowText = parts.join(' | ');
+    return _styledRowText(rowText, row.selected, rowIndex);
+  }
+
+  List<String> _buildCellParts(DataRow row, List<int> columnWidths) {
     final parts = <String>[];
 
     if (widget.showCheckboxColumn) {
@@ -235,9 +241,11 @@ class _DataTableState extends State<DataTable> {
       parts.add(paddedValue);
     }
 
-    final isRowFocused = _hasFocus && rowIndex == _focusedRowIndex;
-    final rowText = parts.join(' | ');
+    return parts;
+  }
 
+  Widget _styledRowText(String rowText, bool selected, int rowIndex) {
+    final isRowFocused = _hasFocus && rowIndex == _focusedRowIndex;
     if (isRowFocused) {
       return Text(
         '> $rowText',
@@ -246,7 +254,7 @@ class _DataTableState extends State<DataTable> {
           backgroundColor: Color.white,
         ),
       );
-    } else if (row.selected) {
+    } else if (selected) {
       return Text('* $rowText');
     } else {
       return Text('  $rowText');
