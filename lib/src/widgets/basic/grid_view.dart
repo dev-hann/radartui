@@ -20,8 +20,8 @@ class GridView<T> extends StatefulWidget {
     this.initialSelectedIndex = 0,
     this.onItemSelected,
     this.wrapAroundNavigation = false,
-  }) : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
-       unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
+  })  : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
+        unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
 
   final List<T> items;
   final Widget Function(T item) selectedBuilder;
@@ -143,10 +143,10 @@ class _GridRenderWidget extends MultiChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) => RenderGridView(
-    crossAxisCount: crossAxisCount,
-    mainAxisSpacing: mainAxisSpacing,
-    crossAxisSpacing: crossAxisSpacing,
-  );
+        crossAxisCount: crossAxisCount,
+        mainAxisSpacing: mainAxisSpacing,
+        crossAxisSpacing: crossAxisSpacing,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -195,10 +195,19 @@ class RenderGridView extends RenderBox
     }
 
     final availableWidth = boxConstraints.maxWidth;
-
     final totalSpacing = crossAxisSpacing * (crossAxisCount - 1);
     final cellWidth = (availableWidth - totalSpacing) ~/ crossAxisCount;
+    final maxRowHeight = _computeMaxRowHeight();
+    final rowCount = (children.length / crossAxisCount).ceil();
 
+    _positionChildren(cellWidth, maxRowHeight);
+
+    final totalHeight =
+        rowCount * maxRowHeight + (rowCount - 1) * mainAxisSpacing;
+    size = boxConstraints.constrain(Size(availableWidth, totalHeight));
+  }
+
+  int _computeMaxRowHeight() {
     int maxRowHeight = 1;
     for (final child in children) {
       final childHeight = child.size?.height ?? 1;
@@ -206,9 +215,10 @@ class RenderGridView extends RenderBox
         maxRowHeight = childHeight;
       }
     }
+    return maxRowHeight;
+  }
 
-    final rowCount = (children.length / crossAxisCount).ceil();
-
+  void _positionChildren(int cellWidth, int maxRowHeight) {
     int x = 0;
     int y = 0;
 
@@ -225,10 +235,6 @@ class RenderGridView extends RenderBox
         y += maxRowHeight + mainAxisSpacing;
       }
     }
-
-    final totalHeight =
-        rowCount * maxRowHeight + (rowCount - 1) * mainAxisSpacing;
-    size = boxConstraints.constrain(Size(availableWidth, totalHeight));
   }
 
   @override
