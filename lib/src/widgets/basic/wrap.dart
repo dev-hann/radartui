@@ -258,28 +258,43 @@ class RenderWrap extends RenderBox
         run.children.length,
       );
 
-      int mainAxisOffset = mainAxisStart;
-
-      for (final child in run.children) {
-        final childMainExtent =
-            isHorizontal ? child.size!.width : child.size!.height;
-        final childCrossExtent =
-            isHorizontal ? child.size!.height : child.size!.width;
-        final childCrossOffset = _childCrossOffset(
-          run.crossExtent,
-          childCrossExtent,
-        );
-
-        _setChildOffset(
-          child,
-          isHorizontal,
-          mainAxisOffset,
-          crossAxisOffset + childCrossOffset,
-        );
-        mainAxisOffset += childMainExtent + spacing + extraSpacing;
-      }
+      _positionRunChildren(
+        run,
+        isHorizontal,
+        mainAxisStart,
+        extraSpacing,
+        crossAxisOffset,
+      );
 
       crossAxisOffset += run.crossExtent + runSpacing;
+    }
+  }
+
+  void _positionRunChildren(
+    _WrapRun run,
+    bool isHorizontal,
+    int mainAxisOffset,
+    int extraSpacing,
+    int crossAxisOffset,
+  ) {
+    int currentMain = mainAxisOffset;
+    for (final child in run.children) {
+      final childMainExtent =
+          isHorizontal ? child.size!.width : child.size!.height;
+      final childCrossExtent =
+          isHorizontal ? child.size!.height : child.size!.width;
+      final childCrossOffset = _childCrossOffset(
+        run.crossExtent,
+        childCrossExtent,
+      );
+
+      _setChildOffset(
+        child,
+        isHorizontal,
+        currentMain,
+        crossAxisOffset + childCrossOffset,
+      );
+      currentMain += childMainExtent + spacing + extraSpacing;
     }
   }
 
