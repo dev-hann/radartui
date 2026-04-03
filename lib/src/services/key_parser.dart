@@ -41,6 +41,7 @@ class KeyEvent {
     this.isCtrlPressed = false,
     this.isMetaPressed = false,
   });
+
   final KeyCode code;
   final String? char;
   final bool isShiftPressed;
@@ -67,265 +68,173 @@ class KeyEvent {
 }
 
 class KeyParser {
-  static KeyEvent parse(List<int> rawData) {
-    if (rawData.isEmpty) {
-      return const KeyEvent(code: KeyCode.unknown);
-    }
+  static const List<int> _csi = [27, 91];
+  static const List<int> _ss3 = [27, 79];
 
-    bool isShift = false;
-    bool isAlt = false;
-    bool isCtrl = false;
-    bool isMeta = false;
+  static KeyEvent parse(List<int> data) {
+    if (data.isEmpty) return const KeyEvent(code: KeyCode.unknown);
 
-    if (rawData.length >= 3 && rawData[0] == 27 && rawData[1] == 91) {
-      if (rawData.length >= 4 &&
-          rawData[2] >= 48 &&
-          rawData[2] <= 57 &&
-          rawData[3] == 59) {
-        final modifierCode = rawData[2] - 48;
-        if (modifierCode & 1 == 1) isShift = true;
-        if (modifierCode & 2 == 2) isAlt = true;
-        if (modifierCode & 4 == 4) isCtrl = true;
-        if (modifierCode & 8 == 8) isMeta = true;
+    return _parseModifiedArrowKeys(data) ??
+        _parseArrowAndNavKeys(data) ??
+        _parseSS3FunctionKeys(data) ??
+        _parseSpecialKeys(data) ??
+        _parseExtendedFunctionKeys(data) ??
+        _parseSingleByte(data) ??
+        _parseCtrlChar(data) ??
+        _parseAltChar(data) ??
+        _parseCharFallback(data);
+  }
 
-        if (rawData.length >= 5) {
-          switch (rawData[4]) {
-            case 65:
-              return KeyEvent(
-                code: KeyCode.arrowUp,
-                isShiftPressed: isShift,
-                isAltPressed: isAlt,
-                isCtrlPressed: isCtrl,
-                isMetaPressed: isMeta,
-              );
-            case 66:
-              return KeyEvent(
-                code: KeyCode.arrowDown,
-                isShiftPressed: isShift,
-                isAltPressed: isAlt,
-                isCtrlPressed: isCtrl,
-                isMetaPressed: isMeta,
-              );
-            case 67:
-              return KeyEvent(
-                code: KeyCode.arrowRight,
-                isShiftPressed: isShift,
-                isAltPressed: isAlt,
-                isCtrlPressed: isCtrl,
-                isMetaPressed: isMeta,
-              );
-            case 68:
-              return KeyEvent(
-                code: KeyCode.arrowLeft,
-                isShiftPressed: isShift,
-                isAltPressed: isAlt,
-                isCtrlPressed: isCtrl,
-                isMetaPressed: isMeta,
-              );
-          }
-        }
-      }
+  static KeyEvent? _parseModifiedArrowKeys(List<int> data) {
+    if (!_startsWith(data, _csi, 2)) return null;
+    if (data.length < 4) return null;
+    if (data[2] < 48 || data[2] > 57 || data[3] != 59) return null;
 
-      switch (rawData[2]) {
-        case 65:
-          return const KeyEvent(code: KeyCode.arrowUp);
-        case 66:
-          return const KeyEvent(code: KeyCode.arrowDown);
-        case 67:
-          return const KeyEvent(code: KeyCode.arrowRight);
-        case 68:
-          return const KeyEvent(code: KeyCode.arrowLeft);
-        case 72:
-          return const KeyEvent(code: KeyCode.home);
-        case 70:
-          return const KeyEvent(code: KeyCode.end);
-        case 90:
-          return const KeyEvent(code: KeyCode.tab, isShiftPressed: true);
-      }
-    }
+    final bool isShift = (data[2] - 48) & 1 == 1;
+    final bool isAlt = (data[2] - 48) & 2 == 2;
+    final bool isCtrl = (data[2] - 48) & 4 == 4;
+    final bool isMeta = (data[2] - 48) & 8 == 8;
 
-    if (rawData.length >= 3 && rawData[0] == 27 && rawData[1] == 79) {
-      switch (rawData[2]) {
-        case 80:
-          return const KeyEvent(code: KeyCode.f1);
-        case 81:
-          return const KeyEvent(code: KeyCode.f2);
-        case 82:
-          return const KeyEvent(code: KeyCode.f3);
-        case 83:
-          return const KeyEvent(code: KeyCode.f4);
-      }
-    }
+    if (data.length < 5) return null;
+    final code = _arrowKeyCode(data[4]);
+    if (code == null) return null;
 
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[3] == 126) {
-      switch (rawData[2]) {
-        case 50:
-          return const KeyEvent(code: KeyCode.insert);
-        case 51:
-          return const KeyEvent(code: KeyCode.delete);
-        case 53:
-          return const KeyEvent(code: KeyCode.pageUp);
-        case 54:
-          return const KeyEvent(code: KeyCode.pageDown);
-        case 49:
-          return const KeyEvent(code: KeyCode.home);
-        case 52:
-          return const KeyEvent(code: KeyCode.end);
-      }
-    }
+    return KeyEvent(
+      code: code,
+      isShiftPressed: isShift,
+      isAltPressed: isAlt,
+      isCtrlPressed: isCtrl,
+      isMetaPressed: isMeta,
+    );
+  }
 
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 49 &&
-        rawData[3] == 126) {
-      return const KeyEvent(code: KeyCode.f1);
+  static KeyEvent? _parseArrowAndNavKeys(List<int> data) {
+    if (!_startsWith(data, _csi, 2)) return null;
+    final code = switch (data[2]) {
+      65 => KeyCode.arrowUp,
+      66 => KeyCode.arrowDown,
+      67 => KeyCode.arrowRight,
+      68 => KeyCode.arrowLeft,
+      72 => KeyCode.home,
+      70 => KeyCode.end,
+      90 => KeyCode.tab,
+      _ => null,
+    };
+    if (code == KeyCode.tab) {
+      return const KeyEvent(code: KeyCode.tab, isShiftPressed: true);
     }
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 50 &&
-        rawData[3] == 126) {
-      return const KeyEvent(code: KeyCode.f2);
-    }
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 49 &&
-        rawData[3] == 51 &&
-        rawData.length >= 5 &&
-        rawData[4] == 126) {
-      return const KeyEvent(code: KeyCode.f3);
-    }
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 49 &&
-        rawData[3] == 52 &&
-        rawData.length >= 5 &&
-        rawData[4] == 126) {
-      return const KeyEvent(code: KeyCode.f4);
-    }
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 49 &&
-        rawData[3] == 53 &&
-        rawData.length >= 5 &&
-        rawData[4] == 126) {
-      return const KeyEvent(code: KeyCode.f5);
-    }
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 49 &&
-        rawData[3] == 55 &&
-        rawData.length >= 5 &&
-        rawData[4] == 126) {
-      return const KeyEvent(code: KeyCode.f6);
-    }
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 49 &&
-        rawData[3] == 56 &&
-        rawData.length >= 5 &&
-        rawData[4] == 126) {
-      return const KeyEvent(code: KeyCode.f7);
-    }
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 49 &&
-        rawData[3] == 57 &&
-        rawData.length >= 5 &&
-        rawData[4] == 126) {
-      return const KeyEvent(code: KeyCode.f8);
-    }
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 50 &&
-        rawData[3] == 48 &&
-        rawData.length >= 5 &&
-        rawData[4] == 126) {
-      return const KeyEvent(code: KeyCode.f9);
-    }
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 50 &&
-        rawData[3] == 49 &&
-        rawData.length >= 5 &&
-        rawData[4] == 126) {
-      return const KeyEvent(code: KeyCode.f10);
-    }
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 50 &&
-        rawData[3] == 51 &&
-        rawData.length >= 5 &&
-        rawData[4] == 126) {
-      return const KeyEvent(code: KeyCode.f11);
-    }
-    if (rawData.length >= 4 &&
-        rawData[0] == 27 &&
-        rawData[1] == 91 &&
-        rawData[2] == 50 &&
-        rawData[3] == 52 &&
-        rawData.length >= 5 &&
-        rawData[4] == 126) {
-      return const KeyEvent(code: KeyCode.f12);
-    }
+    if (code != null) return KeyEvent(code: code);
+    return null;
+  }
 
-    if (rawData.length == 1) {
-      switch (rawData[0]) {
-        case 27:
-          return const KeyEvent(code: KeyCode.escape);
-        case 9:
-          return const KeyEvent(code: KeyCode.tab);
-        case 10:
-        case 13:
-          return const KeyEvent(code: KeyCode.enter);
-        case 127:
-        case 8:
-          return const KeyEvent(code: KeyCode.backspace);
-        case 32:
-          return const KeyEvent(code: KeyCode.space);
-      }
-    }
+  static KeyEvent? _parseSS3FunctionKeys(List<int> data) {
+    if (!_startsWith(data, _ss3, 2)) return null;
+    final code = switch (data[2]) {
+      80 => KeyCode.f1,
+      81 => KeyCode.f2,
+      82 => KeyCode.f3,
+      83 => KeyCode.f4,
+      _ => null,
+    };
+    if (code != null) return KeyEvent(code: code);
+    return null;
+  }
 
-    if (rawData.length == 1 && rawData[0] >= 1 && rawData[0] <= 26) {
-      isCtrl = true;
-      final charCode = rawData[0] + 64;
-      return KeyEvent(
-        code: KeyCode.char,
-        char: String.fromCharCode(charCode),
-        isCtrlPressed: true,
-      );
-    }
+  static KeyEvent? _parseSpecialKeys(List<int> data) {
+    if (data.length < 4) return null;
+    if (!_startsWith(data, _csi, 2) || data[3] != 126) return null;
+    final code = switch (data[2]) {
+      50 => KeyCode.insert,
+      51 => KeyCode.delete,
+      53 => KeyCode.pageUp,
+      54 => KeyCode.pageDown,
+      49 => KeyCode.home,
+      52 => KeyCode.end,
+      _ => null,
+    };
+    if (code != null) return KeyEvent(code: code);
+    return null;
+  }
 
-    if (rawData.length == 2 && rawData[0] == 27) {
-      isAlt = true;
-      final char = String.fromCharCode(rawData[1]);
-      return KeyEvent(code: KeyCode.char, char: char, isAltPressed: true);
-    }
+  static const Map<String, KeyCode> _fKeyMap = {
+    '\x1b[11~': KeyCode.f1,
+    '\x1b[12~': KeyCode.f2,
+    '\x1b[13~': KeyCode.f3,
+    '\x1b[14~': KeyCode.f4,
+    '\x1b[15~': KeyCode.f5,
+    '\x1b[17~': KeyCode.f6,
+    '\x1b[18~': KeyCode.f7,
+    '\x1b[19~': KeyCode.f8,
+    '\x1b[20~': KeyCode.f9,
+    '\x1b[21~': KeyCode.f10,
+    '\x1b[23~': KeyCode.f11,
+    '\x1b[24~': KeyCode.f12,
+  };
 
+  static KeyEvent? _parseExtendedFunctionKeys(List<int> data) {
+    final key = String.fromCharCodes(data);
+    final code = _fKeyMap[key];
+    if (code != null) return KeyEvent(code: code);
+    return null;
+  }
+
+  static KeyEvent? _parseSingleByte(List<int> data) {
+    if (data.length != 1) return null;
+    final code = switch (data[0]) {
+      27 => KeyCode.escape,
+      9 => KeyCode.tab,
+      10 || 13 => KeyCode.enter,
+      127 || 8 => KeyCode.backspace,
+      32 => KeyCode.space,
+      _ => null,
+    };
+    if (code != null) return KeyEvent(code: code);
+    return null;
+  }
+
+  static KeyEvent? _parseCtrlChar(List<int> data) {
+    if (data.length != 1 || data[0] < 1 || data[0] > 26) return null;
+    return KeyEvent(
+      code: KeyCode.char,
+      char: String.fromCharCode(data[0] + 64),
+      isCtrlPressed: true,
+    );
+  }
+
+  static KeyEvent? _parseAltChar(List<int> data) {
+    if (data.length != 2 || data[0] != 27) return null;
+    return KeyEvent(
+      code: KeyCode.char,
+      char: String.fromCharCode(data[1]),
+      isAltPressed: true,
+    );
+  }
+
+  static KeyEvent _parseCharFallback(List<int> data) {
     try {
-      final char = String.fromCharCodes(rawData).trim();
-      if (char.isNotEmpty) {
-        return KeyEvent(code: KeyCode.char, char: char);
-      }
+      final char = String.fromCharCodes(data).trim();
+      if (char.isNotEmpty) return KeyEvent(code: KeyCode.char, char: char);
     } on FormatException catch (e) {
       AppLogger.log('KeyParser: Invalid character encoding - $e');
     } on Exception catch (e) {
       AppLogger.log('KeyParser: Unexpected error parsing input - $e');
     }
-
     return const KeyEvent(code: KeyCode.unknown);
+  }
+
+  static KeyCode? _arrowKeyCode(int byte) => switch (byte) {
+        65 => KeyCode.arrowUp,
+        66 => KeyCode.arrowDown,
+        67 => KeyCode.arrowRight,
+        68 => KeyCode.arrowLeft,
+        _ => null,
+      };
+
+  static bool _startsWith(List<int> data, List<int> prefix, int minLen) {
+    if (data.length < minLen) return false;
+    for (int i = 0; i < prefix.length; i++) {
+      if (data[i] != prefix[i]) return false;
+    }
+    return true;
   }
 }
