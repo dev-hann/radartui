@@ -85,25 +85,7 @@ class _SingleChildScrollViewState extends State<SingleChildScrollView>
       viewportSize = mediaQuery?.data.size.width ?? 80;
     }
     final int maxScroll = (_contentExtent - viewportSize).clamp(0, 999999);
-    int delta = 0;
-
-    if (event.code == KeyCode.pageDown) {
-      delta = (viewportSize - 1).clamp(1, viewportSize);
-    } else if (event.code == KeyCode.pageUp) {
-      delta = -(viewportSize - 1).clamp(1, viewportSize);
-    } else if (widget.scrollDirection == Axis.vertical) {
-      if (event.code == KeyCode.arrowDown) {
-        delta = 1;
-      } else if (event.code == KeyCode.arrowUp) {
-        delta = -1;
-      }
-    } else {
-      if (event.code == KeyCode.arrowRight) {
-        delta = 1;
-      } else if (event.code == KeyCode.arrowLeft) {
-        delta = -1;
-      }
-    }
+    final delta = _computeScrollDelta(event, viewportSize);
 
     if (delta != 0) {
       _scrollController.offset = (_scrollController.offset + delta).clamp(
@@ -111,6 +93,21 @@ class _SingleChildScrollViewState extends State<SingleChildScrollView>
         maxScroll,
       );
     }
+  }
+
+  int _computeScrollDelta(KeyEvent event, int viewportSize) {
+    if (event.code == KeyCode.pageDown) {
+      return (viewportSize - 1).clamp(1, viewportSize);
+    } else if (event.code == KeyCode.pageUp) {
+      return -(viewportSize - 1).clamp(1, viewportSize);
+    } else if (widget.scrollDirection == Axis.vertical) {
+      if (event.code == KeyCode.arrowDown) return 1;
+      if (event.code == KeyCode.arrowUp) return -1;
+    } else {
+      if (event.code == KeyCode.arrowRight) return 1;
+      if (event.code == KeyCode.arrowLeft) return -1;
+    }
+    return 0;
   }
 
   @override
@@ -210,9 +207,8 @@ class _RenderScrollViewport extends RenderBox
     final int childExtent = scrollDirection == Axis.vertical
         ? child!.size!.height
         : child!.size!.width;
-    final int viewportExtent = scrollDirection == Axis.vertical
-        ? size!.height
-        : size!.width;
+    final int viewportExtent =
+        scrollDirection == Axis.vertical ? size!.height : size!.width;
     final int maxOffset = (childExtent - viewportExtent).clamp(0, 999999);
     final int effectiveOffset = scrollOffset.clamp(0, maxOffset);
 
