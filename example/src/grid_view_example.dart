@@ -38,30 +38,29 @@ class _GridViewExampleState extends State<GridViewExample> {
     final items = List.generate(12, (i) => 'Item ${i + 1}');
 
     return Padding(
-      padding: const EdgeInsets.all(2),
+      padding: const EdgeInsets.all(1),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Container(
-            width: 50,
-            height: 3,
-            color: Color.blue,
-            child: Center(
-              child: Text(
-                'GridView Widget Example',
-                style: TextStyle(color: Color.white, bold: true),
-              ),
-            ),
-          ),
-          const SizedBox(height: 2),
           const Text(
-            'Use Arrow keys to navigate, Space/Enter to select',
+            'GridView Widget Example',
+            style: TextStyle(color: Color.brightCyan, bold: true),
+          ),
+          const SizedBox(height: 1),
+          const Text(
+            'Arrow keys to navigate, Space/Enter to select',
             style: TextStyle(color: Color.brightBlack),
           ),
           const SizedBox(height: 1),
+          if (_selectedItem >= 0)
+            Text(
+              'Selected: ${items[_selectedItem]}',
+              style: const TextStyle(color: Color.green),
+            ),
           Expanded(
             child: GridView<String>(
               items: items,
-              crossAxisCount: 4,
+              crossAxisCount: 3,
               mainAxisSpacing: 1,
               crossAxisSpacing: 1,
               initialSelectedIndex: 0,
@@ -71,32 +70,22 @@ class _GridViewExampleState extends State<GridViewExample> {
                 });
               },
               selectedBuilder: (item) => Container(
-                width: 12,
-                height: 3,
+                width: 16,
+                height: 2,
                 color: Color.blue,
-                child: Center(
-                  child: Text(
-                    item,
-                    style: const TextStyle(color: Color.white, bold: true),
-                  ),
+                child: Text(
+                  item,
+                  style: const TextStyle(color: Color.white, bold: true),
                 ),
               ),
               unselectedBuilder: (item) => Container(
-                width: 12,
-                height: 3,
+                width: 16,
+                height: 2,
                 color: Color.black,
-                child: Center(
-                  child: Text(item),
-                ),
+                child: Text(item),
               ),
             ),
           ),
-          const SizedBox(height: 1),
-          if (_selectedItem >= 0)
-            Text(
-              'Selected: ${items[_selectedItem]}',
-              style: const TextStyle(color: Color.green),
-            ),
         ],
       ),
     );
