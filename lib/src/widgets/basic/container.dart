@@ -89,36 +89,43 @@ class RenderContainer extends RenderBox
     int containerH = _height ?? LayoutConstants.defaultContainerHeight;
 
     if (child != null) {
-      final childConstraint = BoxConstraints(
-        maxWidth: containerW -
-            totalPadding.left -
-            totalPadding.right -
-            _borderHorizontal,
-        maxHeight: containerH -
-            totalPadding.top -
-            totalPadding.bottom -
-            _borderVertical,
-      );
-      child!.layout(childConstraint);
-
-      if (_width == null) {
-        containerW = child!.size!.width +
-            totalPadding.left +
-            totalPadding.right +
-            _borderHorizontal;
-      }
-      if (_height == null) {
-        containerH = child!.size!.height +
-            totalPadding.top +
-            totalPadding.bottom +
-            _borderVertical;
-      }
+      final resolved = _layoutChild(containerW, containerH, totalPadding);
+      containerW = resolved.$1;
+      containerH = resolved.$2;
     }
 
     size = Size(
       containerW + totalMargin.left + totalMargin.right,
       containerH + totalMargin.top + totalMargin.bottom,
     );
+  }
+
+  (int, int) _layoutChild(
+    int containerW,
+    int containerH,
+    EdgeInsets totalPadding,
+  ) {
+    final childConstraint = BoxConstraints(
+      maxWidth: containerW -
+          totalPadding.left -
+          totalPadding.right -
+          _borderHorizontal,
+      maxHeight:
+          containerH - totalPadding.top - totalPadding.bottom - _borderVertical,
+    );
+    child!.layout(childConstraint);
+
+    final resolvedW = _width ??
+        child!.size!.width +
+            totalPadding.left +
+            totalPadding.right +
+            _borderHorizontal;
+    final resolvedH = _height ??
+        child!.size!.height +
+            totalPadding.top +
+            totalPadding.bottom +
+            _borderVertical;
+    return (resolvedW, resolvedH);
   }
 
   @override
@@ -138,7 +145,9 @@ class RenderContainer extends RenderBox
         child!,
         innerOffset +
             Offset(
-                borderLeft + totalPadding.left, borderTop + totalPadding.top),
+              borderLeft + totalPadding.left,
+              borderTop + totalPadding.top,
+            ),
       );
     }
 
@@ -252,8 +261,12 @@ class RenderContainer extends RenderBox
     final String rightCorner =
         isTop ? (hasRight == 1 ? '┐' : '╴') : (hasRight == 1 ? '┘' : '╴');
 
-    context.buffer
-        .writeStyled(innerOffset.x, innerOffset.y + y, leftCorner, borderStyle);
+    context.buffer.writeStyled(
+      innerOffset.x,
+      innerOffset.y + y,
+      leftCorner,
+      borderStyle,
+    );
     for (int x = 1; x < innerWidth - 1; x++) {
       context.buffer.writeStyled(
         innerOffset.x + x,
