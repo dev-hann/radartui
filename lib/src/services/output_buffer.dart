@@ -154,27 +154,27 @@ class OutputBuffer {
 
     for (int y = 0; y < terminal.height; y++) {
       for (int x = 0; x < terminal.width; x++) {
-        if (_grid[y][x] != _previousGrid[y][x]) {
-          terminal.setCursorPosition(x, y);
-
-          // Always apply style to ensure proper overrides
-          // This ensures that style changes are properly rendered
-          final newStyle = _grid[y][x].style;
-          if (newStyle != currentStyle) {
-            currentStyle = newStyle;
-            stdout.write(_buildAnsiEscapeCode(currentStyle));
-          }
-
-          stdout.write(_grid[y][x].char);
-          _previousGrid[y][x] = _grid[y][x];
-        }
+        currentStyle = _flushCell(x, y, currentStyle);
       }
     }
 
-    // Reset style at the end to ensure clean state
     stdout.write('\x1b[0m');
     terminal.setCursorPosition(0, 0);
-    // Keep cursor hidden during app execution
-    // Cursor will be shown only on shutdown via SchedulerBinding.shutdown()
+  }
+
+  TextStyle? _flushCell(int x, int y, TextStyle? currentStyle) {
+    if (_grid[y][x] == _previousGrid[y][x]) return currentStyle;
+
+    terminal.setCursorPosition(x, y);
+
+    final newStyle = _grid[y][x].style;
+    if (newStyle != currentStyle) {
+      currentStyle = newStyle;
+      stdout.write(_buildAnsiEscapeCode(currentStyle));
+    }
+
+    stdout.write(_grid[y][x].char);
+    _previousGrid[y][x] = _grid[y][x];
+    return currentStyle;
   }
 }
