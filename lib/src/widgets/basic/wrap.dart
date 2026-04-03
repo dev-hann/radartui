@@ -10,6 +10,7 @@ class Wrap extends MultiChildRenderObjectWidget {
     this.spacing = 0,
     this.runSpacing = 0,
   });
+
   final Axis direction;
   final WrapAlignment alignment;
   final WrapCrossAlignment crossAxisAlignment;
@@ -49,6 +50,17 @@ enum WrapCrossAlignment { start, end, center }
 
 class WrapParentData extends ParentData {
   Offset offset = Offset.zero;
+}
+
+class _WrapRun {
+  _WrapRun({
+    required this.children,
+    required this.mainExtent,
+    required this.crossExtent,
+  });
+  final List<RenderBox> children;
+  final int mainExtent;
+  final int crossExtent;
 }
 
 class RenderWrap extends RenderBox
@@ -92,7 +104,21 @@ class RenderWrap extends RenderBox
     final mainAxisLimit =
         isHorizontal ? boxConstraints.maxWidth : boxConstraints.maxHeight;
 
-    final runs = <List<RenderBox>>[];
+    final runs = _buildRuns(isHorizontal, mainAxisLimit);
+    final overall = _computeOverallDimensions(isHorizontal, runs);
+
+    size = boxConstraints.constrain(
+      Size(
+        isHorizontal ? overall.mainAxisExtent : overall.crossAxisExtent,
+        isHorizontal ? overall.crossAxisExtent : overall.mainAxisExtent,
+      ),
+    );
+
+    _positionChildren(isHorizontal, runs);
+  }
+
+  List<_WrapRun> _buildRuns(bool isHorizontal, int mainAxisLimit) {
+    final runs = <_WrapRun>[];
     List<RenderBox> currentRun = <RenderBox>[];
     int currentRunExtent = 0;
     int runMaxCrossExtent = 0;
@@ -102,12 +128,11 @@ class RenderWrap extends RenderBox
           isHorizontal ? child.size!.width : child.size!.height;
       final childCrossExtent =
           isHorizontal ? child.size!.height : child.size!.width;
-
       final spacingToAdd = currentRun.isEmpty ? 0 : spacing;
 
       if (currentRunExtent + spacingToAdd + childMainExtent > mainAxisLimit &&
           currentRun.isNotEmpty) {
-        runs.add(currentRun);
+        runs.add(_computeRunExtent(isHorizontal, currentRun));
         currentRun = <RenderBox>[];
         currentRunExtent = 0;
         runMaxCrossExtent = 0;
@@ -121,170 +146,141 @@ class RenderWrap extends RenderBox
     }
 
     if (currentRun.isNotEmpty) {
-      runs.add(currentRun);
+      runs.add(_computeRunExtent(isHorizontal, currentRun));
     }
 
+    return runs;
+  }
+
+  _WrapRun _computeRunExtent(bool isHorizontal, List<RenderBox> run) {
+    int runMainExtent = 0;
+    int runCrossExtent = 0;
+
+    for (final child in run) {
+      final childMainExtent =
+          isHorizontal ? child.size!.width : child.size!.height;
+      final childCrossExtent =
+          isHorizontal ? child.size!.height : child.size!.width;
+      runMainExtent += childMainExtent;
+      if (childCrossExtent > runCrossExtent) {
+        runCrossExtent = childCrossExtent;
+      }
+    }
+
+    if (run.length > 1) {
+      runMainExtent += spacing * (run.length - 1);
+    }
+
+    return _WrapRun(
+      children: run,
+      mainExtent: runMainExtent,
+      crossExtent: runCrossExtent,
+    );
+  }
+
+  ({int mainAxisExtent, int crossAxisExtent}) _computeOverallDimensions(
+    bool isHorizontal,
+    List<_WrapRun> runs,
+  ) {
     int totalCrossExtent = 0;
-    final runCrossExtents = <int>[];
-    final runMainExtents = <int>[];
+    int maxMainExtent = 0;
 
     for (final run in runs) {
-      int runMainExtent = 0;
-      int runCrossExtent = 0;
-
-      for (final child in run) {
-        final childMainExtent =
-            isHorizontal ? child.size!.width : child.size!.height;
-        final childCrossExtent =
-            isHorizontal ? child.size!.height : child.size!.width;
-
-        runMainExtent += childMainExtent;
-        if (childCrossExtent > runCrossExtent) {
-          runCrossExtent = childCrossExtent;
-        }
+      totalCrossExtent += run.crossExtent;
+      if (run.mainExtent > maxMainExtent) {
+        maxMainExtent = run.mainExtent;
       }
-
-      if (run.length > 1) {
-        runMainExtent += spacing * (run.length - 1);
-      }
-
-      runMainExtents.add(runMainExtent);
-      runCrossExtents.add(runCrossExtent);
-      totalCrossExtent += runCrossExtent;
     }
 
     if (runs.length > 1) {
       totalCrossExtent += runSpacing * (runs.length - 1);
     }
 
-    final mainAxisExtent = isHorizontal
-        ? runMainExtents.fold<int>(
-            0,
-            (max, extent) => extent > max ? extent : max,
-          )
-        : totalCrossExtent;
-    final crossAxisExtent = isHorizontal
-        ? totalCrossExtent
-        : runMainExtents.fold<int>(
-            0,
-            (max, extent) => extent > max ? extent : max,
-          );
+    return (
+      mainAxisExtent: isHorizontal ? maxMainExtent : totalCrossExtent,
+      crossAxisExtent: isHorizontal ? totalCrossExtent : maxMainExtent,
+    );
+  }
+
+  int _mainAxisOffsetForAlignment(int freeSpace, int childCount) {
+    return switch (alignment) {
+      WrapAlignment.start => 0,
+      WrapAlignment.end => freeSpace,
+      WrapAlignment.center => freeSpace ~/ 2,
+      WrapAlignment.spaceAround => freeSpace ~/ (childCount * 2),
+      WrapAlignment.spaceEvenly => freeSpace ~/ (childCount + 1),
+      WrapAlignment.spaceBetween => 0,
+    };
+  }
+
+  int _extraSpacingForAlignment(int freeSpace, int childCount) {
+    if (alignment == WrapAlignment.spaceBetween && childCount > 1) {
+      return freeSpace ~/ (childCount - 1);
+    }
+    return 0;
+  }
+
+  int _childCrossOffset(int runCrossExtent, int childCrossExtent) {
+    return switch (crossAxisAlignment) {
+      WrapCrossAlignment.start => 0,
+      WrapCrossAlignment.end => runCrossExtent - childCrossExtent,
+      WrapCrossAlignment.center => (runCrossExtent - childCrossExtent) ~/ 2,
+    };
+  }
+
+  void _setChildOffset(
+    RenderBox child,
+    bool isHorizontal,
+    int mainAxisOffset,
+    int crossAxisOffset,
+  ) {
+    final parentData = child.parentData as WrapParentData;
+    if (isHorizontal) {
+      parentData.offset = Offset(mainAxisOffset, crossAxisOffset);
+    } else {
+      parentData.offset = Offset(crossAxisOffset, mainAxisOffset);
+    }
+  }
+
+  void _positionChildren(bool isHorizontal, List<_WrapRun> runs) {
+    final mainAxisLimit = isHorizontal ? size!.width : size!.height;
 
     int crossAxisOffset = 0;
 
-    for (int runIndex = 0; runIndex < runs.length; runIndex++) {
-      final run = runs[runIndex];
-      final runMainExtent = runMainExtents[runIndex];
-      final runCrossExtent = runCrossExtents[runIndex];
+    for (final run in runs) {
+      final freeSpace = mainAxisLimit - run.mainExtent;
+      final mainAxisStart = _mainAxisOffsetForAlignment(
+        freeSpace,
+        run.children.length,
+      );
+      final extraSpacing = _extraSpacingForAlignment(
+        freeSpace,
+        run.children.length,
+      );
 
-      int mainAxisOffset = 0;
+      int mainAxisOffset = mainAxisStart;
 
-      final freeMainSpace = mainAxisLimit - runMainExtent;
-      switch (alignment) {
-        case WrapAlignment.start:
-          mainAxisOffset = 0;
-          break;
-        case WrapAlignment.end:
-          mainAxisOffset = freeMainSpace;
-          break;
-        case WrapAlignment.center:
-          mainAxisOffset = freeMainSpace ~/ 2;
-          break;
-        case WrapAlignment.spaceBetween:
-          if (run.length > 1) {
-            final extraSpacing = freeMainSpace ~/ (run.length - 1);
-            for (int i = 0; i < run.length; i++) {
-              final child = run[i];
-              final childMainExtent =
-                  isHorizontal ? child.size!.width : child.size!.height;
-              final childCrossExtent =
-                  isHorizontal ? child.size!.height : child.size!.width;
-
-              int childCrossOffset;
-              switch (crossAxisAlignment) {
-                case WrapCrossAlignment.start:
-                  childCrossOffset = 0;
-                  break;
-                case WrapCrossAlignment.end:
-                  childCrossOffset = runCrossExtent - childCrossExtent;
-                  break;
-                case WrapCrossAlignment.center:
-                  childCrossOffset = (runCrossExtent - childCrossExtent) ~/ 2;
-                  break;
-              }
-
-              final parentData = child.parentData as WrapParentData;
-              if (isHorizontal) {
-                parentData.offset = Offset(
-                  mainAxisOffset,
-                  crossAxisOffset + childCrossOffset,
-                );
-              } else {
-                parentData.offset = Offset(
-                  crossAxisOffset + childCrossOffset,
-                  mainAxisOffset,
-                );
-              }
-
-              mainAxisOffset += childMainExtent + spacing + extraSpacing;
-            }
-            crossAxisOffset += runCrossExtent + runSpacing;
-            continue;
-          }
-          break;
-        case WrapAlignment.spaceAround:
-          mainAxisOffset = freeMainSpace ~/ (run.length * 2);
-          break;
-        case WrapAlignment.spaceEvenly:
-          mainAxisOffset = freeMainSpace ~/ (run.length + 1);
-          break;
-      }
-
-      for (int i = 0; i < run.length; i++) {
-        final child = run[i];
+      for (final child in run.children) {
         final childMainExtent =
             isHorizontal ? child.size!.width : child.size!.height;
         final childCrossExtent =
             isHorizontal ? child.size!.height : child.size!.width;
+        final childCrossOffset = _childCrossOffset(
+          run.crossExtent,
+          childCrossExtent,
+        );
 
-        int childCrossOffset;
-        switch (crossAxisAlignment) {
-          case WrapCrossAlignment.start:
-            childCrossOffset = 0;
-            break;
-          case WrapCrossAlignment.end:
-            childCrossOffset = runCrossExtent - childCrossExtent;
-            break;
-          case WrapCrossAlignment.center:
-            childCrossOffset = (runCrossExtent - childCrossExtent) ~/ 2;
-            break;
-        }
-
-        final parentData = child.parentData as WrapParentData;
-        if (isHorizontal) {
-          parentData.offset = Offset(
-            mainAxisOffset,
-            crossAxisOffset + childCrossOffset,
-          );
-        } else {
-          parentData.offset = Offset(
-            crossAxisOffset + childCrossOffset,
-            mainAxisOffset,
-          );
-        }
-
-        mainAxisOffset += childMainExtent + spacing;
+        _setChildOffset(
+          child,
+          isHorizontal,
+          mainAxisOffset,
+          crossAxisOffset + childCrossOffset,
+        );
+        mainAxisOffset += childMainExtent + spacing + extraSpacing;
       }
 
-      crossAxisOffset += runCrossExtent + runSpacing;
+      crossAxisOffset += run.crossExtent + runSpacing;
     }
-
-    size = boxConstraints.constrain(
-      Size(
-        isHorizontal ? mainAxisExtent : crossAxisExtent,
-        isHorizontal ? crossAxisExtent : mainAxisExtent,
-      ),
-    );
   }
 
   @override
