@@ -20,8 +20,8 @@ class GridView<T> extends StatefulWidget {
     this.initialSelectedIndex = 0,
     this.onItemSelected,
     this.wrapAroundNavigation = false,
-  })  : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
-        unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
+  }) : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
+       unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
 
   final List<T> items;
   final Widget Function(T item) selectedBuilder;
@@ -37,10 +37,9 @@ class GridView<T> extends StatefulWidget {
   State<GridView<T>> createState() => _GridViewState<T>();
 }
 
-class _GridViewState<T> extends State<GridView<T>> {
+class _GridViewState<T> extends State<GridView<T>>
+    with FocusableState<GridView<T>> {
   int selectedIndex = 0;
-  final FocusNode _focusNode = FocusNode();
-  bool _hasFocus = false;
 
   @override
   void initState() {
@@ -49,27 +48,10 @@ class _GridViewState<T> extends State<GridView<T>> {
       0,
       widget.items.length - 1,
     );
-    FocusManager.instance.registerNode(_focusNode);
-    _focusNode.onKeyEvent = _handleKeyEvent;
-    _focusNode.addListener(_onFocusChanged);
-    _hasFocus = _focusNode.hasFocus;
   }
 
   @override
-  void dispose() {
-    FocusManager.instance.unregisterNode(_focusNode);
-    _focusNode.removeListener(_onFocusChanged);
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  void _onFocusChanged() {
-    setState(() {
-      _hasFocus = _focusNode.hasFocus;
-    });
-  }
-
-  void _handleKeyEvent(KeyEvent event) {
+  void onKeyEvent(KeyEvent event) {
     final totalItems = widget.items.length;
     if (totalItems == 0) return;
 
@@ -112,7 +94,7 @@ class _GridViewState<T> extends State<GridView<T>> {
 
     for (int i = 0; i < widget.items.length; i++) {
       final item = widget.items[i];
-      final isSelected = i == selectedIndex && _hasFocus;
+      final isSelected = i == selectedIndex && hasFocus;
       children.add(
         isSelected
             ? widget.selectedBuilder(item)
@@ -143,10 +125,10 @@ class _GridRenderWidget extends MultiChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) => RenderGridView(
-        crossAxisCount: crossAxisCount,
-        mainAxisSpacing: mainAxisSpacing,
-        crossAxisSpacing: crossAxisSpacing,
-      );
+    crossAxisCount: crossAxisCount,
+    mainAxisSpacing: mainAxisSpacing,
+    crossAxisSpacing: crossAxisSpacing,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
