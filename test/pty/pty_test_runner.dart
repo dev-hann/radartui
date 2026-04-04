@@ -31,9 +31,10 @@ class PtyTestRunner {
   Future<PtyTestResult> runExample(String examplePath) async {
     final String scriptPath = _resolveExamplePath(examplePath);
 
+    final String command = '${Platform.executable} run $scriptPath --pty-test';
     final PseudoTerminal pty = PseudoTerminal.start(
-      Platform.executable,
-      ['run', scriptPath, '--pty-test'],
+      '/bin/sh',
+      ['-c', command],
       environment: Platform.environment,
     );
 
