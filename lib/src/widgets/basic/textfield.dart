@@ -115,7 +115,8 @@ class TextEditingController extends ChangeNotifier {
     if (hasSelection) {
       deleteSelection();
     }
-    _text = _text.substring(0, _cursorPosition) +
+    _text =
+        _text.substring(0, _cursorPosition) +
         text +
         _text.substring(_cursorPosition);
     _cursorPosition += text.length;
@@ -128,7 +129,8 @@ class TextEditingController extends ChangeNotifier {
       return;
     }
     if (_cursorPosition > 0) {
-      _text = _text.substring(0, _cursorPosition - 1) +
+      _text =
+          _text.substring(0, _cursorPosition - 1) +
           _text.substring(_cursorPosition);
       _cursorPosition--;
       notifyListeners();
@@ -141,7 +143,8 @@ class TextEditingController extends ChangeNotifier {
       return;
     }
     if (_cursorPosition < _text.length) {
-      _text = _text.substring(0, _cursorPosition) +
+      _text =
+          _text.substring(0, _cursorPosition) +
           _text.substring(_cursorPosition + 1);
       notifyListeners();
     }
@@ -232,9 +235,8 @@ class TextField extends StatefulWidget {
   State<TextField> createState() => _TextFieldState();
 }
 
-class _TextFieldState extends State<TextField> {
+class _TextFieldState extends State<TextField> with FocusableState<TextField> {
   late TextEditingController _controller;
-  late FocusNode _focusNode;
   bool _isControllerOwned = false;
 
   @override
@@ -249,11 +251,6 @@ class _TextFieldState extends State<TextField> {
     }
 
     _controller.addListener(_onControllerChanged);
-
-    _focusNode = FocusNode();
-    FocusManager.instance.registerNode(_focusNode);
-    _focusNode.onKeyEvent = _handleKeyEvent;
-    _focusNode.addListener(_onFocusChanged);
   }
 
   @override
@@ -285,10 +282,6 @@ class _TextFieldState extends State<TextField> {
     if (_isControllerOwned) {
       _controller.dispose();
     }
-
-    // Unregister from FocusManager before disposing
-    FocusManager.instance.unregisterNode(_focusNode);
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -306,17 +299,12 @@ class _TextFieldState extends State<TextField> {
     });
   }
 
-  void _onFocusChanged() {
-    // Use immediate setState to prevent interference with rapid text input
-    setState(() {});
-  }
-
-  // Public method to request focus like ListView pattern
   void requestFocus() {
-    FocusManager.instance.requestFocus(_focusNode);
+    FocusManager.instance.requestFocus(focusNode);
   }
 
-  void _handleKeyEvent(KeyEvent event) {
+  @override
+  void onKeyEvent(KeyEvent event) {
     switch (event.code) {
       case KeyCode.char:
         _handleCharInput(event.char);
@@ -351,13 +339,12 @@ class _TextFieldState extends State<TextField> {
 
   @override
   Widget build(BuildContext context) {
-    // Build directly without Focus wrapper - like ListView does
     return _TextField(
       text: _controller.text,
       cursorPosition: _controller.cursorPosition,
       placeholder: widget.placeholder,
       style: widget.style,
-      hasFocus: _focusNode.hasFocus,
+      hasFocus: hasFocus,
     );
   }
 }
@@ -381,12 +368,12 @@ class _TextField extends RenderObjectWidget {
 
   @override
   RenderTextField createRenderObject(BuildContext context) => RenderTextField(
-        text: text,
-        cursorPosition: cursorPosition,
-        placeholder: placeholder,
-        style: style,
-        hasFocus: hasFocus,
-      );
+    text: text,
+    cursorPosition: cursorPosition,
+    placeholder: placeholder,
+    style: style,
+    hasFocus: hasFocus,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -415,8 +402,9 @@ class RenderTextField extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    final displayText =
-        text.isEmpty && placeholder != null ? placeholder! : text;
+    final displayText = text.isEmpty && placeholder != null
+        ? placeholder!
+        : text;
     final desiredWidth = (displayText.length + 1).clamp(
       1,
       Constraints.infinity,
@@ -427,8 +415,9 @@ class RenderTextField extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final displayText =
-        text.isEmpty && placeholder != null ? placeholder! : text;
+    final displayText = text.isEmpty && placeholder != null
+        ? placeholder!
+        : text;
     final displayStyle = _resolveDisplayStyle();
 
     if (hasFocus) {
@@ -478,8 +467,12 @@ class RenderTextField extends RenderBox {
 
     for (int i = scrollOffset; i < visibleEnd; i++) {
       final screenX = offset.x + i - scrollOffset;
-      context.buffer
-          .writeStyled(screenX, offset.y, displayText[i], displayStyle);
+      context.buffer.writeStyled(
+        screenX,
+        offset.y,
+        displayText[i],
+        displayStyle,
+      );
     }
   }
 
@@ -586,15 +579,23 @@ class RenderTextField extends RenderBox {
       context.buffer.writeStyled(offset.x - 1, offset.y - 1, '┌', borderStyle);
     }
     if (offset.x + width < bufferWidth && offset.y > 0) {
-      context.buffer
-          .writeStyled(offset.x + width, offset.y - 1, '┐', borderStyle);
+      context.buffer.writeStyled(
+        offset.x + width,
+        offset.y - 1,
+        '┐',
+        borderStyle,
+      );
     }
     if (offset.x > 0 && offset.y + 1 < bufferHeight) {
       context.buffer.writeStyled(offset.x - 1, offset.y + 1, '└', borderStyle);
     }
     if (offset.x + width < bufferWidth && offset.y + 1 < bufferHeight) {
-      context.buffer
-          .writeStyled(offset.x + width, offset.y + 1, '┘', borderStyle);
+      context.buffer.writeStyled(
+        offset.x + width,
+        offset.y + 1,
+        '┘',
+        borderStyle,
+      );
     }
   }
 }
