@@ -172,32 +172,36 @@ class _RenderScrollViewport extends RenderBox
     final boxConstraints = constraints.asBoxConstraints;
 
     if (child != null) {
-      BoxConstraints childConstraints;
-      if (scrollDirection == Axis.vertical) {
-        childConstraints = BoxConstraints(
-          minWidth: boxConstraints.minWidth,
-          maxWidth: boxConstraints.maxWidth,
-          minHeight: 0,
-          maxHeight: Constraints.infinity,
-        );
-      } else {
-        childConstraints = BoxConstraints(
-          minWidth: 0,
-          maxWidth: Constraints.infinity,
-          minHeight: boxConstraints.minHeight,
-          maxHeight: boxConstraints.maxHeight,
-        );
-      }
+      final childConstraints = _buildChildConstraints(boxConstraints);
       child!.layout(childConstraints);
-
-      if (scrollDirection == Axis.vertical) {
-        onContentSizeChanged?.call(child!.size!.height);
-      } else {
-        onContentSizeChanged?.call(child!.size!.width);
-      }
+      _notifyContentSize();
     }
 
     size = Size(boxConstraints.maxWidth, boxConstraints.maxHeight);
+  }
+
+  BoxConstraints _buildChildConstraints(BoxConstraints parentConstraints) {
+    if (scrollDirection == Axis.vertical) {
+      return BoxConstraints(
+        minWidth: parentConstraints.minWidth,
+        maxWidth: parentConstraints.maxWidth,
+        minHeight: 0,
+        maxHeight: Constraints.infinity,
+      );
+    }
+    return BoxConstraints(
+      minWidth: 0,
+      maxWidth: Constraints.infinity,
+      minHeight: parentConstraints.minHeight,
+      maxHeight: parentConstraints.maxHeight,
+    );
+  }
+
+  void _notifyContentSize() {
+    final extent = scrollDirection == Axis.vertical
+        ? child!.size!.height
+        : child!.size!.width;
+    onContentSizeChanged?.call(extent);
   }
 
   @override
