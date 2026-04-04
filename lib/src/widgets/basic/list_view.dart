@@ -51,16 +51,16 @@ class ListView<T> extends StatefulWidget {
   State<ListView<T>> createState() => _ListViewState<T>();
 }
 
-class _ListViewState<T> extends State<ListView<T>> {
+class _ListViewState<T> extends State<ListView<T>>
+    with FocusableState<ListView<T>> {
   int selectedIndex = 0;
   late ScrollController _scrollController;
   bool _ownsController = false;
-  final FocusNode _focusNode = FocusNode();
-  bool _hasFocus = false;
   int _viewportHeight = 0;
 
   @override
   void initState() {
+    super.initState();
     selectedIndex = widget.initialSelectedIndex.clamp(
       0,
       widget.items.length - 1,
@@ -74,12 +74,6 @@ class _ListViewState<T> extends State<ListView<T>> {
     }
 
     _scrollController.addListener(_onScrollChanged);
-
-    FocusManager.instance.registerNode(_focusNode);
-    _focusNode.onKeyEvent = _handleKeyEvent;
-    _focusNode.addListener(_onFocusChanged);
-    _hasFocus = _focusNode.hasFocus;
-    super.initState();
   }
 
   @override
@@ -88,9 +82,6 @@ class _ListViewState<T> extends State<ListView<T>> {
     if (_ownsController) {
       _scrollController.dispose();
     }
-    FocusManager.instance.unregisterNode(_focusNode);
-    _focusNode.removeListener(_onFocusChanged);
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -98,7 +89,8 @@ class _ListViewState<T> extends State<ListView<T>> {
     setState(() {});
   }
 
-  void _handleKeyEvent(KeyEvent event) {
+  @override
+  void onKeyEvent(KeyEvent event) {
     if (event.code == KeyCode.arrowUp ||
         (event.code == KeyCode.char && event.char == 'k')) {
       _moveSelection(-1);
@@ -144,12 +136,6 @@ class _ListViewState<T> extends State<ListView<T>> {
     }
   }
 
-  void _onFocusChanged() {
-    setState(() {
-      _hasFocus = _focusNode.hasFocus;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final mediaQuery = context.findAncestorWidgetOfExactType<MediaQuery>();
@@ -168,7 +154,7 @@ class _ListViewState<T> extends State<ListView<T>> {
 
     for (int i = scrollOffset; i < endIndex; i++) {
       final item = widget.items[i];
-      final isSelected = i == selectedIndex && _hasFocus;
+      final isSelected = i == selectedIndex && hasFocus;
       children.add(
         isSelected
             ? widget.selectedBuilder(item)
