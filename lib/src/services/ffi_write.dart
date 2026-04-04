@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io' show Platform;
 
@@ -12,12 +13,16 @@ typedef _OpenDart = int Function(Pointer<Utf8>, int);
 typedef _CloseNative = Int Function(Int);
 typedef _CloseDart = int Function(int);
 
+typedef _IsattyNative = Int Function(Int);
+typedef _IsattyDart = int Function(int);
+
 class FfiWrite {
   FfiWrite._() {
     _lib = _loadLib();
     _write = _lib.lookupFunction<_WriteNative, _WriteDart>('write');
     _open = _lib.lookupFunction<_OpenNative, _OpenDart>('open');
     _close = _lib.lookupFunction<_CloseNative, _CloseDart>('close');
+    _isatty = _lib.lookupFunction<_IsattyNative, _IsattyDart>('isatty');
   }
 
   static final FfiWrite instance = FfiWrite._();
@@ -26,6 +31,7 @@ class FfiWrite {
   late final _WriteDart _write;
   late final _OpenDart _open;
   late final _CloseDart _close;
+  late final _IsattyDart _isatty;
 
   int? _ttyFd;
 
@@ -36,6 +42,7 @@ class FfiWrite {
   }
 
   int openTty() {
+    if (_isatty(1) == 0) return -1;
     final path = '/dev/tty'.toNativeUtf8();
     try {
       final fd = _open(path, 1);
@@ -49,13 +56,13 @@ class FfiWrite {
 
   void writeString(String data) {
     final fd = _ttyFd ?? 1;
-    final units = data.codeUnits;
-    final buf = malloc<Uint8>(units.length);
-    for (int i = 0; i < units.length; i++) {
-      buf[i] = units[i];
+    final encoded = utf8.encode(data);
+    final buf = malloc<Uint8>(encoded.length);
+    for (int i = 0; i < encoded.length; i++) {
+      buf[i] = encoded[i];
     }
     try {
-      _write(fd, buf, units.length);
+      _write(fd, buf, encoded.length);
     } finally {
       malloc.free(buf);
     }
