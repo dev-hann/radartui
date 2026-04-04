@@ -158,60 +158,13 @@ class Focus extends StatefulWidget {
   State<Focus> createState() => _FocusState();
 }
 
-class _FocusState extends State<Focus> {
-  late FocusNode _focusNode;
-  bool _isNodeOwned = false;
-  late final VoidCallback _listener;
+class _FocusState extends State<Focus> with FocusableState<Focus> {
+  @override
+  FocusNode? get providedFocusNode => widget.focusNode;
 
   @override
-  void initState() {
-    super.initState();
-    _listener = () => setState(() {});
-
-    if (widget.focusNode != null) {
-      _focusNode = widget.focusNode!;
-    } else {
-      _focusNode = FocusNode();
-      _isNodeOwned = true;
-    }
-    FocusManager.instance.registerNode(_focusNode);
-    _focusNode.onKeyEvent = widget.onKeyEvent;
-    _focusNode.addListener(_listener);
-  }
-
-  @override
-  void didUpdateWidget(Focus oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (widget.focusNode != oldWidget.focusNode) {
-      _focusNode.removeListener(_listener);
-      FocusManager.instance.unregisterNode(_focusNode);
-      if (_isNodeOwned) {
-        _focusNode.dispose();
-      }
-
-      if (widget.focusNode != null) {
-        _focusNode = widget.focusNode!;
-        _isNodeOwned = false;
-      } else {
-        _focusNode = FocusNode();
-        _isNodeOwned = true;
-      }
-      FocusManager.instance.registerNode(_focusNode);
-      _focusNode.addListener(_listener);
-    }
-    _focusNode.onKeyEvent = widget.onKeyEvent;
-  }
-
-  @override
-  void dispose() {
-    _focusNode.removeListener(_listener);
-    if (_isNodeOwned) {
-      _focusNode.dispose();
-    } else {
-      FocusManager.instance.unregisterNode(_focusNode);
-    }
-    super.dispose();
+  void onKeyEvent(KeyEvent event) {
+    widget.onKeyEvent?.call(event);
   }
 
   @override
