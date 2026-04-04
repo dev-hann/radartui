@@ -1,8 +1,13 @@
 import 'dart:io';
 import '../foundation.dart';
+import 'ffi_write.dart';
 import 'terminal_backend.dart';
 
 class RealTerminalBackend implements TerminalBackend {
+  RealTerminalBackend() {
+    FfiWrite.instance.openTty();
+  }
+
   @override
   int get width {
     try {
@@ -23,26 +28,33 @@ class RealTerminalBackend implements TerminalBackend {
 
   @override
   void write(String data) {
-    stdout.write(data);
+    FfiWrite.instance.writeString(data);
   }
 
   @override
   void setCursorPosition(int x, int y) {
-    stdout.write('\x1b[${y + 1};${x + 1}H');
+    FfiWrite.instance.writeString('\x1b[${y + 1};${x + 1}H');
   }
 
   @override
   void hideCursor() {
-    stdout.write('\x1b[?25l');
+    FfiWrite.instance.writeString('\x1b[?25l');
   }
 
   @override
   void showCursor() {
-    stdout.write('\x1b[?25h');
+    FfiWrite.instance.writeString('\x1b[?25h');
   }
 
   @override
   void clear() {
-    stdout.write('\x1b[2J\x1b[H');
+    FfiWrite.instance.writeString('\x1b[2J\x1b[H');
+  }
+
+  @override
+  void flush() {}
+
+  void dispose() {
+    FfiWrite.instance.closeTty();
   }
 }

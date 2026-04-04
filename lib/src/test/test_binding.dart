@@ -271,57 +271,97 @@ class _TestTerminalBackend implements TerminalBackend {
 
   @override
   void clear() => _terminal.clear();
+
+  @override
+  void flush() {}
 }
 
 class TestOutputBuffer implements OutputBuffer {
-  TestOutputBuffer(this.terminal);
+  TestOutputBuffer(this.terminal)
+      : _styleGrid = List.generate(
+          terminal.height,
+          (_) => List.generate(terminal.width, (_) => null),
+        );
   @override
   final TestTerminal terminal;
   final List<String> _output = [];
+  final List<List<TextStyle?>> _styleGrid;
 
   @override
   void writeStyled(int x, int y, String char, TextStyle? style) {
     _output.add('($x,$y):$char');
     terminal.writeToGrid(x, y, char);
+    if (y >= 0 && y < _styleGrid.length && x >= 0 && x < _styleGrid[y].length) {
+      _styleGrid[y][x] = style;
+    }
   }
 
-  @override
-  void flush() {}
+  TextStyle? styleAt(int x, int y) {
+    if (y >= 0 && y < _styleGrid.length && x >= 0 && x < _styleGrid[y].length) {
+      return _styleGrid[y][x];
+    }
+    return null;
+  }
+
+  Color? foregroundColorAt(int x, int y) => styleAt(x, y)?.color;
+
+  Color? backgroundColorAt(int x, int y) => styleAt(x, y)?.backgroundColor;
 
   @override
   void clearAll() {
     _output.clear();
+    _clearStyleGrid();
     terminal.clear();
   }
 
   @override
   void smartClear() {
     _output.clear();
+    _clearStyleGrid();
     terminal.clear();
   }
+
+  @override
+  void clear() {
+    _output.clear();
+    _clearStyleGrid();
+    terminal.clear();
+  }
+
+  @override
+  void conditionalClear() {
+    _output.clear();
+    _clearStyleGrid();
+    terminal.clear();
+  }
+
+  void _clearStyleGrid() {
+    for (int y = 0; y < _styleGrid.length; y++) {
+      for (int x = 0; x < _styleGrid[y].length; x++) {
+        _styleGrid[y][x] = null;
+      }
+    }
+  }
+
+  void resizeStyleGrid() {
+    _styleGrid.clear();
+    for (int y = 0; y < terminal.height; y++) {
+      _styleGrid.add(List.generate(terminal.width, (_) => null));
+    }
+  }
+
+  @override
+  void flush() {}
 
   @override
   void resize() {}
 
   @override
-  void clear() {
-    _output.clear();
-    terminal.clear();
-  }
-
-  @override
   bool needsFullClear() => false;
 
   @override
-  void conditionalClear() {
-    _output.clear();
-    terminal.clear();
-  }
-
-  @override
   void write(int x, int y, String char) {
-    _output.add('($x,$y):$char');
-    terminal.writeToGrid(x, y, char);
+    writeStyled(x, y, char, null);
   }
 
   List<String> get output => _output;

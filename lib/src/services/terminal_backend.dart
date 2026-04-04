@@ -6,4 +6,5 @@ abstract class TerminalBackend {
   void hideCursor();
   void showCursor();
   void clear();
+  void flush();
 }

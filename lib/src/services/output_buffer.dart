@@ -1,4 +1,3 @@
-import 'dart:io';
 import '../foundation.dart';
 import 'logger.dart';
 import 'terminal.dart';
@@ -149,32 +148,30 @@ class OutputBuffer {
   }
 
   void flush() {
-    terminal.hideCursor();
+    final buffer = StringBuffer();
     TextStyle? currentStyle;
 
     for (int y = 0; y < terminal.height; y++) {
       for (int x = 0; x < terminal.width; x++) {
-        currentStyle = _flushCell(x, y, currentStyle);
+        if (_grid[y][x] == _previousGrid[y][x]) continue;
+
+        buffer.write('\x1b[${y + 1};${x + 1}H');
+
+        final newStyle = _grid[y][x].style;
+        if (newStyle != currentStyle) {
+          currentStyle = newStyle;
+          buffer.write(_buildAnsiEscapeCode(currentStyle));
+        }
+
+        buffer.write(_grid[y][x].char);
+        _previousGrid[y][x] = _grid[y][x];
       }
     }
 
-    stdout.write('\x1b[0m');
-    terminal.setCursorPosition(0, 0);
-  }
+    buffer.write('\x1b[0m');
+    buffer.write('\x1b[1;1H');
 
-  TextStyle? _flushCell(int x, int y, TextStyle? currentStyle) {
-    if (_grid[y][x] == _previousGrid[y][x]) return currentStyle;
-
-    terminal.setCursorPosition(x, y);
-
-    final newStyle = _grid[y][x].style;
-    if (newStyle != currentStyle) {
-      currentStyle = newStyle;
-      stdout.write(_buildAnsiEscapeCode(currentStyle));
-    }
-
-    stdout.write(_grid[y][x].char);
-    _previousGrid[y][x] = _grid[y][x];
-    return currentStyle;
+    terminal.backend.write(buffer.toString());
+    terminal.backend.flush();
   }
 }
