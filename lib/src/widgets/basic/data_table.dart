@@ -46,11 +46,9 @@ class DataTable extends StatefulWidget {
   State<DataTable> createState() => _DataTableState();
 }
 
-class _DataTableState extends State<DataTable> {
+class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
   int _focusedRowIndex = 0;
   int _focusedColumnIndex = 0;
-  final FocusNode _focusNode = FocusNode();
-  bool _hasFocus = false;
   late ScrollController _scrollController;
   int _viewportHeight = 10;
 
@@ -58,28 +56,16 @@ class _DataTableState extends State<DataTable> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    FocusManager.instance.registerNode(_focusNode);
-    _focusNode.onKeyEvent = _handleKeyEvent;
-    _focusNode.addListener(_onFocusChanged);
-    _hasFocus = _focusNode.hasFocus;
   }
 
   @override
   void dispose() {
-    FocusManager.instance.unregisterNode(_focusNode);
-    _focusNode.removeListener(_onFocusChanged);
-    _focusNode.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
-  void _onFocusChanged() {
-    setState(() {
-      _hasFocus = _focusNode.hasFocus;
-    });
-  }
-
-  void _handleKeyEvent(KeyEvent event) {
+  @override
+  void onKeyEvent(KeyEvent event) {
     if (event.code == KeyCode.arrowUp) {
       _moveSelection(-1);
     } else if (event.code == KeyCode.arrowDown) {
@@ -207,7 +193,7 @@ class _DataTableState extends State<DataTable> {
 
       label = label.padRight(width + 2);
 
-      final isFocused = _hasFocus && _focusedColumnIndex == i;
+      final isFocused = hasFocus && _focusedColumnIndex == i;
       if (isFocused) {
         parts.add('[$label]');
       } else {
@@ -245,7 +231,7 @@ class _DataTableState extends State<DataTable> {
   }
 
   Widget _styledRowText(String rowText, bool selected, int rowIndex) {
-    final isRowFocused = _hasFocus && rowIndex == _focusedRowIndex;
+    final isRowFocused = hasFocus && rowIndex == _focusedRowIndex;
     if (isRowFocused) {
       return Text(
         '> $rowText',
