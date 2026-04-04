@@ -17,22 +17,22 @@ class ThemeData {
   final Color dividerColor;
 
   static ThemeData get dark => const ThemeData(
-    primaryColor: Colors.blue,
-    backgroundColor: Colors.black,
-    textColor: Colors.white,
-    selectedColor: Colors.blue,
-    borderColor: Colors.white,
-    dividerColor: Colors.white,
-  );
+        primaryColor: Colors.blue,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        selectedColor: Colors.blue,
+        borderColor: Colors.white,
+        dividerColor: Colors.white,
+      );
 
   static ThemeData get light => const ThemeData(
-    primaryColor: Colors.blue,
-    backgroundColor: Colors.white,
-    textColor: Colors.black,
-    selectedColor: Colors.blue,
-    borderColor: Colors.black,
-    dividerColor: Colors.black,
-  );
+        primaryColor: Colors.blue,
+        backgroundColor: Colors.white,
+        textColor: Colors.black,
+        selectedColor: Colors.blue,
+        borderColor: Colors.black,
+        dividerColor: Colors.black,
+      );
 
   ThemeData copyWith({
     Color? primaryColor,
@@ -66,13 +66,13 @@ class ThemeData {
 
   @override
   int get hashCode => Object.hash(
-    primaryColor,
-    backgroundColor,
-    textColor,
-    selectedColor,
-    borderColor,
-    dividerColor,
-  );
+        primaryColor,
+        backgroundColor,
+        textColor,
+        selectedColor,
+        borderColor,
+        dividerColor,
+      );
 
   @override
   String toString() =>

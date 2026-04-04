@@ -20,8 +20,8 @@ class GridView<T> extends StatefulWidget {
     this.initialSelectedIndex = 0,
     this.onItemSelected,
     this.wrapAroundNavigation = false,
-  }) : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
-       unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
+  })  : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
+        unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
 
   final List<T> items;
   final Widget Function(T item) selectedBuilder;
@@ -125,10 +125,10 @@ class _GridRenderWidget extends MultiChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) => RenderGridView(
-    crossAxisCount: crossAxisCount,
-    mainAxisSpacing: mainAxisSpacing,
-    crossAxisSpacing: crossAxisSpacing,
-  );
+        crossAxisCount: crossAxisCount,
+        mainAxisSpacing: mainAxisSpacing,
+        crossAxisSpacing: crossAxisSpacing,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {

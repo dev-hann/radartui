@@ -16,3 +16,5 @@ export 'widgets/framework.dart';
 export 'widgets/navigation.dart';
 export 'widgets/navigator_observer.dart';
 export 'widgets/overlay.dart';
+export 'widgets/scroll_controller.dart';
+export 'widgets/scrollable_state.dart';

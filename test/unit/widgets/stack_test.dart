@@ -183,7 +183,7 @@ class _MockBuildContext implements BuildContext {
 
   @override
   InheritedElement?
-  findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _MockRenderBox extends RenderBox {

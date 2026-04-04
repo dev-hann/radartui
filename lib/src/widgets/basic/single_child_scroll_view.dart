@@ -21,55 +21,16 @@ class SingleChildScrollView extends StatefulWidget {
 }
 
 class _SingleChildScrollViewState extends State<SingleChildScrollView>
-    with FocusableState<SingleChildScrollView> {
-  late ScrollController _scrollController;
-  bool _ownsController = false;
+    with
+        FocusableState<SingleChildScrollView>,
+        ScrollableState<SingleChildScrollView> {
   int _contentExtent = 0;
 
   @override
   FocusNode? get providedFocusNode => widget.focusNode;
 
   @override
-  void initState() {
-    super.initState();
-    _initController();
-  }
-
-  void _initController() {
-    if (widget.controller != null) {
-      _scrollController = widget.controller!;
-      _ownsController = false;
-    } else {
-      _scrollController = ScrollController();
-      _ownsController = true;
-    }
-    _scrollController.addListener(_onScrollChanged);
-  }
-
-  @override
-  void didUpdateWidget(covariant SingleChildScrollView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.controller != oldWidget.controller) {
-      _scrollController.removeListener(_onScrollChanged);
-      if (_ownsController) {
-        _scrollController.dispose();
-      }
-      _initController();
-    }
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScrollChanged);
-    if (_ownsController) {
-      _scrollController.dispose();
-    }
-    super.dispose();
-  }
-
-  void _onScrollChanged() {
-    setState(() {});
-  }
+  ScrollController? get providedScrollController => widget.controller;
 
   void _handleContentSizeChanged(int extent) {
     _contentExtent = extent;
@@ -88,7 +49,7 @@ class _SingleChildScrollViewState extends State<SingleChildScrollView>
     final delta = _computeScrollDelta(event, viewportSize);
 
     if (delta != 0) {
-      _scrollController.offset = (_scrollController.offset + delta).clamp(
+      scrollController.offset = (scrollController.offset + delta).clamp(
         0,
         maxScroll,
       );
@@ -118,7 +79,7 @@ class _SingleChildScrollViewState extends State<SingleChildScrollView>
     }
 
     return _ScrollViewport(
-      scrollOffset: _scrollController.offset,
+      scrollOffset: scrollController.offset,
       scrollDirection: widget.scrollDirection,
       onContentSizeChanged: _handleContentSizeChanged,
       child: effectiveChild,

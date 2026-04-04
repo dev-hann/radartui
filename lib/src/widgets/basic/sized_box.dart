@@ -2,10 +2,12 @@ import '../../../radartui.dart';
 
 class SizedBox extends SingleChildRenderObjectWidget {
   const SizedBox({super.key, this.width = 0, this.height = 0, super.child});
-  const SizedBox.shrink({super.key, super.child}) : width = 0, height = 0;
+  const SizedBox.shrink({super.key, super.child})
+      : width = 0,
+        height = 0;
   const SizedBox.square({super.key, required int dimension, super.child})
-    : width = dimension,
-      height = dimension;
+      : width = dimension,
+        height = dimension;
   final int width;
   final int height;
 

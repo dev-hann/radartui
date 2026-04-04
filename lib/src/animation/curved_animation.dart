@@ -21,8 +21,8 @@ class CurvedAnimation extends Animation<double> {
   double get value {
     final Curve activeCurve =
         parent.status == AnimationStatus.reverse && reverseCurve != null
-        ? reverseCurve!
-        : curve;
+            ? reverseCurve!
+            : curve;
     return activeCurve.transform(parent.value);
   }
 

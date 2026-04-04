@@ -65,11 +65,11 @@ class _DividerRenderWidget extends RenderObjectWidget {
 
   @override
   RenderDivider createRenderObject(BuildContext context) => RenderDivider(
-    dividerHeight: height,
-    thickness: thickness,
-    color: color,
-    character: character,
-  );
+        dividerHeight: height,
+        thickness: thickness,
+        color: color,
+        character: character,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {

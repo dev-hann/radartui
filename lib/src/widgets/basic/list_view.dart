@@ -8,23 +8,6 @@ Widget _defaultUnselectedBuilder<T>(T item) {
   return Text('  $item');
 }
 
-class ScrollController extends ChangeNotifier {
-  int _offset = 0;
-
-  int get offset => _offset;
-
-  set offset(int value) {
-    if (_offset != value) {
-      _offset = value;
-      notifyListeners();
-    }
-  }
-
-  void animateTo(int newOffset) {
-    offset = newOffset;
-  }
-}
-
 class ListView<T> extends StatefulWidget {
   const ListView({
     super.key,
@@ -36,8 +19,8 @@ class ListView<T> extends StatefulWidget {
     this.wrapAroundNavigation = false,
     this.controller,
     this.itemExtent,
-  }) : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
-       unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
+  })  : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
+        unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
   final List<T> items;
   final Widget Function(T item) selectedBuilder;
   final Widget Function(T item) unselectedBuilder;
@@ -52,11 +35,12 @@ class ListView<T> extends StatefulWidget {
 }
 
 class _ListViewState<T> extends State<ListView<T>>
-    with FocusableState<ListView<T>> {
+    with FocusableState<ListView<T>>, ScrollableState<ListView<T>> {
   int selectedIndex = 0;
-  late ScrollController _scrollController;
-  bool _ownsController = false;
   int _viewportHeight = 0;
+
+  @override
+  ScrollController? get providedScrollController => widget.controller;
 
   @override
   void initState() {
@@ -65,28 +49,6 @@ class _ListViewState<T> extends State<ListView<T>>
       0,
       widget.items.length - 1,
     );
-
-    if (widget.controller != null) {
-      _scrollController = widget.controller!;
-    } else {
-      _scrollController = ScrollController();
-      _ownsController = true;
-    }
-
-    _scrollController.addListener(_onScrollChanged);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScrollChanged);
-    if (_ownsController) {
-      _scrollController.dispose();
-    }
-    super.dispose();
-  }
-
-  void _onScrollChanged() {
-    setState(() {});
   }
 
   @override
@@ -126,13 +88,13 @@ class _ListViewState<T> extends State<ListView<T>>
   void _ensureVisible(int index) {
     if (_viewportHeight <= 0) return;
 
-    final scrollOffset = _scrollController.offset;
+    final scrollOffset = scrollController.offset;
     final bottomVisible = scrollOffset + _viewportHeight - 1;
 
     if (index < scrollOffset) {
-      _scrollController.animateTo(index);
+      scrollController.animateTo(index);
     } else if (index > bottomVisible) {
-      _scrollController.animateTo(index - _viewportHeight + 1);
+      scrollController.animateTo(index - _viewportHeight + 1);
     }
   }
 
@@ -146,7 +108,7 @@ class _ListViewState<T> extends State<ListView<T>>
       return const SizedBox();
     }
 
-    final scrollOffset = _scrollController.offset.clamp(0, itemCount - 1);
+    final scrollOffset = scrollController.offset.clamp(0, itemCount - 1);
     final visibleCount = _viewportHeight.clamp(1, itemCount);
     final endIndex = (scrollOffset + visibleCount).clamp(0, itemCount);
 
