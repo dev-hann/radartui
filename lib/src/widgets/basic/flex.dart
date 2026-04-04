@@ -62,10 +62,36 @@ class RenderFlex extends RenderBox
     final crossAxisExtent =
         isHorizontal ? boxConstraints.maxHeight : boxConstraints.maxWidth;
 
-    final nonFlexResult = _measureNonFlexChildren(
+    final measurement = _measureChildren(
       isHorizontal,
       boxConstraints,
+      totalFlex,
+      maxMainAxisExtent,
     );
+
+    size = _computeSize(
+      isHorizontal,
+      measurement.nonFlexExtent,
+      measurement.flexExtent,
+      maxMainAxisExtent,
+      crossAxisExtent,
+      measurement.crossExtent,
+    );
+
+    _resolveAndPositionChildren(
+      isHorizontal,
+      measurement.nonFlexExtent,
+      measurement.flexExtent,
+    );
+  }
+
+  ({int nonFlexExtent, int flexExtent, int crossExtent}) _measureChildren(
+    bool isHorizontal,
+    BoxConstraints boxConstraints,
+    int totalFlex,
+    int maxMainAxisExtent,
+  ) {
+    final nonFlexResult = _measureNonFlexChildren(isHorizontal, boxConstraints);
     final flexResult = _measureFlexChildren(
       isHorizontal,
       boxConstraints,
@@ -74,19 +100,18 @@ class RenderFlex extends RenderBox
       nonFlexResult.crossExtent,
     );
 
-    final totalNonFlexExtent = nonFlexResult.mainExtent;
-    final totalFlexExtent = flexResult.mainExtent;
-    final maxCrossExtent = flexResult.crossExtent;
-
-    size = _computeSize(
-      isHorizontal,
-      totalNonFlexExtent,
-      totalFlexExtent,
-      maxMainAxisExtent,
-      crossAxisExtent,
-      maxCrossExtent,
+    return (
+      nonFlexExtent: nonFlexResult.mainExtent,
+      flexExtent: flexResult.mainExtent,
+      crossExtent: flexResult.crossExtent,
     );
+  }
 
+  void _resolveAndPositionChildren(
+    bool isHorizontal,
+    int totalNonFlexExtent,
+    int totalFlexExtent,
+  ) {
     final actualCrossAxisExtent = isHorizontal ? size!.height : size!.width;
     final actualMainAxisExtent = isHorizontal ? size!.width : size!.height;
     final alignment = _computeMainAxisAlignment(
@@ -326,10 +351,7 @@ class RenderFlex extends RenderBox
 }
 
 class _FlexMeasurement {
-  const _FlexMeasurement({
-    required this.mainExtent,
-    required this.crossExtent,
-  });
+  const _FlexMeasurement({required this.mainExtent, required this.crossExtent});
   final int mainExtent;
   final int crossExtent;
 }
