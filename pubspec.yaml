@@ -10,3 +10,4 @@ dependencies:
   test: any
 dev_dependencies:
   lints: ^4.0.0
+  pty: ^0.2.2-pre
