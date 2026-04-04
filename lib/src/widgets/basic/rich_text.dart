@@ -197,25 +197,15 @@ class RenderRichText extends RenderBox {
     int currentX = 0;
 
     for (final segment in segments) {
-      final segmentLines = segment.text.split('\n');
-
-      for (int lineIdx = 0; lineIdx < segmentLines.length; lineIdx++) {
-        if (lineIdx > 0) {
-          lines.add(currentLine);
-          currentLine = _StyledLine.empty();
-          currentX = 0;
-        }
-
-        currentLine = _wrapSegmentText(
-          segmentLines[lineIdx],
-          segment.style,
-          maxWidth,
-          lines,
-          currentLine,
-          currentX,
-        );
-        currentX = currentLine.length;
-      }
+      final result = _processSegment(
+        segment,
+        maxWidth,
+        lines,
+        currentLine,
+        currentX,
+      );
+      currentLine = result.$1;
+      currentX = result.$2;
     }
 
     if (currentLine.runs.isNotEmpty || lines.isEmpty) {
@@ -223,6 +213,36 @@ class RenderRichText extends RenderBox {
     }
 
     return lines;
+  }
+
+  (_StyledLine, int) _processSegment(
+    _StyledSegment segment,
+    int maxWidth,
+    List<_StyledLine> lines,
+    _StyledLine currentLine,
+    int currentX,
+  ) {
+    final segmentLines = segment.text.split('\n');
+
+    for (int lineIdx = 0; lineIdx < segmentLines.length; lineIdx++) {
+      if (lineIdx > 0) {
+        lines.add(currentLine);
+        currentLine = _StyledLine.empty();
+        currentX = 0;
+      }
+
+      currentLine = _wrapSegmentText(
+        segmentLines[lineIdx],
+        segment.style,
+        maxWidth,
+        lines,
+        currentLine,
+        currentX,
+      );
+      currentX = currentLine.length;
+    }
+
+    return (currentLine, currentX);
   }
 
   _StyledLine _wrapSegmentText(
