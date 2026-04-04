@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:pty/pty.dart';
+import 'package:pty/src/impl/unix.dart';
 
 import 'vt100_parser.dart';
 
@@ -30,14 +31,13 @@ class PtyTestRunner {
 
   Future<PtyTestResult> runExample(String examplePath) async {
     final String scriptPath = _resolveExamplePath(examplePath);
-
-    final String command = '${Platform.executable} run $scriptPath --pty-test';
-    final PseudoTerminal pty = PseudoTerminal.start(
-      '/bin/sh',
-      ['-c', command],
+    final PtyCoreUnix core = PtyCoreUnix.start(
+      Platform.executable,
+      ['run', scriptPath, '--pty-test'],
       environment: Platform.environment,
+      blocking: true,
     );
-
+    final PseudoTerminal pty = BlockingPseudoTerminal(core, false);
     pty.init();
     pty.resize(width, height);
 
@@ -63,10 +63,11 @@ class PtyTestRunner {
       exitCode = await exitCompleter.future.timeout(timeout);
     } on TimeoutException {
       pty.kill();
+      await Future<void>.delayed(const Duration(milliseconds: 500));
     }
 
     await outputDone.future.timeout(
-      const Duration(seconds: 2),
+      const Duration(seconds: 3),
       onTimeout: () {},
     );
 
