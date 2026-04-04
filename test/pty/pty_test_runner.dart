@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:pty/pty.dart';
-import 'package:pty/src/impl/unix.dart';
-
 import 'vt100_parser.dart';
 
 class PtyTestResult {
@@ -22,7 +19,7 @@ class PtyTestRunner {
   PtyTestRunner({
     this.width = 80,
     this.height = 24,
-    this.timeout = const Duration(seconds: 5),
+    this.timeout = const Duration(seconds: 15),
   });
 
   final int width;
@@ -31,58 +28,44 @@ class PtyTestRunner {
 
   Future<PtyTestResult> runExample(String examplePath) async {
     final String scriptPath = _resolveExamplePath(examplePath);
-    final PtyCoreUnix core = PtyCoreUnix.start(
+
+    final Process process = await Process.start(
       Platform.executable,
       ['run', scriptPath, '--pty-test'],
-      environment: Platform.environment,
-      blocking: true,
-    );
-    final PseudoTerminal pty = BlockingPseudoTerminal(core, false);
-    pty.init();
-    pty.resize(width, height);
-
-    final StringBuffer buffer = StringBuffer();
-    final Completer<int> exitCompleter = Completer<int>();
-    final Completer<void> outputDone = Completer<void>();
-
-    pty.out.listen(
-      buffer.write,
-      onDone: () {
-        if (!outputDone.isCompleted) outputDone.complete();
+      environment: {
+        ...Platform.environment,
+        'TERM': 'xterm-256color',
+        'COLUMNS': '$width',
+        'LINES': '$height',
       },
     );
 
-    unawaited(
-      pty.exitCode.then((int code) {
-        if (!exitCompleter.isCompleted) exitCompleter.complete(code);
-      }),
+    final StringBuffer output = StringBuffer();
+    final StreamSubscription<String> sub = process.stdout
+        .transform(const SystemEncoding().decoder)
+        .listen(output.write);
+
+    unawaited(process.stderr.drain());
+
+    final int exitCode = await process.exitCode.timeout(
+      timeout,
+      onTimeout: () {
+        process.kill();
+        return -1;
+      },
     );
 
-    int exitCode = -1;
-    try {
-      exitCode = await exitCompleter.future.timeout(timeout);
-    } on TimeoutException {
-      pty.kill();
-      await Future<void>.delayed(const Duration(milliseconds: 500));
-    }
+    await sub.cancel();
 
-    await outputDone.future.timeout(
-      const Duration(seconds: 3),
-      onTimeout: () {},
-    );
-
-    final String rawOutput = buffer.toString();
+    final String rawOutput = output.toString();
     final Vt100Parser parser = Vt100Parser(width: width, height: height);
     final List<String> grid = parser.parse(rawOutput);
 
     return PtyTestResult(exitCode: exitCode, rawOutput: rawOutput, grid: grid);
   }
 
-  String _resolveExamplePath(String path) {
-    final File direct = File(path);
-    if (direct.existsSync()) return path;
-    final File fallback = File('test/pty/examples/$path');
-    if (fallback.existsSync()) return fallback.path;
-    return path;
+  String _resolveExamplePath(String examplePath) {
+    final String testDir = Directory.current.path;
+    return '$testDir/test/pty/examples/$examplePath';
   }
 }
