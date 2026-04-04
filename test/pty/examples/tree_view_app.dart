@@ -11,7 +11,9 @@ class Node {
 void main(List<String> args) {
   final bool isPtyTest = args.contains('--pty-test');
   final AppBinding binding = AppBinding.ensureInitialized() as AppBinding;
-  binding.initializeServices();
+  if (!isPtyTest) {
+    binding.initializeServices();
+  }
 
   final widget = TreeView<Node>(
     roots: const [
@@ -28,8 +30,6 @@ void main(List<String> args) {
 
   if (isPtyTest) {
     binding.renderFrame();
-    stdout.flush();
-    sleep(const Duration(milliseconds: 100));
     exit(0);
   } else {
     binding.runApp(widget);

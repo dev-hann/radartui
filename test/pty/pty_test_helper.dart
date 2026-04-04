@@ -11,9 +11,9 @@ void testPtyWidget(
   int height = 24,
 }) {
   test(name, () async {
-    final goldenPath = 'test/pty/golden/$golden';
-    final runner = PtyTestRunner(width: width, height: height);
-    final result = await runner.runExample(example);
+    final String goldenPath = 'test/pty/golden/$golden';
+    final PtyTestRunner runner = PtyTestRunner(width: width, height: height);
+    final PtyTestResult result = await runner.runExample(example);
 
     if (result.exitCode != 0) {
       fail(
@@ -21,5 +21,5 @@ void testPtyWidget(
     }
 
     expect(result.grid, matchesGoldenFile(goldenPath));
-  });
+  }, tags: ['pty']);
 }
