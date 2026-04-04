@@ -62,7 +62,10 @@ lib/src/
 test/
 ├── unit/           # Foundation, Services logic
 ├── widgets/        # Widget rendering, lifecycle
-└── integration/    # Full app behavior
+├── integration/    # Full app behavior
+└── pty/            # PTY golden tests (ANSI output → text grid comparison)
+    ├── examples/   # Example app Dart files (one per widget)
+    └── golden/     # Golden .txt files (expected rendering)
 ```
 
 Dependency flow: `Application → radartui.dart → widgets/ → scheduler/ → rendering/ → services/ → foundation/`
@@ -100,6 +103,7 @@ See [docs/testing-guide.md](docs/testing-guide.md) for templates, structure, and
 dart test                        # All tests
 dart test test/unit/             # Unit tests only
 dart test test/integration/      # Integration tests only
+dart test test/pty/              # PTY golden tests (visual rendering verification)
 ```
 
 ### Bug-Prone Areas
@@ -110,6 +114,8 @@ dart test test/integration/      # Integration tests only
 | `deflate` in `box_constraints.dart` | HIGH | Negative values handling |
 | F-key parsing in `key_parser.dart` | HIGH | Complex escape sequences |
 | `ShortcutActionsHandler` placement | HIGH | Must be INSIDE Shortcuts/Actions tree, not outside |
+| `FfiWrite` UTF-8 encoding | HIGH | Must use `utf8.encode()` not code unit truncation |
+| `FfiWrite` isatty check | MEDIUM | Must skip /dev/tty when stdout is piped |
 
 ---
 
@@ -134,6 +140,8 @@ Zero tolerance for errors, warnings, and hints.
 - Container has no `border`/`borderColor` parameters
 - Text widget uses `data` property (not `text`) for string content
 - `Shortcuts.lookup()` traverses UP the tree — `ShortcutActionsHandler` must be a descendant of `Shortcuts`
+- PTY golden test example apps MUST guard `initializeServices()` with `if (!isPtyTest)` to avoid stdin.echoMode crash when stdin is piped
+- `FfiWrite.writeString()` MUST use `utf8.encode()` for proper multi-byte character handling
 
 ---
 
