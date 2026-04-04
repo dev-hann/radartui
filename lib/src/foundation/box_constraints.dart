@@ -11,28 +11,28 @@ class BoxConstraints extends Constraints {
   });
 
   BoxConstraints.tight(Size size)
-    : minWidth = size.width,
-      maxWidth = size.width,
-      minHeight = size.height,
-      maxHeight = size.height;
+      : minWidth = size.width,
+        maxWidth = size.width,
+        minHeight = size.height,
+        maxHeight = size.height;
 
   BoxConstraints.loose(Size size)
-    : minWidth = 0,
-      maxWidth = size.width,
-      minHeight = 0,
-      maxHeight = size.height;
+      : minWidth = 0,
+        maxWidth = size.width,
+        minHeight = 0,
+        maxHeight = size.height;
 
   const BoxConstraints.expand({int? width, int? height})
-    : minWidth = width ?? Constraints.infinity,
-      maxWidth = width ?? Constraints.infinity,
-      minHeight = height ?? Constraints.infinity,
-      maxHeight = height ?? Constraints.infinity;
+      : minWidth = width ?? Constraints.infinity,
+        maxWidth = width ?? Constraints.infinity,
+        minHeight = height ?? Constraints.infinity,
+        maxHeight = height ?? Constraints.infinity;
 
   const BoxConstraints.tightFor({int? width, int? height})
-    : minWidth = width ?? 0,
-      maxWidth = width ?? Constraints.infinity,
-      minHeight = height ?? 0,
-      maxHeight = height ?? Constraints.infinity;
+      : minWidth = width ?? 0,
+        maxWidth = width ?? Constraints.infinity,
+        minHeight = height ?? 0,
+        maxHeight = height ?? Constraints.infinity;
   final int minWidth;
   final int maxWidth;
   final int minHeight;

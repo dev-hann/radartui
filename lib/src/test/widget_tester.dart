@@ -150,9 +150,8 @@ class WidgetTester {
 
   void assertBufferLines(List<String> expected) {
     final actual = lines;
-    final maxHeight = actual.length > expected.length
-        ? actual.length
-        : expected.length;
+    final maxHeight =
+        actual.length > expected.length ? actual.length : expected.length;
     final diffs = <String>[];
     bool hasDiff = false;
 

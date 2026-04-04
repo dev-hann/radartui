@@ -69,7 +69,7 @@ class OverlayState extends State<Overlay> {
 
 class _OverlayScope extends InheritedWidget {
   const _OverlayScope({required OverlayState state, required super.child})
-    : _state = state;
+      : _state = state;
 
   final OverlayState _state;
 

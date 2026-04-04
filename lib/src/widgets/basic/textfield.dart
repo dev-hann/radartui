@@ -115,8 +115,7 @@ class TextEditingController extends ChangeNotifier {
     if (hasSelection) {
       deleteSelection();
     }
-    _text =
-        _text.substring(0, _cursorPosition) +
+    _text = _text.substring(0, _cursorPosition) +
         text +
         _text.substring(_cursorPosition);
     _cursorPosition += text.length;
@@ -129,8 +128,7 @@ class TextEditingController extends ChangeNotifier {
       return;
     }
     if (_cursorPosition > 0) {
-      _text =
-          _text.substring(0, _cursorPosition - 1) +
+      _text = _text.substring(0, _cursorPosition - 1) +
           _text.substring(_cursorPosition);
       _cursorPosition--;
       notifyListeners();
@@ -143,8 +141,7 @@ class TextEditingController extends ChangeNotifier {
       return;
     }
     if (_cursorPosition < _text.length) {
-      _text =
-          _text.substring(0, _cursorPosition) +
+      _text = _text.substring(0, _cursorPosition) +
           _text.substring(_cursorPosition + 1);
       notifyListeners();
     }
@@ -368,12 +365,12 @@ class _TextField extends RenderObjectWidget {
 
   @override
   RenderTextField createRenderObject(BuildContext context) => RenderTextField(
-    text: text,
-    cursorPosition: cursorPosition,
-    placeholder: placeholder,
-    style: style,
-    hasFocus: hasFocus,
-  );
+        text: text,
+        cursorPosition: cursorPosition,
+        placeholder: placeholder,
+        style: style,
+        hasFocus: hasFocus,
+      );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -402,9 +399,8 @@ class RenderTextField extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    final displayText = text.isEmpty && placeholder != null
-        ? placeholder!
-        : text;
+    final displayText =
+        text.isEmpty && placeholder != null ? placeholder! : text;
     final desiredWidth = (displayText.length + 1).clamp(
       1,
       Constraints.infinity,
@@ -415,9 +411,8 @@ class RenderTextField extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final displayText = text.isEmpty && placeholder != null
-        ? placeholder!
-        : text;
+    final displayText =
+        text.isEmpty && placeholder != null ? placeholder! : text;
     final displayStyle = _resolveDisplayStyle();
 
     if (hasFocus) {

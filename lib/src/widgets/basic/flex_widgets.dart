@@ -47,5 +47,5 @@ abstract class Flexible extends ParentDataWidget<FlexParentData> {
 
 class Expanded extends Flexible {
   const Expanded({super.key, required super.child, super.flex})
-    : super(fit: FlexFit.tight);
+      : super(fit: FlexFit.tight);
 }

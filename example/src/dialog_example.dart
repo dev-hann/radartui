@@ -140,9 +140,8 @@ class _DialogExampleState extends State<DialogExample> {
     );
 
     setState(() {
-      _lastResult = result != null
-          ? 'Number returned: $result'
-          : 'No number returned';
+      _lastResult =
+          result != null ? 'Number returned: $result' : 'No number returned';
     });
   }
 

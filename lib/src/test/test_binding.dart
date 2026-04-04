@@ -7,8 +7,8 @@ import '../widgets.dart';
 class TestBinding extends BindingBase
     with SchedulerBinding, ServicesBinding, RendererBinding, WidgetsBinding {
   TestBinding({int width = 80, int height = 24})
-    : terminal = TestTerminal(width: width, height: height),
-      keyboard = TestKeyboard() {
+      : terminal = TestTerminal(width: width, height: height),
+        keyboard = TestKeyboard() {
     outputBuffer = TestOutputBuffer(terminal);
   }
   static TestBinding? _testInstance;
@@ -121,9 +121,9 @@ class TestBinding extends BindingBase
 
 class TestTerminal implements Terminal {
   TestTerminal({int width = 80, int height = 24})
-    : _width = width,
-      _height = height,
-      _grid = List.generate(height, (_) => List.generate(width, (_) => ' '));
+      : _width = width,
+        _height = height,
+        _grid = List.generate(height, (_) => List.generate(width, (_) => ' '));
   int _width;
   int _height;
   final List<List<String>> _grid;

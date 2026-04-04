@@ -110,7 +110,7 @@ class _MockBuildContext implements BuildContext {
 
   @override
   InheritedElement?
-  findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _MockBuildContextWithoutNavigator implements BuildContext {
@@ -122,7 +122,7 @@ class _MockBuildContextWithoutNavigator implements BuildContext {
 
   @override
   InheritedElement?
-  findAncestorElementOfExactType<T extends InheritedWidget>() => null;
+      findAncestorElementOfExactType<T extends InheritedWidget>() => null;
 }
 
 class _TestNavigatorObserver extends NavigatorObserver {
