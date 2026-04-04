@@ -49,6 +49,23 @@ mixin WidgetsBinding
     });
   }
 
+  void attachRootWidget(Widget app) {
+    terminal.clear();
+    terminal.hideCursor();
+    _rootElement = app.createElement();
+    _rootElement!.mount(null);
+  }
+
+  void renderFrame() {
+    if (_rootElement != null) {
+      _build(_rootElement!);
+      _layout(_rootElement!);
+      outputBuffer.smartClear();
+      paintElement(_rootElement!);
+    }
+    outputBuffer.flush();
+  }
+
   void addShutdownCallback(ShutdownCallback callback) {
     _shutdownCallbacks.add(callback);
   }
