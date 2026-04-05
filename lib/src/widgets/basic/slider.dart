@@ -290,7 +290,7 @@ class RenderSlider extends RenderBox {
   int _cachedLabelWidth = 0;
 
   int get _labelWidth {
-    if (!identical(_label, _cachedLabelIdentity)) {
+    if (_label != _cachedLabelIdentity) {
       _cachedLabelWidth =
           (_label != null && _label!.isNotEmpty) ? 2 + stringWidth(_label!) : 0;
       _cachedLabelIdentity = _label;
