@@ -5,6 +5,7 @@ import '../../../radartui.dart';
 /// Use [onPressed] for click handling. Supports [style] and [focusStyle]
 /// customization, and [enabled] for disabled state.
 class Button extends StatefulWidget {
+  /// Creates a [Button] displaying [text] with an optional [onPressed] callback.
   const Button({
     super.key,
     required this.text,
@@ -13,10 +14,20 @@ class Button extends StatefulWidget {
     this.style,
     this.focusNode,
   });
+
+  /// The label text displayed on the button.
   final String text;
+
+  /// Called when the button is activated via Enter or Space.
   final VoidCallback? onPressed;
+
+  /// Whether the button is interactive.
   final bool enabled;
+
+  /// The visual style configuration for the button.
   final ButtonStyle? style;
+
+  /// An optional focus node for keyboard navigation.
   final FocusNode? focusNode;
 
   @override
@@ -94,19 +105,53 @@ class _ButtonRenderWidget extends RenderObjectWidget {
   }
 }
 
+/// Render object that paints a button with background, text, and focus styling.
 class RenderButton extends RenderBox {
   RenderButton({
     required this.text,
-    required this.enabled,
-    required this.focused,
-    required this.style,
+    required bool enabled,
+    required bool focused,
+    required ButtonStyle style,
     this.onTap,
-  });
+  })  : _enabled = enabled,
+        _focused = focused,
+        _style = style;
+
   String text;
-  bool enabled;
-  bool focused;
-  ButtonStyle style;
+
+  bool _enabled;
+  bool get enabled => _enabled;
+  set enabled(bool value) {
+    if (_enabled == value) return;
+    _enabled = value;
+    _invalidateStyleCache();
+  }
+
+  bool _focused;
+  bool get focused => _focused;
+  set focused(bool value) {
+    if (_focused == value) return;
+    _focused = value;
+    _invalidateStyleCache();
+  }
+
+  ButtonStyle _style;
+  ButtonStyle get style => _style;
+  set style(ButtonStyle value) {
+    if (_style == value) return;
+    _style = value;
+    _invalidateStyleCache();
+  }
+
   VoidCallback? onTap;
+
+  TextStyle? _cachedTextStyle;
+  TextStyle? _cachedBgStyle;
+
+  void _invalidateStyleCache() {
+    _cachedTextStyle = null;
+    _cachedBgStyle = null;
+  }
 
   @override
   void performLayout(Constraints constraints) {
@@ -118,10 +163,10 @@ class RenderButton extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final EdgeInsets padding = style.padding;
-    final TextStyle textStyle = _getTextStyle();
-    final Color backgroundColor = _getBackgroundColor();
-    final TextStyle bgStyle = TextStyle(backgroundColor: backgroundColor);
+    final EdgeInsets padding = _style.padding;
+    _ensureStylesCached();
+    final TextStyle textStyle = _cachedTextStyle!;
+    final TextStyle bgStyle = _cachedBgStyle!;
 
     for (int y = 0; y < size!.height; y++) {
       for (int x = 0; x < size!.width; x++) {
@@ -139,35 +184,39 @@ class RenderButton extends RenderBox {
     }
   }
 
-  TextStyle _getTextStyle() {
+  void _ensureStylesCached() {
+    if (_cachedTextStyle != null && _cachedBgStyle != null) return;
+    final Color bgColor = _getBackgroundColor();
+    _cachedBgStyle = TextStyle(backgroundColor: bgColor);
     Color textColor;
-    if (!enabled) {
-      textColor = style.disabledColor;
-    } else if (focused) {
-      textColor = style.focusColor;
+    if (!_enabled) {
+      textColor = _style.disabledColor;
+    } else if (_focused) {
+      textColor = _style.focusColor;
     } else {
-      textColor = style.foregroundColor;
+      textColor = _style.foregroundColor;
     }
-
-    return TextStyle(
+    _cachedTextStyle = TextStyle(
       color: textColor,
-      backgroundColor: _getBackgroundColor(),
-      bold: style.bold,
+      backgroundColor: bgColor,
+      bold: _style.bold,
     );
   }
 
   Color _getBackgroundColor() {
-    if (!enabled) {
-      return style.disabledBackgroundColor;
-    } else if (focused) {
-      return style.focusBackgroundColor;
+    if (!_enabled) {
+      return _style.disabledBackgroundColor;
+    } else if (_focused) {
+      return _style.focusBackgroundColor;
     } else {
-      return style.backgroundColor;
+      return _style.backgroundColor;
     }
   }
 }
 
+/// Defines the visual style properties for a [Button].
 class ButtonStyle {
+  /// Creates a [ButtonStyle] with customizable colors, padding, and bold flag.
   const ButtonStyle({
     this.foregroundColor = Color.white,
     this.backgroundColor = Color.blue,
@@ -178,15 +227,32 @@ class ButtonStyle {
     this.padding = const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
     this.bold = false,
   });
+
+  /// The text color in the normal (unfocused, enabled) state.
   final Color foregroundColor;
+
+  /// The background color in the normal state.
   final Color backgroundColor;
+
+  /// The text color when the button has focus.
   final Color focusColor;
+
+  /// The background color when the button has focus.
   final Color focusBackgroundColor;
+
+  /// The text color when the button is disabled.
   final Color disabledColor;
+
+  /// The background color when the button is disabled.
   final Color disabledBackgroundColor;
+
+  /// Padding around the button label.
   final EdgeInsets padding;
+
+  /// Whether the button text is rendered bold.
   final bool bold;
 
+  /// Creates a copy of this style with the given fields replaced.
   ButtonStyle copyWith({
     Color? foregroundColor,
     Color? backgroundColor,
