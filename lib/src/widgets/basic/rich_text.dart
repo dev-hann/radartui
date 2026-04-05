@@ -347,22 +347,24 @@ class _StyledRun {
 }
 
 class _StyledLine {
-  _StyledLine._(this.runs);
+  _StyledLine._(this.runs, [this._length = 0]);
 
   factory _StyledLine.empty() => _StyledLine._([]);
-  factory _StyledLine.ellipsis() => _StyledLine._([_StyledRun('...', null)]);
+  factory _StyledLine.ellipsis() => _StyledLine._([_StyledRun('...', null)], 3);
 
   final List<_StyledRun> runs;
+  int _length;
 
-  int get length => runs.fold(0, (sum, run) => sum + run.text.length);
+  int get length => _length;
 
   void add(String text, TextStyle? style) {
     if (text.isEmpty) return;
     runs.add(_StyledRun(text, style));
+    _length += text.length;
   }
 
   _StyledLine copyWithEllipsis() {
-    int totalLength = length;
+    int totalLength = _length;
     final newRuns = <_StyledRun>[];
 
     for (final run in runs) {
@@ -373,7 +375,7 @@ class _StyledLine {
     }
 
     newRuns.add(_StyledRun('...', null));
-    return _StyledLine._(newRuns);
+    return _StyledLine._(newRuns, 3);
   }
 
   (int, bool) _appendRunOrTrim(
