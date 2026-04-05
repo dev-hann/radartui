@@ -120,6 +120,11 @@ class KeyEvent {
   /// Whether the meta modifier is pressed.
   final bool isMetaPressed;
 
+  bool get isActivationKey =>
+      code == KeyCode.enter ||
+      code == KeyCode.space ||
+      (code == KeyCode.char && char == ' ');
+
   @override
   String toString() {
     final modifiers = <String>[];

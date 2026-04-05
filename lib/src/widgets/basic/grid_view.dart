@@ -85,9 +85,7 @@ class _GridViewState<T> extends State<GridView<T>>
       _moveSelection(-1);
     } else if (event.code == KeyCode.arrowRight) {
       _moveSelection(1);
-    } else if (event.code == KeyCode.enter ||
-        event.code == KeyCode.space ||
-        (event.code == KeyCode.char && event.char == ' ')) {
+    } else if (event.isActivationKey) {
       if (selectedIndex >= 0 && selectedIndex < totalItems) {
         widget.onItemSelected?.call(selectedIndex, widget.items[selectedIndex]);
       }

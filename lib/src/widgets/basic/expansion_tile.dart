@@ -127,9 +127,7 @@ class _ExpansionTileState extends State<ExpansionTile>
 
   @override
   void onKeyEvent(KeyEvent event) {
-    if (event.code == KeyCode.enter ||
-        event.code == KeyCode.space ||
-        (event.code == KeyCode.char && event.char == ' ')) {
+    if (event.isActivationKey) {
       _controller.toggle();
     }
   }

@@ -167,9 +167,7 @@ class _TreeViewState<T> extends State<TreeView<T>>
       setState(() {
         _selectedIndex = (_selectedIndex + 1).clamp(0, flatNodes.length - 1);
       });
-    } else if (event.code == KeyCode.enter ||
-        event.code == KeyCode.space ||
-        (event.code == KeyCode.char && event.char == ' ')) {
+    } else if (event.isActivationKey) {
       _handleActivate(flatNodes);
     }
   }
