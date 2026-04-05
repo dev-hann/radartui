@@ -71,6 +71,24 @@ class OutputBuffer {
     _grid[y][x] = Cell(char, style);
   }
 
+  /// Writes a string of characters starting at ([x], [y]) with the given
+  /// [style], advancing the cursor by [charWidth] per character.
+  ///
+  /// Unlike calling [writeStyled] per character, this checks row bounds once
+  /// and silently clips characters that fall outside the column range.
+  void writeStringBatch(int x, int y, String text, TextStyle? style) {
+    if (y < 0 || y >= terminal.height) return;
+    final int w = terminal.width;
+    int col = x;
+    for (int i = 0; i < text.length; i++) {
+      final String ch = text[i];
+      if (col >= 0 && col < w) {
+        _grid[y][col] = Cell(ch, style);
+      }
+      col += charWidth(ch.codeUnitAt(0));
+    }
+  }
+
   void _fillRow(int y) {
     _grid[y] = List<Cell>.filled(terminal.width, Cell.empty);
   }
