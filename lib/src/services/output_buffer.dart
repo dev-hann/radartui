@@ -218,39 +218,83 @@ class OutputBuffer {
   /// Renders only the changed cells to the terminal since the last flush.
   void flush() {
     final StringBuffer buffer = StringBuffer();
-    TextStyle? currentStyle;
     int cursorX = -1;
     int cursorY = -1;
+    TextStyle? currentStyle;
 
     for (int y = 0; y < terminal.height; y++) {
-      for (int x = 0; x < terminal.width; x++) {
-        final Cell cell = _grid[y][x];
-        if (cell.char.isEmpty) continue;
-        if (cell == _previousGrid[y][x]) continue;
-
-        if (x != cursorX || y != cursorY) {
-          buffer.write('\x1b[${y + 1};${x + 1}H');
-        }
-
-        final TextStyle? newStyle = cell.style;
-        if (newStyle != currentStyle) {
-          currentStyle = newStyle;
-          buffer.write(_buildAnsiEscapeCode(currentStyle));
-        }
-
-        buffer.write(cell.char);
-        cursorX = x + charWidth(cell.char.codeUnitAt(0));
-        cursorY = y;
-
-        _previousGrid[y][x] = cell;
-        if (cursorX - x == 2 && x + 1 < terminal.width) {
-          _previousGrid[y][x + 1] = _grid[y][x + 1];
-        }
-      }
+      final result = _flushRow(
+        y,
+        buffer,
+        cursorX: cursorX,
+        cursorY: cursorY,
+        currentStyle: currentStyle,
+      );
+      cursorX = result.$1;
+      cursorY = result.$2;
+      currentStyle = result.$3;
     }
     buffer.write('\x1b[0m');
     buffer.write('\x1b[1;1H');
     terminal.backend.write(buffer.toString());
     terminal.backend.flush();
+  }
+
+  (int, int, TextStyle?) _flushRow(
+    int y,
+    StringBuffer buffer, {
+    required int cursorX,
+    required int cursorY,
+    required TextStyle? currentStyle,
+  }) {
+    for (int x = 0; x < terminal.width; x++) {
+      final Cell cell = _grid[y][x];
+      if (cell.char.isEmpty) continue;
+      if (cell == _previousGrid[y][x]) continue;
+
+      final result = _writeChangedCell(
+        x,
+        y,
+        cell,
+        buffer,
+        cursorX: cursorX,
+        cursorY: cursorY,
+        currentStyle: currentStyle,
+      );
+      cursorX = result.$1;
+      cursorY = result.$2;
+      currentStyle = result.$3;
+    }
+    return (cursorX, cursorY, currentStyle);
+  }
+
+  (int, int, TextStyle?) _writeChangedCell(
+    int x,
+    int y,
+    Cell cell,
+    StringBuffer buffer, {
+    required int cursorX,
+    required int cursorY,
+    required TextStyle? currentStyle,
+  }) {
+    if (x != cursorX || y != cursorY) {
+      buffer.write('\x1b[${y + 1};${x + 1}H');
+    }
+
+    final TextStyle? newStyle = cell.style;
+    if (newStyle != currentStyle) {
+      currentStyle = newStyle;
+      buffer.write(_buildAnsiEscapeCode(currentStyle));
+    }
+
+    buffer.write(cell.char);
+    final int newCursorX = x + charWidth(cell.char.codeUnitAt(0));
+
+    _previousGrid[y][x] = cell;
+    if (newCursorX - x == 2 && x + 1 < terminal.width) {
+      _previousGrid[y][x + 1] = _grid[y][x + 1];
+    }
+
+    return (newCursorX, y, currentStyle);
   }
 }
