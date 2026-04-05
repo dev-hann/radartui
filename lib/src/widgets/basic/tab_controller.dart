@@ -321,6 +321,7 @@ class RenderTabBar extends RenderBox {
   set tabs(List<Tab> value) {
     if (identical(_tabs, value)) return;
     _tabs = value;
+    _cachedTabsIdentity = null;
     _invalidateCache();
     markNeedsLayout();
   }
@@ -433,27 +434,34 @@ class RenderTabBar extends RenderBox {
   TextStyle? _cachedUnselectedStyle;
   TextStyle? _cachedIndicatorStyle;
   List<int> _cachedTabWidths = const [];
+  List<Tab>? _cachedTabsIdentity;
 
   void _invalidateCache() {
     _cachedSelectedStyle = null;
     _cachedUnselectedStyle = null;
     _cachedIndicatorStyle = null;
-    _cachedTabWidths = const [];
   }
 
-  @override
-  void performLayout(Constraints constraints) {
-    int totalWidth = 0;
+  void _ensureTabWidthsCached() {
+    if (identical(_tabs, _cachedTabsIdentity)) return;
     final widths = <int>[];
     for (final tab in _tabs) {
       final int textLen = stringWidth(tab.text ?? '');
       final int iconLen =
           (tab.icon != null) ? charWidth(tab.icon!.codeUnitAt(0)) : 0;
-      final int contentLen = textLen + iconLen;
-      widths.add(contentLen);
-      totalWidth += labelPadding.left + contentLen + labelPadding.right;
+      widths.add(textLen + iconLen);
     }
     _cachedTabWidths = widths;
+    _cachedTabsIdentity = _tabs;
+  }
+
+  @override
+  void performLayout(Constraints constraints) {
+    _ensureTabWidthsCached();
+    int totalWidth = 0;
+    for (final w in _cachedTabWidths) {
+      totalWidth += labelPadding.left + w + labelPadding.right;
+    }
     if (_tabs.isNotEmpty && _tabs.length > 1) {
       totalWidth += _tabs.length - 1;
     }
