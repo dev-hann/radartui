@@ -14,7 +14,7 @@ void main() {
   group('AnimationListeners', () {
     test('addListener and removeListener work correctly', () {
       final listeners = AnimationListeners<int>();
-      var callCount = 0;
+      int callCount = 0;
 
       void listener() => callCount++;
 
@@ -29,8 +29,8 @@ void main() {
 
     test('multiple listeners are all called', () {
       final listeners = AnimationListeners<int>();
-      var count1 = 0;
-      var count2 = 0;
+      int count1 = 0;
+      int count2 = 0;
 
       listeners.addListener(() => count1++);
       listeners.addListener(() => count2++);

@@ -1,0 +1,108 @@
+import '../../../radartui.dart';
+
+class Sparkline extends StatelessWidget {
+  const Sparkline({
+    super.key,
+    required this.data,
+    this.color,
+  });
+
+  final List<double> data;
+  final Color? color;
+
+  static const List<String> _blockChars = [
+    '▁',
+    '▂',
+    '▃',
+    '▄',
+    '▅',
+    '▆',
+    '▇',
+    '█',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    if (data.isEmpty) {
+      return const SizedBox(height: 1);
+    }
+
+    double minVal = data[0];
+    double maxVal = data[0];
+    for (final v in data) {
+      if (v < minVal) minVal = v;
+      if (v > maxVal) maxVal = v;
+    }
+
+    final double range = maxVal - minVal;
+    final List<String> chars = data.map((v) {
+      if (range == 0) return _blockChars[0];
+      final int idx = (((v - minVal) / range) * (_blockChars.length - 1))
+          .round()
+          .clamp(0, _blockChars.length - 1);
+      return _blockChars[idx];
+    }).toList();
+
+    return _SparklineRenderWidget(
+      chars: chars,
+      color: color ?? Color.green,
+    );
+  }
+}
+
+class _SparklineRenderWidget extends RenderObjectWidget {
+  const _SparklineRenderWidget({
+    required this.chars,
+    required this.color,
+  });
+
+  final List<String> chars;
+  final Color color;
+
+  @override
+  RenderObjectElement createElement() => RenderObjectElement(this);
+
+  @override
+  RenderSparkline createRenderObject(BuildContext context) => RenderSparkline(
+        chars: chars,
+        color: color,
+      );
+
+  @override
+  void updateRenderObject(BuildContext context, RenderObject renderObject) {
+    final render = renderObject as RenderSparkline;
+    final bool needsLayout = render.chars != chars;
+    render.chars = chars;
+    render.color = color;
+    if (needsLayout) {
+      render.markNeedsLayout();
+    }
+  }
+}
+
+class RenderSparkline extends RenderBox {
+  RenderSparkline({
+    required this.chars,
+    required this.color,
+  });
+
+  List<String> chars;
+  Color color;
+
+  @override
+  void performLayout(Constraints constraints) {
+    size = Size(chars.length, 1);
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    for (int i = 0; i < chars.length; i++) {
+      context.buffer.writeStyled(
+        offset.x + i,
+        offset.y,
+        chars[i],
+        TextStyle(color: color),
+      );
+    }
+  }
+}

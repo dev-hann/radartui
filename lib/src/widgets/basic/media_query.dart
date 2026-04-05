@@ -36,7 +36,7 @@ class MediaQuery extends InheritedWidget {
     if (widget != null) {
       return widget.data;
     }
-    throw RadarTUIError('MediaQuery.of() called with no MediaQuery ancestor');
+    throw RadartuiError('MediaQuery.of() called with no MediaQuery ancestor');
   }
 
   static MediaQueryData maybeOf(BuildContext context) {
@@ -46,11 +46,4 @@ class MediaQuery extends InheritedWidget {
 
   @override
   bool updateShouldNotify(MediaQuery oldWidget) => data != oldWidget.data;
-}
-
-class RadarTUIError implements Exception {
-  RadarTUIError(this.message);
-  final String message;
-  @override
-  String toString() => 'RadarTUIError: $message';
 }

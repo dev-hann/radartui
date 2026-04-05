@@ -31,7 +31,7 @@ void main() {
     });
 
     test('scheduleFrame schedules handleFrame', () async {
-      var callbackCalled = false;
+      bool callbackCalled = false;
       binding.addPostFrameCallback((_) {
         callbackCalled = true;
       });
@@ -43,7 +43,7 @@ void main() {
     });
 
     test('does not schedule duplicate frames', () async {
-      var callCount = 0;
+      int callCount = 0;
       binding.addPostFrameCallback((_) {
         callCount++;
       });

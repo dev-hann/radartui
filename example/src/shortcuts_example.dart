@@ -1,31 +1,16 @@
+import 'dart:async';
 import 'package:radartui/radartui.dart';
 
-class SaveIntent extends Intent {
-  const SaveIntent();
+class _SaveIntent extends Intent {
+  const _SaveIntent();
 }
 
-class QuitIntent extends Intent {
-  const QuitIntent();
+class _CopyIntent extends Intent {
+  const _CopyIntent();
 }
 
-class CopyIntent extends Intent {
-  const CopyIntent();
-}
-
-class PasteIntent extends Intent {
-  const PasteIntent();
-}
-
-class UndoIntent extends Intent {
-  const UndoIntent();
-}
-
-class RedoIntent extends Intent {
-  const RedoIntent();
-}
-
-class HelpIntent extends Intent {
-  const HelpIntent();
+class _DeleteIntent extends Intent {
+  const _DeleteIntent();
 }
 
 class ShortcutsExample extends StatefulWidget {
@@ -36,164 +21,108 @@ class ShortcutsExample extends StatefulWidget {
 }
 
 class _ShortcutsExampleState extends State<ShortcutsExample> {
-  String _status = 'Press a shortcut key';
+  String _lastAction = 'No shortcut triggered yet';
   int _saveCount = 0;
   int _copyCount = 0;
-  int _pasteCount = 0;
-  String _clipboard = '';
-  late FocusNode _focusNode;
+  int _deleteCount = 0;
+  StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    _focusNode = FocusNode();
-    FocusManager.instance.registerNode(_focusNode);
-    _focusNode.onKeyEvent = _handleKeyEvent;
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+      _handleKeyEvent(key);
+    });
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    _keySubscription?.cancel();
     super.dispose();
   }
 
-  bool _handleKeyEvent(KeyEvent event) {
-    final intent = Shortcuts.lookup(event, context);
-    if (intent != null) {
-      Actions.invoke(context, intent);
-      return true;
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      Navigator.of(context).pop();
     }
-    return false;
-  }
-
-  void _save() {
-    setState(() {
-      _saveCount++;
-      _status = 'Saved! (save #$_saveCount)';
-    });
-  }
-
-  void _quit() {
-    Navigator.of(context).pop();
-  }
-
-  void _copy() {
-    setState(() {
-      _copyCount++;
-      _clipboard = 'Item #$_copyCount';
-      _status = 'Copied: $_clipboard';
-    });
-  }
-
-  void _paste() {
-    setState(() {
-      _pasteCount++;
-      _status = 'Pasted: $_clipboard (paste #$_pasteCount)';
-    });
-  }
-
-  void _undo() {
-    setState(() {
-      _status = 'Undo!';
-    });
-  }
-
-  void _redo() {
-    setState(() {
-      _status = 'Redo!';
-    });
-  }
-
-  void _help() {
-    setState(() {
-      _status = 'Help: Available shortcuts are listed below';
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Shortcuts(
-      shortcuts: {
-        const ShortcutActivator(
-          key: KeyCode.char,
-          ctrl: true,
-          shift: null,
-          alt: null,
-        ): const SaveIntent(),
-        const ShortcutActivator(key: KeyCode.escape): const QuitIntent(),
-        const ShortcutActivator(key: KeyCode.f1): const HelpIntent(),
-      },
-      child: Actions(
-        actions: {
-          SaveIntent: CallbackAction(onInvoke: (_) => _save()),
-          QuitIntent: CallbackAction(onInvoke: (_) => _quit()),
-          HelpIntent: CallbackAction(onInvoke: (_) => _help()),
+    return Padding(
+      padding: const EdgeInsets.all(2),
+      child: Shortcuts(
+        shortcuts: {
+          const ShortcutActivator(key: KeyCode.char, ctrl: true):
+              const _SaveIntent(),
+          const ShortcutActivator(key: KeyCode.char, alt: true):
+              const _CopyIntent(),
+          const ShortcutActivator(key: KeyCode.delete): const _DeleteIntent(),
         },
-        child: Shortcuts(
-          shortcuts: {
-            const ShortcutActivator(key: KeyCode.char, ctrl: true):
-                const CopyIntent(),
-            const ShortcutActivator(key: KeyCode.char, alt: true):
-                const PasteIntent(),
-            const ShortcutActivator(key: KeyCode.char, ctrl: true, shift: true):
-                const UndoIntent(),
-            const ShortcutActivator(key: KeyCode.char, ctrl: true, alt: true):
-                const RedoIntent(),
+        child: Actions(
+          actions: {
+            _SaveIntent: CallbackAction(onInvoke: (_) {
+              setState(() {
+                _saveCount++;
+                _lastAction = 'Save triggered (Ctrl+S) - count: $_saveCount';
+              });
+              return null;
+            }),
+            _CopyIntent: CallbackAction(onInvoke: (_) {
+              setState(() {
+                _copyCount++;
+                _lastAction = 'Copy triggered (Alt+C) - count: $_copyCount';
+              });
+              return null;
+            }),
+            _DeleteIntent: CallbackAction(onInvoke: (_) {
+              setState(() {
+                _deleteCount++;
+                _lastAction = 'Delete triggered - count: $_deleteCount';
+              });
+              return null;
+            }),
           },
-          child: Actions(
-            actions: {
-              CopyIntent: CallbackAction(onInvoke: (_) => _copy()),
-              PasteIntent: CallbackAction(onInvoke: (_) => _paste()),
-              UndoIntent: CallbackAction(onInvoke: (_) => _undo()),
-              RedoIntent: CallbackAction(onInvoke: (_) => _redo()),
-            },
-            child: Focus(
-              focusNode: _focusNode,
-              child: Container(
-                padding: const EdgeInsets.all(2),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Shortcuts & Actions Demo',
-                      style: TextStyle(bold: true, color: Color.cyan),
+          child: ShortcutActionsHandler(
+            child: Column(
+              children: [
+                const Container(
+                  width: 50,
+                  height: 3,
+                  color: Color.blue,
+                  child: Center(
+                    child: Text(
+                      '⌨️ Shortcuts & Actions Example',
+                      style: TextStyle(color: Color.white, bold: true),
                     ),
-                    const SizedBox(height: 1),
-                    Container(
-                      color: Color.blue,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 1,
-                        horizontal: 2,
-                      ),
-                      child: Text(
-                        _status,
-                        style: const TextStyle(color: Color.white),
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    const Text(
-                      'Available Shortcuts:',
-                      style: TextStyle(bold: true, color: Color.yellow),
-                    ),
-                    const SizedBox(height: 1),
-                    const Text('Ctrl+S  - Save'),
-                    const Text('Ctrl+C  - Copy'),
-                    const Text('Alt+P   - Paste'),
-                    const Text('Ctrl+Shift+U - Undo'),
-                    const Text('Ctrl+Alt+R  - Redo'),
-                    const Text('F1      - Help'),
-                    const Text('ESC     - Quit'),
-                    const SizedBox(height: 2),
-                    const Text(
-                      'Press any shortcut to test!',
-                      style: TextStyle(italic: true, color: Color.brightBlack),
-                    ),
-                    const SizedBox(height: 1),
-                    Text(
-                      'Saves: $_saveCount | Copies: $_copyCount | Pastes: $_pasteCount',
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                const SizedBox(height: 2),
+                const Text(
+                  'Available shortcuts:',
+                  style: TextStyle(color: Color.cyan, bold: true),
+                ),
+                const SizedBox(height: 1),
+                const Text('Ctrl+S  - Save'),
+                const Text('Alt+C   - Copy'),
+                const Text('Delete  - Delete'),
+                const SizedBox(height: 2),
+                Container(
+                  width: 45,
+                  color: Color.brightBlack,
+                  padding: const EdgeInsets.all(1),
+                  child: Text(
+                    _lastAction,
+                    style: const TextStyle(color: Color.yellow),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                const Text(
+                  'Press ESC to return to main menu',
+                  style: TextStyle(color: Color.yellow, italic: true),
+                ),
+              ],
             ),
           ),
         ),

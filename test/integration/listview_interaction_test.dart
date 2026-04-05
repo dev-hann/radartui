@@ -12,16 +12,15 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('> Item 1');
-      tester.assertContains('  Item 2');
+      tester.assertBufferLines(['> Item 1', '  Item 2', '  Item 3']);
     });
   });
 
   group('ListView interaction', () {
     testWidgets('ListView navigates with arrow keys', (tester) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
-      var selectedIndex = -1;
-      var selectedValue = '';
+      int selectedIndex = -1;
+      String selectedValue = '';
 
       tester.pumpWidget(
         ListView<String>(
@@ -47,7 +46,7 @@ void main() {
 
     testWidgets('ListView navigates with j/k keys (vim-style)', (tester) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
-      var selectedIndex = -1;
+      int selectedIndex = -1;
 
       tester.pumpWidget(
         ListView<String>(
@@ -71,7 +70,7 @@ void main() {
 
     testWidgets('ListView triggers onItemSelected with Space', (tester) async {
       final items = ['Item 1', 'Item 2'];
-      var selectedValue = '';
+      String selectedValue = '';
 
       tester.pumpWidget(
         ListView<String>(
@@ -93,7 +92,7 @@ void main() {
 
     testWidgets('ListView does not go above first item', (tester) async {
       final items = ['Item 1', 'Item 2'];
-      var selectedIndex = 999;
+      int selectedIndex = 999;
 
       tester.pumpWidget(
         ListView<String>(
@@ -118,7 +117,7 @@ void main() {
 
     testWidgets('ListView does not go below last item', (tester) async {
       final items = ['Item 1', 'Item 2'];
-      var selectedIndex = -1;
+      int selectedIndex = -1;
 
       tester.pumpWidget(
         ListView<String>(
@@ -145,7 +144,7 @@ void main() {
       tester,
     ) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
-      var selectedIndex = -1;
+      int selectedIndex = -1;
 
       tester.pumpWidget(
         ListView<String>(
@@ -173,7 +172,7 @@ void main() {
       tester,
     ) async {
       final items = ['Item 1', 'Item 2'];
-      var selectedIndex = -1;
+      int selectedIndex = -1;
 
       tester.pumpWidget(
         ListView<String>(

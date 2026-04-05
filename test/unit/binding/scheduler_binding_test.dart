@@ -14,7 +14,7 @@ void main() {
     });
 
     test('addPersistentFrameCallback registers callback', () async {
-      var callCount = 0;
+      int callCount = 0;
 
       binding.addPersistentFrameCallback((duration) {
         callCount++;
@@ -27,7 +27,7 @@ void main() {
     });
 
     test('persistent callbacks are called on every frame', () async {
-      var callCount = 0;
+      int callCount = 0;
 
       binding.addPersistentFrameCallback((duration) {
         callCount++;

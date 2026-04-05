@@ -9,17 +9,14 @@ class RadioExample extends StatefulWidget {
 }
 
 class _RadioExampleState extends State<RadioExample> {
-  String? _selectedTheme = 'dark';
-  int? _selectedPriority = 2;
-  String? _selectedLanguage = 'dart';
+  String _selectedValue = 'option1';
   StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }
@@ -33,219 +30,84 @@ class _RadioExampleState extends State<RadioExample> {
   void _handleKeyEvent(KeyEvent keyEvent) {
     if (keyEvent.code == KeyCode.escape) {
       Navigator.of(context).pop();
-      return;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(1),
+      padding: const EdgeInsets.all(2),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Radio Button Example',
-            style: TextStyle(color: Color.brightCyan, bold: true),
+          const Container(
+            width: 50,
+            height: 3,
+            color: Color.blue,
+            child: Center(
+              child: Text(
+                '◉ Radio Button Example',
+                style: TextStyle(color: Color.white, bold: true),
+              ),
+            ),
           ),
-          const SizedBox(height: 1),
-          const Text(
-            'Theme Selection:',
-            style: TextStyle(color: Color.cyan, bold: true),
-          ),
+          const SizedBox(height: 2),
           Row(
             children: [
               Radio<String>(
-                value: 'dark',
-                groupValue: _selectedTheme,
-                onChanged: (value) {
+                value: 'option1',
+                groupValue: _selectedValue,
+                onChanged: (String? value) {
                   setState(() {
-                    _selectedTheme = value;
+                    _selectedValue = value ?? 'option1';
                   });
                 },
               ),
               const SizedBox(width: 2),
-              const Text('Dark Theme'),
-            ],
-          ),
-          Row(
-            children: [
-              Radio<String>(
-                value: 'light',
-                groupValue: _selectedTheme,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedTheme = value;
-                  });
-                },
-              ),
-              const SizedBox(width: 2),
-              const Text('Light Theme'),
+              const Text('Option 1'),
             ],
           ),
           Row(
             children: [
               Radio<String>(
-                value: 'auto',
-                groupValue: _selectedTheme,
-                onChanged: (value) {
+                value: 'option2',
+                groupValue: _selectedValue,
+                onChanged: (String? value) {
                   setState(() {
-                    _selectedTheme = value;
-                  });
-                },
-                activeColor: Color.green,
-              ),
-              const SizedBox(width: 2),
-              const Text('Auto Theme'),
-            ],
-          ),
-          const SizedBox(height: 1),
-          const Text(
-            'Priority Level:',
-            style: TextStyle(color: Color.cyan, bold: true),
-          ),
-          Row(
-            children: [
-              Radio<int>(
-                value: 1,
-                groupValue: _selectedPriority,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedPriority = value;
-                  });
-                },
-                activeColor: Color.red,
-              ),
-              const SizedBox(width: 2),
-              const Text('High Priority'),
-            ],
-          ),
-          Row(
-            children: [
-              Radio<int>(
-                value: 2,
-                groupValue: _selectedPriority,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedPriority = value;
-                  });
-                },
-                activeColor: Color.yellow,
-              ),
-              const SizedBox(width: 2),
-              const Text('Medium Priority'),
-            ],
-          ),
-          Row(
-            children: [
-              Radio<int>(
-                value: 3,
-                groupValue: _selectedPriority,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedPriority = value;
-                  });
-                },
-                activeColor: Color.green,
-              ),
-              const SizedBox(width: 2),
-              const Text('Low Priority'),
-            ],
-          ),
-          const SizedBox(height: 1),
-          const Text(
-            'Programming Language:',
-            style: TextStyle(color: Color.cyan, bold: true),
-          ),
-          Row(
-            children: [
-              Radio<String>(
-                value: 'dart',
-                groupValue: _selectedLanguage,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedLanguage = value;
+                    _selectedValue = value ?? 'option1';
                   });
                 },
               ),
               const SizedBox(width: 2),
-              const Text('Dart'),
+              const Text('Option 2'),
             ],
           ),
           Row(
             children: [
               Radio<String>(
-                value: 'rust',
-                groupValue: _selectedLanguage,
-                onChanged: (value) {
+                value: 'option3',
+                groupValue: _selectedValue,
+                onChanged: (String? value) {
                   setState(() {
-                    _selectedLanguage = value;
+                    _selectedValue = value ?? 'option1';
                   });
                 },
               ),
               const SizedBox(width: 2),
-              const Text('Rust'),
+              const Text('Option 3'),
             ],
           ),
-          const SizedBox(height: 1),
-          const Text(
-            'Disabled Radio Buttons:',
-            style: TextStyle(color: Color.cyan, bold: true),
-          ),
-          const Row(
-            children: [
-              Radio<String>(
-                value: 'disabled1',
-                groupValue: 'disabled2',
-                onChanged: null,
-              ),
-              SizedBox(width: 2),
-              Text('Disabled Unselected'),
-            ],
-          ),
-          const Row(
-            children: [
-              Radio<String>(
-                value: 'disabled2',
-                groupValue: 'disabled2',
-                onChanged: null,
-              ),
-              SizedBox(width: 2),
-              Text('Disabled Selected'),
-            ],
-          ),
-          const SizedBox(height: 1),
-          const Text(
-            'Current Selection:',
-            style: TextStyle(color: Color.cyan, bold: true),
-          ),
+          const SizedBox(height: 2),
           Text(
-            'Theme: ${_selectedTheme?.toUpperCase() ?? "NONE"}',
-            style: const TextStyle(color: Color.brightWhite),
+            'Selected: $_selectedValue',
+            style: const TextStyle(color: Color.cyan),
           ),
-          Text(
-            'Priority: ${_getPriorityText(_selectedPriority)}',
-            style: const TextStyle(color: Color.brightWhite),
-          ),
-          Text(
-            'Language: ${_selectedLanguage?.toUpperCase() ?? "NONE"}',
-            style: const TextStyle(color: Color.brightWhite),
+          const SizedBox(height: 2),
+          const Text(
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
           ),
         ],
       ),
     );
-  }
-
-  String _getPriorityText(int? priority) {
-    switch (priority) {
-      case 1:
-        return 'HIGH';
-      case 2:
-        return 'MEDIUM';
-      case 3:
-        return 'LOW';
-      default:
-        return 'NONE';
-    }
   }
 }

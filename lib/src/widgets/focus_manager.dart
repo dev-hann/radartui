@@ -5,12 +5,19 @@ import 'basic/focus.dart';
 import 'navigation.dart';
 import 'navigator_observer.dart';
 
+class _SavedScope {
+  _SavedScope(this.scope, this.focusedNode);
+  final FocusScope scope;
+  final FocusNode? focusedNode;
+}
+
 class FocusManager extends NavigatorObserver {
   FocusManager._();
   static FocusManager? _instance;
   static FocusManager get instance => _instance ??= FocusManager._();
 
   FocusScope? _currentScope;
+  final List<_SavedScope> _savedScopes = [];
   FocusScope? get currentScope => _currentScope;
   StreamSubscription<KeyEvent>? _keySubscription;
   Stream<KeyEvent>? _testKeyEvents;
@@ -33,41 +40,67 @@ class FocusManager extends NavigatorObserver {
   void dispose() {
     _keySubscription?.cancel();
     _keySubscription = null;
+    _currentScope?.dispose();
     _currentScope = null;
+    for (final saved in _savedScopes) {
+      saved.scope.dispose();
+    }
+    _savedScopes.clear();
   }
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    createNewScope();
+    _pushScope();
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    createNewScope();
+    _popScope();
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
-    createNewScope();
+    _pushScope();
   }
 
-  void createNewScope() {
-    _clearCurrentScope();
+  void _pushScope() {
+    if (_currentScope != null) {
+      _savedScopes.add(
+        _SavedScope(_currentScope!, _currentScope!.currentFocus),
+      );
+      _currentScope!.deactivate();
+    }
     _currentScope = FocusScope();
     _currentScope!.activate();
     WidgetsBinding.instance.scheduleFrame();
   }
 
-  void _clearCurrentScope() {
-    if (_currentScope != null) {
-      _currentScope!.dispose();
+  void _popScope() {
+    _currentScope?.dispose();
+    if (_savedScopes.isNotEmpty) {
+      final saved = _savedScopes.removeLast();
+      _currentScope = saved.scope;
+      _currentScope!.activate();
+      if (saved.focusedNode != null &&
+          _currentScope!.nodes.contains(saved.focusedNode) &&
+          saved.focusedNode!.canRequestFocus) {
+        _currentScope!.setFocus(saved.focusedNode!);
+      }
+    } else {
       _currentScope = null;
     }
+    WidgetsBinding.instance.scheduleFrame();
   }
 
   void _handleKeyEvent(KeyEvent event) {
     final scope = _currentScope;
     if (scope == null) {
+      return;
+    }
+
+    final current = scope.currentFocus;
+    if (current != null && current.trapFocus && event.code == KeyCode.tab) {
+      current.onKeyEvent?.call(event);
       return;
     }
 
@@ -84,9 +117,10 @@ class FocusManager extends NavigatorObserver {
 
   void registerNode(FocusNode node) {
     if (_currentScope == null) {
-      createNewScope();
+      _currentScope = FocusScope();
+      _currentScope!.activate();
     }
-    _currentScope?.addNode(node);
+    _currentScope!.addNode(node);
   }
 
   void unregisterNode(FocusNode node) {
@@ -98,11 +132,11 @@ class FocusManager extends NavigatorObserver {
   }
 
   void pushDialogScope() {
-    createNewScope();
+    _pushScope();
   }
 
   void popDialogScope() {
-    _clearCurrentScope();
+    _popScope();
   }
 
   FocusNode? get currentFocus => _currentScope?.currentFocus;

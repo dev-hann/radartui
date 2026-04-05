@@ -10,8 +10,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('│');
-      tester.assertContains('─');
+      tester.assertBufferLines(['█']);
     });
 
     testWidgets('Form renders error text on validation failure', (
@@ -129,7 +128,7 @@ void main() {
 
     testWidgets('Form submit calls onSubmitted when valid', (tester) async {
       final formKey = GlobalKey();
-      var submitted = false;
+      bool submitted = false;
       final controller = TextEditingController();
 
       tester.pumpWidget(
@@ -170,7 +169,7 @@ void main() {
       tester,
     ) async {
       final formKey = GlobalKey();
-      var submitted = false;
+      bool submitted = false;
       final controller = TextEditingController();
 
       tester.pumpWidget(
@@ -202,7 +201,7 @@ void main() {
     });
 
     testWidgets('FormField<bool> works with Checkbox', (tester) async {
-      var fieldValue = false;
+      bool fieldValue = false;
 
       tester.pumpWidget(
         FormField<bool>(

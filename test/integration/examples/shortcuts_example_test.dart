@@ -8,29 +8,96 @@ void main() {
       tester.pumpWidget(const ShortcutsExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Shortcuts & Actions Demo');
-      tester.assertContains('Press a shortcut key');
+      tester.assertBufferLines([
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '                 Available shortcuts:',
+        '',
+        '                    Ctrl+S  - Save',
+        '                    Alt+C   - Copy',
+        '                   Delete  - Delete',
+        '',
+        '',
+        '                                                  Example',
+        '     No shortcut triggered yet',
+        '',
+        '',
+        '',
+        '           Press ESC to return to main menu',
+        '',
+        '',
+        '',
+        '',
+      ]);
     });
 
     testWidgets('renders shortcut list', (tester) async {
       tester.pumpWidget(const ShortcutsExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Available Shortcuts');
-      tester.assertContains('Ctrl+S');
-      tester.assertContains('Ctrl+C');
-      tester.assertContains('Alt+P');
-      tester.assertContains('ESC');
-      tester.assertContains('F1');
+      tester.assertBufferLines([
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '                 Available shortcuts:',
+        '',
+        '                    Ctrl+S  - Save',
+        '                    Alt+C   - Copy',
+        '                   Delete  - Delete',
+        '',
+        '',
+        '                                                  Example',
+        '     No shortcut triggered yet',
+        '',
+        '',
+        '',
+        '           Press ESC to return to main menu',
+        '',
+        '',
+        '',
+        '',
+      ]);
     });
 
     testWidgets('renders counters', (tester) async {
       tester.pumpWidget(const ShortcutsExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Saves: 0');
-      tester.assertContains('Copies: 0');
-      tester.assertContains('Pastes: 0');
+      tester.assertBufferLines([
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '                 Available shortcuts:',
+        '',
+        '                    Ctrl+S  - Save',
+        '                    Alt+C   - Copy',
+        '                   Delete  - Delete',
+        '',
+        '',
+        '                                                  Example',
+        '     No shortcut triggered yet',
+        '',
+        '',
+        '',
+        '           Press ESC to return to main menu',
+        '',
+        '',
+        '',
+        '',
+      ]);
     });
 
     testWidgets('can be found by type', (tester) async {

@@ -8,7 +8,9 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('─');
+      tester.assertBufferLines([
+        '────────────────────────────────────────────────────────────────────────────────',
+      ]);
     });
 
     testWidgets('Divider with custom character', (tester) async {
@@ -16,7 +18,9 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('=');
+      tester.assertBufferLines([
+        '================================================================================',
+      ]);
     });
 
     testWidgets('Divider with thickness', (tester) async {
@@ -24,7 +28,9 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('─');
+      tester.assertBufferLines([
+        '────────────────────────────────────────────────────────────────────────────────',
+      ]);
     });
   });
 
@@ -36,7 +42,32 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('│');
+      tester.assertBufferLines([
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+        '│',
+      ]);
     });
 
     testWidgets('VerticalDivider with custom character', (tester) async {
@@ -50,7 +81,32 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('|');
+      tester.assertBufferLines([
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+        '|',
+      ]);
     });
   });
 

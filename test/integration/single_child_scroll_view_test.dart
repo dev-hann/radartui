@@ -9,7 +9,7 @@ void main() {
       );
 
       await tester.pumpAndSettle();
-      tester.assertContains('Hello World');
+      tester.assertBufferLines(['Hello World']);
     });
 
     testWidgets('scrolls down with arrow down key', (tester) async {

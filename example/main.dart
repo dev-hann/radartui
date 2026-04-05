@@ -1,28 +1,5 @@
 import 'package:radartui/radartui.dart';
-import 'src/align_example.dart';
-import 'src/async_example.dart';
-import 'src/button_example.dart';
-import 'src/card_example.dart';
-import 'src/checkbox_example.dart';
-import 'src/data_table_example.dart';
-import 'src/default_text_style_example.dart';
-import 'src/dialog_example.dart';
-import 'src/divider_example.dart';
-import 'src/flex_example.dart';
-import 'src/focus_example.dart';
-import 'src/form_example.dart';
-import 'src/grid_view_example.dart';
-import 'src/icon_example.dart';
-import 'src/indexed_stack_example.dart';
-import 'src/radio_example.dart';
-import 'src/rich_text_example.dart';
-import 'src/shortcuts_example.dart';
-import 'src/spacer_example.dart';
-import 'src/stack_example.dart';
-import 'src/style_example.dart';
-import 'src/textfield_example.dart';
-import 'src/theme_example.dart';
-import 'src/wrap_example.dart';
+import 'src/exports.dart';
 
 void main() {
   runApp(const RadarTUIExamplesApp());
@@ -38,29 +15,40 @@ class RadarTUIExamplesApp extends StatelessWidget {
       routes: {
         '/': (context) => const MenuScreen(),
         '/align': (context) => const AlignExample(),
-        '/async': (context) => const AsyncExample(),
-        '/button': (context) => const ButtonExample(),
-        '/card': (context) => const CardExample(),
-        '/checkbox': (context) => const CheckboxExample(),
-        '/datatable': (context) => const DataTableExample(),
-        '/defaulttextstyle': (context) => const DefaultTextStyleExample(),
-        '/dialog': (context) => const DialogExample(),
-        '/divider': (context) => const DividerExample(),
         '/flex': (context) => const FlexExample(),
-        '/focus': (context) => const FocusExample(),
-        '/form': (context) => const FormExample(),
-        '/gridview': (context) => const GridViewExample(),
-        '/icon': (context) => const IconExample(),
-        '/indexedstack': (context) => const IndexedStackExample(),
-        '/radio': (context) => const RadioExample(),
-        '/richtext': (context) => const RichTextExample(),
-        '/spacer': (context) => const SpacerExample(),
         '/stack': (context) => const StackExample(),
+        '/spacer': (context) => const SpacerExample(),
+        '/gridview': (context) => const GridViewExample(),
         '/style': (context) => const StyleExample(),
+        '/richtext': (context) => const RichTextExample(),
+        '/icon': (context) => const IconExample(),
+        '/divider': (context) => const DividerExample(),
+        '/card': (context) => const CardExample(),
+        '/sparkline': (context) => const SparklineExample(),
+        '/datatable': (context) => const DataTableExample(),
+        '/button': (context) => const ButtonExample(),
         '/textfield': (context) => const TextFieldExample(),
-        '/theme': (context) => const ThemeExample(),
+        '/checkbox': (context) => const CheckboxExample(),
+        '/radio': (context) => const RadioExample(),
+        '/toggle': (context) => const ToggleExample(),
+        '/slider': (context) => const SliderExample(),
+        '/dropdown': (context) => const DropdownButtonExample(),
+        '/circularprogress': (context) => const CircularProgressExample(),
+        '/linearprogress': (context) => const LinearProgressExample(),
+        '/tabbar': (context) => const TabBarExample(),
+        '/expansiontile': (context) => const ExpansionTileExample(),
+        '/treeview': (context) => const TreeViewExample(),
+        '/menubar': (context) => const MenuBarExample(),
+        '/dialog': (context) => const DialogExample(),
+        '/toast': (context) => const ToastExample(),
+        '/statusbar': (context) => const StatusBarExample(),
+        '/form': (context) => const FormExample(),
+        '/focus': (context) => const FocusExample(),
         '/shortcuts': (context) => const ShortcutsExample(),
-        '/wrap': (context) => const WrapExample(),
+        '/async': (context) => const AsyncExample(),
+        '/theme': (context) => const ThemeExample(),
+        '/defaulttextstyle': (context) => const DefaultTextStyleExample(),
+        '/dashboard': (context) => const DashboardExample(),
       },
     );
   }
@@ -74,58 +62,80 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  final List<String> _exampleTitles = [
-    'Align & Center',
-    'Async (Future/Stream)',
-    'Button Widget',
-    'Card Widget',
-    'Checkbox Widget',
-    'DataTable Widget',
-    'DefaultTextStyle Widget',
-    'Dialog Widget',
-    'Divider Widget',
-    'Flex Layout',
-    'Focus Management',
-    'Form Validation',
-    'GridView Widget',
-    'Icon Widget',
-    'IndexedStack Widget',
-    'Radio Button',
-    'RichText Widget',
-    'Spacer & Flexible',
-    'Stack Widget',
-    'Text Styling',
-    'TextField Widget',
-    'Theme & MediaQuery',
-    'Shortcuts & Actions',
-    'Wrap Widget',
+  static const List<String> _exampleTitles = [
+    '📐 Align & Center',
+    '📏 Flex Layout',
+    '📚 Stack Widget',
+    '↕️ Spacer & Flexible',
+    '🔲 GridView Widget',
+    '✨ Text Styling',
+    '🎨 RichText Widget',
+    '🖼️ Icon Widget',
+    '➖ Divider Widget',
+    '🃏 Card Widget',
+    '📈 Sparkline Widget',
+    '📊 DataTable Widget',
+    '🔘 Button Widget',
+    '⌨️ TextField Widget',
+    '☑️ Checkbox Widget',
+    '◉ Radio Button',
+    '🔀 Toggle Widget',
+    '🎚️ Slider Widget',
+    '▼ DropdownButton',
+    '⏳ CircularProgressIndicator',
+    '📊 LinearProgressIndicator',
+    '📑 TabBar Example',
+    '📂 ExpansionTile Widget',
+    '🌳 TreeView Widget',
+    '☰ MenuBar Widget',
+    '💬 Dialog Widget',
+    '🍞 Toast Widget',
+    '📟 StatusBar Widget',
+    '📝 Form Validation',
+    '🎯 Focus Management',
+    '⌨️ Shortcuts & Actions',
+    '⚡ Async (Future/Stream)',
+    '🎨 Theme & MediaQuery',
+    '🔤 DefaultTextStyle',
+    '💻 System Dashboard',
   ];
 
-  final List<String> _exampleRoutes = [
+  static const List<String> _exampleRoutes = [
     '/align',
-    '/async',
-    '/button',
-    '/card',
-    '/checkbox',
-    '/datatable',
-    '/defaulttextstyle',
-    '/dialog',
-    '/divider',
     '/flex',
-    '/focus',
-    '/form',
-    '/gridview',
-    '/icon',
-    '/indexedstack',
-    '/radio',
-    '/richtext',
-    '/spacer',
     '/stack',
+    '/spacer',
+    '/gridview',
     '/style',
+    '/richtext',
+    '/icon',
+    '/divider',
+    '/card',
+    '/sparkline',
+    '/datatable',
+    '/button',
     '/textfield',
-    '/theme',
+    '/checkbox',
+    '/radio',
+    '/toggle',
+    '/slider',
+    '/dropdown',
+    '/circularprogress',
+    '/linearprogress',
+    '/tabbar',
+    '/expansiontile',
+    '/treeview',
+    '/menubar',
+    '/dialog',
+    '/toast',
+    '/statusbar',
+    '/form',
+    '/focus',
     '/shortcuts',
-    '/wrap',
+    '/async',
+    '/theme',
+    '/defaulttextstyle',
+    '/dashboard',
   ];
 
   void _onExampleSelected(int index, String item) async {

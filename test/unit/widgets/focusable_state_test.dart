@@ -85,7 +85,7 @@ void main() {
 
       final state = tester.state<_TestFocusableState>()!;
       state.focusNode.requestFocus();
-      tester.pump();
+      await tester.pump();
 
       expect(buildCount, greaterThanOrEqualTo(1));
     });

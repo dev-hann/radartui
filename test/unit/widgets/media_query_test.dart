@@ -111,20 +111,20 @@ void main() {
     });
   });
 
-  group('RadarTUIError', () {
-    test('RadarTUIError stores message', () {
-      final error = RadarTUIError('test error');
+  group('RadartuiError', () {
+    test('RadartuiError stores message', () {
+      final error = RadartuiError('test error');
       expect(error.message, equals('test error'));
     });
 
-    test('RadarTUIError toString', () {
-      final error = RadarTUIError('test error');
-      expect(error.toString(), equals('RadarTUIError: test error'));
+    test('RadartuiError toString', () {
+      final error = RadartuiError('test error');
+      expect(error.toString(), equals('RadartuiError: test error'));
     });
 
-    test('RadarTUIError implements Exception', () {
-      final error = RadarTUIError('test');
-      expect(error, isA<Exception>());
+    test('RadartuiError extends Error', () {
+      final error = RadartuiError('test');
+      expect(error, isA<Error>());
     });
   });
 }

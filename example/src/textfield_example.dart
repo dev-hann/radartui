@@ -9,6 +9,8 @@ class TextFieldExample extends StatefulWidget {
 }
 
 class _TextFieldExampleState extends State<TextFieldExample> {
+  String _inputValue = '';
+  String _multilineValue = '';
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController _controller2 = TextEditingController();
   StreamSubscription? _keySubscription;
@@ -16,19 +18,10 @@ class _TextFieldExampleState extends State<TextFieldExample> {
   @override
   void initState() {
     super.initState();
-    _controller1.text = 'Initial text';
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
-  }
-
-  void _handleKeyEvent(KeyEvent keyEvent) {
-    if (keyEvent.code == KeyCode.escape) {
-      Navigator.of(context).pop();
-      return;
-    }
   }
 
   @override
@@ -39,6 +32,12 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     super.dispose();
   }
 
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,102 +45,57 @@ class _TextFieldExampleState extends State<TextFieldExample> {
       child: Column(
         children: [
           const Container(
-            width: 60,
+            width: 50,
             height: 3,
-            color: Color.green,
+            color: Color.blue,
             child: Center(
               child: Text(
-                '📝 TextField Example',
+                '⌨️ TextField Widget Example',
                 style: TextStyle(color: Color.white, bold: true),
               ),
             ),
           ),
           const SizedBox(height: 2),
-          Container(
-            width: 60,
-            color: Color.brightBlack,
-            padding: const EdgeInsets.all(2),
-            child: Column(
-              children: [
-                const Text(
-                  'Basic TextField with controller:',
-                  style: TextStyle(color: Color.cyan),
-                ),
-                const SizedBox(height: 1),
-                TextField(
-                  controller: _controller1,
-                  placeholder: 'Enter text here...',
-                  style: const TextStyle(color: Color.white),
-                  onChanged: (text) {
-                    setState(() {});
-                  },
-                  onSubmitted: (text) {
-                    setState(() {});
-                  },
-                ),
-                const SizedBox(height: 2),
-                const Text(
-                  'TextField with max length (10):',
-                  style: TextStyle(color: Color.cyan),
-                ),
-                const SizedBox(height: 1),
-                TextField(
-                  controller: _controller2,
-                  placeholder: 'Max 10 chars',
-                  maxLength: 10,
-                  onChanged: (text) {
-                    setState(() {});
-                  },
-                  onSubmitted: (text) {
-                    setState(() {});
-                  },
-                  style: const TextStyle(color: Color.yellow),
-                ),
-                const SizedBox(height: 2),
-                const Text(
-                  'Status:',
-                  style: TextStyle(color: Color.magenta, bold: true),
-                ),
-                Text(
-                  'Controller 1: ${_controller1.text}',
-                  style: const TextStyle(color: Color.white),
-                ),
-                Text(
-                  'Controller 2: ${_controller2.text}',
-                  style: const TextStyle(color: Color.white),
-                ),
-                const SizedBox(height: 2),
-                const Text(
-                  'Controls:',
-                  style: TextStyle(color: Color.yellow, bold: true),
-                ),
-                const Text(
-                  '• Tab: Switch between fields',
-                  style: TextStyle(color: Color.white),
-                ),
-                const Text(
-                  '• Arrow keys: Move cursor',
-                  style: TextStyle(color: Color.white),
-                ),
-                const Text(
-                  '• Enter: Submit text',
-                  style: TextStyle(color: Color.white),
-                ),
-                const Text(
-                  '• Backspace/Delete: Edit text',
-                  style: TextStyle(color: Color.white),
-                ),
-                const Text(
-                  '• Home/End: Jump to start/end',
-                  style: TextStyle(color: Color.white),
-                ),
-                const SizedBox(height: 1),
-                const Text(
-                  'Press Escape to return to menu',
-                  style: TextStyle(color: Color.red, italic: true),
-                ),
-              ],
-            ),
+          const Text(
+            'Single-line input:',
+            style: TextStyle(color: Color.cyan),
+          ),
+          TextField(
+            controller: _controller1,
+            placeholder: 'Enter text here...',
+            onChanged: (String value) {
+              setState(() {
+                _inputValue = value;
+              });
+            },
+          ),
+          const SizedBox(height: 2),
+          const Text(
+            'Multiline input:',
+            style: TextStyle(color: Color.cyan),
+          ),
+          TextField(
+            controller: _controller2,
+            placeholder: 'Enter multiple lines...',
+            onChanged: (String value) {
+              setState(() {
+                _multilineValue = value;
+              });
+            },
+          ),
+          const SizedBox(height: 2),
+          Text(
+            'Input: $_inputValue',
+            style: const TextStyle(color: Color.white),
+          ),
+          Text(
+            'Multiline: $_multilineValue',
+            style: const TextStyle(color: Color.white),
+          ),
+          const SizedBox(height: 2),
+          const Text(
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
           ),
         ],
       ),

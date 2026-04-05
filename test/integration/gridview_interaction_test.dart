@@ -13,16 +13,17 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('> Item 1');
-      tester.assertContains('  Item 2');
-      tester.assertContains('  Item 3');
+      tester.assertBufferLines([
+        '> Item 1                    Item 2                    Item 3',
+        '  Item 4                    Item 5                    Item 6',
+      ]);
     });
   });
 
   group('GridView interaction', () {
     testWidgets('GridView navigates right with arrow key', (tester) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
-      var selectedIndex = -1;
+      int selectedIndex = -1;
 
       tester.pumpWidget(
         GridView<String>(
@@ -54,7 +55,7 @@ void main() {
         'Item 5',
         'Item 6',
       ];
-      var selectedIndex = -1;
+      int selectedIndex = -1;
 
       tester.pumpWidget(
         GridView<String>(
@@ -80,7 +81,7 @@ void main() {
 
     testWidgets('GridView navigates left with arrow key', (tester) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
-      var selectedIndex = -1;
+      int selectedIndex = -1;
 
       tester.pumpWidget(
         GridView<String>(
@@ -113,7 +114,7 @@ void main() {
         'Item 5',
         'Item 6',
       ];
-      var selectedIndex = -1;
+      int selectedIndex = -1;
 
       tester.pumpWidget(
         GridView<String>(
@@ -139,7 +140,7 @@ void main() {
 
     testWidgets('GridView triggers onItemSelected with Space', (tester) async {
       final items = ['Item 1', 'Item 2'];
-      var selectedValue = '';
+      String selectedValue = '';
 
       tester.pumpWidget(
         GridView<String>(
@@ -162,7 +163,7 @@ void main() {
 
     testWidgets('GridView does not go above first row', (tester) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
-      var selectedIndex = 999;
+      int selectedIndex = 999;
 
       tester.pumpWidget(
         GridView<String>(
@@ -188,7 +189,7 @@ void main() {
 
     testWidgets('GridView does not go past last item', (tester) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
-      var selectedIndex = -1;
+      int selectedIndex = -1;
 
       tester.pumpWidget(
         GridView<String>(
@@ -216,7 +217,7 @@ void main() {
       tester,
     ) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
-      var selectedIndex = -1;
+      int selectedIndex = -1;
 
       tester.pumpWidget(
         GridView<String>(
@@ -245,7 +246,7 @@ void main() {
       tester,
     ) async {
       final items = ['Item 1', 'Item 2', 'Item 3'];
-      var selectedIndex = -1;
+      int selectedIndex = -1;
 
       tester.pumpWidget(
         GridView<String>(

@@ -364,6 +364,15 @@ class TestOutputBuffer implements OutputBuffer {
     writeStyled(x, y, char, null);
   }
 
+  void writeStringStyled(int x, int y, String text, TextStyle? style) {
+    int cx = x;
+    for (int i = 0; i < text.length; i++) {
+      final String ch = text[i];
+      writeStyled(cx, y, ch, style);
+      cx += charWidth(ch.codeUnitAt(0));
+    }
+  }
+
   List<String> get output => _output;
 }
 

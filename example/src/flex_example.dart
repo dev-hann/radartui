@@ -14,9 +14,8 @@ class _FlexExampleState extends State<FlexExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }
@@ -30,7 +29,6 @@ class _FlexExampleState extends State<FlexExample> {
   void _handleKeyEvent(KeyEvent keyEvent) {
     if (keyEvent.code == KeyCode.escape) {
       Navigator.of(context).pop();
-      return;
     }
   }
 
@@ -40,136 +38,165 @@ class _FlexExampleState extends State<FlexExample> {
       padding: EdgeInsets.all(2),
       child: Column(
         children: [
-          Text(
-            'Flex Layout Example',
-            style: TextStyle(color: Color.cyan, bold: true),
-          ),
-          SizedBox(height: 2),
-          Text(
-            'Row with MainAxisAlignment.start:',
-            style: TextStyle(color: Color.yellow),
-          ),
-          SizedBox(height: 1),
           Container(
-            height: 1,
-            color: Color.brightBlack,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [Text('[A]'), Text('[B]'), Text('[C]')],
+            width: 50,
+            height: 3,
+            color: Color.blue,
+            child: Center(
+              child: Text(
+                '📏 Flex Layout Example',
+                style: TextStyle(color: Color.white, bold: true),
+              ),
             ),
           ),
           SizedBox(height: 2),
-          Text(
-            'Row with MainAxisAlignment.center:',
-            style: TextStyle(color: Color.yellow),
-          ),
-          SizedBox(height: 1),
           Container(
-            height: 1,
             color: Color.brightBlack,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text('[A]'), Text('[B]'), Text('[C]')],
-            ),
-          ),
-          SizedBox(height: 2),
-          Text(
-            'Row with MainAxisAlignment.spaceBetween:',
-            style: TextStyle(color: Color.yellow),
-          ),
-          SizedBox(height: 1),
-          Container(
-            height: 1,
-            color: Color.brightBlack,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text('[A]'), Text('[B]'), Text('[C]')],
-            ),
-          ),
-          SizedBox(height: 2),
-          Text(
-            'Expanded widget (fills remaining space):',
-            style: TextStyle(color: Color.yellow),
-          ),
-          SizedBox(height: 1),
-          Container(
-            height: 1,
-            color: Color.brightBlack,
-            child: Row(
+            padding: EdgeInsets.all(1),
+            child: Column(
               children: [
-                Text('[Fixed]'),
-                Expanded(
-                  child: Text(
-                    '[EXPANDED - fills remaining space]',
-                    style: TextStyle(color: Color.green),
-                  ),
+                Text(
+                  'Row with 3 containers:',
+                  style: TextStyle(color: Color.cyan, bold: true),
                 ),
-                Text('[End]'),
-              ],
-            ),
-          ),
-          SizedBox(height: 2),
-          Text(
-            'Multiple Expanded with flex ratios (1:2:1):',
-            style: TextStyle(color: Color.yellow),
-          ),
-          SizedBox(height: 1),
-          Container(
-            height: 1,
-            color: Color.brightBlack,
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Text('[1]', style: TextStyle(color: Color.red)),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    '[2 - larger]',
-                    style: TextStyle(color: Color.green),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Text('[1]', style: TextStyle(color: Color.blue)),
+                SizedBox(height: 1),
+                Row(
+                  children: [
+                    Container(
+                      width: 15,
+                      height: 3,
+                      color: Color.red,
+                      child: Center(
+                        child:
+                            Text('Red', style: TextStyle(color: Color.white)),
+                      ),
+                    ),
+                    Container(
+                      width: 15,
+                      height: 3,
+                      color: Color.green,
+                      child: Center(
+                        child: Text(
+                          'Green',
+                          style: TextStyle(color: Color.white),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 15,
+                      height: 3,
+                      color: Color.blue,
+                      child: Center(
+                        child:
+                            Text('Blue', style: TextStyle(color: Color.white)),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
           SizedBox(height: 2),
-          Text(
-            'Column with CrossAxisAlignment:',
-            style: TextStyle(color: Color.yellow),
-          ),
-          SizedBox(height: 1),
           Container(
-            height: 5,
             color: Color.brightBlack,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: EdgeInsets.all(1),
+            child: Column(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Text('Start'), Text('Aligned')],
+                Text(
+                  'Column with 3 containers:',
+                  style: TextStyle(color: Color.cyan, bold: true),
                 ),
-                SizedBox(width: 4),
+                SizedBox(height: 1),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [Text('Center'), Text('Aligned')],
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 2,
+                      color: Color.red,
+                      child: Text(
+                        ' Row 1',
+                        style: TextStyle(color: Color.white),
+                      ),
+                    ),
+                    Container(
+                      width: 40,
+                      height: 2,
+                      color: Color.green,
+                      child: Text(
+                        ' Row 2',
+                        style: TextStyle(color: Color.white),
+                      ),
+                    ),
+                    Container(
+                      width: 40,
+                      height: 2,
+                      color: Color.blue,
+                      child: Text(
+                        ' Row 3',
+                        style: TextStyle(color: Color.white),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 4),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [Text('End'), Text('Aligned')],
+              ],
+            ),
+          ),
+          SizedBox(height: 2),
+          Container(
+            color: Color.brightBlack,
+            padding: EdgeInsets.all(1),
+            child: Column(
+              children: [
+                Text(
+                  'Expanded inside a Row:',
+                  style: TextStyle(color: Color.cyan, bold: true),
+                ),
+                SizedBox(height: 1),
+                Row(
+                  children: [
+                    Text('[Fixed] '),
+                    Expanded(
+                      child: Container(
+                        height: 1,
+                        color: Color.green,
+                        child: Text(
+                          'Expanded fills remaining space',
+                          style: TextStyle(color: Color.white),
+                        ),
+                      ),
+                    ),
+                    Text(' [End]'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 2),
+          Container(
+            color: Color.brightBlack,
+            padding: EdgeInsets.all(1),
+            child: Column(
+              children: [
+                Text(
+                  'MainAxisAlignment.spaceBetween:',
+                  style: TextStyle(color: Color.cyan, bold: true),
+                ),
+                SizedBox(height: 1),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('[A]', style: TextStyle(color: Color.red)),
+                    Text('[B]', style: TextStyle(color: Color.green)),
+                    Text('[C]', style: TextStyle(color: Color.blue)),
+                  ],
                 ),
               ],
             ),
           ),
           SizedBox(height: 2),
           Text(
-            'Press ESC to return',
-            style: TextStyle(color: Color.brightGreen, italic: true),
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
           ),
         ],
       ),

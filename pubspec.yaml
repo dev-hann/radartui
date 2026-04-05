@@ -1,13 +1,20 @@
 name: radartui
 description: A flutter-like TUI framework for dart.
 version: 0.0.1
+repository: https://github.com/dev-hann/radartui
+issue_tracker: https://github.com/dev-hann/radartui/issues
+topics:
+  - tui
+  - terminal
+  - cli
+  - ui
 environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   collection: ^1.17.0
-
   ffi: ^1.2.1
-  test: any
+  test: ^1.31.0
+
 dev_dependencies:
   lints: ^4.0.0

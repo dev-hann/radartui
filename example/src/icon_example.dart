@@ -14,9 +14,8 @@ class _IconExampleState extends State<IconExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }
@@ -30,7 +29,6 @@ class _IconExampleState extends State<IconExample> {
   void _handleKeyEvent(KeyEvent keyEvent) {
     if (keyEvent.code == KeyCode.escape) {
       Navigator.of(context).pop();
-      return;
     }
   }
 
@@ -46,146 +44,78 @@ class _IconExampleState extends State<IconExample> {
             color: Color.blue,
             child: Center(
               child: Text(
-                '🎨 Icon Widget Example',
+                '🖼️ Icon Widget Example',
                 style: TextStyle(color: Color.white, bold: true),
               ),
             ),
           ),
           SizedBox(height: 2),
-          Container(
-            color: Color.brightBlack,
-            padding: EdgeInsets.all(1),
-            child: Column(
-              children: [
-                Text(
-                  'Navigation Icons:',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
-                SizedBox(height: 1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(icon: Icons.arrowUp, color: Color.green),
-                    Icon(icon: Icons.arrowDown, color: Color.green),
-                    Icon(icon: Icons.arrowLeft, color: Color.green),
-                    Icon(icon: Icons.arrowRight, color: Color.green),
-                  ],
-                ),
-              ],
-            ),
+          Row(
+            children: [
+              Icon(icon: Icons.arrowUp, color: Color.green),
+              SizedBox(width: 1),
+              Text('Up', style: TextStyle(color: Color.green)),
+              SizedBox(width: 2),
+              Icon(icon: Icons.arrowDown, color: Color.green),
+              SizedBox(width: 1),
+              Text('Down', style: TextStyle(color: Color.green)),
+              SizedBox(width: 2),
+              Icon(icon: Icons.arrowLeft, color: Color.cyan),
+              SizedBox(width: 1),
+              Text('Left', style: TextStyle(color: Color.cyan)),
+              SizedBox(width: 2),
+              Icon(icon: Icons.arrowRight, color: Color.cyan),
+              SizedBox(width: 1),
+              Text('Right', style: TextStyle(color: Color.cyan)),
+            ],
           ),
           SizedBox(height: 1),
-          Container(
-            color: Color.brightBlack,
-            padding: EdgeInsets.all(1),
-            child: Column(
-              children: [
-                Text(
-                  'Action Icons:',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
-                SizedBox(height: 1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(icon: Icons.check, color: Color.green),
-                    Icon(icon: Icons.cross, color: Color.red),
-                    Icon(icon: Icons.plus, color: Color.yellow),
-                    Icon(icon: Icons.minus, color: Color.yellow),
-                  ],
-                ),
-              ],
-            ),
+          Row(
+            children: [
+              Icon(icon: Icons.check, color: Color.green),
+              SizedBox(width: 1),
+              Text('Check', style: TextStyle(color: Color.green)),
+              SizedBox(width: 2),
+              Icon(icon: Icons.cross, color: Color.red),
+              SizedBox(width: 1),
+              Text('Cross', style: TextStyle(color: Color.red)),
+              SizedBox(width: 2),
+              Icon(icon: Icons.plus, color: Color.yellow),
+              SizedBox(width: 1),
+              Text('Plus', style: TextStyle(color: Color.yellow)),
+            ],
           ),
           SizedBox(height: 1),
-          Container(
-            color: Color.brightBlack,
-            padding: EdgeInsets.all(1),
-            child: Column(
-              children: [
-                Text(
-                  'File Icons:',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
-                SizedBox(height: 1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(icon: Icons.folder, color: Color.yellow),
-                    Icon(icon: Icons.file, color: Color.white),
-                  ],
-                ),
-              ],
-            ),
+          Row(
+            children: [
+              Icon(icon: Icons.info, color: Color.blue),
+              SizedBox(width: 1),
+              Text('Info', style: TextStyle(color: Color.blue)),
+              SizedBox(width: 2),
+              Icon(icon: Icons.warning, color: Color.yellow),
+              SizedBox(width: 1),
+              Text('Warning', style: TextStyle(color: Color.yellow)),
+              SizedBox(width: 2),
+              Icon(icon: Icons.error, color: Color.red),
+              SizedBox(width: 1),
+              Text('Error', style: TextStyle(color: Color.red)),
+            ],
           ),
-          SizedBox(height: 1),
-          Container(
-            color: Color.brightBlack,
-            padding: EdgeInsets.all(1),
-            child: Column(
-              children: [
-                Text(
-                  'Status Icons:',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
-                SizedBox(height: 1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(icon: Icons.info, color: Color.blue),
-                    Icon(icon: Icons.warning, color: Color.yellow),
-                    Icon(icon: Icons.error, color: Color.red),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 1),
-          Container(
-            color: Color.brightBlack,
-            padding: EdgeInsets.all(1),
-            child: Column(
-              children: [
-                Text(
-                  'UI Icons:',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
-                SizedBox(height: 1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(icon: Icons.menu, color: Color.white),
-                    Icon(icon: Icons.search, color: Color.cyan),
-                    Icon(icon: Icons.settings, color: Color.magenta),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 1),
-          Container(
-            color: Color.brightBlack,
-            padding: EdgeInsets.all(1),
-            child: Column(
-              children: [
-                Text(
-                  'ASCII Alternatives (fallback):',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
-                SizedBox(height: 1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(icon: Icons.arrowUpAscii),
-                    Icon(icon: Icons.arrowDownAscii),
-                    Icon(icon: Icons.arrowLeftAscii),
-                    Icon(icon: Icons.arrowRightAscii),
-                    Icon(icon: Icons.checkAscii, color: Color.green),
-                    Icon(icon: Icons.crossAscii, color: Color.red),
-                  ],
-                ),
-              ],
-            ),
+          SizedBox(height: 2),
+          Row(
+            children: [
+              Icon(icon: Icons.menu, color: Color.white),
+              SizedBox(width: 1),
+              Text('Menu'),
+              SizedBox(width: 2),
+              Icon(icon: Icons.search, color: Color.cyan),
+              SizedBox(width: 1),
+              Text('Search', style: TextStyle(color: Color.cyan)),
+              SizedBox(width: 2),
+              Icon(icon: Icons.settings, color: Color.magenta),
+              SizedBox(width: 1),
+              Text('Settings', style: TextStyle(color: Color.magenta)),
+            ],
           ),
           SizedBox(height: 2),
           Text(

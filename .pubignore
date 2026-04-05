@@ -1,0 +1,22 @@
+# Pub publish ignore file
+# https://dart.dev/tools/pub/publishing#what-files-are-published
+
+# AI tooling
+.opencode/
+opencode.json
+
+# Node.js (used by opencode)
+node_modules/
+yarn.lock
+package.json
+package-lock.json
+
+# Development docs not needed by consumers
+doc/improvements/
+doc/superpowers/
+
+# AGENTS.md is for AI development only
+AGENTS.md
+
+# Analysis options (internal)
+analysis_options.yaml

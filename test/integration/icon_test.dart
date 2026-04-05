@@ -8,7 +8,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('✓');
+      tester.assertBufferLines(['✓']);
     });
 
     testWidgets('Icon renders with color', (tester) async {
@@ -16,7 +16,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('✓');
+      tester.assertBufferLines(['✓']);
     });
 
     testWidgets('Icon uses Icons constant', (tester) async {
@@ -24,11 +24,9 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('✓');
+      tester.assertBufferLines(['✓']);
     });
-  });
 
-  group('Icon in layouts', () {
     testWidgets('Icon in Row', (tester) async {
       tester.pumpWidget(
         const Row(
@@ -41,8 +39,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('✓');
-      tester.assertContains('Done');
+      tester.assertBufferLines(['✓Done']);
     });
 
     testWidgets('Icon in Column', (tester) async {
@@ -57,8 +54,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('↑');
-      tester.assertContains('↓');
+      tester.assertBufferLines(['↑', '↓']);
     });
 
     testWidgets('Multiple Icons in layout', (tester) async {
@@ -73,8 +69,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('📁');
-      tester.assertContains('Documents');
+      tester.assertBufferLines(['📁Documents']);
     });
   });
 

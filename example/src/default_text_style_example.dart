@@ -15,12 +15,9 @@ class _DefaultTextStyleExampleState extends State<DefaultTextStyleExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
-      if (key.code == KeyCode.escape) {
-        Navigator.of(context).pop();
-      }
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+      _handleKeyEvent(key);
     });
   }
 
@@ -30,68 +27,84 @@ class _DefaultTextStyleExampleState extends State<DefaultTextStyleExample> {
     super.dispose();
   }
 
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.all(1),
+      padding: EdgeInsets.all(2),
       child: Column(
         children: [
           Container(
-            width: 60,
+            width: 50,
             height: 3,
             color: Color.blue,
             child: Center(
               child: Text(
-                'DefaultTextStyle Example',
+                '🔤 DefaultTextStyle Example',
                 style: TextStyle(color: Color.white, bold: true),
               ),
             ),
           ),
           SizedBox(height: 2),
+          Text(
+            'Inherited style (cyan, bold):',
+            style: TextStyle(color: Color.cyan),
+          ),
+          SizedBox(height: 1),
           DefaultTextStyle(
             style: TextStyle(color: Color.cyan, bold: true),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Inherited cyan bold style'),
-                Text('All children share this style'),
-                Text('No explicit style needed'),
+                Text('Children inherit this style'),
+                Text('No explicit TextStyle needed'),
               ],
             ),
           ),
           SizedBox(height: 2),
+          Text(
+            'Override vs inheritance:',
+            style: TextStyle(color: Color.cyan),
+          ),
+          SizedBox(height: 1),
           DefaultTextStyle(
             style: TextStyle(color: Color.green, italic: true),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Green italic style'),
+                Text('Inherited green italic'),
                 Text(
-                  'Explicit blue overrides default',
-                  style: TextStyle(color: Color.blue),
+                  'Explicit red overrides default',
+                  style: TextStyle(color: Color.red),
                 ),
-                Text('Back to green italic'),
+                Text('Back to inherited green italic'),
               ],
             ),
           ),
           SizedBox(height: 2),
+          Text(
+            'Nested DefaultTextStyle:',
+            style: TextStyle(color: Color.cyan),
+          ),
+          SizedBox(height: 1),
           DefaultTextStyle(
             style: TextStyle(color: Color.yellow),
             child: DefaultTextStyle(
-              style: TextStyle(color: Color.magenta, underline: true),
+              style: TextStyle(color: Color.magenta, bold: true),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Nested: magenta underline wins'),
-                  Text('Inner DefaultTextStyle overrides outer'),
+                  Text('Inner style wins (magenta bold)'),
                 ],
               ),
             ),
           ),
           SizedBox(height: 2),
           Text(
-            'Press ESC to return',
-            style: TextStyle(color: Color.brightBlack, italic: true),
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
           ),
         ],
       ),

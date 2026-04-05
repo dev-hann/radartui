@@ -21,3 +21,4 @@ export 'foundation/flex.dart';
 export 'foundation/offset.dart';
 export 'foundation/size.dart';
 export 'foundation/typedefs.dart';
+export 'foundation/wcwidth.dart';

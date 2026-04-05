@@ -162,7 +162,7 @@ void main() {
 
   group('CallbackAction', () {
     test('invokes callback', () {
-      var called = false;
+      bool called = false;
       final action = CallbackAction(
         onInvoke: (intent) {
           called = true;
@@ -196,7 +196,7 @@ void main() {
   group('ActionDispatcher', () {
     test('invokes action with intent', () {
       const dispatcher = ActionDispatcher();
-      var invoked = false;
+      bool invoked = false;
 
       final action = CallbackAction(
         onInvoke: (intent) {

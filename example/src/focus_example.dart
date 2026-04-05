@@ -9,115 +9,125 @@ class FocusExample extends StatefulWidget {
 }
 
 class _FocusExampleState extends State<FocusExample> {
-  String selectedAction = '';
-  String selectedFile = '';
-  String selectedOption = '';
+  String _focusedButton = 'None';
   StreamSubscription? _keySubscription;
+  late FocusNode _nodeA;
+  late FocusNode _nodeB;
+  late FocusNode _nodeC;
 
   @override
   void initState() {
     super.initState();
-
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
-      if (key.code == KeyCode.escape) {
-        Navigator.of(context).pop();
-      }
+    _nodeA = FocusNode();
+    _nodeB = FocusNode();
+    _nodeC = FocusNode();
+    _nodeA.addListener(() => _onFocusChanged('Button A', _nodeA));
+    _nodeB.addListener(() => _onFocusChanged('Button B', _nodeB));
+    _nodeC.addListener(() => _onFocusChanged('Button C', _nodeC));
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+      _handleKeyEvent(key);
     });
   }
 
   @override
   void dispose() {
     _keySubscription?.cancel();
+    _nodeA.dispose();
+    _nodeB.dispose();
+    _nodeC.dispose();
     super.dispose();
+  }
+
+  void _onFocusChanged(String name, FocusNode node) {
+    if (node.hasFocus) {
+      setState(() {
+        _focusedButton = name;
+      });
+    }
+  }
+
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.all(2),
       child: Column(
         children: [
+          const Container(
+            width: 50,
+            height: 3,
+            color: Color.blue,
+            child: Center(
+              child: Text(
+                '🎯 Focus Management Example',
+                style: TextStyle(color: Color.white, bold: true),
+              ),
+            ),
+          ),
+          const SizedBox(height: 2),
           const Text(
-            'Focus Example - Use Tab/Shift+Tab to switch between lists',
+            'Use Tab to cycle focus between buttons:',
+            style: TextStyle(color: Color.cyan),
+          ),
+          const SizedBox(height: 2),
+          Focus(
+            focusNode: _nodeA,
+            child: Button(
+              text: 'Button A',
+              focusNode: _nodeA,
+              onPressed: () {
+                setState(() {
+                  _focusedButton = 'Button A pressed!';
+                });
+              },
+            ),
           ),
           const SizedBox(height: 1),
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(1),
-                child: Column(
-                  children: [
-                    const Text('Actions:'),
-                    ListView(
-                      items: ['Create', 'Edit', 'Delete', 'Copy', 'Move'],
-                      onItemSelected: (index, item) {
-                        setState(() {
-                          selectedAction = item;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 2),
-              Container(
-                padding: const EdgeInsets.all(1),
-                child: Column(
-                  children: [
-                    const Text('Files:'),
-                    ListView(
-                      items: [
-                        'main.dart',
-                        'config.json',
-                        'README.md',
-                        'test.dart',
-                      ],
-                      onItemSelected: (index, item) {
-                        setState(() {
-                          selectedFile = item;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 2),
-              Container(
-                padding: const EdgeInsets.all(1),
-                child: Column(
-                  children: [
-                    const Text('Options:'),
-                    ListView(
-                      items: ['Confirm', 'Preview', 'Backup', 'Skip'],
-                      onItemSelected: (index, item) {
-                        setState(() {
-                          selectedOption = item;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          Focus(
+            focusNode: _nodeB,
+            child: Button(
+              text: 'Button B',
+              focusNode: _nodeB,
+              onPressed: () {
+                setState(() {
+                  _focusedButton = 'Button B pressed!';
+                });
+              },
+            ),
+          ),
+          const SizedBox(height: 1),
+          Focus(
+            focusNode: _nodeC,
+            child: Button(
+              text: 'Button C',
+              focusNode: _nodeC,
+              onPressed: () {
+                setState(() {
+                  _focusedButton = 'Button C pressed!';
+                });
+              },
+            ),
           ),
           const SizedBox(height: 2),
           Container(
+            width: 40,
+            color: Color.brightBlack,
             padding: const EdgeInsets.all(1),
-            child: Column(
-              children: [
-                const Text('═══ Current Selection ═══'),
-                Text('Action: $selectedAction'),
-                Text('File: $selectedFile'),
-                Text('Option: $selectedOption'),
-                const SizedBox(height: 1),
-                const Text('Controls:'),
-                const Text('• Tab/Shift+Tab: Switch focus between lists'),
-                const Text('• ↑/↓ or j/k: Navigate within focused list'),
-                const Text('• Enter/Space: Select item'),
-              ],
+            child: Text(
+              'Focused: $_focusedButton',
+              style: const TextStyle(color: Color.yellow, bold: true),
             ),
+          ),
+          const SizedBox(height: 2),
+          const Text(
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
           ),
         ],
       ),

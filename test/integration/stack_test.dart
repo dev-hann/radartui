@@ -8,8 +8,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      // Stack paints children on top of each other, last child is visible
-      tester.assertContains('B');
+      tester.assertBufferLines(['B']);
     });
 
     testWidgets('Stack with Positioned left', (tester) async {
@@ -19,7 +18,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('X');
+      tester.assertBufferLines(['X']);
     });
 
     testWidgets('Stack with Positioned top', (tester) async {
@@ -29,7 +28,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Y');
+      tester.assertBufferLines(['Y']);
     });
 
     testWidgets('Stack empty', (tester) async {

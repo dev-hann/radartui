@@ -9,3 +9,6 @@ pubspec.lock
 
 # Worktrees
 .worktrees/
+
+# OpenCode AI
+.opencode/

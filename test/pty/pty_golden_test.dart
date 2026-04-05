@@ -183,5 +183,11 @@ void main() {
       example: 'form_app.dart',
       golden: 'form_golden.txt',
     );
+
+    testPtyWidget(
+      'Dashboard renders correctly',
+      example: 'dashboard_app.dart',
+      golden: 'dashboard_golden.txt',
+    );
   });
 }

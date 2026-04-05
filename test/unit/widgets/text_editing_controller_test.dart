@@ -180,7 +180,7 @@ void main() {
     group('ChangeNotifier', () {
       test('notifies listeners on text change', () {
         final controller = TextEditingController();
-        var notified = false;
+        bool notified = false;
         controller.addListener(() {
           notified = true;
         });
@@ -192,7 +192,7 @@ void main() {
       test('notifies listeners on cursor change', () {
         final controller = TextEditingController();
         controller.text = 'hello';
-        var notified = false;
+        bool notified = false;
         controller.addListener(() {
           notified = true;
         });
@@ -203,7 +203,7 @@ void main() {
 
       test('removeListener stops notifications', () {
         final controller = TextEditingController();
-        var count = 0;
+        int count = 0;
         void listener() => count++;
         controller.addListener(listener);
         controller.text = 'a';

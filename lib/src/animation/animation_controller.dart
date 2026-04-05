@@ -16,6 +16,7 @@ class AnimationController extends Animation<double> {
   double _value;
   AnimationStatus _status = AnimationStatus.dismissed;
   DateTime? _startTime;
+  bool _hasPersistentCallback = false;
 
   final AnimationListeners<double> _listeners = AnimationListeners<double>();
 
@@ -76,11 +77,15 @@ class AnimationController extends Animation<double> {
 
   void dispose() {
     stop();
+    _removePersistentCallback();
     _startTime = null;
   }
 
   void _scheduleFrame() {
-    SchedulerBinding.instance.addPersistentFrameCallback(_handleFrame);
+    if (!_hasPersistentCallback) {
+      _hasPersistentCallback = true;
+      SchedulerBinding.instance.addPersistentFrameCallback(_handleFrame);
+    }
     SchedulerBinding.instance.scheduleFrame();
   }
 
@@ -121,7 +126,15 @@ class AnimationController extends Animation<double> {
         ? AnimationStatus.completed
         : AnimationStatus.dismissed;
     _startTime = null;
+    _removePersistentCallback();
     _listeners.notifyListeners();
     _listeners.notifyStatusListeners(_status);
+  }
+
+  void _removePersistentCallback() {
+    if (_hasPersistentCallback) {
+      _hasPersistentCallback = false;
+      SchedulerBinding.instance.removePersistentFrameCallback(_handleFrame);
+    }
   }
 }

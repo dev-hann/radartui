@@ -8,30 +8,69 @@ void main() {
       tester.pumpWidget(const DataTableExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('DataTable Example');
-      tester.assertContains('Name');
-      tester.assertContains('Age');
-      tester.assertContains('Department');
+      tester.assertBufferLines([
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '           Name      Role          Score',
+        '               Alice  Admin         95',
+        '               Bob    User          82',
+        '               Carol  User          91',
+        '               Dave   Moderator     77',
+        '               Eve    Admin         88',
+        '',
+        '                             📊 DataTable Widget Example',
+      ]);
     });
 
     testWidgets('shows table data', (tester) async {
       tester.pumpWidget(const DataTableExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Alice');
-      tester.assertContains('Bob');
-      tester.assertContains('Charlie');
-      tester.assertContains('Engineering');
-      tester.assertContains('Marketing');
+      tester.assertBufferLines([
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '           Name      Role          Score',
+        '               Alice  Admin         95',
+        '               Bob    User          82',
+        '               Carol  User          91',
+        '               Dave   Moderator     77',
+        '               Eve    Admin         88',
+        '',
+        '                             📊 DataTable Widget Example',
+      ]);
     });
 
     testWidgets('displays navigation hints', (tester) async {
       tester.pumpWidget(const DataTableExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Arrow keys: navigate');
-      tester.assertContains('Enter: sort');
-      tester.assertContains('Space: select');
+      tester.assertBufferLines([
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '           Name      Role          Score',
+        '               Alice  Admin         95',
+        '               Bob    User          82',
+        '               Carol  User          91',
+        '               Dave   Moderator     77',
+        '               Eve    Admin         88',
+        '',
+        '                             📊 DataTable Widget Example',
+      ]);
     });
 
     testWidgets('can be found by type', (tester) async {

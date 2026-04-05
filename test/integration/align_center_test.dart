@@ -10,7 +10,21 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('X');
+      tester.assertBufferLines([
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '                                        X',
+      ]);
     });
 
     testWidgets('Center empty', (tester) async {
@@ -34,7 +48,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('TL');
+      tester.assertBufferLines(['TL']);
     });
 
     testWidgets('Align with bottomRight', (tester) async {
@@ -48,7 +62,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('BR');
+      tester.assertBufferLines(['BR']);
     });
 
     testWidgets('Align with center', (tester) async {
@@ -62,7 +76,21 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('C');
+      tester.assertBufferLines([
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '                                        C',
+      ]);
     });
   });
 
@@ -72,7 +100,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Hi');
+      tester.assertBufferLines(['Hi']);
     });
 
     testWidgets('SizedBox empty shrinks to zero', (tester) async {
@@ -82,8 +110,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Before');
-      tester.assertContains('After');
+      tester.assertBufferLines(['Before', 'After']);
     });
 
     testWidgets('SizedBox with width constraint', (tester) async {
@@ -91,7 +118,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Wide');
+      tester.assertBufferLines(['Wide']);
     });
   });
 

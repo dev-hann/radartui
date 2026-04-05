@@ -1,3 +1,4 @@
+import '../foundation.dart';
 import '../services.dart';
 import '../widgets.dart';
 import 'finder.dart';
@@ -134,6 +135,8 @@ class WidgetTester {
 
   TestTerminal get terminal => binding.terminal;
 
+  TestOutputBuffer get _testOutputBuffer => binding.outputBuffer;
+
   String getPlainText() => terminal.getPlainText();
 
   String cellAt(int x, int y) => terminal.cellAt(x, y);
@@ -149,27 +152,42 @@ class WidgetTester {
   List<String> get nonEmptyLines => terminal.nonEmptyLines;
 
   void assertBufferLines(List<String> expected) {
-    final actual = lines;
-    final maxHeight =
+    final List<String> actual = lines;
+    final int maxHeight =
         actual.length > expected.length ? actual.length : expected.length;
-    final diffs = <String>[];
-    bool hasDiff = false;
+    final List<String> diffs = _collectLineDiffs(actual, expected, maxHeight);
+    if (diffs.isNotEmpty) {
+      throw _buildBufferMismatchError(actual, diffs);
+    }
+  }
 
+  List<String> _collectLineDiffs(
+      List<String> actual, List<String> expected, int maxHeight) {
+    final List<String> diffs = <String>[];
     for (int i = 0; i < maxHeight; i++) {
-      final actualLine = i < actual.length ? actual[i] : '';
-      final expectedLine = i < expected.length ? expected[i] : '';
-
+      final String actualLine = i < actual.length ? actual[i] : '';
+      final String expectedLine = i < expected.length ? expected[i] : '';
       if (actualLine != expectedLine) {
-        hasDiff = true;
         diffs.add('Line $i:');
         diffs.add('  Expected: "$expectedLine"');
         diffs.add('  Actual:   "$actualLine"');
       }
     }
+    return diffs;
+  }
 
-    if (hasDiff) {
-      throw AssertionError('Buffer lines do not match:\n${diffs.join('\n')}');
-    }
+  AssertionError _buildBufferMismatchError(
+      List<String> actual, List<String> diffs) {
+    final String actualDump = actual
+        .asMap()
+        .entries
+        .where((e) => e.value.isNotEmpty)
+        .map((e) => '  ${e.key}: "${e.value}"')
+        .join('\n');
+    return AssertionError(
+      'Buffer lines do not match:\n${diffs.join('\n')}'
+      '\n\nActual non-empty lines:\n$actualDump',
+    );
   }
 
   void assertBuffer(List<List<String>> expected) {
@@ -229,6 +247,41 @@ class WidgetTester {
     if (actual != expected) {
       throw AssertionError(
         'Cell at ($x, $y) does not match:\n  Expected: "$expected"\n  Actual:   "$actual"',
+      );
+    }
+  }
+
+  TextStyle? styleAt(int x, int y) => _testOutputBuffer.styleAt(x, y);
+
+  Color? foregroundColorAt(int x, int y) =>
+      _testOutputBuffer.foregroundColorAt(x, y);
+
+  Color? backgroundColorAt(int x, int y) =>
+      _testOutputBuffer.backgroundColorAt(x, y);
+
+  void assertForegroundColor(int x, int y, Color expected) {
+    final actual = foregroundColorAt(x, y);
+    if (actual != expected) {
+      throw AssertionError(
+        'Foreground color at ($x, $y) does not match:\n  Expected: $expected\n  Actual:   $actual',
+      );
+    }
+  }
+
+  void assertBackgroundColor(int x, int y, Color expected) {
+    final actual = backgroundColorAt(x, y);
+    if (actual != expected) {
+      throw AssertionError(
+        'Background color at ($x, $y) does not match:\n  Expected: $expected\n  Actual:   $actual',
+      );
+    }
+  }
+
+  void assertStyleAt(int x, int y, TextStyle expected) {
+    final actual = styleAt(x, y);
+    if (actual != expected) {
+      throw AssertionError(
+        'Style at ($x, $y) does not match:\n  Expected: $expected\n  Actual:   $actual',
       );
     }
   }

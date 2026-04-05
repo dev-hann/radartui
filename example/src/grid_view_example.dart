@@ -15,9 +15,8 @@ class _GridViewExampleState extends State<GridViewExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }
@@ -36,56 +35,69 @@ class _GridViewExampleState extends State<GridViewExample> {
 
   @override
   Widget build(BuildContext context) {
-    final items = List.generate(12, (i) => 'Item ${i + 1}');
+    final List<String> items = List.generate(12, (int i) => 'Item ${i + 1}');
 
     return Padding(
-      padding: const EdgeInsets.all(1),
+      padding: const EdgeInsets.all(2),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'GridView Widget Example',
-            style: TextStyle(color: Color.brightCyan, bold: true),
+          const Container(
+            width: 50,
+            height: 3,
+            color: Color.blue,
+            child: Center(
+              child: Text(
+                '🔲 GridView Widget Example',
+                style: TextStyle(color: Color.white, bold: true),
+              ),
+            ),
           ),
-          const SizedBox(height: 1),
-          const Text(
-            'Arrow keys to navigate, Space/Enter to select',
-            style: TextStyle(color: Color.brightBlack),
-          ),
-          const SizedBox(height: 1),
+          const SizedBox(height: 2),
           if (_selectedItem >= 0)
             Text(
               'Selected: ${items[_selectedItem]}',
               style: const TextStyle(color: Color.green),
+            )
+          else
+            const Text(
+              'Use arrow keys to navigate, Enter to select',
+              style: TextStyle(color: Color.brightBlack),
             ),
-          Expanded(
-            child: GridView<String>(
-              items: items,
-              crossAxisCount: 3,
-              mainAxisSpacing: 1,
-              crossAxisSpacing: 1,
-              initialSelectedIndex: 0,
-              onItemSelected: (index, item) {
-                setState(() {
-                  _selectedItem = index;
-                });
-              },
-              selectedBuilder: (item) => Container(
-                width: 16,
-                height: 2,
-                color: Color.blue,
-                child: Text(
-                  item,
-                  style: const TextStyle(color: Color.white, bold: true),
+          const SizedBox(height: 1),
+          Container(
+            color: Color.brightBlack,
+            padding: const EdgeInsets.all(1),
+            child: Expanded(
+              child: GridView<String>(
+                items: items,
+                crossAxisCount: 3,
+                mainAxisSpacing: 1,
+                crossAxisSpacing: 1,
+                initialSelectedIndex: 0,
+                wrapAroundNavigation: true,
+                onItemSelected: (int index, String item) {
+                  setState(() {
+                    _selectedItem = index;
+                  });
+                },
+                selectedBuilder: (String item) => Container(
+                  color: Color.blue,
+                  child: Text(
+                    item,
+                    style: const TextStyle(color: Color.white, bold: true),
+                  ),
+                ),
+                unselectedBuilder: (String item) => Container(
+                  color: Color.brightBlack,
+                  child: Text(item),
                 ),
               ),
-              unselectedBuilder: (item) => Container(
-                width: 16,
-                height: 2,
-                color: Color.black,
-                child: Text(item),
-              ),
             ),
+          ),
+          const SizedBox(height: 2),
+          const Text(
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
           ),
         ],
       ),

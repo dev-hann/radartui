@@ -9,23 +9,18 @@ class FormExample extends StatefulWidget {
 }
 
 class _FormExampleState extends State<FormExample> {
-  String _name = '';
-  String _email = '';
-  String _status = 'Fill out the form and press Submit';
-
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
+  String _formStatus = '';
   StreamSubscription? _keySubscription;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
-      if (key.code == KeyCode.escape) {
-        Navigator.of(context).pop();
-      }
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+      _handleKeyEvent(key);
     });
   }
 
@@ -34,51 +29,44 @@ class _FormExampleState extends State<FormExample> {
     _keySubscription?.cancel();
     _nameController.dispose();
     _emailController.dispose();
+    _passController.dispose();
     super.dispose();
   }
 
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      Navigator.of(context).pop();
+    }
+  }
+
   String? _validateName(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Name is required';
-    }
-    if (value.length < 2) {
-      return 'Name must be at least 2 characters';
-    }
+    if (value == null || value.isEmpty) return 'Username is required';
+    if (value.length < 3) return 'Min 3 characters';
     return null;
   }
 
   String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Email is required';
-    }
-    if (!value.contains('@')) {
-      return 'Please enter a valid email';
-    }
+    if (value == null || value.isEmpty) return 'Email is required';
+    if (!value.contains('@')) return 'Must contain @';
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) return 'Password is required';
+    if (value.length < 6) return 'Min 6 characters';
     return null;
   }
 
   void _handleSubmit() {
-    final nameValid = _validateName(_nameController.text) == null;
-    final emailValid = _validateEmail(_emailController.text) == null;
-
+    final String? nameError = _validateName(_nameController.text);
+    final String? emailError = _validateEmail(_emailController.text);
+    final String? passError = _validatePassword(_passController.text);
     setState(() {
-      if (nameValid && emailValid) {
-        _name = _nameController.text;
-        _email = _emailController.text;
-        _status = 'Form submitted successfully!';
+      if (nameError == null && emailError == null && passError == null) {
+        _formStatus = 'Form is valid! Submission successful.';
       } else {
-        _status = 'Validation failed. Please check your inputs.';
+        _formStatus = 'Validation failed. Fix the errors above.';
       }
-    });
-  }
-
-  void _handleReset() {
-    _nameController.clear();
-    _emailController.clear();
-    setState(() {
-      _name = '';
-      _email = '';
-      _status = 'Form reset. Fill out the form again.';
     });
   }
 
@@ -89,105 +77,69 @@ class _FormExampleState extends State<FormExample> {
       child: Column(
         children: [
           const Container(
-            width: 60,
+            width: 50,
             height: 3,
-            color: Color.green,
+            color: Color.blue,
             child: Center(
               child: Text(
-                'Form Validation Example',
+                '📝 Form Validation Example',
                 style: TextStyle(color: Color.white, bold: true),
               ),
             ),
           ),
           const SizedBox(height: 2),
           Container(
-            width: 60,
+            width: 50,
             color: Color.brightBlack,
             padding: const EdgeInsets.all(2),
             child: Column(
               children: [
-                const Text('Name Field:', style: TextStyle(color: Color.cyan)),
-                const SizedBox(height: 1),
-                TextField(
+                TextFormField(
                   controller: _nameController,
-                  placeholder: 'Enter your name (min 2 chars)',
+                  validator: _validateName,
+                  placeholder: 'Username (min 3 chars)',
                   style: const TextStyle(color: Color.white),
                 ),
-                if (_nameController.text.isNotEmpty &&
-                    _validateName(_nameController.text) != null)
-                  Text(
-                    _validateName(_nameController.text)!,
-                    style: const TextStyle(color: Color.red),
-                  ),
-                const SizedBox(height: 2),
-                const Text('Email Field:', style: TextStyle(color: Color.cyan)),
                 const SizedBox(height: 1),
-                TextField(
+                TextFormField(
                   controller: _emailController,
-                  placeholder: 'Enter your email (must contain @)',
+                  validator: _validateEmail,
+                  placeholder: 'Email (must contain @)',
                   style: const TextStyle(color: Color.white),
                 ),
-                if (_emailController.text.isNotEmpty &&
-                    _validateEmail(_emailController.text) != null)
-                  Text(
-                    _validateEmail(_emailController.text)!,
-                    style: const TextStyle(color: Color.red),
-                  ),
+                const SizedBox(height: 1),
+                TextFormField(
+                  controller: _passController,
+                  validator: _validatePassword,
+                  placeholder: 'Password (min 6 chars)',
+                  style: const TextStyle(color: Color.white),
+                ),
               ],
             ),
           ),
           const SizedBox(height: 2),
-          Row(
-            children: [
-              Button(
-                text: 'Submit',
-                onPressed: _handleSubmit,
-                style: const ButtonStyle(
-                  backgroundColor: Color.green,
-                  focusBackgroundColor: Color.brightGreen,
-                ),
-              ),
-              const SizedBox(width: 2),
-              Button(
-                text: 'Reset',
-                onPressed: _handleReset,
-                style: const ButtonStyle(
-                  backgroundColor: Color.red,
-                  focusBackgroundColor: Color.brightRed,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 2),
-          Container(
-            width: 60,
-            color: Color.blue,
-            padding: const EdgeInsets.all(1),
-            child: Column(
-              children: [
-                const Text(
-                  'Status:',
-                  style: TextStyle(color: Color.white, bold: true),
-                ),
-                Text(_status, style: const TextStyle(color: Color.white)),
-                if (_name.isNotEmpty || _email.isNotEmpty) ...[
-                  const SizedBox(height: 1),
-                  Text(
-                    'Name: $_name',
-                    style: const TextStyle(color: Color.yellow),
-                  ),
-                  Text(
-                    'Email: $_email',
-                    style: const TextStyle(color: Color.yellow),
-                  ),
-                ],
-              ],
+          Button(
+            text: 'Submit',
+            onPressed: _handleSubmit,
+            style: const ButtonStyle(
+              backgroundColor: Color.green,
+              focusBackgroundColor: Color.brightGreen,
             ),
           ),
+          const SizedBox(height: 2),
+          if (_formStatus.isNotEmpty)
+            Text(
+              _formStatus,
+              style: TextStyle(
+                color:
+                    _formStatus.contains('success') ? Color.green : Color.red,
+                bold: true,
+              ),
+            ),
           const SizedBox(height: 2),
           const Text(
-            'Tab: Navigate | Enter: Submit button | ESC: Return',
-            style: TextStyle(color: Color.brightBlack, italic: true),
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
           ),
         ],
       ),
