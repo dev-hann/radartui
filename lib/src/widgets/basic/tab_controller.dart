@@ -404,6 +404,7 @@ class RenderTabBar extends RenderBox {
   /// Sets the label padding.
   set labelPadding(EdgeInsets v) {
     _labelPadding = v;
+    _invalidateCache();
   }
 
   TextStyle? _cachedSelectedStyle;
