@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A top-level menu entry containing a [label] and a list of [MenuItem] children.
+///
+/// Each [MenuBarItem] appears as a button in the menu bar. Activating it opens
+/// a dropdown showing its [children].
 class MenuBarItem {
   const MenuBarItem({
     required this.label,
@@ -10,6 +14,10 @@ class MenuBarItem {
   final List<MenuItem> children;
 }
 
+/// A single entry inside a [MenuBarItem] dropdown.
+///
+/// Has a [label], an optional [onSelected] callback, an optional [shortcut] label,
+/// and an [enabled] flag. When [enabled] is false, the item appears dimmed.
 class MenuItem {
   const MenuItem({
     required this.label,
@@ -24,6 +32,10 @@ class MenuItem {
   final bool enabled;
 }
 
+/// A horizontal menu bar containing [MenuBarItem] entries.
+///
+/// Renders a top bar with menu labels. Pressing Enter or the activation key
+/// opens a dropdown for the focused menu item.
 class MenuBar extends StatefulWidget {
   const MenuBar({
     super.key,

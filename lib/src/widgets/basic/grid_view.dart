@@ -8,6 +8,10 @@ Widget _defaultUnselectedBuilder<T>(T item) {
   return Text('  $item');
 }
 
+/// A scrollable grid of selectable items with keyboard navigation.
+///
+/// Uses [selectedBuilder] and [unselectedBuilder] to customize the appearance
+/// of items. Supports arrow-key navigation and Enter to select.
 class GridView<T> extends StatefulWidget {
   const GridView({
     super.key,

@@ -1,5 +1,8 @@
 import '../../../radartui.dart';
 
+/// A data model for a single option in a [DropdownButton].
+///
+/// Each item has a [value] of type [T], a display [label], and an [enabled] flag.
 class DropdownMenuItem<T> {
   const DropdownMenuItem({
     required this.value,
@@ -12,6 +15,10 @@ class DropdownMenuItem<T> {
   final bool enabled;
 }
 
+/// A dropdown selector that lets the user choose one item from a list.
+///
+/// Displays the currently selected [value] and opens a popup menu when activated.
+/// Use [hint] to show placeholder text when no value is selected.
 class DropdownButton<T> extends StatefulWidget {
   const DropdownButton({
     super.key,

@@ -6,7 +6,7 @@
 - in-progress: 구현 중
 - completed: 완료
 
-## Loop Counter: 88
+## Loop Counter: 89
 
 ## Scan Level: 3
 
@@ -32,3 +32,4 @@ _None_
 - [completed] 2026-04-05-85: Add doc comments to TextSpan, DefaultTextStyle, LayoutBuilder, TreeController. dart analyze: 0, dart test: 821/821. **Git pushed.**
 - [completed] 2026-04-05-87: Cache TextStyle in RenderDivider + RenderVerticalDivider (2 render objects). dart analyze: 0, dart test: 821/821.
 - [completed] 2026-04-05-88: Cache TextStyle in RenderCircularProgressIndicator (color + backgroundColor). dart analyze: 0, dart test: 821/821.
+- [completed] 2026-04-05-89: Add doc comments to DropdownMenuItem, DropdownButton, GridView, MenuBarItem, MenuItem, MenuBar. dart analyze: 0, dart test: 821/821.
