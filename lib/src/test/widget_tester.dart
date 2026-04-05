@@ -192,30 +192,41 @@ class WidgetTester {
 
   void assertBuffer(List<List<String>> expected) {
     final actual = terminal.grid;
-    final diffs = <String>[];
-    bool hasDiff = false;
-
-    for (int y = 0; y < actual.length || y < expected.length; y++) {
-      final actualRow = y < actual.length ? actual[y] : <String>[];
-      final expectedRow = y < expected.length ? expected[y] : <String>[];
-
-      for (int x = 0; x < actualRow.length || x < expectedRow.length; x++) {
-        final actualCell = x < actualRow.length ? actualRow[x] : '';
-        final expectedCell = x < expectedRow.length ? expectedRow[x] : '';
-
-        if (actualCell != expectedCell) {
-          hasDiff = true;
-          diffs.add(
-            'Cell ($x, $y): Expected "$expectedCell", Actual "$actualCell"',
-          );
-        }
-      }
-    }
-
-    if (hasDiff) {
+    final diffs = _collectBufferDiffs(actual, expected);
+    if (diffs.isNotEmpty) {
       throw AssertionError(
         'Buffer does not match:\n${diffs.take(20).join('\n')}',
       );
+    }
+  }
+
+  List<String> _collectBufferDiffs(
+    List<List<String>> actual,
+    List<List<String>> expected,
+  ) {
+    final diffs = <String>[];
+    for (int y = 0; y < actual.length || y < expected.length; y++) {
+      final actualRow = y < actual.length ? actual[y] : <String>[];
+      final expectedRow = y < expected.length ? expected[y] : <String>[];
+      _collectRowDiffs(diffs, y, actualRow, expectedRow);
+    }
+    return diffs;
+  }
+
+  void _collectRowDiffs(
+    List<String> diffs,
+    int y,
+    List<String> actualRow,
+    List<String> expectedRow,
+  ) {
+    for (int x = 0; x < actualRow.length || x < expectedRow.length; x++) {
+      final actualCell = x < actualRow.length ? actualRow[x] : '';
+      final expectedCell = x < expectedRow.length ? expectedRow[x] : '';
+      if (actualCell != expectedCell) {
+        diffs.add(
+          'Cell ($x, $y): Expected "$expectedCell", Actual "$actualCell"',
+        );
+      }
     }
   }
 

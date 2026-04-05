@@ -312,19 +312,27 @@ class RenderRichText extends RenderBox {
     _StyledLine currentLine = _StyledLine.empty();
 
     for (final segment in segments) {
-      final segmentLines = segment.text.split('\n');
-
-      for (int lineIdx = 0; lineIdx < segmentLines.length; lineIdx++) {
-        if (lineIdx > 0) {
-          lines.add(currentLine);
-          currentLine = _StyledLine.empty();
-        }
-        currentLine.add(segmentLines[lineIdx], segment.style);
-      }
+      currentLine = _addSegmentLines(segment, lines, currentLine);
     }
 
     lines.add(currentLine);
     return lines;
+  }
+
+  _StyledLine _addSegmentLines(
+    _StyledSegment segment,
+    List<_StyledLine> lines,
+    _StyledLine currentLine,
+  ) {
+    final segmentLines = segment.text.split('\n');
+    for (int lineIdx = 0; lineIdx < segmentLines.length; lineIdx++) {
+      if (lineIdx > 0) {
+        lines.add(currentLine);
+        currentLine = _StyledLine.empty();
+      }
+      currentLine.add(segmentLines[lineIdx], segment.style);
+    }
+    return currentLine;
   }
 
   @override
@@ -372,19 +380,28 @@ class _StyledLine {
 
     for (final run in runs) {
       if (totalLength <= 3) break;
-      if (run.text.length + 3 <= totalLength) {
-        newRuns.add(run);
-        totalLength -= run.text.length;
-      } else {
-        final keep = run.text.length - (totalLength - 3);
-        if (keep > 0) {
-          newRuns.add(_StyledRun(run.text.substring(0, keep), run.style));
-        }
-        break;
-      }
+      final result = _appendRunOrTrim(run, newRuns, totalLength);
+      totalLength = result.$1;
+      if (!result.$2) break;
     }
 
     newRuns.add(_StyledRun('...', null));
     return _StyledLine._(newRuns);
+  }
+
+  (int, bool) _appendRunOrTrim(
+    _StyledRun run,
+    List<_StyledRun> newRuns,
+    int totalLength,
+  ) {
+    if (run.text.length + 3 <= totalLength) {
+      newRuns.add(run);
+      return (totalLength - run.text.length, true);
+    }
+    final keep = run.text.length - (totalLength - 3);
+    if (keep > 0) {
+      newRuns.add(_StyledRun(run.text.substring(0, keep), run.style));
+    }
+    return (3, false);
   }
 }

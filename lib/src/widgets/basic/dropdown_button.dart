@@ -381,17 +381,19 @@ class RenderDropdownMenu extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     if (!identical(items, _cachedItemsIdentity)) {
-      int maxWidth = 0;
-      for (final item in items) {
-        final int w = stringWidth(item.label);
-        if (w > maxWidth) {
-          maxWidth = w;
-        }
-      }
-      _cachedMaxItemWidth = maxWidth;
+      _cachedMaxItemWidth = _computeMaxItemWidth();
       _cachedItemsIdentity = items;
     }
     size = Size(_cachedMaxItemWidth + 2, items.length);
+  }
+
+  int _computeMaxItemWidth() {
+    int maxWidth = 0;
+    for (final item in items) {
+      final int w = stringWidth(item.label);
+      if (w > maxWidth) maxWidth = w;
+    }
+    return maxWidth;
   }
 
   @override
