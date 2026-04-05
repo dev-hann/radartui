@@ -273,9 +273,10 @@ class RenderContainer extends RenderBox
         isTop ? (sides.right ? '┐' : '╴') : (sides.right ? '┘' : '╴');
     context.buffer
         .writeStyled(innerOffset.x, innerOffset.y + y, leftCorner, sides.style);
-    for (int x = 1; x < innerWidth - 1; x++) {
-      context.buffer.writeStyled(
-          innerOffset.x + x, innerOffset.y + y, character, sides.style);
+    final int inner = innerWidth > 2 ? innerWidth - 2 : 0;
+    if (inner > 0) {
+      context.writeString(innerOffset.x + 1, innerOffset.y.toInt() + y,
+          character * inner, sides.style);
     }
     context.buffer.writeStyled(innerOffset.x + innerWidth - 1,
         innerOffset.y + y, rightCorner, sides.style);
