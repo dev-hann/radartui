@@ -53,23 +53,62 @@ class RenderFlex extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, FlexParentData> {
   /// Creates a [RenderFlex] with the given layout parameters.
   RenderFlex({
-    required this.direction,
-    this.mainAxisAlignment = MainAxisAlignment.start,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.mainAxisSize = MainAxisSize.max,
-  });
+    required Axis direction,
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    MainAxisSize mainAxisSize = MainAxisSize.max,
+  })  : _direction = direction,
+        _mainAxisAlignment = mainAxisAlignment,
+        _crossAxisAlignment = crossAxisAlignment,
+        _mainAxisSize = mainAxisSize;
+
+  Axis _direction;
 
   /// The direction along which children are laid out.
-  Axis direction;
+  Axis get direction => _direction;
+
+  /// Sets the direction and marks the render object as needing layout.
+  set direction(Axis v) {
+    if (_direction == v) return;
+    _direction = v;
+    markNeedsLayout();
+  }
+
+  MainAxisAlignment _mainAxisAlignment;
 
   /// How children are distributed along the main axis.
-  MainAxisAlignment mainAxisAlignment;
+  MainAxisAlignment get mainAxisAlignment => _mainAxisAlignment;
+
+  /// Sets the main axis alignment and marks the render object as needing layout.
+  set mainAxisAlignment(MainAxisAlignment v) {
+    if (_mainAxisAlignment == v) return;
+    _mainAxisAlignment = v;
+    markNeedsLayout();
+  }
+
+  CrossAxisAlignment _crossAxisAlignment;
 
   /// How children are aligned on the cross axis.
-  CrossAxisAlignment crossAxisAlignment;
+  CrossAxisAlignment get crossAxisAlignment => _crossAxisAlignment;
+
+  /// Sets the cross axis alignment and marks the render object as needing layout.
+  set crossAxisAlignment(CrossAxisAlignment v) {
+    if (_crossAxisAlignment == v) return;
+    _crossAxisAlignment = v;
+    markNeedsLayout();
+  }
+
+  MainAxisSize _mainAxisSize;
 
   /// How much space the flex should occupy on the main axis.
-  MainAxisSize mainAxisSize;
+  MainAxisSize get mainAxisSize => _mainAxisSize;
+
+  /// Sets the main axis size and marks the render object as needing layout.
+  set mainAxisSize(MainAxisSize v) {
+    if (_mainAxisSize == v) return;
+    _mainAxisSize = v;
+    markNeedsLayout();
+  }
 
   @override
   void setupParentData(RenderObject child) {
