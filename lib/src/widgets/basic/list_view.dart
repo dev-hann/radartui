@@ -91,21 +91,8 @@ class _ListViewState<T> extends State<ListView<T>>
           widget.items.length - 1,
         );
       }
-      _ensureVisible(selectedIndex);
+      scrollController.ensureVisible(selectedIndex, _viewportHeight);
     });
-  }
-
-  void _ensureVisible(int index) {
-    if (_viewportHeight <= 0) return;
-
-    final scrollOffset = scrollController.offset;
-    final bottomVisible = scrollOffset + _viewportHeight - 1;
-
-    if (index < scrollOffset) {
-      scrollController.animateTo(index);
-    } else if (index > bottomVisible) {
-      scrollController.animateTo(index - _viewportHeight + 1);
-    }
   }
 
   @override

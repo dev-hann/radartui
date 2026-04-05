@@ -136,21 +136,8 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
         0,
         widget.rows.length - 1,
       );
-      _ensureVisible(_focusedRowIndex);
+      _scrollController.ensureVisible(_focusedRowIndex, _viewportHeight);
     });
-  }
-
-  void _ensureVisible(int index) {
-    if (_viewportHeight <= 0) return;
-
-    final scrollOffset = _scrollController.offset;
-    final bottomVisible = scrollOffset + _viewportHeight - 1;
-
-    if (index < scrollOffset) {
-      _scrollController.animateTo(index);
-    } else if (index > bottomVisible) {
-      _scrollController.animateTo(index - _viewportHeight + 1);
-    }
   }
 
   void _triggerSort() {

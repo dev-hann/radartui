@@ -20,4 +20,18 @@ class ScrollController extends ChangeNotifier {
   void animateTo(int newOffset) {
     offset = newOffset;
   }
+
+  /// Adjusts [offset] so that [index] is visible within a viewport of
+  /// [viewportHeight] rows.
+  void ensureVisible(int index, int viewportHeight) {
+    if (viewportHeight <= 0) return;
+
+    final int bottomVisible = _offset + viewportHeight - 1;
+
+    if (index < _offset) {
+      offset = index;
+    } else if (index > bottomVisible) {
+      offset = index - viewportHeight + 1;
+    }
+  }
 }
