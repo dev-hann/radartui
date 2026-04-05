@@ -132,8 +132,8 @@ class RenderContainer extends RenderBox
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
-    final totalMargin = margin ?? const EdgeInsets.all(0);
-    final totalPadding = padding ?? const EdgeInsets.all(0);
+    final totalMargin = margin ?? EdgeInsets.zero;
+    final totalPadding = padding ?? EdgeInsets.zero;
 
     int containerW = _width ?? boxConstraints.maxWidth;
     int containerH = _height ?? LayoutConstants.defaultContainerHeight;
@@ -180,8 +180,8 @@ class RenderContainer extends RenderBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final totalMargin = margin ?? const EdgeInsets.all(0);
-    final totalPadding = padding ?? const EdgeInsets.all(0);
+    final totalMargin = margin ?? EdgeInsets.zero;
+    final totalPadding = padding ?? EdgeInsets.zero;
     final innerOffset = offset + Offset(totalMargin.left, totalMargin.top);
     final innerWidth = size!.width - totalMargin.left - totalMargin.right;
     final innerHeight = size!.height - totalMargin.top - totalMargin.bottom;
@@ -189,21 +189,19 @@ class RenderContainer extends RenderBox
     _paintBackground(context, innerOffset, innerWidth, innerHeight);
 
     if (child != null) {
-      final int borderLeft = _hasBorder && border!.left.isNotEmpty ? 1 : 0;
-      final int borderTop = _hasBorder && border!.top.isNotEmpty ? 1 : 0;
-      context.paintChild(
-        child!,
-        innerOffset +
-            Offset(
-              borderLeft + totalPadding.left,
-              borderTop + totalPadding.top,
-            ),
-      );
+      final Offset childOffset = _childPaintOffset(totalPadding);
+      context.paintChild(child!, innerOffset + childOffset);
     }
 
     if (_hasBorder) {
       _paintBorder(context, innerOffset, innerWidth, innerHeight);
     }
+  }
+
+  Offset _childPaintOffset(EdgeInsets totalPadding) {
+    final int borderLeft = _hasBorder && border!.left.isNotEmpty ? 1 : 0;
+    final int borderTop = _hasBorder && border!.top.isNotEmpty ? 1 : 0;
+    return Offset(borderLeft + totalPadding.left, borderTop + totalPadding.top);
   }
 
   void _paintBackground(

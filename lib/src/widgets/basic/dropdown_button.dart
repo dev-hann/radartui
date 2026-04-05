@@ -148,22 +148,29 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
 
     return Column(
       children: [
-        _DropdownButtonRenderWidget(
-          text: displayText,
-          focused: hasFocus,
-          isOpen: _isOpen,
-          enabled: widget.onChanged != null,
-          focusColor: widget.focusColor ?? Color.cyan,
-          backgroundColor: widget.backgroundColor ?? Color.brightBlack,
-        ),
-        if (_isOpen)
-          _DropdownMenuRenderWidget(
-            items: widget.items,
-            selectedIndex: _selectedIndex,
-            dropdownColor: widget.dropdownColor ?? Color.black,
-            focusColor: widget.focusColor ?? Color.cyan,
-          ),
+        _buildButtonWidget(displayText),
+        if (_isOpen) _buildMenuWidget(),
       ],
+    );
+  }
+
+  Widget _buildButtonWidget(String displayText) {
+    return _DropdownButtonRenderWidget(
+      text: displayText,
+      focused: hasFocus,
+      isOpen: _isOpen,
+      enabled: widget.onChanged != null,
+      focusColor: widget.focusColor ?? Color.cyan,
+      backgroundColor: widget.backgroundColor ?? Color.brightBlack,
+    );
+  }
+
+  Widget _buildMenuWidget() {
+    return _DropdownMenuRenderWidget(
+      items: widget.items,
+      selectedIndex: _selectedIndex,
+      dropdownColor: widget.dropdownColor ?? Color.black,
+      focusColor: widget.focusColor ?? Color.cyan,
     );
   }
 }

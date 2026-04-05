@@ -64,7 +64,7 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
-    final totalPadding = padding ?? const EdgeInsets.all(0);
+    final totalPadding = padding ?? EdgeInsets.zero;
     const borderSize = 2;
 
     if (child != null) {
@@ -139,7 +139,7 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final totalPadding = padding ?? const EdgeInsets.all(0);
+    final totalPadding = padding ?? EdgeInsets.zero;
     final width = size!.width;
     final height = size!.height;
     _ensureStylesCached();

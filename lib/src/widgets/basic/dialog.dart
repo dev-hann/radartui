@@ -121,18 +121,18 @@ class ModalRoute<T> extends Route<T> {
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
       alignment: alignment,
-      child: Builder(
-        builder: (BuildContext context) {
-          final dialog = builder(context);
-          if (dialog is! Dialog) {
-            throw ArgumentError(
-              'The widget returned by builder must be a Dialog',
-            );
-          }
-          return dialog;
-        },
-      ),
+      child: Builder(builder: _buildValidatedDialog),
     );
+  }
+
+  Widget _buildValidatedDialog(BuildContext context) {
+    final dialog = builder(context);
+    if (dialog is! Dialog) {
+      throw ArgumentError(
+        'The widget returned by builder must be a Dialog',
+      );
+    }
+    return dialog;
   }
 }
 

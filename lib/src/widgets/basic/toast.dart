@@ -41,15 +41,23 @@ class Toast {
         bottom: 1,
         left: 0,
         right: 0,
-        child: Center(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
-            color: backgroundColor ?? Color.black,
-            child: Text(
-              message,
-              style: TextStyle(color: textColor ?? Color.white),
-            ),
-          ),
+        child: _buildToastContent(message, backgroundColor, textColor),
+      ),
+    );
+  }
+
+  static Widget _buildToastContent(
+    String message,
+    Color? backgroundColor,
+    Color? textColor,
+  ) {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
+        color: backgroundColor ?? Color.black,
+        child: Text(
+          message,
+          style: TextStyle(color: textColor ?? Color.white),
         ),
       ),
     );
