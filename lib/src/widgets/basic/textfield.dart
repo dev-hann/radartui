@@ -545,17 +545,13 @@ class RenderTextField extends RenderBox {
     int scrollOffset,
   ) {
     final availableWidth = size!.width;
-    final textLength = displayText.length;
-    final visibleEnd = (scrollOffset + availableWidth).clamp(0, textLength);
+    final int visibleEnd =
+        (scrollOffset + availableWidth).clamp(0, displayText.length);
 
-    for (int i = scrollOffset; i < visibleEnd; i++) {
-      final screenX = offset.x + i - scrollOffset;
-      context.buffer.writeStyled(
-        screenX,
-        offset.y,
-        displayText[i],
-        displayStyle,
-      );
+    if (scrollOffset < visibleEnd) {
+      final String visibleText =
+          displayText.substring(scrollOffset, visibleEnd);
+      context.writeString(offset.x, offset.y, visibleText, displayStyle);
     }
   }
 
