@@ -334,47 +334,22 @@ class RenderFlex extends RenderBox
     int maxExtent,
     FlexFit fit,
   ) {
-    if (direction == Axis.horizontal) {
-      return _horizontalFlexConstraints(constraints, maxExtent, fit);
-    }
-    return _verticalFlexConstraints(constraints, maxExtent, fit);
-  }
+    final bool isHorizontal = direction == Axis.horizontal;
+    final int mainExtent = maxExtent;
+    final int crossExtent =
+        isHorizontal ? constraints.maxHeight : constraints.maxWidth;
 
-  BoxConstraints _horizontalFlexConstraints(
-    BoxConstraints constraints,
-    int maxExtent,
-    FlexFit fit,
-  ) {
     if (fit == FlexFit.tight) {
       return BoxConstraints.tightFor(
-        width: maxExtent,
-        height: constraints.maxHeight,
+        width: isHorizontal ? mainExtent : crossExtent,
+        height: isHorizontal ? crossExtent : mainExtent,
       );
     }
     return BoxConstraints(
       minWidth: 0,
-      maxWidth: maxExtent,
+      maxWidth: isHorizontal ? mainExtent : crossExtent,
       minHeight: 0,
-      maxHeight: constraints.maxHeight,
-    );
-  }
-
-  BoxConstraints _verticalFlexConstraints(
-    BoxConstraints constraints,
-    int maxExtent,
-    FlexFit fit,
-  ) {
-    if (fit == FlexFit.tight) {
-      return BoxConstraints.tightFor(
-        width: constraints.maxWidth,
-        height: maxExtent,
-      );
-    }
-    return BoxConstraints(
-      minWidth: 0,
-      maxWidth: constraints.maxWidth,
-      minHeight: 0,
-      maxHeight: maxExtent,
+      maxHeight: isHorizontal ? crossExtent : mainExtent,
     );
   }
 
