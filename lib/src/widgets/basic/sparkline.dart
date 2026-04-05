@@ -108,6 +108,7 @@ class RenderSparkline extends RenderBox {
   set chars(List<String> v) {
     if (identical(_chars, v)) return;
     _chars = v;
+    markNeedsLayout();
   }
 
   Color get color => _color;
