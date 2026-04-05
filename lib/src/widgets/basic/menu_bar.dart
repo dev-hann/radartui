@@ -228,13 +228,13 @@ class RenderMenuBar extends RenderBox {
       final bool isOpen = i == openMenuIndex;
       final int itemWidth = stringWidth(item.label) + 2;
       final Color bg = isOpen ? Color.white : backgroundColor;
-      for (int j = 0; j < itemWidth; j++) {
-        context.buffer
-            .writeStyled(x + j, y, ' ', TextStyle(backgroundColor: bg));
-      }
       final Color fg = isOpen ? Color.black : Color.white;
-      context.buffer.writeStyled(
-          x + 1, y, item.label, TextStyle(color: fg, backgroundColor: bg));
+      final TextStyle bgStyle = TextStyle(backgroundColor: bg);
+      final TextStyle fgBgStyle = TextStyle(color: fg, backgroundColor: bg);
+      for (int j = 0; j < itemWidth; j++) {
+        context.buffer.writeStyled(x + j, y, ' ', bgStyle);
+      }
+      context.buffer.writeStyled(x + 1, y, item.label, fgBgStyle);
       x += itemWidth;
     }
   }
@@ -285,15 +285,14 @@ class RenderMenuBar extends RenderBox {
   ) {
     final Color bg = isSelected ? Color.cyan : Color.black;
     final Color fg = item.enabled ? Color.white : Color.brightBlack;
+    final TextStyle bgStyle = TextStyle(backgroundColor: bg);
+    final TextStyle fgBgStyle = TextStyle(color: fg, backgroundColor: bg);
     for (int cx = 0; cx < maxWidth; cx++) {
-      context.buffer
-          .writeStyled(x + cx, y, ' ', TextStyle(backgroundColor: bg));
+      context.buffer.writeStyled(x + cx, y, ' ', bgStyle);
     }
     final String prefix = isSelected ? '> ' : '  ';
-    context.buffer
-        .writeStyled(x, y, prefix, TextStyle(color: fg, backgroundColor: bg));
-    context.buffer.writeStyled(
-        x + 2, y, item.label, TextStyle(color: fg, backgroundColor: bg));
+    context.buffer.writeStyled(x, y, prefix, fgBgStyle);
+    context.buffer.writeStyled(x + 2, y, item.label, fgBgStyle);
     if (item.shortcut != null) {
       final int shortcutX = x + maxWidth - stringWidth(item.shortcut!);
       context.buffer.writeStyled(
