@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A circular (ring) progress indicator.
+///
+/// Displays a rotating arc or static fill to represent progress [value] (0.0–1.0).
+/// Use [CircularProgressIndicator.adaptive] for platform-specific styling.
 class CircularProgressIndicator extends StatefulWidget {
   const CircularProgressIndicator({
     super.key,

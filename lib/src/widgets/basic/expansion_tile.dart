@@ -1,5 +1,8 @@
 import '../../../radartui.dart';
 
+/// Controls the expanded/collapsed state of an [ExpansionTile].
+///
+/// Obtain via [ExpansionTile.of] and call [toggle], [expand], or [collapse].
 class ExpansionTileController extends ChangeNotifier {
   bool _isExpanded = false;
 

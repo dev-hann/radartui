@@ -1,5 +1,8 @@
 import '../../../radartui.dart';
 
+/// A box in which a single child can be scrolled vertically ororizontally.
+///
+/// Handles keyboard-based scrolling (arrow keys,PageUp/PageDown/Home/End).
 class SingleChildScrollView extends StatefulWidget {
   const SingleChildScrollView({
     super.key,

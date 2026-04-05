@@ -1,5 +1,12 @@
 import '../../../radartui.dart';
 
+/// A horizontal bar that fills proportionally to [value] (0.0–1.0).
+///
+/// Displays a colored bar within a fixed-height track. Supports custom
+/// [backgroundColor] and [valueColor].
+/// A horizontal bar that fills proportionally to a [value] (0.0–1.0).
+///
+/// Renders [backgroundColor] behind the filled portion with [valueColor].
 class LinearProgressIndicator extends StatefulWidget {
   const LinearProgressIndicator({
     super.key,
