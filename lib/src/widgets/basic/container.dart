@@ -47,20 +47,30 @@ class Container extends SingleChildRenderObjectWidget {
 class RenderContainer extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
   RenderContainer({
-    this.color,
+    Color? color,
     int? width,
     int? height,
     this.padding,
     this.margin,
     this.border,
-  })  : _width = width,
+  })  : _color = color,
+        _width = width,
         _height = height;
-  Color? color;
+  Color? _color;
+  Color? get color => _color;
+  set color(Color? value) {
+    if (_color == value) return;
+    _color = value;
+    _cachedBgStyle = null;
+  }
+
   int? _width;
   int? _height;
   EdgeInsets? padding;
   EdgeInsets? margin;
   Border? border;
+
+  TextStyle? _cachedBgStyle;
 
   int? get containerWidth => _width;
   set containerWidth(int? value) => _width = value;
@@ -166,8 +176,9 @@ class RenderContainer extends RenderBox
     int innerWidth,
     int innerHeight,
   ) {
-    if (color == null) return;
-    final bgStyle = TextStyle(backgroundColor: color);
+    if (_color == null) return;
+    _cachedBgStyle ??= TextStyle(backgroundColor: _color);
+    final TextStyle bgStyle = _cachedBgStyle!;
     for (int y = 0; y < innerHeight; y++) {
       for (int x = 0; x < innerWidth; x++) {
         context.buffer.writeStyled(
