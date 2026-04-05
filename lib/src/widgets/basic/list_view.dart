@@ -84,7 +84,7 @@ class _ListViewState<T> extends State<ListView<T>>
     setState(() {
       if (widget.wrapAroundNavigation) {
         selectedIndex =
-            _wrapIndex(selectedIndex + direction, widget.items.length);
+            wrapSelectableIndex(selectedIndex + direction, widget.items.length);
       } else {
         selectedIndex = (selectedIndex + direction).clamp(
           0,
@@ -93,11 +93,6 @@ class _ListViewState<T> extends State<ListView<T>>
       }
       _ensureVisible(selectedIndex);
     });
-  }
-
-  int _wrapIndex(int index, int totalItems) {
-    final wrapped = index % totalItems;
-    return wrapped < 0 ? wrapped + totalItems : wrapped;
   }
 
   void _ensureVisible(int index) {

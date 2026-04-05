@@ -91,16 +91,11 @@ class _GridViewState<T> extends State<GridView<T>>
       if (totalItems == 0) return;
 
       if (widget.wrapAroundNavigation) {
-        selectedIndex = _wrapIndex(selectedIndex + delta, totalItems);
+        selectedIndex = wrapSelectableIndex(selectedIndex + delta, totalItems);
       } else {
         selectedIndex = (selectedIndex + delta).clamp(0, totalItems - 1);
       }
     });
-  }
-
-  int _wrapIndex(int index, int totalItems) {
-    final wrapped = index % totalItems;
-    return wrapped < 0 ? wrapped + totalItems : wrapped;
   }
 
   @override
