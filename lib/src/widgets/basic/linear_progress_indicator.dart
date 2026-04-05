@@ -161,7 +161,9 @@ class RenderLinearProgressIndicator extends RenderBox {
 
   /// Sets the progress value.
   set value(double? v) {
+    if (_value == v) return;
     _value = v;
+    markNeedsPaint();
   }
 
   /// The current animation value for indeterminate mode.
@@ -169,7 +171,9 @@ class RenderLinearProgressIndicator extends RenderBox {
 
   /// Sets the animation value.
   set animValue(double v) {
+    if (_animValue == v) return;
     _animValue = v;
+    markNeedsPaint();
   }
 
   /// The background track color.
@@ -197,7 +201,9 @@ class RenderLinearProgressIndicator extends RenderBox {
 
   /// Sets the indicator width.
   set indicatorWidth(int? v) {
+    if (_indicatorWidth == v) return;
     _indicatorWidth = v;
+    markNeedsLayout();
   }
 
   TextStyle? _cachedBgStyle;
@@ -206,6 +212,7 @@ class RenderLinearProgressIndicator extends RenderBox {
   void _invalidateCache() {
     _cachedBgStyle = null;
     _cachedFillStyle = null;
+    markNeedsPaint();
   }
 
   @override

@@ -183,6 +183,7 @@ class RenderCircularProgressIndicator extends RenderBox {
     if (_color == value) return;
     _color = value;
     _cachedStyle = null;
+    markNeedsPaint();
   }
 
   Color? _backgroundColor;
@@ -195,6 +196,7 @@ class RenderCircularProgressIndicator extends RenderBox {
     if (_backgroundColor == value) return;
     _backgroundColor = value;
     _cachedStyle = null;
+    markNeedsPaint();
   }
 
   String? _label;

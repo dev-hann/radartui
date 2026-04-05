@@ -187,6 +187,7 @@ class RenderDivider extends RenderBox {
     if (_color == value) return;
     _color = value;
     _cachedStyle = null;
+    markNeedsPaint();
   }
 
   String _character;
@@ -273,6 +274,7 @@ class RenderVerticalDivider extends RenderBox {
     if (_color == value) return;
     _color = value;
     _cachedStyle = null;
+    markNeedsPaint();
   }
 
   String _character;
