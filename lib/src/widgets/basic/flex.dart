@@ -82,25 +82,22 @@ class RenderFlex extends RenderBox
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
     final isHorizontal = direction == Axis.horizontal;
+    final axisExtents = _axisExtents(isHorizontal, boxConstraints);
     final totalFlex = _computeTotalFlex();
-    final maxMainAxisExtent =
-        isHorizontal ? boxConstraints.maxWidth : boxConstraints.maxHeight;
-    final crossAxisExtent =
-        isHorizontal ? boxConstraints.maxHeight : boxConstraints.maxWidth;
 
     final measurement = _measureChildren(
       isHorizontal,
       boxConstraints,
       totalFlex,
-      maxMainAxisExtent,
+      axisExtents.main,
     );
 
     size = _computeSize(
       isHorizontal,
       measurement.nonFlexExtent,
       measurement.flexExtent,
-      maxMainAxisExtent,
-      crossAxisExtent,
+      axisExtents.main,
+      axisExtents.cross,
       measurement.crossExtent,
     );
 
@@ -108,6 +105,16 @@ class RenderFlex extends RenderBox
       isHorizontal,
       measurement.nonFlexExtent,
       measurement.flexExtent,
+    );
+  }
+
+  ({int main, int cross}) _axisExtents(
+    bool isHorizontal,
+    BoxConstraints boxConstraints,
+  ) {
+    return (
+      main: isHorizontal ? boxConstraints.maxWidth : boxConstraints.maxHeight,
+      cross: isHorizontal ? boxConstraints.maxHeight : boxConstraints.maxWidth,
     );
   }
 
