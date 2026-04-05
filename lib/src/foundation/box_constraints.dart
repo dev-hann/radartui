@@ -2,6 +2,11 @@ import '../rendering.dart';
 import 'edge_insets.dart';
 import 'size.dart';
 
+/// Immutable layout constraints with min/max width and height.
+///
+/// Follows Flutter's BoxConstraints API: [BoxConstraints.tight],
+/// [BoxConstraints.loose], [BoxConstraints.expand], [BoxConstraints.tightFor].
+/// Use [deflate] to subtract padding, [enforce] to clamp to another constraint.
 class BoxConstraints extends Constraints {
   const BoxConstraints({
     this.minWidth = 0,

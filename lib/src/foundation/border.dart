@@ -1,3 +1,7 @@
+/// Describes a border made of box-drawing characters for each side.
+///
+/// Empty strings mean no border on that side. Use [Border.all] for a full
+/// box border, or [Border.symmetric] for horizontal/vertical patterns.
 class Border {
   const Border({
     this.top = '',

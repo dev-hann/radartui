@@ -1,3 +1,6 @@
+/// An immutable 2D integer size with [width] and [height].
+///
+/// Terminal cells are discrete, so coordinates are always integers.
 class Size {
   const Size(this.width, this.height);
   final int width, height;

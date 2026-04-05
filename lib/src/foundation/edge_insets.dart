@@ -1,3 +1,7 @@
+/// Immutable insets for each edge of a terminal rectangle.
+///
+/// Follows Flutter's EdgeInsets API: [EdgeInsets.all], [EdgeInsets.symmetric],
+/// [EdgeInsets.only], and [EdgeInsets.fromLTRB].
 class EdgeInsets {
   const EdgeInsets.fromLTRB(this.left, this.top, this.right, this.bottom);
   const EdgeInsets.all(int v) : this.fromLTRB(v, v, v, v);

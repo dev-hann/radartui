@@ -1,3 +1,7 @@
+/// A terminal color using ANSI 16-color palette values (0–15).
+///
+/// Use [Color.transparent] (-1) to indicate no color.
+/// See also [Colors] for named constants.
 class Color {
   const Color(this.value);
   final int value;
@@ -29,6 +33,10 @@ class Color {
   String toString() => 'Color($value)';
 }
 
+/// Predefined [Color] constants following material naming conventions.
+///
+/// Provides the same ANSI 16-color palette as [Color] plus additional
+/// semantic colors like [Colors.black54].
 class Colors {
   static const Color black = Color(0);
   static const Color red = Color(1);
@@ -62,6 +70,10 @@ enum FontFamily {
   monospace,
 }
 
+/// Describes the style of terminal text — color, weight, slant, and decorations.
+///
+/// TextStyles are immutable. Use [merge] to combine two styles, with the
+/// other style's non-null properties taking priority.
 class TextStyle {
   const TextStyle({
     this.color,

@@ -1,3 +1,7 @@
+/// A position within a rectangle, expressed as offsets from center.
+///
+/// (-1, -1) is top-left, (0, 0) is center, (1, 1) is bottom-right.
+/// Follows Flutter's Alignment coordinate system.
 class Alignment {
   const Alignment(this.x, this.y);
   final double x;
