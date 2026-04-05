@@ -342,6 +342,35 @@ class RenderDropdownMenu extends RenderBox {
   /// The background color of the selected item.
   Color focusColor;
 
+  TextStyle? _cachedSelectedBg;
+  TextStyle? _cachedNormalBg;
+  TextStyle? _cachedSelectedEnabledFg;
+  TextStyle? _cachedSelectedDisabledFg;
+  TextStyle? _cachedNormalEnabledFg;
+  TextStyle? _cachedNormalDisabledFg;
+  Color? _cachedFocusColor;
+  Color? _cachedDropdownColor;
+
+  void _ensureStylesCached() {
+    if (_cachedFocusColor == focusColor &&
+        _cachedDropdownColor == dropdownColor &&
+        _cachedSelectedBg != null) {
+      return;
+    }
+    _cachedSelectedBg = TextStyle(backgroundColor: focusColor);
+    _cachedNormalBg = TextStyle(backgroundColor: dropdownColor);
+    _cachedSelectedEnabledFg =
+        TextStyle(color: Color.white, backgroundColor: focusColor);
+    _cachedSelectedDisabledFg =
+        TextStyle(color: Color.brightBlack, backgroundColor: focusColor);
+    _cachedNormalEnabledFg =
+        TextStyle(color: Color.white, backgroundColor: dropdownColor);
+    _cachedNormalDisabledFg =
+        TextStyle(color: Color.brightBlack, backgroundColor: dropdownColor);
+    _cachedFocusColor = focusColor;
+    _cachedDropdownColor = dropdownColor;
+  }
+
   @override
   void performLayout(Constraints constraints) {
     int maxWidth = 0;
@@ -356,14 +385,17 @@ class RenderDropdownMenu extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    _ensureStylesCached();
     for (int i = 0; i < items.length; i++) {
       final DropdownMenuItem item = items[i];
       final bool isSelected = i == selectedIndex;
-      final Color bgColor = isSelected ? focusColor : dropdownColor;
-      final Color fg = item.enabled ? Color.white : Color.brightBlack;
-      final TextStyle bgStyle = TextStyle(backgroundColor: bgColor);
-      final TextStyle fgBgStyle =
-          TextStyle(color: fg, backgroundColor: bgColor);
+      final TextStyle bgStyle =
+          isSelected ? _cachedSelectedBg! : _cachedNormalBg!;
+      final TextStyle fgBgStyle = isSelected
+          ? (item.enabled
+              ? _cachedSelectedEnabledFg!
+              : _cachedSelectedDisabledFg!)
+          : (item.enabled ? _cachedNormalEnabledFg! : _cachedNormalDisabledFg!);
       _fillRow(context, offset.x.toInt(), offset.y.toInt() + i,
           size!.width.toInt(), bgStyle);
       final String prefix = isSelected ? '> ' : '  ';
