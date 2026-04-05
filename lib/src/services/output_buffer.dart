@@ -18,6 +18,7 @@ class Cell {
 
   @override
   bool operator ==(Object other) {
+    if (identical(this, other)) return true;
     if (other is! Cell) return false;
     if (char != other.char) return false;
     final TextStyle? a = style;
