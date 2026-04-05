@@ -262,8 +262,7 @@ class RenderToggle extends RenderBox {
 
   void _paintBorder(PaintingContext context, Offset offset) {
     final TextStyle style = _cachedBorderStyle!;
-    context.buffer.writeStyled(offset.x, offset.y, '[', style);
-    context.buffer.writeStyled(offset.x + 2, offset.y, ']', style);
+    context.writeString(offset.x, offset.y, '[ ]', style);
   }
 
   void _paintIndicator(PaintingContext context, Offset offset) {
