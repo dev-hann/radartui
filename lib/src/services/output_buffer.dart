@@ -71,34 +71,33 @@ class OutputBuffer {
     _grid[y][x] = Cell(char, style);
   }
 
+  void _fillRow(int y) {
+    _grid[y] = List<Cell>.filled(terminal.width, Cell.empty);
+  }
+
+  void _fillPreviousRow(int y, Cell cell) {
+    _previousGrid[y] = List<Cell>.filled(terminal.width, cell);
+  }
+
   /// Fills the entire grid with empty cells.
   void clear() {
     for (int y = 0; y < terminal.height; y++) {
-      for (int x = 0; x < terminal.width; x++) {
-        _grid[y][x] = Cell.empty;
-      }
+      _fillRow(y);
     }
   }
 
   /// Clears both the grid and the terminal, forcing a full redraw on next flush.
   void clearAll() {
     terminal.clear();
-
     for (int y = 0; y < terminal.height; y++) {
-      for (int x = 0; x < terminal.width; x++) {
-        _grid[y][x] = Cell.empty;
-        _previousGrid[y][x] = const Cell('');
-      }
+      _fillRow(y);
+      _fillPreviousRow(y, const Cell(''));
     }
   }
 
   /// Fills the grid with empty cells while preserving the previous frame for diffing.
   void smartClear() {
-    for (int y = 0; y < terminal.height; y++) {
-      for (int x = 0; x < terminal.width; x++) {
-        _grid[y][x] = Cell.empty;
-      }
-    }
+    clear();
   }
 
   /// Returns `true` if the previous frame had significantly more content than the current one.
