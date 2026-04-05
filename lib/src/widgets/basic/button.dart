@@ -108,16 +108,25 @@ class _ButtonRenderWidget extends RenderObjectWidget {
 /// Render object that paints a button with background, text, and focus styling.
 class RenderButton extends RenderBox {
   RenderButton({
-    required this.text,
+    required String text,
     required bool enabled,
     required bool focused,
     required ButtonStyle style,
     this.onTap,
-  })  : _enabled = enabled,
+  })  : _text = text,
+        _enabled = enabled,
         _focused = focused,
-        _style = style;
+        _style = style {
+    _cachedTextWidth = stringWidth(_text);
+  }
 
-  String text;
+  String _text;
+  String get text => _text;
+  set text(String value) {
+    if (_text == value) return;
+    _text = value;
+    _cachedTextWidth = stringWidth(_text);
+  }
 
   bool _enabled;
   bool get enabled => _enabled;
@@ -147,6 +156,7 @@ class RenderButton extends RenderBox {
 
   TextStyle? _cachedTextStyle;
   TextStyle? _cachedBgStyle;
+  late int _cachedTextWidth;
 
   void _invalidateStyleCache() {
     _cachedTextStyle = null;
@@ -156,7 +166,7 @@ class RenderButton extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     final padding = style.padding;
-    final width = stringWidth(text) + padding.left + padding.right;
+    final width = _cachedTextWidth + padding.left + padding.right;
     final height = 1 + padding.top + padding.bottom;
     size = Size(width, height);
   }
