@@ -636,12 +636,12 @@ class RenderTextField extends RenderBox {
     int bufferWidth,
     TextStyle style,
   ) {
-    for (int x = 0; x < width; x++) {
-      final posX = startX + x;
-      if (posX >= 0 && posX < bufferWidth) {
-        context.buffer.writeStyled(posX, y, '─', style);
-      }
-    }
+    final int clipStart = startX < 0 ? 0 : startX;
+    final int clipEnd =
+        startX + width > bufferWidth ? bufferWidth : startX + width;
+    final int clippedWidth = clipEnd - clipStart;
+    if (clippedWidth <= 0) return;
+    context.writeString(clipStart, y, '─' * clippedWidth, style);
   }
 
   void _drawBorderCorners(
