@@ -263,6 +263,7 @@ class RenderMenuBar extends RenderBox {
   Color? _cachedBgColor;
   List<int> _cachedItemWidths = const [];
   int _cachedDropdownWidth = 0;
+  Map<String, int> _cachedShortcutWidths = const {};
 
   void _ensureMenuBarStylesCached() {
     if (_cachedBgColor == backgroundColor && _cachedMenuClosedBgStyle != null) {
@@ -284,6 +285,7 @@ class RenderMenuBar extends RenderBox {
       totalWidth += w;
     }
     _cachedItemWidths = widths;
+    _cachedShortcutWidths = {};
     int maxDropdownHeight = 1;
     _cachedDropdownWidth = 0;
     if (openMenuIndex >= 0 && openMenuIndex < items.length) {
@@ -335,14 +337,18 @@ class RenderMenuBar extends RenderBox {
   }
 
   int _computeMaxDropdownWidth(MenuBarItem item) {
+    final shortcutWidths = <String, int>{};
     int maxWidth = 0;
     for (final child in item.children) {
       int w = stringWidth(child.label);
       if (child.shortcut != null) {
-        w += 2 + stringWidth(child.shortcut!);
+        final int sw = stringWidth(child.shortcut!);
+        shortcutWidths[child.shortcut!] = sw;
+        w += 2 + sw;
       }
       if (w > maxWidth) maxWidth = w;
     }
+    _cachedShortcutWidths = shortcutWidths;
     return maxWidth + 2;
   }
 
@@ -384,7 +390,9 @@ class RenderMenuBar extends RenderBox {
     context.buffer.writeStyled(x, y, prefix, fgBgStyle);
     context.buffer.writeStyled(x + 2, y, item.label, fgBgStyle);
     if (item.shortcut != null) {
-      final int shortcutX = x + maxWidth - stringWidth(item.shortcut!);
+      final int sw =
+          _cachedShortcutWidths[item.shortcut!] ?? stringWidth(item.shortcut!);
+      final int shortcutX = x + maxWidth - sw;
       final TextStyle shortcutStyle = isSelected
           ? _dropdownShortcutSelectedStyle
           : _dropdownShortcutNormalStyle;

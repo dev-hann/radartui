@@ -247,6 +247,8 @@ class RenderDropdownButton extends RenderBox {
   TextStyle? _cachedFgBgStyle;
   Color? _cachedBgColor;
   Color? _cachedFgColor;
+  int? _cachedTextWidth;
+  String? _cachedTextIdentity;
 
   void _ensureStylesCached() {
     final Color bgColor = focused ? focusColor : backgroundColor;
@@ -262,7 +264,13 @@ class RenderDropdownButton extends RenderBox {
     _cachedFgColor = fgColor;
   }
 
-  int get _textWidth => stringWidth(text);
+  int get _textWidth {
+    if (!identical(text, _cachedTextIdentity)) {
+      _cachedTextWidth = stringWidth(text);
+      _cachedTextIdentity = text;
+    }
+    return _cachedTextWidth!;
+  }
 
   @override
   void performLayout(Constraints constraints) {
@@ -367,6 +375,8 @@ class RenderDropdownMenu extends RenderBox {
   TextStyle? _cachedNormalDisabledFg;
   Color? _cachedFocusColor;
   Color? _cachedDropdownColor;
+  int _cachedMaxItemWidth = 0;
+  List<DropdownMenuItem>? _cachedItemsIdentity;
 
   void _ensureStylesCached() {
     if (_cachedFocusColor == focusColor &&
@@ -390,14 +400,18 @@ class RenderDropdownMenu extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    int maxWidth = 0;
-    for (final item in items) {
-      final int w = stringWidth(item.label);
-      if (w > maxWidth) {
-        maxWidth = w;
+    if (!identical(items, _cachedItemsIdentity)) {
+      int maxWidth = 0;
+      for (final item in items) {
+        final int w = stringWidth(item.label);
+        if (w > maxWidth) {
+          maxWidth = w;
+        }
       }
+      _cachedMaxItemWidth = maxWidth;
+      _cachedItemsIdentity = items;
     }
-    size = Size(maxWidth + 2, items.length);
+    size = Size(_cachedMaxItemWidth + 2, items.length);
   }
 
   @override

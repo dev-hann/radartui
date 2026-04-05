@@ -80,11 +80,20 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
   int _focusedColumnIndex = 0;
   late ScrollController _scrollController;
   int _viewportHeight = 10;
+  List<int> _cachedColumnWidths = const [];
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+  }
+
+  @override
+  void didUpdateWidget(DataTable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.columns != widget.columns || oldWidget.rows != widget.rows) {
+      _cachedColumnWidths = const [];
+    }
   }
 
   @override
@@ -167,7 +176,7 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
     final mediaQuery = context.findAncestorWidgetOfExactType<MediaQuery>();
     _viewportHeight = (mediaQuery?.data.size.height ?? 24) - 1;
 
-    final columnWidths = _calculateColumnWidths();
+    final columnWidths = _getColumnWidths();
     final headerRow = _buildHeaderRow(columnWidths);
 
     final visibleRows = <Widget>[];
@@ -180,6 +189,12 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
     }
 
     return Column(children: [headerRow, ...visibleRows]);
+  }
+
+  List<int> _getColumnWidths() {
+    if (_cachedColumnWidths.isNotEmpty) return _cachedColumnWidths;
+    _cachedColumnWidths = _calculateColumnWidths();
+    return _cachedColumnWidths;
   }
 
   List<int> _calculateColumnWidths() {
