@@ -120,8 +120,11 @@ class RenderSparkline extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     _cachedStyle ??= TextStyle(color: _color);
     final TextStyle style = _cachedStyle!;
-    for (int i = 0; i < chars.length; i++) {
-      context.buffer.writeStyled(offset.x + i, offset.y, chars[i], style);
-    }
+    context.writeString(
+      offset.x,
+      offset.y,
+      chars.join(),
+      style,
+    );
   }
 }
