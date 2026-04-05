@@ -148,39 +148,71 @@ class OutputBuffer {
     }
   }
 
+  static const List<String> _fgAnsi = [
+    '30',
+    '31',
+    '32',
+    '33',
+    '34',
+    '35',
+    '36',
+    '37',
+    '90',
+    '91',
+    '92',
+    '93',
+    '94',
+    '95',
+    '96',
+    '97',
+  ];
+
+  static const List<String> _bgAnsi = [
+    '40',
+    '41',
+    '42',
+    '43',
+    '44',
+    '45',
+    '46',
+    '47',
+    '100',
+    '101',
+    '102',
+    '103',
+    '104',
+    '105',
+    '106',
+    '107',
+  ];
+
   String _buildAnsiEscapeCode(TextStyle? style) {
     if (style == null) {
       return '\x1b[0m';
     }
 
-    final List<String> codes = ['0'];
+    final StringBuffer buf = StringBuffer('\x1b[');
+    buf.write('0');
 
-    if (style.bold) codes.add('1');
-    if (style.dim) codes.add('2');
-    if (style.italic) codes.add('3');
-    if (style.underline) codes.add('4');
+    if (style.bold) buf.write(';1');
+    if (style.dim) buf.write(';2');
+    if (style.italic) buf.write(';3');
+    if (style.underline) buf.write(';4');
 
     if (style.color != null) {
-      codes.add(_colorToAnsi(style.color!.value, true));
+      final int v = style.color!.value;
+      buf.write(';');
+      buf.write(v >= 0 && v < 16 ? _fgAnsi[v] : '39');
     }
 
     if (style.backgroundColor != null) {
-      codes.add(_colorToAnsi(style.backgroundColor!.value, false));
+      final int v = style.backgroundColor!.value;
+      buf.write(';');
+      buf.write(v >= 0 && v < 16 ? _bgAnsi[v] : '49');
     }
 
-    return '\x1b[${codes.join(';')}m';
-  }
-
-  String _colorToAnsi(int value, bool foreground) {
-    if (value < 0) return foreground ? '39' : '49';
-    if (value < 8) {
-      return foreground ? '3$value' : '4$value';
-    }
-    if (value < 16) {
-      final brightValue = value - 8;
-      return foreground ? '9$brightValue' : '10$brightValue';
-    }
-    return foreground ? '39' : '49';
+    buf.write('m');
+    return buf.toString();
   }
 
   /// Renders only the changed cells to the terminal since the last flush.
