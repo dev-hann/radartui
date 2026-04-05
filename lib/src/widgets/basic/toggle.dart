@@ -141,6 +141,7 @@ class RenderToggle extends RenderBox {
 
   /// Sets the toggle value and invalidates the paint cache.
   set value(bool v) {
+    if (_value == v) return;
     _value = v;
     _invalidateCache();
   }
@@ -150,6 +151,7 @@ class RenderToggle extends RenderBox {
 
   /// Sets the focus state and invalidates the paint cache.
   set focused(bool v) {
+    if (_focused == v) return;
     _focused = v;
     _invalidateCache();
   }
@@ -159,6 +161,7 @@ class RenderToggle extends RenderBox {
 
   /// Sets the enabled state and invalidates the paint cache.
   set enabled(bool v) {
+    if (_enabled == v) return;
     _enabled = v;
     _invalidateCache();
   }
@@ -168,6 +171,7 @@ class RenderToggle extends RenderBox {
 
   /// Sets the active color and invalidates the paint cache.
   set activeColor(Color v) {
+    if (_activeColor == v) return;
     _activeColor = v;
     _invalidateCache();
   }
@@ -177,6 +181,7 @@ class RenderToggle extends RenderBox {
 
   /// Sets the inactive color and invalidates the paint cache.
   set inactiveColor(Color v) {
+    if (_inactiveColor == v) return;
     _inactiveColor = v;
     _invalidateCache();
   }
@@ -186,6 +191,7 @@ class RenderToggle extends RenderBox {
 
   /// Sets the label and invalidates the paint cache.
   set label(String? v) {
+    if (_label == v) return;
     _label = v;
     _invalidateCache();
   }
@@ -202,8 +208,7 @@ class RenderToggle extends RenderBox {
     _cachedBorderStyle = null;
     _cachedIndicatorStyle = null;
     _cachedLabelStyle = null;
-    _cachedLabelWidth = _computeLabelWidth();
-    _cachedLabelIdentity = _label;
+    _cachedLabelIdentity = null;
   }
 
   int _computeLabelWidth() {

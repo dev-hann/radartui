@@ -186,6 +186,7 @@ class RenderCheckbox extends RenderBox {
 
   /// Sets the checked state and invalidates the paint cache.
   set value(bool v) {
+    if (_value == v) return;
     _value = v;
     _invalidateCache();
   }
@@ -195,6 +196,7 @@ class RenderCheckbox extends RenderBox {
 
   /// Sets the tristate flag and invalidates the paint cache.
   set tristate(bool v) {
+    if (_tristate == v) return;
     _tristate = v;
     _invalidateCache();
   }
@@ -204,6 +206,7 @@ class RenderCheckbox extends RenderBox {
 
   /// Sets the focus state and invalidates the paint cache.
   set focused(bool v) {
+    if (_focused == v) return;
     _focused = v;
     _invalidateCache();
   }
@@ -213,6 +216,7 @@ class RenderCheckbox extends RenderBox {
 
   /// Sets the enabled state and invalidates the paint cache.
   set enabled(bool v) {
+    if (_enabled == v) return;
     _enabled = v;
     _invalidateCache();
   }
@@ -222,6 +226,7 @@ class RenderCheckbox extends RenderBox {
 
   /// Sets the active color and invalidates the paint cache.
   set activeColor(Color v) {
+    if (_activeColor == v) return;
     _activeColor = v;
     _invalidateCache();
   }
@@ -231,6 +236,7 @@ class RenderCheckbox extends RenderBox {
 
   /// Sets the check color and invalidates the paint cache.
   set checkColor(Color v) {
+    if (_checkColor == v) return;
     _checkColor = v;
     _invalidateCache();
   }

@@ -188,6 +188,7 @@ class RenderSlider extends RenderBox {
 
   /// Sets the current slider value.
   set value(int v) {
+    if (_value == v) return;
     _value = v;
     _invalidateCache();
   }
@@ -197,6 +198,7 @@ class RenderSlider extends RenderBox {
 
   /// Sets the minimum slider value.
   set min(int v) {
+    if (_min == v) return;
     _min = v;
     _invalidateCache();
   }
@@ -206,6 +208,7 @@ class RenderSlider extends RenderBox {
 
   /// Sets the maximum slider value.
   set max(int v) {
+    if (_max == v) return;
     _max = v;
     _invalidateCache();
   }
@@ -215,6 +218,7 @@ class RenderSlider extends RenderBox {
 
   /// Sets the focus state.
   set focused(bool v) {
+    if (_focused == v) return;
     _focused = v;
     _invalidateCache();
   }
@@ -224,6 +228,7 @@ class RenderSlider extends RenderBox {
 
   /// Sets the enabled state.
   set enabled(bool v) {
+    if (_enabled == v) return;
     _enabled = v;
     _invalidateCache();
   }
@@ -233,6 +238,7 @@ class RenderSlider extends RenderBox {
 
   /// Sets the active track color.
   set activeColor(Color v) {
+    if (_activeColor == v) return;
     _activeColor = v;
     _invalidateCache();
   }
@@ -242,6 +248,7 @@ class RenderSlider extends RenderBox {
 
   /// Sets the inactive track color.
   set inactiveColor(Color v) {
+    if (_inactiveColor == v) return;
     _inactiveColor = v;
     _invalidateCache();
   }
@@ -251,6 +258,7 @@ class RenderSlider extends RenderBox {
 
   /// Sets the thumb color.
   set thumbColor(Color v) {
+    if (_thumbColor == v) return;
     _thumbColor = v;
     _invalidateCache();
   }
@@ -260,6 +268,7 @@ class RenderSlider extends RenderBox {
 
   /// Sets the label text.
   set label(String? v) {
+    if (_label == v) return;
     _label = v;
     _invalidateCache();
   }

@@ -177,6 +177,7 @@ class RenderLinearProgressIndicator extends RenderBox {
 
   /// Sets the background color.
   set backgroundColor(Color v) {
+    if (_backgroundColor == v) return;
     _backgroundColor = v;
     _invalidateCache();
   }
@@ -186,6 +187,7 @@ class RenderLinearProgressIndicator extends RenderBox {
 
   /// Sets the fill color.
   set color(Color v) {
+    if (_color == v) return;
     _color = v;
     _invalidateCache();
   }

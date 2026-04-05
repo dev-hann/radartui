@@ -240,6 +240,7 @@ class RenderExpansionTile extends RenderBox
 
   /// Sets the title text and invalidates the paint cache.
   set title(String v) {
+    if (_title == v) return;
     _title = v;
     _invalidateCache();
   }
@@ -249,6 +250,7 @@ class RenderExpansionTile extends RenderBox
 
   /// Sets the expanded state and invalidates the paint cache.
   set expanded(bool v) {
+    if (_expanded == v) return;
     _expanded = v;
     _invalidateCache();
   }
@@ -258,6 +260,7 @@ class RenderExpansionTile extends RenderBox
 
   /// Sets the focus state and invalidates the paint cache.
   set focused(bool v) {
+    if (_focused == v) return;
     _focused = v;
     _invalidateCache();
   }
@@ -267,6 +270,7 @@ class RenderExpansionTile extends RenderBox
 
   /// Sets the expanded title color and invalidates the paint cache.
   set expandedColor(Color v) {
+    if (_expandedColor == v) return;
     _expandedColor = v;
     _invalidateCache();
   }
@@ -276,6 +280,7 @@ class RenderExpansionTile extends RenderBox
 
   /// Sets the collapsed title color and invalidates the paint cache.
   set collapsedColor(Color v) {
+    if (_collapsedColor == v) return;
     _collapsedColor = v;
     _invalidateCache();
   }
@@ -285,6 +290,7 @@ class RenderExpansionTile extends RenderBox
 
   /// Sets the icon color and invalidates the paint cache.
   set iconColor(Color v) {
+    if (_iconColor == v) return;
     _iconColor = v;
     _invalidateCache();
   }

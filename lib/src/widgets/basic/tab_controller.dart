@@ -326,6 +326,7 @@ class RenderTabBar extends RenderBox {
 
   /// Sets the active tab index and invalidates the paint cache.
   set currentIndex(int v) {
+    if (_currentIndex == v) return;
     _currentIndex = v;
     _invalidateCache();
   }
@@ -337,6 +338,7 @@ class RenderTabBar extends RenderBox {
 
   /// Sets the focus state and invalidates the paint cache.
   set focused(bool v) {
+    if (_focused == v) return;
     _focused = v;
     _invalidateCache();
   }
@@ -348,6 +350,7 @@ class RenderTabBar extends RenderBox {
 
   /// Sets the indicator color and invalidates the paint cache.
   set indicatorColor(Color v) {
+    if (_indicatorColor == v) return;
     _indicatorColor = v;
     _invalidateCache();
   }
@@ -359,6 +362,7 @@ class RenderTabBar extends RenderBox {
 
   /// Sets the selected label color and invalidates the paint cache.
   set labelColor(Color v) {
+    if (_labelColor == v) return;
     _labelColor = v;
     _invalidateCache();
   }
@@ -370,6 +374,7 @@ class RenderTabBar extends RenderBox {
 
   /// Sets the unselected label color and invalidates the paint cache.
   set unselectedLabelColor(Color v) {
+    if (_unselectedLabelColor == v) return;
     _unselectedLabelColor = v;
     _invalidateCache();
   }
@@ -381,6 +386,7 @@ class RenderTabBar extends RenderBox {
 
   /// Sets the selected label style and invalidates the paint cache.
   set labelStyle(TextStyle? v) {
+    if (_labelStyle == v) return;
     _labelStyle = v;
     _invalidateCache();
   }
@@ -392,6 +398,7 @@ class RenderTabBar extends RenderBox {
 
   /// Sets the unselected label style and invalidates the paint cache.
   set unselectedLabelStyle(TextStyle? v) {
+    if (_unselectedLabelStyle == v) return;
     _unselectedLabelStyle = v;
     _invalidateCache();
   }
@@ -403,6 +410,7 @@ class RenderTabBar extends RenderBox {
 
   /// Sets the label padding.
   set labelPadding(EdgeInsets v) {
+    if (_labelPadding == v) return;
     _labelPadding = v;
     _invalidateCache();
   }

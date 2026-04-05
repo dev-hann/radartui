@@ -203,6 +203,7 @@ class RenderRadio extends RenderBox {
 
   /// Sets the selection state and invalidates the paint cache.
   set selected(bool v) {
+    if (_selected == v) return;
     _selected = v;
     _invalidateCache();
   }
@@ -212,6 +213,7 @@ class RenderRadio extends RenderBox {
 
   /// Sets the focus state and invalidates the paint cache.
   set focused(bool v) {
+    if (_focused == v) return;
     _focused = v;
     _invalidateCache();
   }
@@ -221,6 +223,7 @@ class RenderRadio extends RenderBox {
 
   /// Sets the enabled state and invalidates the paint cache.
   set enabled(bool v) {
+    if (_enabled == v) return;
     _enabled = v;
     _invalidateCache();
   }
@@ -230,6 +233,7 @@ class RenderRadio extends RenderBox {
 
   /// Sets the active color and invalidates the paint cache.
   set activeColor(Color v) {
+    if (_activeColor == v) return;
     _activeColor = v;
     _invalidateCache();
   }
@@ -239,6 +243,7 @@ class RenderRadio extends RenderBox {
 
   /// Sets the focus color and invalidates the paint cache.
   set focusColor(Color v) {
+    if (_focusColor == v) return;
     _focusColor = v;
     _invalidateCache();
   }
@@ -248,6 +253,7 @@ class RenderRadio extends RenderBox {
 
   /// Sets the check color and invalidates the paint cache.
   set checkColor(Color v) {
+    if (_checkColor == v) return;
     _checkColor = v;
     _invalidateCache();
   }
