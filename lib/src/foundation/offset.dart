@@ -21,8 +21,10 @@ class Offset {
   Offset operator -(Offset other) => Offset(x - other.x, y - other.y);
 
   @override
-  bool operator ==(Object other) =>
-      other is Offset && x == other.x && y == other.y;
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Offset && x == other.x && y == other.y;
+  }
 
   @override
   int get hashCode => Object.hash(x, y);

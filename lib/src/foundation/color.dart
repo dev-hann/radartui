@@ -171,15 +171,17 @@ class TextStyle {
   final FontFamily fontFamily;
 
   @override
-  bool operator ==(Object other) =>
-      other is TextStyle &&
-      color == other.color &&
-      backgroundColor == other.backgroundColor &&
-      bold == other.bold &&
-      italic == other.italic &&
-      underline == other.underline &&
-      dim == other.dim &&
-      fontFamily == other.fontFamily;
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is TextStyle &&
+        color == other.color &&
+        backgroundColor == other.backgroundColor &&
+        bold == other.bold &&
+        italic == other.italic &&
+        underline == other.underline &&
+        dim == other.dim &&
+        fontFamily == other.fontFamily;
+  }
 
   @override
   int get hashCode => Object.hash(

@@ -133,12 +133,14 @@ class BoxConstraints extends Constraints {
   }
 
   @override
-  bool operator ==(Object other) =>
-      other is BoxConstraints &&
-      minWidth == other.minWidth &&
-      maxWidth == other.maxWidth &&
-      minHeight == other.minHeight &&
-      maxHeight == other.maxHeight;
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is BoxConstraints &&
+        minWidth == other.minWidth &&
+        maxWidth == other.maxWidth &&
+        minHeight == other.minHeight &&
+        maxHeight == other.maxHeight;
+  }
 
   @override
   int get hashCode => Object.hash(minWidth, maxWidth, minHeight, maxHeight);

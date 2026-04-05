@@ -51,12 +51,14 @@ class EdgeInsets {
       );
 
   @override
-  bool operator ==(Object other) =>
-      other is EdgeInsets &&
-      top == other.top &&
-      right == other.right &&
-      bottom == other.bottom &&
-      left == other.left;
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is EdgeInsets &&
+        top == other.top &&
+        right == other.right &&
+        bottom == other.bottom &&
+        left == other.left;
+  }
 
   @override
   int get hashCode => Object.hash(top, right, bottom, left);

@@ -18,8 +18,10 @@ class Size {
   String toString() => 'Size($width, $height)';
 
   @override
-  bool operator ==(Object other) =>
-      other is Size && width == other.width && height == other.height;
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Size && width == other.width && height == other.height;
+  }
 
   @override
   int get hashCode => Object.hash(width, height);
