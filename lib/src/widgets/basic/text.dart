@@ -66,27 +66,77 @@ class Text extends RenderObjectWidget {
 class RenderText extends RenderBox {
   /// Creates a [RenderText] with the given text content and display configuration.
   RenderText({
-    required this.text,
-    this.style,
-    this.softWrap = true,
-    this.maxLines,
-    this.overflow = TextOverflow.clip,
-  });
+    required String text,
+    TextStyle? style,
+    bool softWrap = true,
+    int? maxLines,
+    TextOverflow overflow = TextOverflow.clip,
+  })  : _text = text,
+        _style = style,
+        _softWrap = softWrap,
+        _maxLines = maxLines,
+        _overflow = overflow;
+
+  String _text;
 
   /// The text string to render.
-  String text;
+  String get text => _text;
+
+  /// Sets the text and marks the render object as needing layout.
+  set text(String v) {
+    if (_text == v) return;
+    _text = v;
+    markNeedsLayout();
+  }
+
+  TextStyle? _style;
 
   /// The text style to apply.
-  TextStyle? style;
+  TextStyle? get style => _style;
+
+  /// Sets the text style and marks the render object as needing paint.
+  set style(TextStyle? v) {
+    if (_style == v) return;
+    _style = v;
+    markNeedsPaint();
+  }
+
+  bool _softWrap;
 
   /// Whether to wrap text at word boundaries.
-  bool softWrap;
+  bool get softWrap => _softWrap;
+
+  /// Sets the soft wrap flag and marks the render object as needing layout.
+  set softWrap(bool v) {
+    if (_softWrap == v) return;
+    _softWrap = v;
+    markNeedsLayout();
+  }
+
+  int? _maxLines;
 
   /// The maximum number of lines, or `null` for unlimited.
-  int? maxLines;
+  int? get maxLines => _maxLines;
+
+  /// Sets the max lines and marks the render object as needing layout.
+  set maxLines(int? v) {
+    if (_maxLines == v) return;
+    _maxLines = v;
+    markNeedsLayout();
+  }
+
+  TextOverflow _overflow;
 
   /// How visual overflow is handled.
-  TextOverflow overflow;
+  TextOverflow get overflow => _overflow;
+
+  /// Sets the overflow mode and marks the render object as needing layout.
+  set overflow(TextOverflow v) {
+    if (_overflow == v) return;
+    _overflow = v;
+    markNeedsLayout();
+  }
+
   List<String> _lines = [];
 
   @override
