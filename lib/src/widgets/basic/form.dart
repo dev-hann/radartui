@@ -13,6 +13,10 @@ class FormScope extends InheritedWidget {
       formState != oldWidget.formState;
 }
 
+/// A container for form fields that manages validation and submission.
+///
+/// Wrap [FormField] widgets in a [Form] to enable collective validation,
+/// reset, and submission handling via [onSubmitted].
 class Form extends StatefulWidget {
   const Form({
     super.key,

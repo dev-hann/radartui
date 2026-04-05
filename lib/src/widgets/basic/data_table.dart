@@ -26,6 +26,8 @@ class DataRow {
   final bool selected;
 }
 
+/// A table widget that displays data in rows and columns with configurable
+/// headers, cell alignment, and optional row selection.
 class DataTable extends StatefulWidget {
   const DataTable({
     super.key,
