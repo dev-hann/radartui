@@ -222,31 +222,84 @@ class _DropdownButtonRenderWidget extends RenderObjectWidget {
 class RenderDropdownButton extends RenderBox {
   /// Creates a [RenderDropdownButton] with the given display configuration.
   RenderDropdownButton({
-    required this.text,
-    required this.focused,
-    required this.isOpen,
-    required this.enabled,
-    required this.focusColor,
-    required this.backgroundColor,
-  });
+    required String text,
+    required bool focused,
+    required bool isOpen,
+    required bool enabled,
+    required Color focusColor,
+    required Color backgroundColor,
+  })  : _text = text,
+        _focused = focused,
+        _isOpen = isOpen,
+        _enabled = enabled,
+        _focusColor = focusColor,
+        _backgroundColor = backgroundColor;
+
+  String _text;
+  bool _focused;
+  bool _isOpen;
+  bool _enabled;
+  Color _focusColor;
+  Color _backgroundColor;
 
   /// The text label displayed on the button.
-  String text;
+  String get text => _text;
+
+  /// Sets the text label.
+  set text(String v) {
+    if (_text == v) return;
+    _text = v;
+    _invalidateCache();
+  }
 
   /// Whether the button currently has keyboard focus.
-  bool focused;
+  bool get focused => _focused;
+
+  /// Sets the focus state.
+  set focused(bool v) {
+    if (_focused == v) return;
+    _focused = v;
+    _invalidateCache();
+  }
 
   /// Whether the dropdown menu is currently open.
-  bool isOpen;
+  bool get isOpen => _isOpen;
+
+  /// Sets the open state.
+  set isOpen(bool v) {
+    if (_isOpen == v) return;
+    _isOpen = v;
+  }
 
   /// Whether the button is interactive.
-  bool enabled;
+  bool get enabled => _enabled;
+
+  /// Sets the enabled state.
+  set enabled(bool v) {
+    if (_enabled == v) return;
+    _enabled = v;
+    _invalidateCache();
+  }
 
   /// The color applied when the button has focus.
-  Color focusColor;
+  Color get focusColor => _focusColor;
+
+  /// Sets the focus color.
+  set focusColor(Color v) {
+    if (_focusColor == v) return;
+    _focusColor = v;
+    _invalidateCache();
+  }
 
   /// The background color of the button.
-  Color backgroundColor;
+  Color get backgroundColor => _backgroundColor;
+
+  /// Sets the background color.
+  set backgroundColor(Color v) {
+    if (_backgroundColor == v) return;
+    _backgroundColor = v;
+    _invalidateCache();
+  }
 
   TextStyle? _cachedBgStyle;
   TextStyle? _cachedFgBgStyle;
@@ -254,6 +307,13 @@ class RenderDropdownButton extends RenderBox {
   Color? _cachedFgColor;
   int? _cachedTextWidth;
   String? _cachedTextIdentity;
+
+  void _invalidateCache() {
+    _cachedBgStyle = null;
+    _cachedFgBgStyle = null;
+    _cachedBgColor = null;
+    _cachedFgColor = null;
+  }
 
   void _ensureStylesCached() {
     final Color bgColor = focused ? focusColor : backgroundColor;
@@ -270,9 +330,9 @@ class RenderDropdownButton extends RenderBox {
   }
 
   int get _textWidth {
-    if (!identical(text, _cachedTextIdentity)) {
-      _cachedTextWidth = stringWidth(text);
-      _cachedTextIdentity = text;
+    if (!identical(_text, _cachedTextIdentity)) {
+      _cachedTextWidth = stringWidth(_text);
+      _cachedTextIdentity = _text;
     }
     return _cachedTextWidth!;
   }
@@ -291,8 +351,8 @@ class RenderDropdownButton extends RenderBox {
     final int x = offset.x.toInt();
     final int y = offset.y.toInt();
     context.fillBackground(x, y, textW + 3, bgStyle);
-    final int cx = context.writeString(x + 1, y, text, fgBgStyle);
-    final String arrow = isOpen ? ' ▲' : ' ▼';
+    final int cx = context.writeString(x + 1, y, _text, fgBgStyle);
+    final String arrow = _isOpen ? ' ▲' : ' ▼';
     context.writeString(cx, y, arrow, fgBgStyle);
   }
 }
@@ -336,23 +396,58 @@ class _DropdownMenuRenderWidget extends RenderObjectWidget {
 class RenderDropdownMenu extends RenderBox {
   /// Creates a [RenderDropdownMenu] with the given items and visual configuration.
   RenderDropdownMenu({
-    required this.items,
-    required this.selectedIndex,
-    required this.dropdownColor,
-    required this.focusColor,
-  });
+    required List<DropdownMenuItem> items,
+    required int selectedIndex,
+    required Color dropdownColor,
+    required Color focusColor,
+  })  : _items = items,
+        _selectedIndex = selectedIndex,
+        _dropdownColor = dropdownColor,
+        _focusColor = focusColor;
+
+  List<DropdownMenuItem> _items;
+  int _selectedIndex;
+  Color _dropdownColor;
+  Color _focusColor;
 
   /// The list of menu items to display.
-  List<DropdownMenuItem> items;
+  List<DropdownMenuItem> get items => _items;
+
+  /// Sets the menu items and invalidates cached styles.
+  set items(List<DropdownMenuItem> v) {
+    if (identical(_items, v)) return;
+    _items = v;
+    _invalidateCache();
+  }
 
   /// The index of the currently highlighted item.
-  int selectedIndex;
+  int get selectedIndex => _selectedIndex;
+
+  /// Sets the selected index.
+  set selectedIndex(int v) {
+    if (_selectedIndex == v) return;
+    _selectedIndex = v;
+  }
 
   /// The background color of unselected items.
-  Color dropdownColor;
+  Color get dropdownColor => _dropdownColor;
+
+  /// Sets the dropdown color and invalidates cached styles.
+  set dropdownColor(Color v) {
+    if (_dropdownColor == v) return;
+    _dropdownColor = v;
+    _invalidateCache();
+  }
 
   /// The background color of the selected item.
-  Color focusColor;
+  Color get focusColor => _focusColor;
+
+  /// Sets the focus color and invalidates cached styles.
+  set focusColor(Color v) {
+    if (_focusColor == v) return;
+    _focusColor = v;
+    _invalidateCache();
+  }
 
   TextStyle? _cachedSelectedBg;
   TextStyle? _cachedNormalBg;
@@ -364,6 +459,16 @@ class RenderDropdownMenu extends RenderBox {
   Color? _cachedDropdownColor;
   int _cachedMaxItemWidth = 0;
   List<DropdownMenuItem>? _cachedItemsIdentity;
+
+  void _invalidateCache() {
+    _cachedSelectedBg = null;
+    _cachedNormalBg = null;
+    _cachedSelectedEnabledFg = null;
+    _cachedSelectedDisabledFg = null;
+    _cachedNormalEnabledFg = null;
+    _cachedNormalDisabledFg = null;
+    _cachedItemsIdentity = null;
+  }
 
   void _ensureStylesCached() {
     if (_cachedFocusColor == focusColor &&
@@ -387,16 +492,16 @@ class RenderDropdownMenu extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    if (!identical(items, _cachedItemsIdentity)) {
+    if (!identical(_items, _cachedItemsIdentity)) {
       _cachedMaxItemWidth = _computeMaxItemWidth();
-      _cachedItemsIdentity = items;
+      _cachedItemsIdentity = _items;
     }
-    size = Size(_cachedMaxItemWidth + 2, items.length);
+    size = Size(_cachedMaxItemWidth + 2, _items.length);
   }
 
   int _computeMaxItemWidth() {
     int maxWidth = 0;
-    for (final item in items) {
+    for (final item in _items) {
       final int w = stringWidth(item.label);
       if (w > maxWidth) maxWidth = w;
     }
@@ -415,9 +520,9 @@ class RenderDropdownMenu extends RenderBox {
     final TextStyle selectedDisabled = _cachedSelectedDisabledFg!;
     final TextStyle normalEnabled = _cachedNormalEnabledFg!;
     final TextStyle normalDisabled = _cachedNormalDisabledFg!;
-    for (int i = 0; i < items.length; i++) {
-      final DropdownMenuItem item = items[i];
-      final bool isSelected = i == selectedIndex;
+    for (int i = 0; i < _items.length; i++) {
+      final DropdownMenuItem item = _items[i];
+      final bool isSelected = i == _selectedIndex;
       final TextStyle bgStyle = isSelected ? selectedBg : normalBg;
       final TextStyle fgBgStyle = isSelected
           ? (item.enabled ? selectedEnabled : selectedDisabled)
