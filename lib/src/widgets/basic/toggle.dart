@@ -72,13 +72,13 @@ class _ToggleRenderWidget extends RenderObjectWidget {
 
   @override
   RenderToggle createRenderObject(BuildContext context) => RenderToggle(
-        value: value,
-        focused: focused,
-        enabled: enabled,
-        activeColor: activeColor,
-        inactiveColor: inactiveColor,
-        label: label,
-      );
+    value: value,
+    focused: focused,
+    enabled: enabled,
+    activeColor: activeColor,
+    inactiveColor: inactiveColor,
+    label: label,
+  );
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
@@ -100,20 +100,73 @@ class _ToggleRenderWidget extends RenderObjectWidget {
 
 class RenderToggle extends RenderBox {
   RenderToggle({
-    required this.value,
-    required this.focused,
-    required this.enabled,
-    required this.activeColor,
-    required this.inactiveColor,
-    this.label,
-  });
+    required bool value,
+    required bool focused,
+    required bool enabled,
+    required Color activeColor,
+    required Color inactiveColor,
+    String? label,
+  }) : _value = value,
+       _focused = focused,
+       _enabled = enabled,
+       _activeColor = activeColor,
+       _inactiveColor = inactiveColor,
+       _label = label;
 
-  bool value;
-  bool focused;
-  bool enabled;
-  Color activeColor;
-  Color inactiveColor;
-  String? label;
+  bool _value;
+  bool _focused;
+  bool _enabled;
+  Color _activeColor;
+  Color _inactiveColor;
+  String? _label;
+
+  bool get value => _value;
+  set value(bool v) {
+    _value = v;
+    _invalidateCache();
+  }
+
+  bool get focused => _focused;
+  set focused(bool v) {
+    _focused = v;
+    _invalidateCache();
+  }
+
+  bool get enabled => _enabled;
+  set enabled(bool v) {
+    _enabled = v;
+    _invalidateCache();
+  }
+
+  Color get activeColor => _activeColor;
+  set activeColor(Color v) {
+    _activeColor = v;
+    _invalidateCache();
+  }
+
+  Color get inactiveColor => _inactiveColor;
+  set inactiveColor(Color v) {
+    _inactiveColor = v;
+    _invalidateCache();
+  }
+
+  String? get label => _label;
+  set label(String? v) {
+    _label = v;
+    _invalidateCache();
+  }
+
+  TextStyle? _cachedBackgroundStyle;
+  TextStyle? _cachedBorderStyle;
+  TextStyle? _cachedIndicatorStyle;
+  TextStyle? _cachedLabelStyle;
+
+  void _invalidateCache() {
+    _cachedBackgroundStyle = null;
+    _cachedBorderStyle = null;
+    _cachedIndicatorStyle = null;
+    _cachedLabelStyle = null;
+  }
 
   int _calculateWidth() {
     const int toggleWidth = 3;
@@ -130,77 +183,54 @@ class RenderToggle extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final backgroundColor = _getBackgroundColor();
-    final indicatorColor = _getIndicatorColor();
-    final borderColor = _getBorderColor();
-
-    _paintBackground(context, offset, backgroundColor);
-    _paintBorder(context, offset, borderColor, backgroundColor);
-    _paintIndicator(context, offset, indicatorColor, backgroundColor);
+    _ensureStylesCached();
+    _paintBackground(context, offset);
+    _paintBorder(context, offset);
+    _paintIndicator(context, offset);
     _paintLabel(context, offset);
   }
 
-  void _paintBackground(
-    PaintingContext context,
-    Offset offset,
-    Color backgroundColor,
-  ) {
+  void _ensureStylesCached() {
+    if (_cachedBackgroundStyle != null) return;
+    final Color bg = _getBackgroundColor();
+    final Color indicator = _getIndicatorColor();
+    final Color border = _getBorderColor();
+    final Color labelColor = enabled ? Color.white : Color.brightBlack;
+    _cachedBackgroundStyle = TextStyle(backgroundColor: bg);
+    _cachedBorderStyle = TextStyle(color: border, backgroundColor: bg);
+    _cachedIndicatorStyle = TextStyle(color: indicator, backgroundColor: bg);
+    _cachedLabelStyle = TextStyle(color: labelColor);
+  }
+
+  void _paintBackground(PaintingContext context, Offset offset) {
+    final TextStyle style = _cachedBackgroundStyle!;
     for (int x = 0; x < 3; x++) {
-      context.buffer.writeStyled(
-        offset.x + x,
-        offset.y,
-        ' ',
-        TextStyle(backgroundColor: backgroundColor),
-      );
+      context.buffer.writeStyled(offset.x + x, offset.y, ' ', style);
     }
   }
 
-  void _paintBorder(
-    PaintingContext context,
-    Offset offset,
-    Color borderColor,
-    Color backgroundColor,
-  ) {
-    context.buffer.writeStyled(
-      offset.x,
-      offset.y,
-      '[',
-      TextStyle(color: borderColor, backgroundColor: backgroundColor),
-    );
-    context.buffer.writeStyled(
-      offset.x + 2,
-      offset.y,
-      ']',
-      TextStyle(color: borderColor, backgroundColor: backgroundColor),
-    );
+  void _paintBorder(PaintingContext context, Offset offset) {
+    final TextStyle style = _cachedBorderStyle!;
+    context.buffer.writeStyled(offset.x, offset.y, '[', style);
+    context.buffer.writeStyled(offset.x + 2, offset.y, ']', style);
   }
 
-  void _paintIndicator(
-    PaintingContext context,
-    Offset offset,
-    Color indicatorColor,
-    Color backgroundColor,
-  ) {
-    final indicatorChar = value ? '●' : '○';
+  void _paintIndicator(PaintingContext context, Offset offset) {
+    final String indicatorChar = value ? '●' : '○';
     context.buffer.writeStyled(
       offset.x + 1,
       offset.y,
       indicatorChar,
-      TextStyle(color: indicatorColor, backgroundColor: backgroundColor),
+      _cachedIndicatorStyle!,
     );
   }
 
   void _paintLabel(PaintingContext context, Offset offset) {
     if (label == null || label!.isEmpty) return;
     final int labelX = offset.x + 4;
-    final labelColor = enabled ? Color.white : Color.brightBlack;
+    final TextStyle style = _cachedLabelStyle!;
     for (int i = 0; i < label!.length; i++) {
-      context.buffer.writeStyled(
-        labelX + i,
-        offset.y,
-        label![i],
-        TextStyle(color: labelColor),
-      );
+      context.buffer.writeStyled(labelX + i, offset.y, label![i], style);
     }
   }
 
