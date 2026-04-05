@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// Controls where a child is positioned within a [Stack].
+///
+/// Each of [left], [top], [right], [bottom] is an offset from the corresponding
+/// edge of the stack. Use [Positioned.fill] to stretch to all edges.
 class Positioned extends ParentDataWidget<StackParentData> {
   const Positioned({
     super.key,

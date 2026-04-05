@@ -8,6 +8,10 @@ Widget _defaultUnselectedBuilder<T>(T item) {
   return Text('  $item');
 }
 
+/// A scrollable list of selectable items with keyboard navigation.
+///
+/// Supports custom [selectedBuilder] and [unselectedBuilder] for rendering
+/// each item. Arrow keys navigate, Enter/Space selects.
 class ListView<T> extends StatefulWidget {
   const ListView({
     super.key,

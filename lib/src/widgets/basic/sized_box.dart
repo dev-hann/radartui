@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A widget with a fixed [width] and [height].
+///
+/// Use [SizedBox.shrink] for a zero-sized box or [SizedBox.square] for equal
+/// dimensions. If given a child, constrains it to the specified size.
 class SizedBox extends SingleChildRenderObjectWidget {
   const SizedBox({super.key, this.width = 0, this.height = 0, super.child});
   const SizedBox.shrink({super.key, super.child})
