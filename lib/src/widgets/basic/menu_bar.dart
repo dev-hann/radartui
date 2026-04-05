@@ -224,6 +224,25 @@ class RenderMenuBar extends RenderBox {
     required this.backgroundColor,
   });
 
+  static const TextStyle _menuOpenBgStyle =
+      TextStyle(backgroundColor: Color.white);
+  static const TextStyle _menuOpenFgStyle =
+      TextStyle(color: Color.black, backgroundColor: Color.white);
+  static const TextStyle _dropdownSelectedBgStyle =
+      TextStyle(backgroundColor: Color.cyan);
+  static const TextStyle _dropdownSelectedFgStyle =
+      TextStyle(color: Color.white, backgroundColor: Color.cyan);
+  static const TextStyle _dropdownNormalBgStyle =
+      TextStyle(backgroundColor: Color.black);
+  static const TextStyle _dropdownNormalEnabledFgStyle =
+      TextStyle(color: Color.white, backgroundColor: Color.black);
+  static const TextStyle _dropdownNormalDisabledFgStyle =
+      TextStyle(color: Color.brightBlack, backgroundColor: Color.black);
+  static const TextStyle _dropdownShortcutSelectedStyle =
+      TextStyle(color: Color.brightBlack, backgroundColor: Color.cyan);
+  static const TextStyle _dropdownShortcutNormalStyle =
+      TextStyle(color: Color.brightBlack, backgroundColor: Color.black);
+
   /// The top-level menu bar items.
   List<MenuBarItem> items;
 
@@ -238,6 +257,20 @@ class RenderMenuBar extends RenderBox {
 
   /// The background color of the menu bar.
   Color backgroundColor;
+
+  TextStyle? _cachedMenuClosedBgStyle;
+  TextStyle? _cachedMenuClosedFgStyle;
+  Color? _cachedBgColor;
+
+  void _ensureMenuBarStylesCached() {
+    if (_cachedBgColor == backgroundColor && _cachedMenuClosedBgStyle != null) {
+      return;
+    }
+    _cachedMenuClosedBgStyle = TextStyle(backgroundColor: backgroundColor);
+    _cachedMenuClosedFgStyle =
+        TextStyle(color: Color.white, backgroundColor: backgroundColor);
+    _cachedBgColor = backgroundColor;
+  }
 
   @override
   void performLayout(Constraints constraints) {
@@ -263,15 +296,16 @@ class RenderMenuBar extends RenderBox {
   }
 
   void _paintMenuBarItems(PaintingContext context, int startX, int y) {
+    _ensureMenuBarStylesCached();
     int x = startX;
     for (int i = 0; i < items.length; i++) {
       final MenuBarItem item = items[i];
       final bool isOpen = i == openMenuIndex;
       final int itemWidth = stringWidth(item.label) + 2;
-      final Color bg = isOpen ? Color.white : backgroundColor;
-      final Color fg = isOpen ? Color.black : Color.white;
-      final TextStyle bgStyle = TextStyle(backgroundColor: bg);
-      final TextStyle fgBgStyle = TextStyle(color: fg, backgroundColor: bg);
+      final TextStyle bgStyle =
+          isOpen ? _menuOpenBgStyle : _cachedMenuClosedBgStyle!;
+      final TextStyle fgBgStyle =
+          isOpen ? _menuOpenFgStyle : _cachedMenuClosedFgStyle!;
       for (int j = 0; j < itemWidth; j++) {
         context.buffer.writeStyled(x + j, y, ' ', bgStyle);
       }
@@ -324,10 +358,13 @@ class RenderMenuBar extends RenderBox {
     bool isSelected,
     int maxWidth,
   ) {
-    final Color bg = isSelected ? Color.cyan : Color.black;
-    final Color fg = item.enabled ? Color.white : Color.brightBlack;
-    final TextStyle bgStyle = TextStyle(backgroundColor: bg);
-    final TextStyle fgBgStyle = TextStyle(color: fg, backgroundColor: bg);
+    final TextStyle bgStyle =
+        isSelected ? _dropdownSelectedBgStyle : _dropdownNormalBgStyle;
+    final TextStyle fgBgStyle = isSelected
+        ? _dropdownSelectedFgStyle
+        : (item.enabled
+            ? _dropdownNormalEnabledFgStyle
+            : _dropdownNormalDisabledFgStyle);
     for (int cx = 0; cx < maxWidth; cx++) {
       context.buffer.writeStyled(x + cx, y, ' ', bgStyle);
     }
@@ -336,12 +373,10 @@ class RenderMenuBar extends RenderBox {
     context.buffer.writeStyled(x + 2, y, item.label, fgBgStyle);
     if (item.shortcut != null) {
       final int shortcutX = x + maxWidth - stringWidth(item.shortcut!);
-      context.buffer.writeStyled(
-        shortcutX,
-        y,
-        item.shortcut!,
-        TextStyle(color: Color.brightBlack, backgroundColor: bg),
-      );
+      final TextStyle shortcutStyle = isSelected
+          ? _dropdownShortcutSelectedStyle
+          : _dropdownShortcutNormalStyle;
+      context.buffer.writeStyled(shortcutX, y, item.shortcut!, shortcutStyle);
     }
   }
 }
