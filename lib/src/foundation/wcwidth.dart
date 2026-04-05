@@ -15,7 +15,13 @@ int charWidth(int codePoint) {
 int stringWidth(String text) {
   int width = 0;
   for (int i = 0; i < text.length; i++) {
-    width += charWidth(text.codeUnitAt(i));
+    final int cp = text.codeUnitAt(i);
+    if (cp < 32) continue;
+    if (cp < 127) {
+      width++;
+      continue;
+    }
+    width += charWidth(cp);
   }
   return width;
 }
