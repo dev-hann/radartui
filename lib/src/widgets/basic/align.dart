@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// Positions its child within itself according to [alignment].
+///
+/// For example, `Align(alignment: Alignment.center, child: Text('hello'))`
+/// centers the child within the Align widget's bounds.
 class Align extends SingleChildRenderObjectWidget {
   const Align({super.key, required this.alignment, super.child});
 
