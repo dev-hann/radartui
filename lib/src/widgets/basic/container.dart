@@ -155,26 +155,17 @@ class RenderContainer extends RenderBox
     int containerH,
     EdgeInsets totalPadding,
   ) {
-    final childConstraint = BoxConstraints(
-      maxWidth: containerW -
-          totalPadding.left -
-          totalPadding.right -
-          _borderHorizontal,
-      maxHeight:
-          containerH - totalPadding.top - totalPadding.bottom - _borderVertical,
-    );
-    child!.layout(childConstraint);
+    final int horizPad =
+        totalPadding.left + totalPadding.right + _borderHorizontal;
+    final int vertPad =
+        totalPadding.top + totalPadding.bottom + _borderVertical;
+    child!.layout(BoxConstraints(
+      maxWidth: containerW - horizPad,
+      maxHeight: containerH - vertPad,
+    ));
 
-    final resolvedW = _width ??
-        child!.size!.width +
-            totalPadding.left +
-            totalPadding.right +
-            _borderHorizontal;
-    final resolvedH = _height ??
-        child!.size!.height +
-            totalPadding.top +
-            totalPadding.bottom +
-            _borderVertical;
+    final resolvedW = _width ?? child!.size!.width + horizPad;
+    final resolvedH = _height ?? child!.size!.height + vertPad;
     return (resolvedW, resolvedH);
   }
 
