@@ -75,7 +75,6 @@ mixin WidgetsBinding
       outputBuffer.smartClear();
       paintElement(_rootElement!);
     }
-    outputBuffer.flush();
   }
 
   /// Registers a [callback] to be invoked during [shutdown].
