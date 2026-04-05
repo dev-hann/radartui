@@ -65,17 +65,7 @@ class TextSpan {
   static TextStyle? _mergeStyles(TextStyle? base, TextStyle? overlay) {
     if (base == null) return overlay;
     if (overlay == null) return base;
-
-    return TextStyle(
-      color: overlay.color ?? base.color,
-      backgroundColor: overlay.backgroundColor ?? base.backgroundColor,
-      bold: overlay.bold || base.bold,
-      italic: overlay.italic || base.italic,
-      underline: overlay.underline || base.underline,
-      fontFamily: overlay.fontFamily != FontFamily.monospace
-          ? overlay.fontFamily
-          : base.fontFamily,
-    );
+    return base.merge(overlay);
   }
 }
 
