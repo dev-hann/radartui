@@ -19,10 +19,8 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Name');
-      tester.assertContains('Age');
-      tester.assertContains('Alice');
-      tester.assertContains('Bob');
+      tester.assertBufferLines(
+          [' Name      Age', '   Alice  30', '   Bob    25']);
     });
 
     testWidgets('DataTable shows sort indicator', (tester) async {
@@ -39,7 +37,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('▲');
+      tester.assertBufferLines([' Name ▲', '  Alice']);
     });
 
     testWidgets('DataTable shows descending sort indicator', (tester) async {
@@ -56,7 +54,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('▼');
+      tester.assertBufferLines([' Name ▼', '  Alice']);
     });
 
     testWidgets('DataTable shows checkbox column when enabled', (tester) async {
@@ -72,7 +70,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('[x]');
+      tester.assertBufferLines(['     Name', ' [x]  Alice']);
     });
 
     testWidgets('DataTable shows unchecked checkbox', (tester) async {
@@ -88,7 +86,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('[ ]');
+      tester.assertBufferLines(['     Name', ' [ ]  Alice']);
     });
   });
 
@@ -114,8 +112,8 @@ void main() {
     });
 
     testWidgets('DataTable triggers sort on Enter', (tester) async {
-      var sortColumnIndex = -1;
-      var sortAscending = false;
+      int sortColumnIndex = -1;
+      bool sortAscending = false;
 
       tester.pumpWidget(
         DataTable(
@@ -144,7 +142,7 @@ void main() {
     });
 
     testWidgets('DataTable toggles selection with Space', (tester) async {
-      var selected = false;
+      bool selected = false;
 
       tester.pumpWidget(
         DataTable(
@@ -172,7 +170,7 @@ void main() {
     testWidgets('DataTable navigates columns with left/right arrows', (
       tester,
     ) async {
-      var sortColumnIndex = -1;
+      int sortColumnIndex = -1;
 
       tester.pumpWidget(
         DataTable(

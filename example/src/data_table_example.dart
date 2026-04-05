@@ -9,24 +9,14 @@ class DataTableExample extends StatefulWidget {
 }
 
 class _DataTableExampleState extends State<DataTableExample> {
-  int? _sortColumnIndex;
-  bool _sortAscending = true;
   StreamSubscription? _keySubscription;
-  final List<_Person> _people = [
-    _Person('Alice', 30, 'Engineering'),
-    _Person('Bob', 25, 'Marketing'),
-    _Person('Charlie', 35, 'Engineering'),
-  ];
 
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
-      if (key.code == KeyCode.escape) {
-        Navigator.of(context).pop();
-      }
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+      _handleKeyEvent(key);
     });
   }
 
@@ -36,88 +26,71 @@ class _DataTableExampleState extends State<DataTableExample> {
     super.dispose();
   }
 
-  List<DataRow> _buildRows() {
-    return _people.map((person) {
-      return DataRow(
-        cells: [
-          DataCell(person.name),
-          DataCell(person.age.toString()),
-          DataCell(person.department),
-        ],
-        selected: person.selected,
-        onSelectChanged: (selected) {
-          setState(() {
-            person.selected = selected;
-          });
-        },
-      );
-    }).toList();
-  }
-
-  void _handleSort(int columnIndex, bool ascending) {
-    setState(() {
-      _sortColumnIndex = columnIndex;
-      _sortAscending = ascending;
-
-      _people.sort((a, b) {
-        int result;
-        switch (columnIndex) {
-          case 0:
-            result = a.name.compareTo(b.name);
-            break;
-          case 1:
-            result = a.age.compareTo(b.age);
-            break;
-          case 2:
-            result = a.department.compareTo(b.department);
-            break;
-          default:
-            result = 0;
-        }
-        return ascending ? result : -result;
-      });
-    });
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(1),
+    return const Padding(
+      padding: EdgeInsets.all(2),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'DataTable Example',
-            style: TextStyle(color: Color.brightCyan, bold: true),
+          Container(
+            width: 50,
+            height: 3,
+            color: Color.blue,
+            child: Center(
+              child: Text(
+                '📊 DataTable Widget Example',
+                style: TextStyle(color: Color.white, bold: true),
+              ),
+            ),
           ),
-          const SizedBox(height: 1),
-          const Text(
-            'Arrow keys: navigate | Enter: sort | Space: select',
-            style: TextStyle(color: Color.yellow, italic: true),
-          ),
-          const SizedBox(height: 1),
+          SizedBox(height: 2),
           DataTable(
             columns: [
-              DataColumn(label: 'Name', onSort: _handleSort),
-              DataColumn(label: 'Age', numeric: true, onSort: _handleSort),
-              DataColumn(label: 'Department', onSort: _handleSort),
+              DataColumn(label: 'Name'),
+              DataColumn(label: 'Role'),
+              DataColumn(label: 'Score', numeric: true),
             ],
-            rows: _buildRows(),
-            sortColumnIndex: _sortColumnIndex,
-            sortAscending: _sortAscending,
-            showCheckboxColumn: true,
+            rows: [
+              DataRow(cells: [
+                DataCell('Alice'),
+                DataCell('Admin'),
+                DataCell('95'),
+              ]),
+              DataRow(cells: [
+                DataCell('Bob'),
+                DataCell('User'),
+                DataCell('82'),
+              ]),
+              DataRow(cells: [
+                DataCell('Carol'),
+                DataCell('User'),
+                DataCell('91'),
+              ]),
+              DataRow(cells: [
+                DataCell('Dave'),
+                DataCell('Moderator'),
+                DataCell('77'),
+              ]),
+              DataRow(cells: [
+                DataCell('Eve'),
+                DataCell('Admin'),
+                DataCell('88'),
+              ]),
+            ],
+          ),
+          SizedBox(height: 2),
+          Text(
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
           ),
         ],
       ),
     );
   }
-}
-
-class _Person {
-  _Person(this.name, this.age, this.department);
-
-  final String name;
-  final int age;
-  final String department;
-  bool selected = false;
 }

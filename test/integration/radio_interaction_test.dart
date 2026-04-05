@@ -81,7 +81,7 @@ void main() {
     });
 
     testWidgets('Radio groupValue changes update visual state', (tester) async {
-      var groupValue = 'option1';
+      String groupValue = 'option1';
 
       tester.pumpWidget(
         Radio<String>(

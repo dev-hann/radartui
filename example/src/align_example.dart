@@ -14,9 +14,8 @@ class _AlignExampleState extends State<AlignExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }
@@ -30,7 +29,6 @@ class _AlignExampleState extends State<AlignExample> {
   void _handleKeyEvent(KeyEvent keyEvent) {
     if (keyEvent.code == KeyCode.escape) {
       Navigator.of(context).pop();
-      return;
     }
   }
 
@@ -40,19 +38,13 @@ class _AlignExampleState extends State<AlignExample> {
       padding: EdgeInsets.all(2),
       child: Column(
         children: [
-          Column(
-            children: [
-              Align(alignment: Alignment.topCenter, child: Text('Top Center')),
-              Text('Bottom Center'),
-            ],
-          ),
           Container(
             width: 50,
             height: 3,
             color: Color.blue,
             child: Center(
               child: Text(
-                '✨ Align & Center Widget Example',
+                '📐 Align & Center Example',
                 style: TextStyle(color: Color.white, bold: true),
               ),
             ),
@@ -64,54 +56,106 @@ class _AlignExampleState extends State<AlignExample> {
             child: Column(
               children: [
                 Text(
-                  'Align Widget Examples:',
+                  'Alignment.topLeft:',
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
                 SizedBox(height: 1),
                 Container(
                   width: 40,
-                  height: 10,
-                  color: Colors.blue,
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text('TopLeft'),
-                      ),
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Text('TopCenter'),
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Text('TopRight'),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('CenterLeft'),
-                      ),
-                      Align(alignment: Alignment.center, child: Text('Center')),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Text('CenterRight'),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Text('BottomLeft'),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Text('BottomCenter'),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Text('BottomRight'),
-                      ),
-                    ],
+                  height: 3,
+                  color: Color.red,
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'TopLeft',
+                      style: TextStyle(color: Color.white),
+                    ),
                   ),
                 ),
               ],
             ),
+          ),
+          SizedBox(height: 2),
+          Container(
+            color: Color.brightBlack,
+            padding: EdgeInsets.all(1),
+            child: Column(
+              children: [
+                Text(
+                  'Alignment.center:',
+                  style: TextStyle(color: Color.cyan, bold: true),
+                ),
+                SizedBox(height: 1),
+                Container(
+                  width: 40,
+                  height: 3,
+                  color: Color.green,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Center',
+                      style: TextStyle(color: Color.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 2),
+          Container(
+            color: Color.brightBlack,
+            padding: EdgeInsets.all(1),
+            child: Column(
+              children: [
+                Text(
+                  'Alignment.bottomRight:',
+                  style: TextStyle(color: Color.cyan, bold: true),
+                ),
+                SizedBox(height: 1),
+                Container(
+                  width: 40,
+                  height: 3,
+                  color: Color.magenta,
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      'BottomRight',
+                      style: TextStyle(color: Color.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 2),
+          Container(
+            color: Color.brightBlack,
+            padding: EdgeInsets.all(1),
+            child: Column(
+              children: [
+                Text(
+                  'Center widget:',
+                  style: TextStyle(color: Color.cyan, bold: true),
+                ),
+                SizedBox(height: 1),
+                Container(
+                  width: 40,
+                  height: 3,
+                  color: Color.cyan,
+                  child: Center(
+                    child: Text(
+                      'Centered Text',
+                      style: TextStyle(color: Color.black),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 2),
+          Text(
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
           ),
         ],
       ),

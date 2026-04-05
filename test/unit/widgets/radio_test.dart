@@ -79,6 +79,7 @@ void main() {
           focused: false,
           enabled: true,
           activeColor: Color.blue,
+          focusColor: Color.blue,
           checkColor: Color.white,
           onTap: null,
         );
@@ -93,6 +94,7 @@ void main() {
           focused: false,
           enabled: false,
           activeColor: Color.blue,
+          focusColor: Color.blue,
           checkColor: Color.white,
           onTap: null,
         );
@@ -106,6 +108,7 @@ void main() {
           focused: false,
           enabled: true,
           activeColor: Color.blue,
+          focusColor: Color.blue,
           checkColor: Color.white,
           onTap: null,
         );
@@ -118,6 +121,7 @@ void main() {
           focused: false,
           enabled: true,
           activeColor: Color.blue,
+          focusColor: Color.blue,
           checkColor: Color.white,
           onTap: null,
         );
@@ -130,6 +134,7 @@ void main() {
           focused: true,
           enabled: true,
           activeColor: Color.blue,
+          focusColor: Color.blue,
           checkColor: Color.white,
           onTap: null,
         );

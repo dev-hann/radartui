@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.0.1
+
+Initial release of RadarTUI.
+
+### Core Framework
+- Flutter-like Widget, Element, RenderObject architecture
+- `StatelessWidget`, `StatefulWidget`, `InheritedWidget`
+- Layout system: `Row`, `Column`, `Flex`, `Stack`, `Positioned`, `Wrap`, `Grid`
+- Basic widgets: `Text`, `Container`, `Button`, `TextField`, `Checkbox`, `Radio`
+- Advanced widgets: `DataTable`, `TabBar`/`TabBarView`, `DropdownButton`, `Icon`, `ListView`, `GridView`
+- Navigation: `Navigator`, `Route`, `Dialog`
+- Focus management system
+- Theme system (`Theme`, `DefaultTextStyle`, `MediaQuery`)
+- Animation system (`AnimationController`, `Tween`, `CurvedAnimation`, `Curves`)
+- Form widgets: `Form`, `FormField`, `TextFormField`
+- Async widgets: `StreamBuilder`, `FutureBuilder`
+- Keyboard shortcuts: `Shortcuts`, `Actions`, `ShortcutActionsHandler`
+- Widget testing framework
+
 ## 2026-04-01: Phase 4 Animation System
 
 ### Core Animation Classes

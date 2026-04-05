@@ -243,8 +243,8 @@ class StatefulElement extends ComponentElement {
   @override
   void update(Widget newWidget) {
     final oldWidget = widget;
-    super.update(newWidget);
     _state._widget = newWidget as StatefulWidget;
+    super.update(newWidget);
     _state.didUpdateWidget(oldWidget as StatefulWidget);
   }
 

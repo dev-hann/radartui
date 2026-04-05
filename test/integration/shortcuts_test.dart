@@ -20,7 +20,7 @@ class _PasteIntent extends Intent {
 void main() {
   group('Shortcuts/Actions Integration', () {
     testWidgets('Shortcut triggers action', (tester) async {
-      var saved = false;
+      bool saved = false;
 
       tester.pumpWidget(
         Shortcuts(
@@ -56,7 +56,7 @@ void main() {
     });
 
     testWidgets('Nested shortcuts bubble up', (tester) async {
-      var outerCalled = false;
+      bool outerCalled = false;
 
       tester.pumpWidget(
         Shortcuts(
@@ -93,8 +93,8 @@ void main() {
     });
 
     testWidgets('Nested actions bubble up', (tester) async {
-      var innerCalled = false;
-      var outerCalled = false;
+      bool innerCalled = false;
+      bool outerCalled = false;
 
       tester.pumpWidget(
         Actions(
@@ -127,7 +127,7 @@ void main() {
     });
 
     testWidgets('Ctrl modifier works', (tester) async {
-      var copied = false;
+      bool copied = false;
 
       tester.pumpWidget(
         Shortcuts(

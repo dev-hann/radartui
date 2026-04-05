@@ -1,28 +1,15 @@
-import 'dart:io';
-
 import 'package:radartui/radartui.dart';
+import '../pty_app_runner.dart';
 
 void main(List<String> args) {
-  final bool isPtyTest = args.contains('--pty-test');
-  final AppBinding binding = AppBinding.ensureInitialized() as AppBinding;
-  if (!isPtyTest) {
-    binding.initializeServices();
-  }
-
-  const widget = Column(
-    children: [
-      Radio<String>(value: 'a', groupValue: 'a', onChanged: null),
-      Radio<String>(value: 'b', groupValue: 'a', onChanged: null),
-      Radio<String>(value: 'c', groupValue: 'a', onChanged: null),
-    ],
+  runPtyApp(
+    const Column(
+      children: [
+        Radio<String>(value: 'a', groupValue: 'a', onChanged: null),
+        Radio<String>(value: 'b', groupValue: 'a', onChanged: null),
+        Radio<String>(value: 'c', groupValue: 'a', onChanged: null),
+      ],
+    ),
+    args,
   );
-
-  binding.attachRootWidget(widget);
-
-  if (isPtyTest) {
-    binding.renderFrame();
-    exit(0);
-  } else {
-    binding.runApp(widget);
-  }
 }

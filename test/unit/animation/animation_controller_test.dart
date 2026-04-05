@@ -54,7 +54,7 @@ void main() {
       final controller = AnimationController(
         duration: const Duration(milliseconds: 50),
       );
-      var notified = false;
+      bool notified = false;
 
       controller.addListener(() {
         notified = true;

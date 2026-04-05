@@ -24,8 +24,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Line1');
-      tester.assertContains('Line2');
+      tester.assertBufferLines(['Line1', 'Line2']);
     });
 
     testWidgets('Text with softWrap wraps long text', (tester) async {
@@ -33,7 +32,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Hello');
+      tester.assertBufferLines(['Hello World']);
     });
   });
 

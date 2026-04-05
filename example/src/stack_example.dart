@@ -14,9 +14,8 @@ class _StackExampleState extends State<StackExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }
@@ -30,7 +29,6 @@ class _StackExampleState extends State<StackExample> {
   void _handleKeyEvent(KeyEvent keyEvent) {
     if (keyEvent.code == KeyCode.escape) {
       Navigator.of(context).pop();
-      return;
     }
   }
 
@@ -52,51 +50,45 @@ class _StackExampleState extends State<StackExample> {
             ),
           ),
           SizedBox(height: 2),
-
-          // Stack Example 1: Basic Overlapping
           Container(
             color: Color.brightBlack,
             padding: EdgeInsets.all(1),
             child: Column(
               children: [
                 Text(
-                  'Basic Stack - Overlapping Widgets:',
+                  'Stack with Positioned children:',
                   style: TextStyle(color: Color.cyan, bold: true),
                 ),
                 SizedBox(height: 1),
                 Stack(
                   children: [
                     Container(
-                      width: 20,
-                      height: 5,
+                      width: 40,
+                      height: 7,
                       color: Color.red,
-                      child: Center(
-                        child: Text(
-                          'Background Layer',
-                          style: TextStyle(color: Color.white),
-                        ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      left: 2,
+                      child: Text(
+                        'TopLeft',
+                        style: TextStyle(color: Color.white, bold: true),
                       ),
                     ),
-                    Container(
-                      width: 15,
-                      height: 3,
-                      color: Color.green,
-                      child: Center(
-                        child: Text(
-                          'Middle Layer',
-                          style: TextStyle(color: Color.white),
-                        ),
+                    Positioned(
+                      top: 3,
+                      left: 15,
+                      child: Text(
+                        'Center',
+                        style: TextStyle(color: Color.yellow, bold: true),
                       ),
                     ),
-                    Container(
-                      width: 10,
-                      height: 2,
-                      color: Color.blue,
-                      child: Center(
-                        child: Text(
-                          'Top Layer',
-                          style: TextStyle(color: Color.white),
-                        ),
+                    Positioned(
+                      bottom: 0,
+                      right: 2,
+                      child: Text(
+                        'BottomRight',
+                        style: TextStyle(color: Color.white, bold: true),
                       ),
                     ),
                   ],
@@ -104,36 +96,7 @@ class _StackExampleState extends State<StackExample> {
               ],
             ),
           ),
-
           SizedBox(height: 2),
-
-          // Stack Example 2: Text Overlay
-          Container(
-            color: Color.brightBlack,
-            padding: EdgeInsets.all(1),
-            child: Column(
-              children: [
-                Text(
-                  'Stack with Text Overlay:',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
-                SizedBox(height: 1),
-                Stack(
-                  children: [
-                    Container(width: 30, height: 4, color: Color.magenta),
-                    Text(
-                      'Overlaid Text on Background',
-                      style: TextStyle(color: Color.white, bold: true),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(height: 2),
-
-          // Navigation hint
           Text(
             'Press ESC to return to main menu',
             style: TextStyle(color: Color.yellow, italic: true),

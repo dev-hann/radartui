@@ -5,7 +5,7 @@
 - in-progress: 구현 중
 - completed: 완료
 
-## Loop Counter: 77
+## Loop Counter: 79
 
 ## Scan Level: 3
 
@@ -14,7 +14,8 @@
 _None_
 
 ## Active
-- [analyzed] 2026-04-05-77: Add doc comments to top 6 widget classes (Text, Container, Row, Column, Button, TextField).
+
+_None_
 
 ## Completed
 - [completed] 2026-04-03-01: Fix example widget overflow in 80x24 test terminal (8 failing tests → 0)
@@ -89,3 +90,5 @@ _None_
 - [completed] 2026-04-05-74: Extract _drawHorizontalLine from RenderTextField._drawBorderEdges (duplicate loops → single helper). dart analyze: 0 issues, dart test: 1080/1080
 - [completed] 2026-04-05-75: Add doc comments to all 11 foundation classes. dart analyze: 0 issues, dart test: 1080/1080. **Git pushed.**
 - [completed] 2026-04-05-76: Refactor RenderContainer._paintBorder() (66 → 27 lines). Extract _BorderSides record to bundle flags + style. dart analyze: 0 issues, dart test: 821/821 unit.
+- [completed] 2026-04-05-77: Add doc comments to top 6 widget classes (Text, Container, Row, Column, Button, TextField). dart analyze: 0 issues, dart test: 821/821 unit.
+- [completed] 2026-04-05-78: Add doc comments to 6 more widget classes (Align, Card, Checkbox, Dialog, Icon, Padding). dart analyze: 0 issues, dart test: 821/821 unit.

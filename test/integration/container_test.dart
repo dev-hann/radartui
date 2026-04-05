@@ -8,7 +8,9 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('X');
+      tester.assertBufferLines([
+        'X',
+      ]);
     });
 
     testWidgets('Container with child', (tester) async {
@@ -16,7 +18,9 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Inside');
+      tester.assertBufferLines([
+        'Inside',
+      ]);
     });
 
     testWidgets('Container with padding', (tester) async {
@@ -26,7 +30,10 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('P');
+      tester.assertBufferLines([
+        '',
+        ' P',
+      ]);
     });
 
     testWidgets('Container with margin', (tester) async {
@@ -36,7 +43,10 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('M');
+      tester.assertBufferLines([
+        '',
+        ' M',
+      ]);
     });
   });
 

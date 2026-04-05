@@ -8,9 +8,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('A');
-      tester.assertContains('B');
-      tester.assertContains('C');
+      tester.assertBufferLines(['ABC']);
     });
 
     testWidgets('Row single child', (tester) async {
@@ -18,7 +16,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Only');
+      tester.assertBufferLines(['Only']);
     });
 
     testWidgets('Row empty', (tester) async {
@@ -38,9 +36,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('1');
-      tester.assertContains('2');
-      tester.assertContains('3');
+      tester.assertBufferLines(['1', '2', '3']);
     });
 
     testWidgets('Column single child', (tester) async {
@@ -48,7 +44,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Solo');
+      tester.assertBufferLines(['Solo']);
     });
 
     testWidgets('Column empty', (tester) async {

@@ -8,8 +8,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('A');
-      tester.assertContains('B');
+      tester.assertBufferLines(['AB']);
     });
 
     testWidgets('Spacer with custom flex', (tester) async {
@@ -19,8 +18,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('X');
-      tester.assertContains('Y');
+      tester.assertBufferLines(['XY']);
     });
 
     testWidgets('Multiple Spacers', (tester) async {
@@ -32,9 +30,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('1');
-      tester.assertContains('2');
-      tester.assertContains('3');
+      tester.assertBufferLines(['123']);
     });
   });
 
@@ -51,8 +47,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('L');
-      tester.assertContains('Middle');
+      tester.assertBufferLines(['LMiddle']);
     });
 
     testWidgets('Expanded with custom flex', (tester) async {
@@ -67,8 +62,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('1');
-      tester.assertContains('2');
+      tester.assertBufferLines(['1                         2']);
     });
 
     testWidgets('Expanded in Column', (tester) async {
@@ -83,8 +77,8 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Top');
-      tester.assertContains('Bottom');
+      tester.assertBufferLines(
+          ['                                      Top', 'Bottom']);
     });
   });
 

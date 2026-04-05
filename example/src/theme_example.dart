@@ -15,9 +15,8 @@ class _ThemeExampleState extends State<ThemeExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       if (key.code == KeyCode.escape) {
         Navigator.of(context).pop();
       } else if (key.code == KeyCode.char && key.char == 't') {
@@ -36,150 +35,96 @@ class _ThemeExampleState extends State<ThemeExample> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = _useDarkTheme ? ThemeData.dark : ThemeData.light;
+    final ThemeData theme = _useDarkTheme ? ThemeData.dark : ThemeData.light;
 
     return Theme(
       data: theme,
-      child: Builder(
-        builder: (context) {
-          final currentTheme = Theme.of(context);
-
-          return Padding(
-            padding: const EdgeInsets.all(2),
-            child: Column(
-              children: [
-                Container(
-                  width: 60,
-                  height: 3,
-                  color: currentTheme.primaryColor,
-                  child: Center(
-                    child: Text(
-                      'Theme & MediaQuery Demo',
-                      style: TextStyle(
-                        color: currentTheme.textColor,
-                        bold: true,
-                      ),
-                    ),
-                  ),
+      child: Padding(
+        padding: const EdgeInsets.all(2),
+        child: Column(
+          children: [
+            const Container(
+              width: 50,
+              height: 3,
+              color: Color.blue,
+              child: Center(
+                child: Text(
+                  '🎨 Theme & MediaQuery Example',
+                  style: TextStyle(color: Color.white, bold: true),
                 ),
-                const SizedBox(height: 2),
-                Container(
-                  width: 60,
-                  color: currentTheme.backgroundColor,
-                  padding: const EdgeInsets.all(2),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Current Theme: ${_useDarkTheme ? "Dark" : "Light"}',
-                        style: TextStyle(
-                          color: currentTheme.textColor,
-                          bold: true,
-                        ),
-                      ),
-                      const SizedBox(height: 1),
-                      Text(
-                        'Primary: ${_colorName(currentTheme.primaryColor)}',
-                        style: TextStyle(color: currentTheme.textColor),
-                      ),
-                      Text(
-                        'Background: ${_colorName(currentTheme.backgroundColor)}',
-                        style: TextStyle(color: currentTheme.textColor),
-                      ),
-                      Text(
-                        'Text: ${_colorName(currentTheme.textColor)}',
-                        style: TextStyle(color: currentTheme.textColor),
-                      ),
-                    ],
+              ),
+            ),
+            const SizedBox(height: 2),
+            Container(
+              width: 50,
+              color: Color.brightBlack,
+              padding: const EdgeInsets.all(2),
+              child: Column(
+                children: [
+                  Text(
+                    'Current Theme: ${_useDarkTheme ? "Dark" : "Light"}',
+                    style: const TextStyle(color: Color.cyan, bold: true),
                   ),
-                ),
-                const SizedBox(height: 2),
-                Container(
-                  width: 60,
-                  color: Color.brightBlack,
-                  padding: const EdgeInsets.all(1),
-                  child: Builder(
-                    builder: (context) {
-                      final mediaQuery = MediaQuery.maybeOf(context);
-                      final size = mediaQuery.size;
-                      final padding = mediaQuery.padding;
-
+                  const SizedBox(height: 1),
+                  Builder(
+                    builder: (BuildContext ctx) {
+                      final ThemeData t = Theme.of(ctx);
                       return Column(
                         children: [
-                          const Text(
-                            'MediaQuery Data:',
-                            style: TextStyle(color: Color.cyan, bold: true),
-                          ),
-                          const SizedBox(height: 1),
                           Text(
-                            'Terminal Size: ${size.width} x ${size.height}',
-                            style: const TextStyle(color: Color.white),
+                            'primaryColor: ${_colorName(t.primaryColor)}',
+                            style: TextStyle(color: t.textColor),
                           ),
                           Text(
-                            'Padding: $padding',
-                            style: const TextStyle(color: Color.white),
+                            'backgroundColor: ${_colorName(t.backgroundColor)}',
+                            style: TextStyle(color: t.textColor),
+                          ),
+                          Text(
+                            'textColor: ${_colorName(t.textColor)}',
+                            style: TextStyle(color: t.textColor),
                           ),
                         ],
                       );
                     },
                   ),
-                ),
-                const SizedBox(height: 2),
-                Container(
-                  width: 60,
-                  color: currentTheme.primaryColor,
-                  padding: const EdgeInsets.all(1),
-                  child: Column(
+                ],
+              ),
+            ),
+            const SizedBox(height: 2),
+            Container(
+              width: 50,
+              color: Color.brightBlack,
+              padding: const EdgeInsets.all(2),
+              child: Builder(
+                builder: (BuildContext ctx) {
+                  final MediaQueryData mq = MediaQuery.maybeOf(ctx);
+                  return Column(
                     children: [
-                      Text(
-                        'Themed Button:',
-                        style: TextStyle(color: currentTheme.textColor),
+                      const Text(
+                        'MediaQuery Data:',
+                        style: TextStyle(color: Color.cyan, bold: true),
                       ),
                       const SizedBox(height: 1),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 2,
-                          vertical: 1,
-                        ),
-                        color: currentTheme.selectedColor,
-                        child: Text(
-                          'Selected',
-                          style: TextStyle(color: currentTheme.textColor),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 2),
-                const Container(
-                  width: 60,
-                  color: Color.yellow,
-                  padding: EdgeInsets.all(1),
-                  child: Column(
-                    children: [
                       Text(
-                        'Controls:',
-                        style: TextStyle(color: Color.black, bold: true),
+                        'Terminal Size: ${mq.size.width} x ${mq.size.height}',
+                        style: const TextStyle(color: Color.white),
                       ),
                       Text(
-                        'T: Toggle Theme | ESC: Return',
-                        style: TextStyle(color: Color.black),
+                        'Padding: ${mq.padding}',
+                        style: const TextStyle(color: Color.white),
                       ),
                     ],
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  'Theme propagates down the widget tree',
-                  style: TextStyle(color: currentTheme.textColor),
-                ),
-                Text(
-                  'MediaQuery provides screen dimensions',
-                  style: TextStyle(color: currentTheme.textColor),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
-          );
-        },
+            const SizedBox(height: 2),
+            const Text(
+              'Press T to toggle theme, ESC to return',
+              style: TextStyle(color: Color.yellow, italic: true),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -187,12 +132,7 @@ class _ThemeExampleState extends State<ThemeExample> {
   String _colorName(Color color) {
     if (color == Color.black) return 'Black';
     if (color == Color.white) return 'White';
-    if (color == Color.red) return 'Red';
-    if (color == Color.green) return 'Green';
     if (color == Color.blue) return 'Blue';
-    if (color == Color.yellow) return 'Yellow';
-    if (color == Color.cyan) return 'Cyan';
-    if (color == Color.magenta) return 'Magenta';
     return 'Custom';
   }
 }

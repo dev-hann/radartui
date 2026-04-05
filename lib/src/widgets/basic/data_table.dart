@@ -157,11 +157,11 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
     final widths = <int>[];
 
     for (int i = 0; i < widget.columns.length; i++) {
-      int maxWidth = widget.columns[i].label.length;
+      int maxWidth = stringWidth(widget.columns[i].label);
 
       for (final row in widget.rows) {
         if (i < row.cells.length) {
-          final cellWidth = row.cells[i].value.length;
+          final int cellWidth = stringWidth(row.cells[i].value);
           if (cellWidth > maxWidth) {
             maxWidth = cellWidth;
           }
@@ -193,21 +193,16 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
 
       label = label.padRight(width + 2);
 
-      final isFocused = hasFocus && _focusedColumnIndex == i;
-      if (isFocused) {
-        parts.add('[$label]');
-      } else {
-        parts.add(' $label ');
-      }
+      parts.add(' $label ');
     }
 
-    return Text(parts.join('|'));
+    return Text(parts.join(' '));
   }
 
   Widget _buildDataRow(int rowIndex, List<int> columnWidths) {
     final row = widget.rows[rowIndex];
     final parts = _buildCellParts(row, columnWidths);
-    final rowText = parts.join(' | ');
+    final rowText = parts.join('  ');
     return _styledRowText(rowText, row.selected, rowIndex);
   }
 
@@ -234,16 +229,14 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
     final isRowFocused = hasFocus && rowIndex == _focusedRowIndex;
     if (isRowFocused) {
       return Text(
-        '> $rowText',
+        rowText,
         style: const TextStyle(
           color: Color.black,
           backgroundColor: Color.white,
         ),
       );
-    } else if (selected) {
-      return Text('* $rowText');
     } else {
-      return Text('  $rowText');
+      return Text(rowText);
     }
   }
 }

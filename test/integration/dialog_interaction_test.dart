@@ -8,8 +8,32 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Title');
-      tester.assertContains('Content');
+      tester.assertBufferLines([
+        '┌───────────┐',
+        '│           │',
+        '│           │',
+        '│   Title   │',
+        '│           │',
+        '│  Content  │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '│           │',
+        '└───────────┘',
+      ]);
     });
 
     testWidgets('Dialog renders with actions', (tester) async {
@@ -22,8 +46,32 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('Body');
-      tester.assertContains('OK');
+      tester.assertBufferLines([
+        '┌──────────────────────────────────────────────────────────────────────────────┐',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                        Body                                  │',
+        '│                                                                              │',
+        '│    OK                                                                        │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '│                                                                              │',
+        '└──────────────────────────────────────────────────────────────────────────────┘',
+      ]);
     });
   });
 

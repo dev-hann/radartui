@@ -9,23 +9,24 @@ class AsyncExample extends StatefulWidget {
 }
 
 class _AsyncExampleState extends State<AsyncExample> {
+  late Future<String> _dataFuture;
   late Stream<int> _counterStream;
-  Future<String>? _dataFuture;
   StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    _counterStream = _createCounterStream();
-    _dataFuture = _fetchData();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
-      if (key.code == KeyCode.escape) {
-        Navigator.of(context).pop();
-      } else if (key.code == KeyCode.char && key.char == 'r') {
-        _refreshFuture();
-      }
+    _dataFuture = Future.delayed(
+      const Duration(seconds: 2),
+      () => 'Data loaded successfully!',
+    );
+    _counterStream = Stream.periodic(
+      const Duration(seconds: 1),
+      (int count) => count,
+    ).take(5);
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+      _handleKeyEvent(key);
     });
   }
 
@@ -35,24 +36,10 @@ class _AsyncExampleState extends State<AsyncExample> {
     super.dispose();
   }
 
-  Stream<int> _createCounterStream() {
-    return Stream.periodic(
-      const Duration(seconds: 1),
-      (count) => count,
-    ).take(10);
-  }
-
-  Future<String> _fetchData() {
-    return Future.delayed(
-      const Duration(seconds: 2),
-      () => 'Data loaded successfully!',
-    );
-  }
-
-  void _refreshFuture() {
-    setState(() {
-      _dataFuture = _fetchData();
-    });
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -62,133 +49,82 @@ class _AsyncExampleState extends State<AsyncExample> {
       child: Column(
         children: [
           const Container(
-            width: 60,
+            width: 50,
             height: 3,
-            color: Color.magenta,
+            color: Color.blue,
             child: Center(
               child: Text(
-                'FutureBuilder & StreamBuilder Demo',
+                '⚡ Async Widget Example',
                 style: TextStyle(color: Color.white, bold: true),
               ),
             ),
           ),
           const SizedBox(height: 2),
+          const Text(
+            'FutureBuilder (loads after 2s):',
+            style: TextStyle(color: Color.cyan, bold: true),
+          ),
+          const SizedBox(height: 1),
           Container(
-            width: 60,
+            width: 45,
             color: Color.brightBlack,
             padding: const EdgeInsets.all(1),
-            child: Column(
-              children: [
-                const Text(
-                  'FutureBuilder (loads after 2 seconds):',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
-                const SizedBox(height: 1),
-                FutureBuilder<String>(
-                  future: _dataFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Text(
-                        'Loading...',
-                        style: TextStyle(color: Color.yellow),
-                      );
-                    }
-                    if (snapshot.hasError) {
-                      return Text(
-                        'Error: ${snapshot.error}',
-                        style: const TextStyle(color: Color.red),
-                      );
-                    }
-                    if (snapshot.hasData) {
-                      return Text(
-                        'Result: ${snapshot.data}',
-                        style: const TextStyle(color: Color.green, bold: true),
-                      );
-                    }
-                    return const Text(
-                      'No data',
-                      style: TextStyle(color: Color.brightBlack),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 2),
-          Container(
-            width: 60,
-            color: Color.brightBlack,
-            padding: const EdgeInsets.all(1),
-            child: Column(
-              children: [
-                const Text(
-                  'StreamBuilder (counts 0-9 every second):',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
-                const SizedBox(height: 1),
-                StreamBuilder<int>(
-                  stream: _counterStream,
-                  initialData: 0,
-                  builder: (context, snapshot) {
-                    final count = snapshot.data ?? 0;
-                    final isDone =
-                        snapshot.connectionState == ConnectionState.done;
-
-                    return Row(
-                      children: [
-                        if (!isDone)
-                          const Text('...', style: TextStyle(color: Color.cyan))
-                        else
-                          const Text(
-                            'Done!',
-                            style: TextStyle(color: Color.green, bold: true),
-                          ),
-                        const SizedBox(width: 2),
-                        Text(
-                          'Count: $count',
-                          style: TextStyle(
-                            color: isDone ? Color.green : Color.white,
-                            bold: isDone,
-                          ),
-                        ),
-                        const SizedBox(width: 2),
-                        Text(
-                          isDone ? '(completed)' : '(streaming...)',
-                          style: const TextStyle(color: Color.brightBlack),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 2),
-          const Container(
-            width: 60,
-            color: Color.blue,
-            padding: EdgeInsets.all(1),
-            child: Column(
-              children: [
-                Text(
-                  'Controls:',
-                  style: TextStyle(color: Color.white, bold: true),
-                ),
-                Text(
-                  'R: Refresh Future | ESC: Return',
-                  style: TextStyle(color: Color.white),
-                ),
-              ],
+            child: FutureBuilder<String>(
+              future: _dataFuture,
+              builder: (BuildContext ctx, AsyncSnapshot<String> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Text(
+                    'Loading...',
+                    style: TextStyle(color: Color.yellow),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Text(
+                    'Error: ${snapshot.error}',
+                    style: const TextStyle(color: Color.red),
+                  );
+                }
+                return Text(
+                  snapshot.data ?? 'No data',
+                  style: const TextStyle(color: Color.green, bold: true),
+                );
+              },
             ),
           ),
           const SizedBox(height: 2),
           const Text(
-            'FutureBuilder: One-time async data loading',
-            style: TextStyle(color: Color.yellow),
+            'StreamBuilder (counts 0-4, 1s interval):',
+            style: TextStyle(color: Color.cyan, bold: true),
           ),
+          const SizedBox(height: 1),
+          Container(
+            width: 45,
+            color: Color.brightBlack,
+            padding: const EdgeInsets.all(1),
+            child: StreamBuilder<int>(
+              stream: _counterStream,
+              initialData: -1,
+              builder: (BuildContext ctx, AsyncSnapshot<int> snapshot) {
+                final int count = snapshot.data ?? 0;
+                final bool isDone =
+                    snapshot.connectionState == ConnectionState.done;
+                if (isDone) {
+                  return Text(
+                    'Stream complete! Final count: $count',
+                    style: const TextStyle(color: Color.green, bold: true),
+                  );
+                }
+                return Text(
+                  'Streaming... count: $count',
+                  style: const TextStyle(color: Color.white),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 2),
           const Text(
-            'StreamBuilder: Continuous async data stream',
-            style: TextStyle(color: Color.yellow),
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
           ),
         ],
       ),

@@ -19,7 +19,7 @@ git worktree remove ../.worktrees/<branch>              # Cleanup
 | Feature | `feat/xxx` | `feat/add-gridview` |
 | Fix | `fix/xxx` | `fix/memory-leak-focus` |
 | Refactor | `refactor/xxx` | `refactor/simplify-layout` |
-| Docs | `docs/xxx` | `docs/update-readme` |
+| Docs | `doc/xxx` | `doc/update-readme` |
 
 ---
 
@@ -89,7 +89,7 @@ Dependency flow: `Application → radartui.dart → widgets/ → scheduler/ → 
 
 ## 4. Widget Implementation
 
-See [docs/widget-templates.md](docs/widget-templates.md) for StatelessWidget, StatefulWidget, and RenderObjectWidget templates.
+See [doc/widget-templates.md](doc/widget-templates.md) for StatelessWidget, StatefulWidget, and RenderObjectWidget templates.
 
 Key pattern: all widgets follow Flutter's Widget → Element → RenderObject architecture. Use `RenderObjectWithChildMixin<C>` for single-child render objects.
 
@@ -97,7 +97,7 @@ Key pattern: all widgets follow Flutter's Widget → Element → RenderObject ar
 
 ## 5. Testing
 
-See [docs/testing-guide.md](docs/testing-guide.md) for templates, structure, and bug-prone areas.
+See [doc/testing-guide.md](doc/testing-guide.md) for templates, structure, and bug-prone areas.
 
 ```bash
 dart test                        # All tests

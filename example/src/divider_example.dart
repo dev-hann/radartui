@@ -14,9 +14,8 @@ class _DividerExampleState extends State<DividerExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }
@@ -30,7 +29,6 @@ class _DividerExampleState extends State<DividerExample> {
   void _handleKeyEvent(KeyEvent keyEvent) {
     if (keyEvent.code == KeyCode.escape) {
       Navigator.of(context).pop();
-      return;
     }
   }
 
@@ -52,59 +50,40 @@ class _DividerExampleState extends State<DividerExample> {
             ),
           ),
           SizedBox(height: 2),
-
-          // Horizontal Dividers
           Container(
             color: Color.brightBlack,
             padding: EdgeInsets.all(1),
             child: Column(
               children: [
-                Text(
-                  'Horizontal Dividers:',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
+                Text('Default Divider:'),
                 SizedBox(height: 1),
-                Text('Section 1: Default Divider'),
                 Divider(),
-                Text('Section 2: Thick Red Divider'),
-                Divider(thickness: 2, color: Color.red),
-                Text('Section 3: Custom Character Divider'),
-                Divider(character: '=', color: Color.yellow),
-                Text('Section 4: Double Line Divider'),
-                Divider(character: '═', color: Color.green),
-              ],
-            ),
-          ),
-
-          SizedBox(height: 2),
-
-          // Vertical Divider in Row
-          Container(
-            color: Color.brightBlack,
-            padding: EdgeInsets.all(1),
-            child: Column(
-              children: [
-                Text(
-                  'Vertical Dividers in Row Layout:',
-                  style: TextStyle(color: Color.cyan, bold: true),
-                ),
                 SizedBox(height: 1),
+                Text('Thick colored divider:'),
+                SizedBox(height: 1),
+                Divider(thickness: 2, color: Color.cyan),
+                SizedBox(height: 1),
+                Text('Custom character:'),
+                SizedBox(height: 1),
+                Divider(character: '=', color: Color.yellow),
+                SizedBox(height: 1),
+                Text('Double line:'),
+                SizedBox(height: 1),
+                Divider(character: '═', color: Color.green),
+                SizedBox(height: 2),
                 Row(
                   children: [
-                    Text('Left Column'),
+                    Text('Left', style: TextStyle(color: Color.cyan)),
                     VerticalDivider(color: Color.white),
-                    Text('Middle Column'),
-                    VerticalDivider(color: Color.red, character: '┃'),
-                    Text('Right Column'),
+                    Text('Middle', style: TextStyle(color: Color.green)),
+                    VerticalDivider(color: Color.white),
+                    Text('Right', style: TextStyle(color: Color.magenta)),
                   ],
                 ),
               ],
             ),
           ),
-
           SizedBox(height: 2),
-
-          // Navigation hint
           Text(
             'Press ESC to return to main menu',
             style: TextStyle(color: Color.yellow, italic: true),

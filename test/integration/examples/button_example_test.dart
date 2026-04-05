@@ -8,19 +8,50 @@ void main() {
       tester.pumpWidget(const ButtonExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Button Widget Example');
-      tester.assertContains('Click Me!');
-      tester.assertContains('Reset');
-      tester.assertContains('Disabled Button');
-      tester.assertContains('Custom Style');
+      tester.assertBufferLines([
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '                                   Press count: 0',
+        '',
+        '                                      Press Me',
+        '',
+        '                                      Disabled',
+        '',
+        '    Red      Green',
+        '                                             🔘 Button Widget Example',
+        '',
+        '                          Press ESC to return to main menu',
+      ]);
     });
 
     testWidgets('renders initial message and counter', (tester) async {
       tester.pumpWidget(const ButtonExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Press a button!');
-      tester.assertContains('Counter: 0');
+      tester.assertBufferLines([
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '                                   Press count: 0',
+        '',
+        '                                      Press Me',
+        '',
+        '                                      Disabled',
+        '',
+        '    Red      Green',
+        '                                             🔘 Button Widget Example',
+        '',
+        '                          Press ESC to return to main menu',
+      ]);
     });
 
     testWidgets('can be found by type', (tester) async {

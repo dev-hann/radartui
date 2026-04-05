@@ -8,30 +8,26 @@ void main() {
       tester.pumpWidget(const FocusExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Focus Example');
-      tester.assertContains('Actions:');
-      tester.assertContains('Files:');
-      tester.assertContains('Options:');
+      tester.assertContains('Use Tab to cycle focus');
+      tester.assertContains('Button A');
+      tester.assertContains('Button B');
+      tester.assertContains('Button C');
     });
 
     testWidgets('renders list items', (tester) async {
       tester.pumpWidget(const FocusExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Create');
-      tester.assertContains('Edit');
-      tester.assertContains('Delete');
-      tester.assertContains('main.dart');
+      tester.assertContains('Button A');
+      tester.assertContains('Button B');
+      tester.assertContains('Button C');
     });
 
     testWidgets('renders selection info', (tester) async {
       tester.pumpWidget(const FocusExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Current Selection');
-      tester.assertContains('Action:');
-      tester.assertContains('File:');
-      tester.assertContains('Option:');
+      tester.assertContains('Focused:');
     });
 
     testWidgets('can be found by type', (tester) async {

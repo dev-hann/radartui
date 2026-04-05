@@ -22,7 +22,21 @@ void main() {
       Toast.show(descendantContext, message: 'Hello Toast');
       await tester.pumpAndSettle();
 
-      expect(tester.contains('Hello Toast'), isTrue);
+      tester.assertBufferLines([
+        'background',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '                                   Hello Toast',
+      ]);
     });
 
     testWidgets('Toast auto-removes after duration', (tester) async {

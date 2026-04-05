@@ -19,11 +19,15 @@ mixin SchedulerBinding on BindingBase {
   }
 
   bool _frameScheduled = false;
+  bool _needsReschedule = false;
   final List<FrameCallback> _postFrameCallbacks = [];
   final List<FrameCallback> _persistentFrameCallbacks = [];
 
   void scheduleFrame() {
-    if (_frameScheduled) return;
+    if (_frameScheduled) {
+      _needsReschedule = true;
+      return;
+    }
     _frameScheduled = true;
     scheduleMicrotask(_handleFrame);
   }
@@ -31,6 +35,10 @@ mixin SchedulerBinding on BindingBase {
   void _handleFrame() {
     handleFrame();
     _frameScheduled = false;
+    if (_needsReschedule) {
+      _needsReschedule = false;
+      scheduleFrame();
+    }
   }
 
   void handleFrame() {

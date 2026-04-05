@@ -14,12 +14,9 @@ class _StyleExampleState extends State<StyleExample> {
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
-      if (key.code == KeyCode.escape) {
-        Navigator.of(context).pop();
-      }
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
+      _handleKeyEvent(key);
     });
   }
 
@@ -29,92 +26,96 @@ class _StyleExampleState extends State<StyleExample> {
     super.dispose();
   }
 
+  void _handleKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.code == KeyCode.escape) {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        Container(
-          width: 60,
-          height: 3,
-          color: Color.blue,
-          child: Center(
-            child: Text(
-              '🎨 RadarTUI Style Demo 🎨',
-              style: TextStyle(color: Color.brightWhite, bold: true),
-            ),
-          ),
-        ),
-        SizedBox(height: 1),
-        Text('Basic Colors:', style: TextStyle(bold: true, underline: true)),
-        Row(
-          children: [
-            Text('Red: ', style: TextStyle(color: Color.red, bold: true)),
-            Text('Green: ', style: TextStyle(color: Color.green, bold: true)),
-            Text('Blue: ', style: TextStyle(color: Color.blue, bold: true)),
-            Text('Yellow: ', style: TextStyle(color: Color.yellow, bold: true)),
-          ],
-        ),
-        SizedBox(height: 1),
-        Text(
-          'Background Colors:',
-          style: TextStyle(bold: true, underline: true),
-        ),
-        Row(
-          children: [
-            Container(
-              color: Color.red,
-              child: Text(' RED BG ', style: TextStyle(color: Color.white)),
-            ),
-            SizedBox(width: 2),
-            Container(
-              color: Color.green,
-              child: Text(' GREEN BG ', style: TextStyle(color: Color.black)),
-            ),
-            SizedBox(width: 2),
-            Container(
-              color: Color.blue,
-              child: Text(' BLUE BG ', style: TextStyle(color: Color.white)),
-            ),
-          ],
-        ),
-        SizedBox(height: 1),
-        Text('Text Styles:', style: TextStyle(bold: true, underline: true)),
-        Column(
-          children: [
-            Text('Bold Text', style: TextStyle(bold: true)),
-            Text('Italic Text', style: TextStyle(italic: true)),
-            Text('Underlined Text', style: TextStyle(underline: true)),
-            Text(
-              'Combined Styles',
-              style: TextStyle(
-                bold: true,
-                italic: true,
-                underline: true,
-                color: Color.magenta,
+    return const Padding(
+      padding: EdgeInsets.all(2),
+      child: Column(
+        children: [
+          Container(
+            width: 50,
+            height: 3,
+            color: Color.blue,
+            child: Center(
+              child: Text(
+                '✨ Text Styling Example',
+                style: TextStyle(color: Color.white, bold: true),
               ),
             ),
-          ],
-        ),
-        SizedBox(height: 1),
-        Text(
-          'Container with Padding & Margin:',
-          style: TextStyle(bold: true, underline: true),
-        ),
-        Container(
-          margin: EdgeInsets.all(2),
-          padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-          color: Color.cyan,
-          child: Text(
-            'This is inside a styled container!',
-            style: TextStyle(color: Color.black, bold: true),
           ),
-        ),
-        SizedBox(height: 1),
-        Text(
-          'Press ESC to return to menu',
-          style: TextStyle(color: Color.brightYellow, italic: true),
-        ),
-      ],
+          SizedBox(height: 2),
+          Text(
+            'Bold text',
+            style: TextStyle(bold: true),
+          ),
+          SizedBox(height: 1),
+          Text(
+            'Italic text',
+            style: TextStyle(italic: true),
+          ),
+          SizedBox(height: 1),
+          Text(
+            'Underline text',
+            style: TextStyle(underline: true),
+          ),
+          SizedBox(height: 1),
+          Text(
+            'Bold + Italic',
+            style: TextStyle(bold: true, italic: true),
+          ),
+          SizedBox(height: 1),
+          Text(
+            'Bold + Underline',
+            style: TextStyle(bold: true, underline: true),
+          ),
+          SizedBox(height: 2),
+          Text(
+            'Red text',
+            style: TextStyle(color: Color.red),
+          ),
+          SizedBox(height: 1),
+          Text(
+            'Green text',
+            style: TextStyle(color: Color.green),
+          ),
+          SizedBox(height: 1),
+          Text(
+            'Cyan text',
+            style: TextStyle(color: Color.cyan),
+          ),
+          SizedBox(height: 1),
+          Text(
+            'Yellow text',
+            style: TextStyle(color: Color.yellow),
+          ),
+          SizedBox(height: 1),
+          Text(
+            'Magenta text',
+            style: TextStyle(color: Color.magenta),
+          ),
+          SizedBox(height: 2),
+          Text(
+            'Bold colored',
+            style: TextStyle(color: Color.cyan, bold: true),
+          ),
+          SizedBox(height: 1),
+          Text(
+            'Italic colored',
+            style: TextStyle(color: Color.green, italic: true),
+          ),
+          SizedBox(height: 2),
+          Text(
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
+          ),
+        ],
+      ),
     );
   }
 }

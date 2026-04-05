@@ -8,11 +8,11 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('┌');
-      tester.assertContains('┐');
-      tester.assertContains('└');
-      tester.assertContains('┘');
-      tester.assertContains('Hi');
+      tester.assertBufferLines([
+        '┌──┐',
+        '│Hi│',
+        '└──┘',
+      ]);
     });
 
     testWidgets('Card renders empty', (tester) async {
@@ -20,8 +20,11 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('┌');
-      tester.assertContains('┘');
+      tester.assertBufferLines([
+        '┌┐',
+        '││',
+        '└┘',
+      ]);
     });
 
     testWidgets('Card with padding', (tester) async {
@@ -31,7 +34,15 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertContains('X');
+      tester.assertBufferLines([
+        '┌─────┐',
+        '│     │',
+        '│     │',
+        '│  X  │',
+        '│     │',
+        '│     │',
+        '└─────┘',
+      ]);
     });
   });
 

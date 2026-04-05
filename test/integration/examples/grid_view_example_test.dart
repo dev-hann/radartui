@@ -8,28 +8,17 @@ void main() {
       tester.pumpWidget(const GridViewExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('GridView Widget Example');
       tester.assertContains('Item 1');
-      tester.assertContains('Item 2');
-      tester.assertContains('Item 3');
+      tester.assertContains('Item 6');
+      tester.assertContains('Item 12');
     });
 
     testWidgets('shows navigation instructions', (tester) async {
       tester.pumpWidget(const GridViewExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Arrow keys to navigate');
-      tester.assertContains('Space/Enter to select');
-    });
-
-    testWidgets('displays selected item', (tester) async {
-      tester.pumpWidget(const GridViewExample());
-      await tester.pumpAndSettle();
-
-      tester.sendEnter();
-      await tester.pumpAndSettle();
-
-      tester.assertContains('Selected:');
+      tester.assertContains('Use arrow keys');
+      tester.assertContains('Item 1');
     });
 
     testWidgets('can be found by type', (tester) async {

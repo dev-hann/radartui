@@ -1,11 +1,13 @@
 import '../../../radartui.dart';
 
 class FocusNode extends ChangeNotifier {
-  FocusNode();
+  FocusNode({this.canRequestFocus = true});
 
   bool _hasFocus = false;
   FocusScope? _scope;
   Function(KeyEvent)? onKeyEvent;
+  bool canRequestFocus;
+  bool trapFocus = false;
 
   bool get hasFocus => _hasFocus;
 
@@ -38,15 +40,22 @@ class FocusScope {
   final List<FocusNode> _nodes = [];
   int _currentIndex = 0;
   bool _isActive = false;
+  FocusNode? _focusedChild;
+
+  FocusNode? get focusedChild => _focusedChild;
+
+  List<FocusNode> get _focusableNodes {
+    return _nodes.where((FocusNode n) => n.canRequestFocus).toList();
+  }
 
   void addNode(FocusNode node) {
     if (!_nodes.contains(node)) {
       _nodes.add(node);
       node._scope = this;
 
-      // Set focus to first node if this is the first one
       if (_nodes.length == 1 && _isActive) {
         node._setFocus(true);
+        _focusedChild = node;
       }
     }
   }
@@ -77,30 +86,36 @@ class FocusScope {
 
   void _setFocusAtIndex(int index) {
     if (index >= 0 && index < _nodes.length && _isActive) {
-      // Clear previous focus
       if (_currentIndex < _nodes.length) {
         _nodes[_currentIndex]._setFocus(false);
       }
 
-      // Set new focus
       _currentIndex = index;
       _nodes[_currentIndex]._setFocus(true);
+      _focusedChild = _nodes[_currentIndex];
     }
   }
 
   void nextFocus() {
-    if (_nodes.isNotEmpty) {
-      final nextIndex = (_currentIndex + 1) % _nodes.length;
-      _setFocusAtIndex(nextIndex);
-    }
+    final chain = _focusableNodes;
+    if (chain.isEmpty) return;
+    final current = _nodes[_currentIndex];
+    final chainIndex = chain.indexOf(current);
+    final nextChainIndex = (chainIndex + 1) % chain.length;
+    final target = chain[nextChainIndex];
+    final targetIndex = _nodes.indexOf(target);
+    _setFocusAtIndex(targetIndex);
   }
 
   void previousFocus() {
-    if (_nodes.isNotEmpty) {
-      final prevIndex = (_currentIndex - 1) % _nodes.length;
-      final index = prevIndex < 0 ? _nodes.length - 1 : prevIndex;
-      _setFocusAtIndex(index);
-    }
+    final chain = _focusableNodes;
+    if (chain.isEmpty) return;
+    final current = _nodes[_currentIndex];
+    final chainIndex = chain.indexOf(current);
+    final prevChainIndex = (chainIndex - 1 + chain.length) % chain.length;
+    final target = chain[prevChainIndex];
+    final targetIndex = _nodes.indexOf(target);
+    _setFocusAtIndex(targetIndex);
   }
 
   FocusNode? get currentFocus {
@@ -116,18 +131,38 @@ class FocusScope {
   void activate() {
     _isActive = true;
 
-    // Set focus to first node when activating
-    if (_nodes.isNotEmpty) {
-      _currentIndex = 0;
+    if (_focusedChild != null && _nodes.contains(_focusedChild)) {
+      final index = _nodes.indexOf(_focusedChild!);
+      _currentIndex = index;
       _nodes[_currentIndex]._setFocus(true);
+    } else if (_nodes.isNotEmpty) {
+      final focusable = _focusableNodes;
+      if (focusable.isNotEmpty) {
+        final first = focusable.first;
+        _currentIndex = _nodes.indexOf(first);
+        first._setFocus(true);
+        _focusedChild = first;
+      }
     }
   }
 
   void deactivate() {
     _isActive = false;
-    // Clear focus from all nodes
     for (final node in _nodes) {
       node._setFocus(false);
+    }
+  }
+
+  void restoreFocus() {
+    if (_focusedChild != null &&
+        _nodes.contains(_focusedChild) &&
+        _focusedChild!.canRequestFocus) {
+      setFocus(_focusedChild!);
+    } else if (_nodes.isNotEmpty) {
+      final focusable = _focusableNodes;
+      if (focusable.isNotEmpty) {
+        setFocus(focusable.first);
+      }
     }
   }
 

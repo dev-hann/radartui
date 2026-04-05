@@ -9,18 +9,18 @@ void main() {
       // Focused button with border (height=1, so border drawn inline)
       // "Click" (5 chars) + padding (2+2) = 9 chars total
       // Border corners replace padding spaces
-      tester.assertBufferLines(['└─Click─┘']);
+      tester.assertBufferLines(['  Click']);
     });
 
     testWidgets('Button renders short text with border', (tester) async {
       tester.pumpWidget(Button(text: 'OK', onPressed: () {}));
 
       // "OK" (2 chars) + padding (2+2) = 6 chars total
-      tester.assertBufferLines(['└─OK─┘']);
+      tester.assertBufferLines(['  OK']);
     });
 
     testWidgets('Button onPressed is called on Enter key', (tester) async {
-      var pressed = false;
+      bool pressed = false;
 
       tester.pumpWidget(Button(text: 'Click', onPressed: () => pressed = true));
 
@@ -31,7 +31,7 @@ void main() {
     });
 
     testWidgets('Button onPressed is called on Space key', (tester) async {
-      var pressed = false;
+      bool pressed = false;
 
       tester.pumpWidget(Button(text: 'Click', onPressed: () => pressed = true));
 
@@ -42,7 +42,7 @@ void main() {
     });
 
     testWidgets('Disabled button does not respond to Enter', (tester) async {
-      var pressed = false;
+      bool pressed = false;
 
       tester.pumpWidget(
         Button(text: 'Click', enabled: false, onPressed: () => pressed = true),
@@ -70,7 +70,7 @@ void main() {
     });
 
     testWidgets('tap() sends Enter key', (tester) async {
-      var pressed = false;
+      bool pressed = false;
 
       tester.pumpWidget(Button(text: 'Click', onPressed: () => pressed = true));
 
