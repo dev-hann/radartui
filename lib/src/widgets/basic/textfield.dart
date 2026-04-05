@@ -536,29 +536,34 @@ class RenderTextField extends RenderBox {
     TextStyle borderStyle,
   ) {
     if (offset.y > 0) {
-      for (int x = 0; x < width; x++) {
-        final posX = offset.x + x;
-        if (posX >= 0 && posX < bufferWidth) {
-          context.buffer.writeStyled(posX, offset.y - 1, '─', borderStyle);
-        }
-      }
+      _drawHorizontalLine(
+          context, offset.x, offset.y - 1, width, bufferWidth, borderStyle);
     }
-
     if (offset.y + 1 < bufferHeight) {
-      for (int x = 0; x < width; x++) {
-        final posX = offset.x + x;
-        if (posX >= 0 && posX < bufferWidth) {
-          context.buffer.writeStyled(posX, offset.y + 1, '─', borderStyle);
-        }
-      }
+      _drawHorizontalLine(
+          context, offset.x, offset.y + 1, width, bufferWidth, borderStyle);
     }
-
     if (offset.x > 0) {
       context.buffer.writeStyled(offset.x - 1, offset.y, '│', borderStyle);
     }
-
     if (offset.x + width < bufferWidth) {
       context.buffer.writeStyled(offset.x + width, offset.y, '│', borderStyle);
+    }
+  }
+
+  void _drawHorizontalLine(
+    PaintingContext context,
+    int startX,
+    int y,
+    int width,
+    int bufferWidth,
+    TextStyle style,
+  ) {
+    for (int x = 0; x < width; x++) {
+      final posX = startX + x;
+      if (posX >= 0 && posX < bufferWidth) {
+        context.buffer.writeStyled(posX, y, '─', style);
+      }
     }
   }
 
