@@ -1,5 +1,6 @@
 import '../../../radartui.dart';
 
+/// Signature for a function that builds a widget tree given [BoxConstraints].
 typedef LayoutWidgetBuilder = Widget Function(
     BuildContext context, BoxConstraints constraints);
 
@@ -9,8 +10,10 @@ typedef LayoutWidgetBuilder = Widget Function(
 /// widget. Useful for widgets that need to know their available size before
 /// choosing how to render.
 class LayoutBuilder extends StatelessWidget {
+  /// Creates a [LayoutBuilder] with the given [builder] callback.
   const LayoutBuilder({super.key, required this.builder});
 
+  /// Called at layout time with the current [BoxConstraints].
   final LayoutWidgetBuilder builder;
 
   @override
@@ -37,11 +40,17 @@ class _LayoutBuilderWidget extends SingleChildRenderObjectWidget {
   }
 }
 
+/// The render object for [LayoutBuilder], which invokes a builder callback
+/// with the parent's [BoxConstraints] during layout.
 class RenderLayoutBuilder extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
+  /// Creates a [RenderLayoutBuilder] with the given [builder] and [buildContext].
   RenderLayoutBuilder({required this.builder, required this.buildContext});
 
+  /// The builder callback invoked during layout.
   LayoutWidgetBuilder builder;
+
+  /// The build context passed to the builder.
   BuildContext buildContext;
   Element? _childElement;
 

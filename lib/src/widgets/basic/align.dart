@@ -5,8 +5,10 @@ import '../../../radartui.dart';
 /// For example, `Align(alignment: Alignment.center, child: Text('hello'))`
 /// centers the child within the Align widget's bounds.
 class Align extends SingleChildRenderObjectWidget {
+  /// Creates an [Align] widget with the given [alignment].
   const Align({super.key, required this.alignment, super.child});
 
+  /// The alignment determining the child's position within this widget.
   final Alignment alignment;
 
   @override
@@ -23,11 +25,17 @@ class Align extends SingleChildRenderObjectWidget {
   }
 }
 
+/// The render object for [Align], which positions its child according to an
+/// [Alignment] value.
 class RenderAlign extends SingleChildRenderBox {
+  /// Creates a [RenderAlign] with the given [alignment].
   RenderAlign({required Alignment alignment}) : _alignment = alignment;
 
+  /// The current alignment.
   Alignment get alignment => _alignment;
   Alignment _alignment;
+
+  /// Sets the alignment and marks the layout dirty if it changed.
   set alignment(Alignment value) {
     if (_alignment == value) {
       return;
@@ -36,6 +44,8 @@ class RenderAlign extends SingleChildRenderBox {
     markNeedsLayout();
   }
 
+  /// Computes the final size, shrinking to the child when aligned away from
+  /// start or when constraints are unbounded.
   @override
   Size computeSizeFromChild(BoxConstraints constraints, Size childSize) {
     final bool shrinkWrapWidth =
@@ -50,6 +60,7 @@ class RenderAlign extends SingleChildRenderBox {
     return Size(width, height);
   }
 
+  /// Computes the child's paint offset based on the alignment.
   @override
   Offset computeChildOffset(Offset parentOffset, Size childSize) {
     final double x = parentOffset.x +

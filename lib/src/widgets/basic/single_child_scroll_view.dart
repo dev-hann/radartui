@@ -4,6 +4,7 @@ import '../../../radartui.dart';
 ///
 /// Handles keyboard-based scrolling (arrow keys,PageUp/PageDown/Home/End).
 class SingleChildScrollView extends StatefulWidget {
+  /// Creates a [SingleChildScrollView] with the given [child].
   const SingleChildScrollView({
     super.key,
     required this.child,
@@ -13,10 +14,19 @@ class SingleChildScrollView extends StatefulWidget {
     this.focusNode,
   });
 
+  /// The widget to scroll.
   final Widget child;
+
+  /// An optional external scroll controller.
   final ScrollController? controller;
+
+  /// The axis along which scrolling occurs.
   final Axis scrollDirection;
+
+  /// Optional padding around the scrollable content.
   final EdgeInsets? padding;
+
+  /// An optional focus node for receiving key events.
   final FocusNode? focusNode;
 
   @override

@@ -20,3 +20,6 @@ AGENTS.md
 
 # Analysis options (internal)
 analysis_options.yaml
+
+# Log files
+*.log

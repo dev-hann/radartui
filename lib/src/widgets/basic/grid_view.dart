@@ -13,6 +13,7 @@ Widget _defaultUnselectedBuilder<T>(T item) {
 /// Uses [selectedBuilder] and [unselectedBuilder] to customize the appearance
 /// of items. Supports arrow-key navigation and Enter to select.
 class GridView<T> extends StatefulWidget {
+  /// Creates a [GridView] with the given [items] and optional builders.
   const GridView({
     super.key,
     required this.items,
@@ -27,14 +28,31 @@ class GridView<T> extends StatefulWidget {
   })  : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
         unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
 
+  /// The list of data items to display in the grid.
   final List<T> items;
+
+  /// Builder for the currently selected item's appearance.
   final Widget Function(T item) selectedBuilder;
+
+  /// Builder for unselected items' appearance.
   final Widget Function(T item) unselectedBuilder;
+
+  /// The number of columns in the grid.
   final int crossAxisCount;
+
+  /// The vertical spacing between rows.
   final int mainAxisSpacing;
+
+  /// The horizontal spacing between columns.
   final int crossAxisSpacing;
+
+  /// The index of the initially selected item.
   final int initialSelectedIndex;
+
+  /// Called when the user activates a selected item.
   final void Function(int index, T item)? onItemSelected;
+
+  /// Whether navigation wraps around at grid boundaries.
   final bool wrapAroundNavigation;
 
   @override
@@ -143,20 +161,29 @@ class _GridRenderWidget extends MultiChildRenderObjectWidget {
   }
 }
 
+/// Parent data for children of [RenderGridView], storing their offset.
 class GridParentData extends ParentData {
+  /// The position of this child within the grid.
   Offset offset = Offset.zero;
 }
 
+/// Render object that lays out children in a grid with configurable columns and spacing.
 class RenderGridView extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, GridParentData> {
+  /// Creates a [RenderGridView] with the given column count and spacing.
   RenderGridView({
     required this.crossAxisCount,
     required this.mainAxisSpacing,
     required this.crossAxisSpacing,
   });
 
+  /// The number of columns in the grid.
   int crossAxisCount;
+
+  /// The vertical spacing between rows.
   int mainAxisSpacing;
+
+  /// The horizontal spacing between columns.
   int crossAxisSpacing;
 
   @override

@@ -2,18 +2,22 @@ import '../../../radartui.dart';
 
 /// Manages the expand/collapse state of a [TreeView].
 ///
-/// Each node is identified by an [Object] key. Use [toggleNode] to expand
+/// Each node is identified by an [Object] key. Use [toggleExpansion] to expand
 /// or collapse, and [isExpanded] to query state.
 class TreeController extends ChangeNotifier {
+  /// Creates a [TreeController] with optional [initialExpandedKeys].
   TreeController({Set<Object>? initialExpandedKeys})
       : _expandedKeys = Set<Object>.from(initialExpandedKeys ?? <Object>{});
 
   Set<Object> _expandedKeys;
 
+  /// The set of currently expanded node keys.
   Set<Object> get expandedKeys => Set<Object>.from(_expandedKeys);
 
+  /// Returns `true` if the node identified by [key] is expanded.
   bool isExpanded(Object key) => _expandedKeys.contains(key);
 
+  /// Toggles the expansion state of the node identified by [key].
   void toggleExpansion(Object key) {
     if (_expandedKeys.contains(key)) {
       _expandedKeys.remove(key);
@@ -23,23 +27,27 @@ class TreeController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Expands the node identified by [key].
   void expand(Object key) {
     if (_expandedKeys.add(key)) {
       notifyListeners();
     }
   }
 
+  /// Collapses the node identified by [key].
   void collapse(Object key) {
     if (_expandedKeys.remove(key)) {
       notifyListeners();
     }
   }
 
+  /// Expands all nodes whose keys are in [allKeys].
   void expandAll(List<Object> allKeys) {
     _expandedKeys = Set<Object>.from(allKeys);
     notifyListeners();
   }
 
+  /// Collapses all nodes.
   void collapseAll() {
     _expandedKeys.clear();
     notifyListeners();
@@ -63,6 +71,7 @@ class _FlatNode<T> {
 /// Uses [roots] as the top-level nodes and [getChildren] to traverse deeper.
 /// Each node is built by [builder]. The [TreeController] manages expand/collapse state.
 class TreeView<T> extends StatefulWidget {
+  /// Creates a [TreeView] with the given [roots], [builder], and traversal callbacks.
   const TreeView({
     super.key,
     required this.roots,
@@ -75,13 +84,28 @@ class TreeView<T> extends StatefulWidget {
     this.onNodeSelected,
   });
 
+  /// The top-level tree nodes.
   final List<T> roots;
+
+  /// Builds the visual representation for each node at the given [depth].
   final Widget Function(T node, int depth, bool isExpanded) builder;
+
+  /// Returns the child nodes of the given [node].
   final List<T> Function(T node) getChildren;
+
+  /// Returns a unique key identifying [node].
   final Object Function(T node) nodeKey;
+
+  /// An optional predicate that returns whether [node] can be expanded.
   final bool Function(T node)? isExpandable;
+
+  /// An optional external controller for expand/collapse state.
   final TreeController? controller;
+
+  /// An optional focus node for keyboard navigation.
   final FocusNode? focusNode;
+
+  /// Called when the user activates a node.
   final void Function(T node)? onNodeSelected;
 
   @override

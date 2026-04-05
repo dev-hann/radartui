@@ -1,3 +1,6 @@
+/// Returns the display width (number of terminal columns) of a single [codePoint].
+///
+/// Wide characters (e.g. CJK, emoji) return 2; control characters return 0.
 int charWidth(int codePoint) {
   if (codePoint < 32) return 0;
   if (codePoint < 127) return 1;
@@ -8,6 +11,7 @@ int charWidth(int codePoint) {
   return 1;
 }
 
+/// Returns the total display width of [text] in terminal columns.
 int stringWidth(String text) {
   int width = 0;
   for (int i = 0; i < text.length; i++) {

@@ -5,6 +5,7 @@ import '../../../radartui.dart';
 /// Notifies listeners when the index changes. Use [DefaultTabController] to
 /// provide a [TabController] to the widget tree via inheritance.
 class TabController extends ChangeNotifier {
+  /// Creates a [TabController] with the given [length] and optional [initialIndex].
   TabController({
     int initialIndex = 0,
     required int length,
@@ -14,10 +15,13 @@ class TabController extends ChangeNotifier {
   int _index;
   final int _length;
 
+  /// The current active tab index.
   int get index => _index;
 
+  /// The total number of tabs.
   int get length => _length;
 
+  /// Animates to the given [newIndex], clamped to valid range.
   void animateTo(int newIndex) {
     final int clamped = newIndex.clamp(0, _length - 1);
     if (clamped == _index) return;
@@ -31,14 +35,17 @@ class TabController extends ChangeNotifier {
 /// Wrap a [TabBar] and [TabBarView] pair in a [DefaultTabController] so they
 /// share the same controller without passing it manually.
 class DefaultTabController extends InheritedWidget {
+  /// Creates a [DefaultTabController] that provides [controller] to descendants.
   const DefaultTabController({
     super.key,
     required this.controller,
     required super.child,
   });
 
+  /// The [TabController] provided to descendant widgets.
   final TabController controller;
 
+  /// Retrieves the nearest [TabController] from the widget tree.
   static TabController? of(BuildContext context) {
     final DefaultTabController? result =
         context.dependOnInheritedWidgetOfExactType<DefaultTabController>();
@@ -55,17 +62,22 @@ class DefaultTabController extends InheritedWidget {
 ///
 /// Provide either [text] or [icon] (or both) for the tab's appearance.
 class Tab {
+  /// Creates a [Tab] with optional [text] and [icon].
   const Tab({this.text, this.icon});
 
+  /// The text label displayed on the tab.
   final String? text;
+
+  /// The icon character displayed on the tab.
   final String? icon;
 }
 
 /// A horizontal row of [Tab] widgets that lets the user switch views.
 ///
-/// Highlights the active tab and calls [onTabChanged] when a new tab is selected.
+/// Highlights the active tab and calls [onTap] when a new tab is selected.
 /// Must be used with a [TabController] (typically via [DefaultTabController]).
 class TabBar extends StatefulWidget {
+  /// Creates a [TabBar] with the given [tabs].
   const TabBar({
     super.key,
     required this.tabs,
@@ -80,15 +92,34 @@ class TabBar extends StatefulWidget {
     this.focusNode,
   });
 
+  /// The list of [Tab] widgets to display.
   final List<Tab> tabs;
+
+  /// An optional external [TabController]; defaults to [DefaultTabController.of].
   final TabController? controller;
+
+  /// The color of the active tab indicator line.
   final Color? indicatorColor;
+
+  /// The text color of the selected tab.
   final Color? labelColor;
+
+  /// The text color of unselected tabs.
   final Color? unselectedLabelColor;
+
+  /// The text style of the selected tab label.
   final TextStyle? labelStyle;
+
+  /// The text style of unselected tab labels.
   final TextStyle? unselectedLabelStyle;
+
+  /// Padding around each tab label.
   final EdgeInsets? labelPadding;
+
+  /// Called when the user taps a tab, receiving the new index.
   final ValueChanged<int>? onTap;
+
+  /// An optional focus node for keyboard navigation.
   final FocusNode? focusNode;
 
   @override
@@ -255,7 +286,9 @@ class _TabBarRenderWidget extends RenderObjectWidget {
   }
 }
 
+/// Render object that paints a horizontal row of tabs with an active indicator.
 class RenderTabBar extends RenderBox {
+  /// Creates a [RenderTabBar] with the given tab configuration.
   RenderTabBar({
     required List<Tab> tabs,
     required int currentIndex,
@@ -277,63 +310,99 @@ class RenderTabBar extends RenderBox {
         _labelPadding = labelPadding;
 
   List<Tab> _tabs;
+
+  /// The list of tabs to display.
   List<Tab> get tabs => _tabs;
+
+  /// Sets the list of tabs and invalidates the paint cache.
   set tabs(List<Tab> value) {
     _tabs = value;
     _invalidateCache();
   }
 
   int _currentIndex;
+
+  /// The index of the currently active tab.
   int get currentIndex => _currentIndex;
+
+  /// Sets the active tab index and invalidates the paint cache.
   set currentIndex(int v) {
     _currentIndex = v;
     _invalidateCache();
   }
 
   bool _focused;
+
+  /// Whether the tab bar currently has keyboard focus.
   bool get focused => _focused;
+
+  /// Sets the focus state and invalidates the paint cache.
   set focused(bool v) {
     _focused = v;
     _invalidateCache();
   }
 
   Color _indicatorColor;
+
+  /// The color of the active tab indicator line.
   Color get indicatorColor => _indicatorColor;
+
+  /// Sets the indicator color and invalidates the paint cache.
   set indicatorColor(Color v) {
     _indicatorColor = v;
     _invalidateCache();
   }
 
   Color _labelColor;
+
+  /// The text color of the selected tab label.
   Color get labelColor => _labelColor;
+
+  /// Sets the selected label color and invalidates the paint cache.
   set labelColor(Color v) {
     _labelColor = v;
     _invalidateCache();
   }
 
   Color _unselectedLabelColor;
+
+  /// The text color of unselected tab labels.
   Color get unselectedLabelColor => _unselectedLabelColor;
+
+  /// Sets the unselected label color and invalidates the paint cache.
   set unselectedLabelColor(Color v) {
     _unselectedLabelColor = v;
     _invalidateCache();
   }
 
   TextStyle? _labelStyle;
+
+  /// The text style of the selected tab label.
   TextStyle? get labelStyle => _labelStyle;
+
+  /// Sets the selected label style and invalidates the paint cache.
   set labelStyle(TextStyle? v) {
     _labelStyle = v;
     _invalidateCache();
   }
 
   TextStyle? _unselectedLabelStyle;
+
+  /// The text style of unselected tab labels.
   TextStyle? get unselectedLabelStyle => _unselectedLabelStyle;
+
+  /// Sets the unselected label style and invalidates the paint cache.
   set unselectedLabelStyle(TextStyle? v) {
     _unselectedLabelStyle = v;
     _invalidateCache();
   }
 
   EdgeInsets _labelPadding;
+
+  /// Padding applied around each tab label.
   EdgeInsets get labelPadding => _labelPadding;
+
+  /// Sets the label padding.
   set labelPadding(EdgeInsets v) {
     _labelPadding = v;
   }
@@ -431,13 +500,17 @@ class RenderTabBar extends RenderBox {
 /// Shows one child at a time based on the [TabController.index]. Must receive
 /// the same [controller] as the paired [TabBar].
 class TabBarView extends StatefulWidget {
+  /// Creates a [TabBarView] with the given [controller] and [children].
   const TabBarView({
     super.key,
     required this.controller,
     required this.children,
   });
 
+  /// The controller that determines which child is visible.
   final TabController controller;
+
+  /// The list of child widgets, one per tab.
   final List<Widget> children;
 
   @override

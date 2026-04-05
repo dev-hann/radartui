@@ -3,30 +3,61 @@
 /// Use [Color.transparent] (-1) to indicate no color.
 /// See also [Colors] for named constants.
 class Color {
+  /// Creates a [Color] with the given ANSI [value].
   const Color(this.value);
+
+  /// The ANSI color value (0–15), or -1 for transparent.
   final int value;
 
-  // Basic colors
+  /// Black (ANSI 0).
   static const Color black = Color(0);
+
+  /// Red (ANSI 1).
   static const Color red = Color(1);
+
+  /// Green (ANSI 2).
   static const Color green = Color(2);
+
+  /// Yellow (ANSI 3).
   static const Color yellow = Color(3);
+
+  /// Blue (ANSI 4).
   static const Color blue = Color(4);
+
+  /// Magenta (ANSI 5).
   static const Color magenta = Color(5);
+
+  /// Cyan (ANSI 6).
   static const Color cyan = Color(6);
+
+  /// White (ANSI 7).
   static const Color white = Color(7);
 
-  // Bright colors
+  /// Bright black / dark gray (ANSI 8).
   static const Color brightBlack = Color(8);
+
+  /// Bright red (ANSI 9).
   static const Color brightRed = Color(9);
+
+  /// Bright green (ANSI 10).
   static const Color brightGreen = Color(10);
+
+  /// Bright yellow (ANSI 11).
   static const Color brightYellow = Color(11);
+
+  /// Bright blue (ANSI 12).
   static const Color brightBlue = Color(12);
+
+  /// Bright magenta (ANSI 13).
   static const Color brightMagenta = Color(13);
+
+  /// Bright cyan (ANSI 14).
   static const Color brightCyan = Color(14);
+
+  /// Bright white (ANSI 15).
   static const Color brightWhite = Color(15);
 
-  // Special colors
+  /// No color (value -1).
   static const Color transparent = Color(-1);
 
   @override
@@ -38,35 +69,67 @@ class Color {
 /// Provides the same ANSI 16-color palette as [Color] plus additional
 /// semantic colors like [Colors.black54].
 class Colors {
+  /// Black (ANSI 0).
   static const Color black = Color(0);
+
+  /// Red (ANSI 1).
   static const Color red = Color(1);
+
+  /// Green (ANSI 2).
   static const Color green = Color(2);
+
+  /// Yellow (ANSI 3).
   static const Color yellow = Color(3);
+
+  /// Blue (ANSI 4).
   static const Color blue = Color(4);
+
+  /// Magenta (ANSI 5).
   static const Color magenta = Color(5);
+
+  /// Cyan (ANSI 6).
   static const Color cyan = Color(6);
+
+  /// White (ANSI 7).
   static const Color white = Color(7);
 
-  // Bright colors
+  /// Bright black / dark gray (ANSI 8).
   static const Color brightBlack = Color(8);
+
+  /// Bright red (ANSI 9).
   static const Color brightRed = Color(9);
+
+  /// Bright green (ANSI 10).
   static const Color brightGreen = Color(10);
+
+  /// Bright yellow (ANSI 11).
   static const Color brightYellow = Color(11);
+
+  /// Bright blue (ANSI 12).
   static const Color brightBlue = Color(12);
+
+  /// Bright magenta (ANSI 13).
   static const Color brightMagenta = Color(13);
+
+  /// Bright cyan (ANSI 14).
   static const Color brightCyan = Color(14);
+
+  /// Bright white (ANSI 15).
   static const Color brightWhite = Color(15);
 
-  // Special colors
+  /// No color.
   static const Color transparent = Color(-1);
-  static const Color black54 = Color(16); // Semi-transparent black for barriers
+
+  /// Semi-transparent black used for barrier overlays.
+  static const Color black54 = Color(16);
 }
 
+/// Font family options for terminal text rendering.
 enum FontFamily {
-  /// System default font
+  /// System default font.
   system,
 
-  /// Monospace font (suitable for code, terminals, etc.)
+  /// Monospace font (suitable for code, terminals, etc.).
   monospace,
 }
 
@@ -75,6 +138,7 @@ enum FontFamily {
 /// TextStyles are immutable. Use [merge] to combine two styles, with the
 /// other style's non-null properties taking priority.
 class TextStyle {
+  /// Creates a [TextStyle] with the given properties.
   const TextStyle({
     this.color,
     this.backgroundColor,
@@ -84,12 +148,26 @@ class TextStyle {
     this.dim = false,
     this.fontFamily = FontFamily.monospace,
   });
+
+  /// The foreground color of the text.
   final Color? color;
+
+  /// The background color behind the text.
   final Color? backgroundColor;
+
+  /// Whether the text is rendered in bold weight.
   final bool bold;
+
+  /// Whether the text is rendered in italic slant.
   final bool italic;
+
+  /// Whether the text is rendered with an underline decoration.
   final bool underline;
+
+  /// Whether the text is rendered in dim/faint mode.
   final bool dim;
+
+  /// The font family used to render the text.
   final FontFamily fontFamily;
 
   @override
@@ -114,6 +192,9 @@ class TextStyle {
         fontFamily,
       );
 
+  /// Returns a new [TextStyle] that merges this style with [other].
+  ///
+  /// Non-null properties from [other] take priority over this style's values.
   TextStyle merge(TextStyle? other) {
     if (other == null) return this;
     return TextStyle(

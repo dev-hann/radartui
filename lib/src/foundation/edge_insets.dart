@@ -3,22 +3,46 @@
 /// Follows Flutter's EdgeInsets API: [EdgeInsets.all], [EdgeInsets.symmetric],
 /// [EdgeInsets.only], and [EdgeInsets.fromLTRB].
 class EdgeInsets {
+  /// Creates insets from individual left, top, right, and bottom values.
   const EdgeInsets.fromLTRB(this.left, this.top, this.right, this.bottom);
+
+  /// Creates insets where all four edges are the same value [v].
   const EdgeInsets.all(int v) : this.fromLTRB(v, v, v, v);
+
+  /// Creates insets with symmetric vertical and horizontal values.
   const EdgeInsets.symmetric({int vertical = 0, int horizontal = 0})
       : this.fromLTRB(horizontal, vertical, horizontal, vertical);
+
+  /// Creates insets with only the specified non-zero edges.
   const EdgeInsets.only({
     this.top = 0,
     this.right = 0,
     this.bottom = 0,
     this.left = 0,
   });
-  final int top, right, bottom, left;
+
+  /// The inset from the top edge.
+  final int top;
+
+  /// The inset from the right edge.
+  final int right;
+
+  /// The inset from the bottom edge.
+  final int bottom;
+
+  /// The inset from the left edge.
+  final int left;
+
+  /// Zero insets on all sides.
   static const EdgeInsets zero = EdgeInsets.all(0);
 
+  /// The total horizontal inset (left + right).
   int get horizontal => left + right;
+
+  /// The total vertical inset (top + bottom).
   int get vertical => top + bottom;
 
+  /// Returns the sum of these insets and [other].
   EdgeInsets operator +(EdgeInsets other) => EdgeInsets.fromLTRB(
         left + other.left,
         top + other.top,

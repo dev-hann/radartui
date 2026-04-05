@@ -13,6 +13,7 @@ Widget _defaultUnselectedBuilder<T>(T item) {
 /// Supports custom [selectedBuilder] and [unselectedBuilder] for rendering
 /// each item. Arrow keys navigate, Enter/Space selects.
 class ListView<T> extends StatefulWidget {
+  /// Creates a [ListView] with the given [items] and optional builders.
   const ListView({
     super.key,
     required this.items,
@@ -25,13 +26,29 @@ class ListView<T> extends StatefulWidget {
     this.itemExtent,
   })  : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
         unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
+
+  /// The list of items to display.
   final List<T> items;
+
+  /// A builder that creates the widget for the currently selected item.
   final Widget Function(T item) selectedBuilder;
+
+  /// A builder that creates the widget for unselected items.
   final Widget Function(T item) unselectedBuilder;
+
+  /// The index of the item initially selected.
   final int initialSelectedIndex;
+
+  /// A callback invoked when the user presses Enter or Space on an item.
   final void Function(int index, T item)? onItemSelected;
+
+  /// Whether navigation wraps around at the top and bottom of the list.
   final bool wrapAroundNavigation;
+
+  /// An optional external scroll controller.
   final ScrollController? controller;
+
+  /// An optional fixed height for each item row.
   final int? itemExtent;
 
   @override

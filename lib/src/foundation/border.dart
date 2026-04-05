@@ -3,6 +3,7 @@
 /// Empty strings mean no border on that side. Use [Border.all] for a full
 /// box border, or [Border.symmetric] for horizontal/vertical patterns.
 class Border {
+  /// Creates a [Border] with individual characters for each side.
   const Border({
     this.top = '',
     this.right = '',
@@ -10,6 +11,7 @@ class Border {
     this.left = '',
   });
 
+  /// Creates a border with symmetric horizontal and vertical characters.
   factory Border.symmetric({
     required String horizontal,
     required String vertical,
@@ -21,6 +23,7 @@ class Border {
         bottom: horizontal,
       );
 
+  /// Creates a border with only the specified sides.
   factory Border.only({
     String? top,
     String? right,
@@ -34,11 +37,19 @@ class Border {
         left: left ?? '',
       );
 
+  /// The character used for the top border.
   final String top;
+
+  /// The character used for the right border.
   final String right;
+
+  /// The character used for the bottom border.
   final String bottom;
+
+  /// The character used for the left border.
   final String left;
 
+  /// A full box border using standard box-drawing characters.
   static const Border all = Border(
     top: '─',
     left: '│',
@@ -46,5 +57,6 @@ class Border {
     bottom: '─',
   );
 
+  /// No border on any side.
   static const Border none = Border(top: '', left: '', right: '', bottom: '');
 }

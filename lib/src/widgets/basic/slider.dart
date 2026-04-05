@@ -5,6 +5,7 @@ import '../../../radartui.dart';
 /// Displays a track with a movable thumb. Use [divisions] to snap to discrete
 /// steps between [min] and [max]. Calls [onChanged] as the user adjusts.
 class Slider extends StatefulWidget {
+  /// Creates a [Slider] with the given [value] and [onChanged] callback.
   const Slider({
     super.key,
     required this.value,
@@ -19,15 +20,34 @@ class Slider extends StatefulWidget {
     this.focusNode,
   });
 
+  /// The current value of the slider.
   final int value;
+
+  /// The minimum value the slider can have.
   final int min;
+
+  /// The maximum value the slider can have.
   final int max;
+
+  /// The number of discrete divisions; `null` for continuous sliding.
   final int? divisions;
+
+  /// Called when the user changes the slider value.
   final ValueChanged<int>? onChanged;
+
+  /// The color of the active (filled) portion of the track.
   final Color? activeColor;
+
+  /// The color of the inactive (unfilled) portion of the track.
   final Color? inactiveColor;
+
+  /// The color of the thumb indicator.
   final Color? thumbColor;
+
+  /// An optional label displayed to the right of the slider.
   final String? label;
+
+  /// An optional focus node for keyboard navigation.
   final FocusNode? focusNode;
 
   @override
@@ -130,7 +150,9 @@ class _SliderRenderWidget extends RenderObjectWidget {
   }
 }
 
+/// Render object that paints a horizontal slider track, thumb, and optional label.
 class RenderSlider extends RenderBox {
+  /// Creates a [RenderSlider] with the given value and visual configuration.
   RenderSlider({
     required int value,
     required int min,
@@ -161,55 +183,82 @@ class RenderSlider extends RenderBox {
   Color _thumbColor;
   String? _label;
 
+  /// The current slider value.
   int get value => _value;
+
+  /// Sets the current slider value.
   set value(int v) {
     _value = v;
     _invalidateCache();
   }
 
+  /// The minimum slider value.
   int get min => _min;
+
+  /// Sets the minimum slider value.
   set min(int v) {
     _min = v;
     _invalidateCache();
   }
 
+  /// The maximum slider value.
   int get max => _max;
+
+  /// Sets the maximum slider value.
   set max(int v) {
     _max = v;
     _invalidateCache();
   }
 
+  /// Whether the slider currently has keyboard focus.
   bool get focused => _focused;
+
+  /// Sets the focus state.
   set focused(bool v) {
     _focused = v;
     _invalidateCache();
   }
 
+  /// Whether the slider is interactive (has an [onChanged] callback).
   bool get enabled => _enabled;
+
+  /// Sets the enabled state.
   set enabled(bool v) {
     _enabled = v;
     _invalidateCache();
   }
 
+  /// The color of the active (filled) track portion.
   Color get activeColor => _activeColor;
+
+  /// Sets the active track color.
   set activeColor(Color v) {
     _activeColor = v;
     _invalidateCache();
   }
 
+  /// The color of the inactive (unfilled) track portion.
   Color get inactiveColor => _inactiveColor;
+
+  /// Sets the inactive track color.
   set inactiveColor(Color v) {
     _inactiveColor = v;
     _invalidateCache();
   }
 
+  /// The color of the thumb indicator.
   Color get thumbColor => _thumbColor;
+
+  /// Sets the thumb color.
   set thumbColor(Color v) {
     _thumbColor = v;
     _invalidateCache();
   }
 
+  /// An optional label displayed beside the slider.
   String? get label => _label;
+
+  /// Sets the label text.
   set label(String? v) {
     _label = v;
     _invalidateCache();

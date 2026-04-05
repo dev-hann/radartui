@@ -2,11 +2,18 @@ import '../foundation.dart';
 import 'logger.dart';
 import 'terminal.dart';
 
+/// Represents a single character cell with optional text styling.
 class Cell {
+  /// Creates a [Cell] with the given [char] and optional [style].
   const Cell(this.char, [this.style]);
+
+  /// The character displayed in this cell.
   final String char;
+
+  /// The text style applied to this cell, or `null` for default styling.
   final TextStyle? style;
 
+  /// An empty cell containing a single space with no styling.
   static const empty = Cell(' ');
 
   @override
@@ -23,14 +30,19 @@ class Cell {
   }
 }
 
+/// Manages a grid of character cells and renders diffs to the terminal.
 class OutputBuffer {
+  /// Creates an [OutputBuffer] for the given [terminal] and initializes the grid.
   OutputBuffer(this.terminal) {
     resize();
   }
+
+  /// The terminal this buffer renders to.
   final Terminal terminal;
   late List<List<Cell>> _grid;
   late List<List<Cell>> _previousGrid;
 
+  /// Rebuilds the internal grid to match the current terminal dimensions.
   void resize() {
     _grid = List.generate(
       terminal.height,
@@ -42,10 +54,12 @@ class OutputBuffer {
     );
   }
 
+  /// Writes a character at the given position with default styling.
   void write(int x, int y, String char) {
     writeStyled(x, y, char, null);
   }
 
+  /// Writes a character at the given position with the specified [style].
   void writeStyled(int x, int y, String char, TextStyle? style) {
     if (y >= terminal.height || x >= terminal.width || x < 0 || y < 0) {
       AppLogger.log(
@@ -57,6 +71,7 @@ class OutputBuffer {
     _grid[y][x] = Cell(char, style);
   }
 
+  /// Fills the entire grid with empty cells.
   void clear() {
     for (int y = 0; y < terminal.height; y++) {
       for (int x = 0; x < terminal.width; x++) {
@@ -65,6 +80,7 @@ class OutputBuffer {
     }
   }
 
+  /// Clears both the grid and the terminal, forcing a full redraw on next flush.
   void clearAll() {
     terminal.clear();
 
@@ -76,6 +92,7 @@ class OutputBuffer {
     }
   }
 
+  /// Fills the grid with empty cells while preserving the previous frame for diffing.
   void smartClear() {
     for (int y = 0; y < terminal.height; y++) {
       for (int x = 0; x < terminal.width; x++) {
@@ -84,6 +101,7 @@ class OutputBuffer {
     }
   }
 
+  /// Returns `true` if the previous frame had significantly more content than the current one.
   bool needsFullClear() {
     // Check if current content footprint is smaller than previous
     // This indicates we might need to clear remnants
@@ -102,6 +120,7 @@ class OutputBuffer {
         currentContent + 10; // Threshold to avoid false positives
   }
 
+  /// Clears using a full clear only when remnants are likely, otherwise uses a smart clear.
   void conditionalClear() {
     if (needsFullClear()) {
       // Use aggressive clearing only when remnants are likely
@@ -147,6 +166,7 @@ class OutputBuffer {
     return foreground ? '39' : '49';
   }
 
+  /// Renders only the changed cells to the terminal since the last flush.
   void flush() {
     final StringBuffer buffer = StringBuffer();
     TextStyle? currentStyle;

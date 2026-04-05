@@ -5,8 +5,11 @@ import 'scheduler_binding.dart';
 import 'services_binding.dart';
 import 'widgets_binding.dart';
 
+/// The concrete binding that combines all mixin bindings into a single
+/// initialized instance.
 class AppBinding extends BindingBase
     with SchedulerBinding, ServicesBinding, RendererBinding, WidgetsBinding {
+  /// Creates an [AppBinding] with an optional [terminalBackend].
   AppBinding([TerminalBackend? terminalBackend])
       : _terminalBackend = terminalBackend ?? RealTerminalBackend(),
         _terminal = _TerminalImpl() {
@@ -16,15 +19,19 @@ class AppBinding extends BindingBase
   final TerminalBackend _terminalBackend;
   late final _TerminalImpl _terminal;
 
+  /// The keyboard backend used to read raw key events.
   @override
   final RawKeyboard keyboard = RawKeyboard();
 
+  /// The output buffer used by the rendering pipeline.
   @override
   late final OutputBuffer outputBuffer;
 
+  /// The terminal interface for screen operations.
   @override
   Terminal get terminal => _terminal;
 
+  /// Ensures the binding is initialized and returns the [WidgetsBinding].
   static WidgetsBinding ensureInitialized() {
     if (!WidgetsBinding.isInitialized) {
       AppBinding();

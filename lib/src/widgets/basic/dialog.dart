@@ -4,8 +4,9 @@ import '../../../radartui.dart';
 /// A modal dialog with a title, message, and optional action buttons.
 ///
 /// Use [showDialog] to display. Actions are laid out in a row at the bottom.
-/// Pressing Escape or the escape key dismisses the dialog.
+/// Pressing Escape dismisses the dialog.
 class Dialog extends StatelessWidget {
+  /// Creates a [Dialog] containing [child] with optional [title] and [actions].
   const Dialog({
     super.key,
     required this.child,
@@ -15,11 +16,23 @@ class Dialog extends StatelessWidget {
     this.titleStyle,
     this.backgroundColor = Colors.white,
   });
+
+  /// The content widget displayed in the dialog body.
   final Widget child;
+
+  /// An optional title displayed above the content.
   final String? title;
+
+  /// Optional action widgets displayed at the bottom of the dialog.
   final List<Widget>? actions;
+
+  /// Padding around the dialog content.
   final EdgeInsets? padding;
+
+  /// The text style for the [title].
   final TextStyle? titleStyle;
+
+  /// The background color of the dialog card.
   final Color backgroundColor;
 
   @override
@@ -64,7 +77,9 @@ class Dialog extends StatelessWidget {
   }
 }
 
+/// A route that displays a modal dialog with a barrier overlay.
 class ModalRoute<T> extends Route<T> {
+  /// Creates a [ModalRoute] that displays the widget built by [builder].
   ModalRoute({
     required this.builder,
     this.barrierDismissible = true,
@@ -72,9 +87,17 @@ class ModalRoute<T> extends Route<T> {
     this.alignment = Alignment.center,
     super.settings,
   });
+
+  /// Builds the dialog widget to display.
   final WidgetBuilder builder;
+
+  /// Whether tapping outside the dialog dismisses it.
   final bool barrierDismissible;
+
+  /// The color of the barrier behind the dialog.
   final Color? barrierColor;
+
+  /// The alignment of the dialog within the screen.
   final Alignment alignment;
 
   @override
@@ -113,6 +136,10 @@ class ModalRoute<T> extends Route<T> {
   }
 }
 
+/// Displays a modal [Dialog] above the current route.
+///
+/// Returns a `Future` that completes with the result when the dialog is dismissed.
+/// Pressing Escape dismisses with `null`.
 Future<T?> showDialog<T>({
   required BuildContext context,
   required WidgetBuilder builder,

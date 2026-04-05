@@ -5,6 +5,7 @@ import '../../../radartui.dart';
 /// Each of [left], [top], [right], [bottom] is an offset from the corresponding
 /// edge of the stack. Use [Positioned.fill] to stretch to all edges.
 class Positioned extends ParentDataWidget<StackParentData> {
+  /// Creates a [Positioned] widget with optional offsets from each edge.
   const Positioned({
     super.key,
     this.left,
@@ -16,6 +17,7 @@ class Positioned extends ParentDataWidget<StackParentData> {
     required super.child,
   });
 
+  /// Creates a [Positioned] that stretches to all four edges of the [Stack].
   const Positioned.fill({super.key, required super.child})
       : left = 0,
         top = 0,
@@ -23,11 +25,23 @@ class Positioned extends ParentDataWidget<StackParentData> {
         bottom = 0,
         width = null,
         height = null;
+
+  /// The offset from the left edge of the stack.
   final int? left;
+
+  /// The offset from the top edge of the stack.
   final int? top;
+
+  /// The offset from the right edge of the stack.
   final int? right;
+
+  /// The offset from the bottom edge of the stack.
   final int? bottom;
+
+  /// An explicit width for the child.
   final int? width;
+
+  /// An explicit height for the child.
   final int? height;
 
   @override

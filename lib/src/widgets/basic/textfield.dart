@@ -1,49 +1,74 @@
 import 'dart:async';
 import '../../../radartui.dart';
 
+/// Represents a text selection range within a string.
 class TextSelection {
+  /// Creates a [TextSelection] with the given [start] and [end] positions.
   const TextSelection({required this.start, required this.end});
+
+  /// The start offset of the selection (inclusive).
   final int start;
+
+  /// The end offset of the selection (exclusive).
   final int end;
 
+  /// Whether this selection has valid (non-negative) positions with [end] >= [start].
   bool get isValid => start >= 0 && end >= start;
+
+  /// The number of characters in the selection.
   int get length => end - start;
+
+  /// Extracts the selected substring from [fullText].
   String textInRange(String fullText) {
     if (!isValid) return '';
     return fullText.substring(start, end);
   }
 }
 
+/// A simple in-memory clipboard for cut, copy, and paste operations.
 abstract class Clipboard {
   static String? _data;
 
+  /// Stores [text] in the clipboard.
   static Future<void> setData(String text) async {
     _data = text;
   }
 
+  /// Retrieves the current clipboard content, if any.
   static Future<String?> getData() async {
     return _data;
   }
 
+  /// Whether the clipboard currently contains data.
   static bool get hasData => _data != null && _data!.isNotEmpty;
 }
 
+/// A controller for managing text content, cursor position, and selection state.
+///
+/// Notifies listeners when the text or selection changes. Use with [TextField]
+/// for programmatic control over text input.
 class TextEditingController extends ChangeNotifier {
   String _text = '';
   int _cursorPosition = 0;
   int? _selectionStart;
   int? _selectionEnd;
 
+  /// The current text content.
   String get text => _text;
+
+  /// The current cursor position within the text.
   int get cursorPosition => _cursorPosition;
 
+  /// The current text selection, or `null` if no text is selected.
   TextSelection? get selection {
     if (_selectionStart == null || _selectionEnd == null) return null;
     return TextSelection(start: _selectionStart!, end: _selectionEnd!);
   }
 
+  /// Whether a range of text is currently selected.
   bool get hasSelection => _selectionStart != null && _selectionEnd != null;
 
+  /// Sets the full text content and resets the cursor and selection.
   set text(String value) {
     if (_text != value) {
       _text = value;
@@ -53,6 +78,7 @@ class TextEditingController extends ChangeNotifier {
     }
   }
 
+  /// Moves the cursor to [position], clearing any selection.
   set cursorPosition(int position) {
     final newPosition = position.clamp(0, _text.length);
     if (_cursorPosition != newPosition) {
@@ -62,29 +88,34 @@ class TextEditingController extends ChangeNotifier {
     }
   }
 
+  /// Sets the selection range from [start] to [end].
   void setSelection(int start, int end) {
     _selectionStart = start.clamp(0, _text.length);
     _selectionEnd = end.clamp(_selectionStart!, _text.length);
     notifyListeners();
   }
 
+  /// Clears the current text selection without modifying the text.
   void clearSelection() {
     _selectionStart = null;
     _selectionEnd = null;
   }
 
+  /// Selects all text in the controller.
   void selectAll() {
     _selectionStart = 0;
     _selectionEnd = _text.length;
     notifyListeners();
   }
 
+  /// Copies the selected text to the clipboard.
   Future<void> copy() async {
     if (hasSelection) {
       await Clipboard.setData(selection!.textInRange(_text));
     }
   }
 
+  /// Copies the selected text to the clipboard and removes it from the text.
   Future<void> cut() async {
     if (hasSelection) {
       await Clipboard.setData(selection!.textInRange(_text));
@@ -92,6 +123,7 @@ class TextEditingController extends ChangeNotifier {
     }
   }
 
+  /// Inserts clipboard content at the cursor, replacing any selection.
   Future<void> paste() async {
     final clipboardText = await Clipboard.getData();
     if (clipboardText != null && clipboardText.isNotEmpty) {
@@ -102,6 +134,7 @@ class TextEditingController extends ChangeNotifier {
     }
   }
 
+  /// Deletes the currently selected text range.
   void deleteSelection() {
     if (!hasSelection) return;
     final sel = selection!;
@@ -111,6 +144,7 @@ class TextEditingController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Inserts [text] at the cursor position, replacing any selection first.
   void insertText(String text) {
     if (hasSelection) {
       deleteSelection();
@@ -122,6 +156,7 @@ class TextEditingController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Deletes the character before the cursor (backspace).
   void deleteBackward() {
     if (hasSelection) {
       deleteSelection();
@@ -135,6 +170,7 @@ class TextEditingController extends ChangeNotifier {
     }
   }
 
+  /// Deletes the character after the cursor (delete key).
   void deleteForward() {
     if (hasSelection) {
       deleteSelection();
@@ -147,6 +183,7 @@ class TextEditingController extends ChangeNotifier {
     }
   }
 
+  /// Moves the cursor one character to the left.
   void moveCursorLeft() {
     if (_cursorPosition > 0) {
       _cursorPosition--;
@@ -155,6 +192,7 @@ class TextEditingController extends ChangeNotifier {
     }
   }
 
+  /// Moves the cursor one character to the right.
   void moveCursorRight() {
     if (_cursorPosition < _text.length) {
       _cursorPosition++;
@@ -163,18 +201,21 @@ class TextEditingController extends ChangeNotifier {
     }
   }
 
+  /// Moves the cursor to the beginning of the text.
   void moveCursorToStart() {
     _cursorPosition = 0;
     clearSelection();
     notifyListeners();
   }
 
+  /// Moves the cursor to the end of the text.
   void moveCursorToEnd() {
     _cursorPosition = _text.length;
     clearSelection();
     notifyListeners();
   }
 
+  /// Moves the cursor one word to the left.
   void moveCursorWordLeft() {
     if (_cursorPosition == 0) return;
     int pos = _cursorPosition - 1;
@@ -186,6 +227,7 @@ class TextEditingController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Moves the cursor one word to the right.
   void moveCursorWordRight() {
     if (_cursorPosition >= _text.length) return;
     int pos = _cursorPosition;
@@ -203,6 +245,7 @@ class TextEditingController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Clears all text and resets the cursor to the start.
   void clear() {
     _text = '';
     _cursorPosition = 0;
@@ -216,11 +259,8 @@ class TextEditingController extends ChangeNotifier {
 /// Supports keyboard navigation, text selection, clipboard operations,
 /// and configurable [maxLength]. Use [TextEditingController] for
 /// programmatic access to the text and selection state.
-/// A single-line or multi-line text input field.
-///
-/// Supports keyboard navigation, text selection, clipboard, and configurable
-/// [obscureText] for [maxLines].
 class TextField extends StatefulWidget {
+  /// Creates a [TextField] with optional [controller], [placeholder], and callbacks.
   const TextField({
     super.key,
     this.controller,
@@ -230,11 +270,23 @@ class TextField extends StatefulWidget {
     this.onChanged,
     this.onSubmitted,
   });
+
+  /// An optional external controller for the text content and selection.
   final TextEditingController? controller;
+
+  /// Placeholder text displayed when the field is empty.
   final String? placeholder;
+
+  /// The text style applied to the input text.
   final TextStyle? style;
+
+  /// The maximum number of characters allowed.
   final int? maxLength;
+
+  /// Called whenever the text content changes.
   final Function(String)? onChanged;
+
+  /// Called when the user presses Enter.
   final Function(String)? onSubmitted;
 
   @override
@@ -392,7 +444,9 @@ class _TextField extends RenderObjectWidget {
   }
 }
 
+/// Render object that paints a text input field with cursor and border.
 class RenderTextField extends RenderBox {
+  /// Creates a [RenderTextField] with the given text and display configuration.
   RenderTextField({
     required this.text,
     required this.cursorPosition,
@@ -400,10 +454,20 @@ class RenderTextField extends RenderBox {
     this.style,
     required this.hasFocus,
   });
+
+  /// The current text content to display.
   String text;
+
+  /// The position of the cursor within the text.
   int cursorPosition;
+
+  /// Placeholder text shown when [text] is empty.
   String? placeholder;
+
+  /// The text style applied to the input text.
   TextStyle? style;
+
+  /// Whether the text field currently has keyboard focus.
   bool hasFocus;
 
   @override

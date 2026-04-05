@@ -2,8 +2,16 @@
 ///
 /// Terminal cells are discrete, so coordinates are always integers.
 class Size {
+  /// Creates a [Size] with the given [width] and [height].
   const Size(this.width, this.height);
-  final int width, height;
+
+  /// The width in terminal columns.
+  final int width;
+
+  /// The height in terminal rows.
+  final int height;
+
+  /// A size with zero width and height.
   static const zero = Size(0, 0);
 
   @override

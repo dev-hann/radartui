@@ -7,15 +7,22 @@ import 'renderer_binding.dart';
 import 'scheduler_binding.dart';
 import 'services_binding.dart';
 
+/// Signature for callbacks invoked during [WidgetsBinding.shutdown].
 typedef ShutdownCallback = void Function();
 
+/// Binding that glues the widget framework to the terminal and manages the
+/// widget tree lifecycle.
 mixin WidgetsBinding
     on BindingBase, SchedulerBinding, ServicesBinding, RendererBinding {
   static WidgetsBinding? _instance;
 
+  /// The singleton instance of this binding.
   static WidgetsBinding get instance => BindingBase.checkInstance(_instance);
+
+  /// Whether this binding has been initialized.
   static bool get isInitialized => _instance != null;
 
+  /// Resets the singleton instance, useful for testing.
   static void resetInstance() {
     _instance = null;
   }
@@ -32,8 +39,10 @@ mixin WidgetsBinding
   final List<ShutdownCallback> _shutdownCallbacks = [];
   bool _isShuttingDown = false;
 
+  /// The root element of the widget tree, or `null` if no app is running.
   Element? get rootElement => _rootElement;
 
+  /// Boots the given [app] widget, handles signals, and starts rendering.
   void runApp(Widget app) {
     terminal.clear();
     terminal.hideCursor();
@@ -49,6 +58,8 @@ mixin WidgetsBinding
     });
   }
 
+  /// Attaches the given [app] as the root widget without starting signal
+  /// handlers.
   void attachRootWidget(Widget app) {
     terminal.clear();
     terminal.hideCursor();
@@ -56,6 +67,7 @@ mixin WidgetsBinding
     _rootElement!.mount(null);
   }
 
+  /// Performs a single build-layout-paint cycle for the root element.
   void renderFrame() {
     if (_rootElement != null) {
       _build(_rootElement!);
@@ -66,14 +78,17 @@ mixin WidgetsBinding
     outputBuffer.flush();
   }
 
+  /// Registers a [callback] to be invoked during [shutdown].
   void addShutdownCallback(ShutdownCallback callback) {
     _shutdownCallbacks.add(callback);
   }
 
+  /// Removes a previously registered shutdown [callback].
   void removeShutdownCallback(ShutdownCallback callback) {
     _shutdownCallbacks.remove(callback);
   }
 
+  /// Adds an [overlay] widget on top of the current widget tree.
   void addOverlay(Widget overlay) {
     _overlayWidgets.add(overlay);
     final element = overlay.createElement();
@@ -82,6 +97,7 @@ mixin WidgetsBinding
     scheduleFrame();
   }
 
+  /// Removes a previously added [overlay] widget.
   void removeOverlay(Widget overlay) {
     final index = _overlayWidgets.indexOf(overlay);
     if (index != -1) {
@@ -127,11 +143,13 @@ mixin WidgetsBinding
     element.visitChildren(_layout);
   }
 
+  /// Schedules a new frame after clearing the entire output buffer.
   void scheduleFrameWithClear() {
     outputBuffer.clearAll();
     scheduleFrame();
   }
 
+  /// Shows or hides the terminal cursor.
   void visibleCursor(bool visible) {
     if (visible) {
       terminal.showCursor();
@@ -140,6 +158,8 @@ mixin WidgetsBinding
     }
   }
 
+  /// Gracefully shuts down the application, running all registered shutdown
+  /// callbacks and restoring the terminal state.
   void shutdown() {
     if (_isShuttingDown) return;
     _isShuttingDown = true;

@@ -5,6 +5,7 @@ import 'key_parser.dart';
 import 'keyboard_backend.dart';
 import 'logger.dart';
 
+/// A [KeyboardBackend] that reads raw key events from stdin.
 class RawKeyboard implements KeyboardBackend {
   final StreamController<KeyEvent> _controller =
       StreamController<KeyEvent>.broadcast();
@@ -31,6 +32,7 @@ class RawKeyboard implements KeyboardBackend {
     }
   }
 
+  /// Simulates keyboard input for testing by parsing [input] and emitting an event.
   void inputTest(String input) {
     final rawBytes = input.codeUnits.toList();
     final event = KeyParser.parse(rawBytes);

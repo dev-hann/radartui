@@ -3,7 +3,9 @@ import '../foundation.dart';
 import 'ffi_write.dart';
 import 'terminal_backend.dart';
 
+/// A [TerminalBackend] that writes directly to the real terminal via FFI.
 class RealTerminalBackend implements TerminalBackend {
+  /// Creates a [RealTerminalBackend] and opens the TTY for direct output.
   RealTerminalBackend() {
     FfiWrite.instance.openTty();
   }
@@ -54,6 +56,7 @@ class RealTerminalBackend implements TerminalBackend {
   @override
   void flush() {}
 
+  /// Closes the underlying TTY file descriptor.
   void dispose() {
     FfiWrite.instance.closeTty();
   }

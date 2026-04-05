@@ -5,6 +5,10 @@ import '../../../radartui.dart';
 /// Shows the [message] for [duration] (default 2 seconds) using the [Overlay].
 /// Optionally customize [backgroundColor] and [textColor].
 class Toast {
+  /// Shows a toast message via the [Overlay].
+  ///
+  /// The toast appears at the bottom of the screen and is automatically removed
+  /// after [duration] elapses.
   static void show(
     BuildContext context, {
     required String message,

@@ -1,6 +1,15 @@
 # Changelog
 
-## 0.0.1
+## 0.0.2 (2026-04-05)
+
+- Expand pubspec description for pub.dev compliance
+- Upgrade `ffi` dependency to `^2.0.0`
+- Add `platforms` field (linux, macos, windows)
+- Improve README with pub.dev badges and widget catalog
+- Add dartdoc comments to public API elements
+- Exclude log files and dev-only files from published package
+
+## 0.0.1 (2026-04-05)
 
 Initial release of RadarTUI.
 

@@ -5,9 +5,14 @@ import '../../../radartui.dart';
 /// Renders a box-drawing character border around its [child]. Without a child,
 /// defaults to a zero-sized [SizedBox].
 class Card extends SingleChildRenderObjectWidget {
+  /// Creates a [Card] with an optional [child], [color], and [padding].
   const Card({super.key, Widget? child, this.color, this.padding})
       : super(child: child ?? const SizedBox());
+
+  /// The background color applied to the card border and fill.
   final Color? color;
+
+  /// The inner padding between the border and the child.
   final EdgeInsets? padding;
 
   @override
@@ -22,7 +27,10 @@ class Card extends SingleChildRenderObjectWidget {
   }
 }
 
+/// The render object for [Card], responsible for drawing a box-drawing border
+/// and optional background fill around its child.
 class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
+  /// Creates a [RenderCard] with the given [color] and [padding].
   RenderCard({Color? color, EdgeInsets? padding})
       : _color = color,
         _padding = padding;
@@ -30,13 +38,19 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   Color? _color;
   EdgeInsets? _padding;
 
+  /// The background color for the card's border and fill.
   Color? get color => _color;
+
+  /// Sets the background color and invalidates the cached style.
   set color(Color? v) {
     _color = v;
     _invalidateCache();
   }
 
+  /// The inner padding between the card border and its child.
   EdgeInsets? get padding => _padding;
+
+  /// Sets the inner padding.
   set padding(EdgeInsets? v) {
     _padding = v;
   }
