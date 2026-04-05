@@ -93,14 +93,23 @@ class _SparklineRenderWidget extends RenderObjectWidget {
 class RenderSparkline extends RenderBox {
   /// Creates a [RenderSparkline] with the given characters and color.
   RenderSparkline({
-    required this.chars,
+    required List<String> chars,
     required Color color,
-  }) : _color = color;
+  })  : _chars = chars,
+        _color = color;
+
+  List<String> _chars;
+  Color _color;
 
   /// The block characters to render, one per data point.
-  List<String> chars;
+  List<String> get chars => _chars;
 
-  Color _color;
+  /// Sets the block characters.
+  set chars(List<String> v) {
+    if (identical(_chars, v)) return;
+    _chars = v;
+  }
+
   Color get color => _color;
   set color(Color value) {
     if (_color == value) return;
@@ -113,7 +122,7 @@ class RenderSparkline extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    size = Size(chars.length, 1);
+    size = Size(_chars.length, 1);
   }
 
   @override
@@ -123,7 +132,7 @@ class RenderSparkline extends RenderBox {
     context.writeString(
       offset.x,
       offset.y,
-      chars.join(),
+      _chars.join(),
       style,
     );
   }

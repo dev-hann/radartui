@@ -43,6 +43,7 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
 
   /// Sets the background color and invalidates the cached style.
   set color(Color? v) {
+    if (_color == v) return;
     _color = v;
     _invalidateCache();
   }
@@ -52,6 +53,7 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
 
   /// Sets the inner padding.
   set padding(EdgeInsets? v) {
+    if (_padding == v) return;
     _padding = v;
   }
 
