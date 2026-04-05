@@ -519,7 +519,7 @@ class RenderDropdownMenu extends RenderBox {
     _ensureStylesCached();
     final int x = offset.x;
     final int y = offset.y;
-    final int w = size!.width.toInt();
+    final int w = size!.width;
     final TextStyle selectedBg = _cachedSelectedBg!;
     final TextStyle normalBg = _cachedNormalBg!;
     final TextStyle selectedEnabled = _cachedSelectedEnabledFg!;
