@@ -5,7 +5,7 @@
 - in-progress: 구현 중
 - completed: 완료
 
-## Loop Counter: 75
+## Loop Counter: 76
 
 ## Scan Level: 3
 
@@ -14,8 +14,7 @@
 _None_
 
 ## Active
-
-_None_
+- [designed] 2026-04-05-76: Refactor RenderContainer._paintBorder() (66 lines → ≤30 lines). Extract _BorderSides record to bundle flags + style.
 
 ## Completed
 - [completed] 2026-04-03-01: Fix example widget overflow in 80x24 test terminal (8 failing tests → 0)
@@ -88,3 +87,4 @@ _None_
 - [completed] 2026-04-05-72: Reduce TextStyle allocations in RenderDropdownButton + RenderDropdownMenu (build 2 styles per paint, pass to helpers). dart analyze: 0 issues, dart test: 1080/1080
 - [completed] 2026-04-05-73: Simplify RenderFlex._getConstraintsForNonFlexChild (dead branch) + extract _horizontalFlexConstraints/_verticalFlexConstraints. dart analyze: 0 issues, dart test: 1080/1080
 - [completed] 2026-04-05-74: Extract _drawHorizontalLine from RenderTextField._drawBorderEdges (duplicate loops → single helper). dart analyze: 0 issues, dart test: 1080/1080
+- [completed] 2026-04-05-75: Add doc comments to all 11 foundation classes. dart analyze: 0 issues, dart test: 1080/1080. **Git pushed.**
