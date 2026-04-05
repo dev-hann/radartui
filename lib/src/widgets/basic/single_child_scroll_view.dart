@@ -1,8 +1,8 @@
 import '../../../radartui.dart';
 
-/// A box in which a single child can be scrolled vertically ororizontally.
+/// A box in which a single child can be scrolled vertically or horizontally.
 ///
-/// Handles keyboard-based scrolling (arrow keys,PageUp/PageDown/Home/End).
+/// Handles keyboard-based scrolling (arrow keys, PageUp/PageDown/Home/End).
 class SingleChildScrollView extends StatefulWidget {
   /// Creates a [SingleChildScrollView] with the given [child].
   const SingleChildScrollView({
@@ -132,13 +132,37 @@ class _ScrollViewport extends SingleChildRenderObjectWidget {
 class _RenderScrollViewport extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
   _RenderScrollViewport({
-    required this.scrollOffset,
-    required this.scrollDirection,
+    required int scrollOffset,
+    required Axis scrollDirection,
     this.onContentSizeChanged,
-  });
+  })  : _scrollOffset = scrollOffset,
+        _scrollDirection = scrollDirection;
 
-  int scrollOffset;
-  Axis scrollDirection;
+  int _scrollOffset;
+
+  /// The current scroll position offset.
+  int get scrollOffset => _scrollOffset;
+
+  /// Sets the scroll offset and marks the render object as needing layout.
+  set scrollOffset(int v) {
+    if (_scrollOffset == v) return;
+    _scrollOffset = v;
+    markNeedsLayout();
+  }
+
+  Axis _scrollDirection;
+
+  /// The axis along which scrolling occurs.
+  Axis get scrollDirection => _scrollDirection;
+
+  /// Sets the scroll direction and marks the render object as needing layout.
+  set scrollDirection(Axis v) {
+    if (_scrollDirection == v) return;
+    _scrollDirection = v;
+    markNeedsLayout();
+  }
+
+  /// Callback invoked when the content size changes.
   void Function(int)? onContentSizeChanged;
 
   @override
