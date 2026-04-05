@@ -88,7 +88,3 @@ class RouteObserver<R extends Route> extends NavigatorObserver {
     return _listeners.keys.where((k) => _listeners[k] == route).firstOrNull;
   }
 }
-
-extension<T> on Iterable<T> {
-  T? get firstOrNull => isEmpty ? null : first;
-}
