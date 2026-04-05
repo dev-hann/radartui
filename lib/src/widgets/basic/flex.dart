@@ -170,6 +170,12 @@ class RenderFlex extends RenderBox
     return total;
   }
 
+  int _childMainExtent(bool isHorizontal, RenderBox child) =>
+      isHorizontal ? child.size!.width : child.size!.height;
+
+  int _childCrossExtent(bool isHorizontal, RenderBox child) =>
+      isHorizontal ? child.size!.height : child.size!.width;
+
   _FlexMeasurement _measureNonFlexChildren(
     bool isHorizontal,
     BoxConstraints boxConstraints,
@@ -178,9 +184,9 @@ class RenderFlex extends RenderBox
     int crossExtent = 0;
     for (final child in children) {
       if (_getFlex(child) != 0) continue;
-      child.layout(_getConstraintsForNonFlexChild(boxConstraints));
-      mainExtent += isHorizontal ? child.size!.width : child.size!.height;
-      final childCross = isHorizontal ? child.size!.height : child.size!.width;
+      child.layout(boxConstraints.loosen());
+      mainExtent += _childMainExtent(isHorizontal, child);
+      final childCross = _childCrossExtent(isHorizontal, child);
       if (childCross > crossExtent) {
         crossExtent = childCross;
       }
@@ -202,16 +208,13 @@ class RenderFlex extends RenderBox
     for (final child in children) {
       final flex = _getFlex(child);
       if (flex <= 0) continue;
-      final maxChildExtent = spacePerFlex * flex;
-      child.layout(
-        _getConstraintsForFlexChild(
-          boxConstraints,
-          maxChildExtent,
-          _getFit(child),
-        ),
-      );
-      allocatedSpace += isHorizontal ? child.size!.width : child.size!.height;
-      final childCross = isHorizontal ? child.size!.height : child.size!.width;
+      child.layout(_getConstraintsForFlexChild(
+        boxConstraints,
+        spacePerFlex * flex,
+        _getFit(child),
+      ));
+      allocatedSpace += _childMainExtent(isHorizontal, child);
+      final childCross = _childCrossExtent(isHorizontal, child);
       if (childCross > maxCrossExtent) {
         maxCrossExtent = childCross;
       }
@@ -278,22 +281,14 @@ class RenderFlex extends RenderBox
     int mainAxisPosition = leadingSpace;
     for (final child in children) {
       final childParentData = child.parentData as FlexParentData;
-      final childMainExtent =
-          isHorizontal ? child.size!.width : child.size!.height;
-      final childCrossExtent =
-          isHorizontal ? child.size!.height : child.size!.width;
+      final childMain = _childMainExtent(isHorizontal, child);
+      final childCross = _childCrossExtent(isHorizontal, child);
+      final crossPos = _crossAxisPosition(actualCrossAxisExtent, childCross);
 
-      final crossAxisPosition = _crossAxisPosition(
-        actualCrossAxisExtent,
-        childCrossExtent,
-      );
-
-      if (isHorizontal) {
-        childParentData.offset = Offset(mainAxisPosition, crossAxisPosition);
-      } else {
-        childParentData.offset = Offset(crossAxisPosition, mainAxisPosition);
-      }
-      mainAxisPosition += childMainExtent + betweenSpace;
+      childParentData.offset = isHorizontal
+          ? Offset(mainAxisPosition, crossPos)
+          : Offset(crossPos, mainAxisPosition);
+      mainAxisPosition += childMain + betweenSpace;
     }
   }
 
@@ -318,15 +313,6 @@ class RenderFlex extends RenderBox
   FlexFit _getFit(RenderBox child) {
     final parentData = child.parentData as FlexParentData;
     return parentData.fit;
-  }
-
-  BoxConstraints _getConstraintsForNonFlexChild(BoxConstraints constraints) {
-    return BoxConstraints(
-      minWidth: 0,
-      maxWidth: constraints.maxWidth,
-      minHeight: 0,
-      maxHeight: constraints.maxHeight,
-    );
   }
 
   BoxConstraints _getConstraintsForFlexChild(
