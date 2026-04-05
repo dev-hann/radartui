@@ -6,7 +6,7 @@
 - in-progress: 구현 중
 - completed: 완료
 
-## Loop Counter: 94
+## Loop Counter: 95
 
 ## Scan Level: 3
 
@@ -43,3 +43,4 @@ _None_
 - [completed] 2026-04-05-92: Refactor RenderCard._layoutChild (39 -> 15 lines). Extract _buildChildConstraints + _resolveCardSize. dart analyze: 0, dart test: 821/821.
 - [completed] 2026-04-05-93: Cache TextStyle in RenderButton (textStyle + bgStyle). dart analyze: 0, dart test: 821/821.
 - [completed] 2026-04-05-94: Refactor RenderFlex.performLayout (32 -> 27 lines). Extract _axisExtents helper. dart analyze: 0, dart test: 821/821.
+- [completed] 2026-04-05-95: Refactor RenderTextField._drawBorderCorners (31 -> 18 lines). Extract _drawCorner helper. dart analyze: 0, dart test: 821/821. **Git pushed.**

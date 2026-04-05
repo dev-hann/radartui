@@ -648,27 +648,21 @@ class RenderTextField extends RenderBox {
     int bufferWidth,
     TextStyle borderStyle,
   ) {
-    if (offset.x > 0 && offset.y > 0) {
-      context.buffer.writeStyled(offset.x - 1, offset.y - 1, '┌', borderStyle);
-    }
-    if (offset.x + width < bufferWidth && offset.y > 0) {
-      context.buffer.writeStyled(
-        offset.x + width,
-        offset.y - 1,
-        '┐',
-        borderStyle,
-      );
-    }
-    if (offset.x > 0 && offset.y + 1 < bufferHeight) {
-      context.buffer.writeStyled(offset.x - 1, offset.y + 1, '└', borderStyle);
-    }
-    if (offset.x + width < bufferWidth && offset.y + 1 < bufferHeight) {
-      context.buffer.writeStyled(
-        offset.x + width,
-        offset.y + 1,
-        '┘',
-        borderStyle,
-      );
+    _drawCorner(context, offset.x - 1, offset.y - 1, '┌', borderStyle);
+    _drawCorner(context, offset.x + width, offset.y - 1, '┐', borderStyle);
+    _drawCorner(context, offset.x - 1, offset.y + 1, '└', borderStyle);
+    _drawCorner(context, offset.x + width, offset.y + 1, '┘', borderStyle);
+  }
+
+  void _drawCorner(
+    PaintingContext context,
+    int x,
+    int y,
+    String ch,
+    TextStyle style,
+  ) {
+    if (x >= 0 && y >= 0) {
+      context.buffer.writeStyled(x, y, ch, style);
     }
   }
 }
