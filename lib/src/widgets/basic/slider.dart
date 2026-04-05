@@ -171,7 +171,10 @@ class RenderSlider extends RenderBox {
         _activeColor = activeColor,
         _inactiveColor = inactiveColor,
         _thumbColor = thumbColor,
-        _label = label;
+        _label = label {
+    _cachedLabelWidth =
+        (label != null && label.isNotEmpty) ? 2 + stringWidth(label) : 0;
+  }
 
   int _value;
   int _min;
@@ -268,16 +271,18 @@ class RenderSlider extends RenderBox {
   TextStyle? _cachedInactiveTrackStyle;
   TextStyle? _cachedThumbStyle;
   TextStyle? _cachedLabelStyle;
+  int _cachedLabelWidth = 0;
 
   void _invalidateCache() {
     _cachedActiveTrackStyle = null;
     _cachedInactiveTrackStyle = null;
     _cachedThumbStyle = null;
     _cachedLabelStyle = null;
+    _cachedLabelWidth =
+        (label != null && label!.isNotEmpty) ? 2 + stringWidth(label!) : 0;
   }
 
-  int get _labelWidth =>
-      (label != null && label!.isNotEmpty) ? 2 + stringWidth(label!) : 0;
+  int get _labelWidth => _cachedLabelWidth;
 
   @override
   void performLayout(Constraints constraints) {
