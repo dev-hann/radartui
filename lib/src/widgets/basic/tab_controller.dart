@@ -183,19 +183,18 @@ class _TabBarState extends State<TabBar> with FocusableState<TabBar> {
   void onKeyEvent(KeyEvent event) {
     final TabController controller = _controller;
     if (event.code == KeyCode.arrowLeft) {
-      final int newIndex =
-          (controller.index - 1).clamp(0, widget.tabs.length - 1);
-      if (newIndex != controller.index) {
-        controller.animateTo(newIndex);
-        widget.onTap?.call(newIndex);
-      }
+      _moveTab(controller, -1);
     } else if (event.code == KeyCode.arrowRight) {
-      final int newIndex =
-          (controller.index + 1).clamp(0, widget.tabs.length - 1);
-      if (newIndex != controller.index) {
-        controller.animateTo(newIndex);
-        widget.onTap?.call(newIndex);
-      }
+      _moveTab(controller, 1);
+    }
+  }
+
+  void _moveTab(TabController controller, int delta) {
+    final int newIndex =
+        (controller.index + delta).clamp(0, widget.tabs.length - 1);
+    if (newIndex != controller.index) {
+      controller.animateTo(newIndex);
+      widget.onTap?.call(newIndex);
     }
   }
 
