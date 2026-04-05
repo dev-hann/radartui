@@ -261,6 +261,8 @@ class RenderMenuBar extends RenderBox {
   TextStyle? _cachedMenuClosedBgStyle;
   TextStyle? _cachedMenuClosedFgStyle;
   Color? _cachedBgColor;
+  List<int> _cachedItemWidths = const [];
+  int _cachedDropdownWidth = 0;
 
   void _ensureMenuBarStylesCached() {
     if (_cachedBgColor == backgroundColor && _cachedMenuClosedBgStyle != null) {
@@ -275,12 +277,18 @@ class RenderMenuBar extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     int totalWidth = 0;
+    final widths = <int>[];
     for (final item in items) {
-      totalWidth += stringWidth(item.label) + 2;
+      final int w = stringWidth(item.label) + 2;
+      widths.add(w);
+      totalWidth += w;
     }
+    _cachedItemWidths = widths;
     int maxDropdownHeight = 1;
+    _cachedDropdownWidth = 0;
     if (openMenuIndex >= 0 && openMenuIndex < items.length) {
       maxDropdownHeight += items[openMenuIndex].children.length;
+      _cachedDropdownWidth = _computeMaxDropdownWidth(items[openMenuIndex]);
     }
     size = Size(totalWidth, maxDropdownHeight);
   }
@@ -301,7 +309,9 @@ class RenderMenuBar extends RenderBox {
     for (int i = 0; i < items.length; i++) {
       final MenuBarItem item = items[i];
       final bool isOpen = i == openMenuIndex;
-      final int itemWidth = stringWidth(item.label) + 2;
+      final int itemWidth = i < _cachedItemWidths.length
+          ? _cachedItemWidths[i]
+          : stringWidth(item.label) + 2;
       final TextStyle bgStyle =
           isOpen ? _menuOpenBgStyle : _cachedMenuClosedBgStyle!;
       final TextStyle fgBgStyle =
@@ -317,12 +327,14 @@ class RenderMenuBar extends RenderBox {
   int _calculateDropdownX(int baseX) {
     int menuX = baseX;
     for (int i = 0; i < openMenuIndex; i++) {
-      menuX += stringWidth(items[i].label) + 2;
+      menuX += i < _cachedItemWidths.length
+          ? _cachedItemWidths[i]
+          : stringWidth(items[i].label) + 2;
     }
     return menuX;
   }
 
-  int _calculateMaxDropdownWidth(MenuBarItem item) {
+  int _computeMaxDropdownWidth(MenuBarItem item) {
     int maxWidth = 0;
     for (final child in item.children) {
       int w = stringWidth(child.label);
@@ -337,7 +349,7 @@ class RenderMenuBar extends RenderBox {
   void _paintDropdownMenu(PaintingContext context, int baseX, int y) {
     final int menuX = _calculateDropdownX(baseX);
     final MenuBarItem openItem = items[openMenuIndex];
-    final int maxWidth = _calculateMaxDropdownWidth(openItem);
+    final int maxWidth = _cachedDropdownWidth;
     for (int row = 0; row < openItem.children.length; row++) {
       _paintDropdownRow(
         context,

@@ -410,23 +410,28 @@ class RenderTabBar extends RenderBox {
   TextStyle? _cachedSelectedStyle;
   TextStyle? _cachedUnselectedStyle;
   TextStyle? _cachedIndicatorStyle;
+  List<int> _cachedTabWidths = const [];
 
   void _invalidateCache() {
     _cachedSelectedStyle = null;
     _cachedUnselectedStyle = null;
     _cachedIndicatorStyle = null;
+    _cachedTabWidths = const [];
   }
 
   @override
   void performLayout(Constraints constraints) {
     int totalWidth = 0;
+    final widths = <int>[];
     for (final tab in _tabs) {
       final int textLen = stringWidth(tab.text ?? '');
       final int iconLen =
           (tab.icon != null) ? charWidth(tab.icon!.codeUnitAt(0)) : 0;
       final int contentLen = textLen + iconLen;
+      widths.add(contentLen);
       totalWidth += labelPadding.left + contentLen + labelPadding.right;
     }
+    _cachedTabWidths = widths;
     if (_tabs.isNotEmpty && _tabs.length > 1) {
       totalWidth += _tabs.length - 1;
     }
@@ -445,7 +450,7 @@ class RenderTabBar extends RenderBox {
           isSelected ? _cachedSelectedStyle! : _cachedUnselectedStyle!;
       x += labelPadding.left;
       x += _paintTabContent(context, x, y, tab, style);
-      final int contentWidth = _tabContentWidth(tab);
+      final int contentWidth = _tabContentWidth(i);
       x += labelPadding.right;
       if (isSelected) {
         _paintSelectedIndicator(context, y,
@@ -489,7 +494,9 @@ class RenderTabBar extends RenderBox {
     _cachedIndicatorStyle = TextStyle(color: indicatorColor);
   }
 
-  int _tabContentWidth(Tab tab) {
+  int _tabContentWidth(int tabIndex) {
+    if (tabIndex < _cachedTabWidths.length) return _cachedTabWidths[tabIndex];
+    final Tab tab = _tabs[tabIndex];
     return stringWidth(tab.text ?? '') +
         (tab.icon != null ? charWidth(tab.icon!.codeUnitAt(0)) : 0);
   }

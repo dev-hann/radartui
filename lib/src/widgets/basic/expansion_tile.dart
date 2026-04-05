@@ -294,11 +294,13 @@ class RenderExpansionTile extends RenderBox
   TextStyle? _cachedIconStyle;
   TextStyle? _cachedTitleStyle;
   TextStyle? _cachedTitleBoldStyle;
+  int? _cachedTitleWidth;
 
   void _invalidateCache() {
     _cachedIconStyle = null;
     _cachedTitleStyle = null;
     _cachedTitleBoldStyle = null;
+    _cachedTitleWidth = null;
   }
 
   @override
@@ -310,7 +312,8 @@ class RenderExpansionTile extends RenderBox
 
   @override
   void performLayout(Constraints constraints) {
-    final int headerWidth = 2 + stringWidth(title);
+    _cachedTitleWidth ??= stringWidth(title);
+    final int headerWidth = 2 + _cachedTitleWidth!;
     const int headerH = 1;
 
     int maxChildWidth = headerWidth;

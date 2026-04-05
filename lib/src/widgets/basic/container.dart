@@ -82,6 +82,8 @@ class RenderContainer extends RenderBox
     if (_color == value) return;
     _color = value;
     _cachedBgStyle = null;
+    _cachedBorderStyle = null;
+    _cachedBorderSides = null;
   }
 
   int? _width;
@@ -97,6 +99,8 @@ class RenderContainer extends RenderBox
   Border? border;
 
   TextStyle? _cachedBgStyle;
+  TextStyle? _cachedBorderStyle;
+  _BorderSides? _cachedBorderSides;
 
   /// The fixed width, or `null` to size from the child.
   int? get containerWidth => _width;
@@ -229,13 +233,15 @@ class RenderContainer extends RenderBox
     int innerWidth,
     int innerHeight,
   ) {
-    final sides = _BorderSides(
+    _cachedBorderStyle ??= TextStyle(backgroundColor: _color);
+    _cachedBorderSides ??= _BorderSides(
       left: border!.left.isNotEmpty,
       right: border!.right.isNotEmpty,
       top: border!.top.isNotEmpty,
       bottom: border!.bottom.isNotEmpty,
-      style: TextStyle(backgroundColor: color),
+      style: _cachedBorderStyle!,
     );
+    final sides = _cachedBorderSides!;
     if (sides.top) {
       _paintHorizontalBorder(context, innerOffset, innerWidth, border!.top,
           isTop: true, sides: sides);
