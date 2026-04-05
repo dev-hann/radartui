@@ -76,6 +76,14 @@ class RenderContainer extends RenderBox
         _border = border;
 
   Color? _color;
+  int? _width;
+  int? _height;
+  EdgeInsets? _padding;
+  EdgeInsets? _margin;
+  Border? _border;
+  TextStyle? _cachedBgStyle;
+  TextStyle? _cachedBorderStyle;
+  _BorderSides? _cachedBorderSides;
 
   /// The background color, or `null` for a transparent background.
   Color? get color => _color;
@@ -88,12 +96,6 @@ class RenderContainer extends RenderBox
     _cachedBorderStyle = null;
     _cachedBorderSides = null;
   }
-
-  int? _width;
-  int? _height;
-  EdgeInsets? _padding;
-  EdgeInsets? _margin;
-  Border? _border;
 
   /// Inner padding between the border and the child.
   EdgeInsets? get padding => _padding;
@@ -125,10 +127,6 @@ class RenderContainer extends RenderBox
     _cachedBorderSides = null;
     markNeedsLayout();
   }
-
-  TextStyle? _cachedBgStyle;
-  TextStyle? _cachedBorderStyle;
-  _BorderSides? _cachedBorderSides;
 
   /// The fixed width, or `null` to size from the child.
   int? get containerWidth => _width;

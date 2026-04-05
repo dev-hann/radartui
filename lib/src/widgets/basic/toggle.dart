@@ -286,13 +286,8 @@ class RenderToggle extends RenderBox {
   }
 
   Color _getBackgroundColor() {
-    if (!enabled) {
-      return Color.black;
-    } else if (value) {
-      return activeColor;
-    } else {
-      return Color.black;
-    }
+    if (!enabled || !value) return Color.black;
+    return activeColor;
   }
 
   Color _getIndicatorColor() {

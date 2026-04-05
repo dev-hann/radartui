@@ -315,6 +315,7 @@ class RenderTabBar extends RenderBox {
 
   /// Sets the list of tabs and invalidates the paint cache.
   set tabs(List<Tab> value) {
+    if (identical(_tabs, value)) return;
     _tabs = value;
     _invalidateCache();
   }
