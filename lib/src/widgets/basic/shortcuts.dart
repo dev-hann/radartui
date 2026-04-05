@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// Represents a keyboard shortcut (key + optional modifiers).
+///
+/// Use with [Shortcuts] widget to bind actions to key combinations.
+/// Example: `ShortcutActivator(key: KeyCode.s, ctrl: true)` for Ctrl+S.
 class ShortcutActivator {
   const ShortcutActivator({required this.key, this.ctrl, this.alt, this.shift});
 

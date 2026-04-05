@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// Describes the visual appearance of the application.
+///
+/// Contains color and style tokens that [Theme] widgets distribute to
+/// descendants via [Theme.of].
 class ThemeData {
   const ThemeData({
     this.primaryColor = Colors.blue,

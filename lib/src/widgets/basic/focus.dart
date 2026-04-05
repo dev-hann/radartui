@@ -1,5 +1,10 @@
 import '../../../radartui.dart';
 
+/// Represents a focus scope node in the focus tree.
+///
+/// Each [FocusNode] can receive or relinquish keyboard focus. Use [Focus]
+/// widget to attach a [FocusNode] to the tree, and [FocusScopeNode] to
+/// create focus boundaries.
 class FocusNode extends ChangeNotifier {
   FocusNode({this.canRequestFocus = true});
 

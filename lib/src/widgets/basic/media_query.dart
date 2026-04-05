@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// Contains terminal dimensions and safe area insets.
+///
+/// Use [MediaQuery.of] to obtain the current [MediaQueryData], which provides
+/// [size] (terminal columns × rows) and [padding] (safe area insets).
 class MediaQueryData {
   const MediaQueryData({required this.size, this.padding = EdgeInsets.zero});
   final Size size;

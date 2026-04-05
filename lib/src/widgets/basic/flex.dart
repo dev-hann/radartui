@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A widget that displays its children in a horizontal or vertical line.
+///
+/// Use [Row] for horizontal or [Column] for vertical instead of using [Flex]
+/// directly. Controls alignment via [MainAxisAlignment] and [CrossAxisAlignment].
 class Flex extends MultiChildRenderObjectWidget {
   const Flex({
     super.key,
