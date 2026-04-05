@@ -5,7 +5,7 @@
 - in-progress: 구현 중
 - completed: 완료
 
-## Loop Counter: 74
+## Loop Counter: 75
 
 ## Scan Level: 3
 
@@ -87,3 +87,4 @@ _None_
 - [completed] 2026-04-05-71: Cache TextStyle allocations in RenderTabBar.paint() (3 styles: selected, unselected, indicator). dart analyze: 0 issues, dart test: 1080/1080
 - [completed] 2026-04-05-72: Reduce TextStyle allocations in RenderDropdownButton + RenderDropdownMenu (build 2 styles per paint, pass to helpers). dart analyze: 0 issues, dart test: 1080/1080
 - [completed] 2026-04-05-73: Simplify RenderFlex._getConstraintsForNonFlexChild (dead branch) + extract _horizontalFlexConstraints/_verticalFlexConstraints. dart analyze: 0 issues, dart test: 1080/1080
+- [completed] 2026-04-05-74: Extract _drawHorizontalLine from RenderTextField._drawBorderEdges (duplicate loops → single helper). dart analyze: 0 issues, dart test: 1080/1080

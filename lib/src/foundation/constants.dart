@@ -1,5 +1,6 @@
 import '../rendering.dart';
 
+/// Layout-related constants used across the framework.
 class LayoutConstants {
   static const int maxWidth = Constraints.infinity;
   static const int maxHeight = Constraints.infinity;

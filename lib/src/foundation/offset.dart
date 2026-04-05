@@ -1,3 +1,6 @@
+/// An immutable 2D integer offset with [x] and [y] coordinates.
+///
+/// Used for positioning within the terminal grid (0-based).
 class Offset {
   const Offset(this.x, this.y);
   final int x, y;
