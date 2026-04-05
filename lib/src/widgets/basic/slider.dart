@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A horizontal slider for selecting a numeric value within a range.
+///
+/// Displays a track with a movable thumb. Use [divisions] to snap to discrete
+/// steps between [min] and [max]. Calls [onChanged] as the user adjusts.
 class Slider extends StatefulWidget {
   const Slider({
     super.key,

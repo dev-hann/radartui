@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A single radio button that selects one value from a mutually exclusive group.
+///
+/// Use [groupValue] to identify the currently selected value for the group.
+/// When the user activates this radio, [onChanged] is called with [value].
 class Radio<T> extends StatefulWidget {
   const Radio({
     super.key,
