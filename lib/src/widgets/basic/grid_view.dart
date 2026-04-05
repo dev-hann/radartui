@@ -215,7 +215,6 @@ class RenderGridView extends RenderBox
     final boxConstraints = constraints.asBoxConstraints;
 
     for (final child in children) {
-      setupParentData(child);
       child.layout(boxConstraints.loosen());
     }
 
