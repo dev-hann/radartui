@@ -447,12 +447,16 @@ class _TextField extends RenderObjectWidget {
 /// Render object that paints a text input field with cursor and border.
 class RenderTextField extends RenderBox {
   RenderTextField({
-    required this.text,
-    required this.cursorPosition,
-    this.placeholder,
-    this.style,
-    required this.hasFocus,
-  });
+    required String text,
+    required int cursorPosition,
+    String? placeholder,
+    TextStyle? style,
+    required bool hasFocus,
+  })  : _text = text,
+        _cursorPosition = cursorPosition,
+        _placeholder = placeholder,
+        _style = style,
+        _hasFocus = hasFocus;
 
   static const TextStyle _cursorStyle = TextStyle(
     color: Color.black,
@@ -464,27 +468,66 @@ class RenderTextField extends RenderBox {
     bold: true,
   );
 
-  String text;
+  String _text;
+  int _cursorPosition;
+  String? _placeholder;
+  TextStyle? _style;
+  bool _hasFocus;
+
+  /// The current text content.
+  String get text => _text;
+
+  /// Sets the text content.
+  set text(String v) {
+    if (_text == v) return;
+    _text = v;
+  }
 
   /// The position of the cursor within the text.
-  int cursorPosition;
+  int get cursorPosition => _cursorPosition;
+
+  /// Sets the cursor position.
+  set cursorPosition(int v) {
+    if (_cursorPosition == v) return;
+    _cursorPosition = v;
+  }
 
   /// Placeholder text shown when [text] is empty.
-  String? placeholder;
+  String? get placeholder => _placeholder;
+
+  /// Sets the placeholder text.
+  set placeholder(String? v) {
+    if (_placeholder == v) return;
+    _placeholder = v;
+    _cachedPlaceholderStyle = null;
+  }
 
   /// The text style applied to the input text.
-  TextStyle? style;
+  TextStyle? get style => _style;
+
+  /// Sets the text style.
+  set style(TextStyle? v) {
+    if (_style == v) return;
+    _style = v;
+    _cachedPlaceholderStyle = null;
+  }
 
   /// Whether the text field currently has keyboard focus.
-  bool hasFocus;
+  bool get hasFocus => _hasFocus;
+
+  /// Sets the focus state.
+  set hasFocus(bool v) {
+    if (_hasFocus == v) return;
+    _hasFocus = v;
+  }
 
   TextStyle? _cachedPlaceholderStyle;
   TextStyle? _placeholderCacheKey;
 
   TextStyle _resolveDisplayStyle() {
-    final baseStyle = style ?? const TextStyle(color: Color.white);
-    if (text.isEmpty && placeholder != null) {
-      if (_cachedPlaceholderStyle == null || _placeholderCacheKey != style) {
+    final baseStyle = _style ?? const TextStyle(color: Color.white);
+    if (_text.isEmpty && _placeholder != null) {
+      if (_cachedPlaceholderStyle == null || _placeholderCacheKey != _style) {
         _cachedPlaceholderStyle = TextStyle(
           color: Color.brightBlack,
           backgroundColor: baseStyle.backgroundColor,
@@ -492,7 +535,7 @@ class RenderTextField extends RenderBox {
           italic: true,
           underline: false,
         );
-        _placeholderCacheKey = style;
+        _placeholderCacheKey = _style;
       }
       return _cachedPlaceholderStyle!;
     }
@@ -500,7 +543,7 @@ class RenderTextField extends RenderBox {
   }
 
   String get _displayText =>
-      text.isEmpty && placeholder != null ? placeholder! : text;
+      _text.isEmpty && _placeholder != null ? _placeholder! : _text;
 
   @override
   void performLayout(Constraints constraints) {
@@ -517,22 +560,22 @@ class RenderTextField extends RenderBox {
     final displayText = _displayText;
     final displayStyle = _resolveDisplayStyle();
 
-    if (hasFocus) {
+    if (_hasFocus) {
       _drawBorder(context, offset, size!);
     }
 
     final scrollOffset = _computeScrollOffset(displayText.length);
     _paintText(context, offset, displayText, displayStyle, scrollOffset);
 
-    if (hasFocus) {
+    if (_hasFocus) {
       _paintCursor(context, offset, displayText, scrollOffset);
     }
   }
 
   int _computeScrollOffset(int textLength) {
     final availableWidth = size!.width;
-    if (textLength >= availableWidth && cursorPosition >= availableWidth) {
-      return cursorPosition - availableWidth + 1;
+    if (textLength >= availableWidth && _cursorPosition >= availableWidth) {
+      return _cursorPosition - availableWidth + 1;
     }
     return 0;
   }
@@ -562,18 +605,18 @@ class RenderTextField extends RenderBox {
     int scrollOffset,
   ) {
     final availableWidth = size!.width;
-    final cursorScreenX = offset.x + cursorPosition - scrollOffset;
+    final cursorScreenX = offset.x + _cursorPosition - scrollOffset;
 
     if (cursorScreenX < offset.x ||
         cursorScreenX >= offset.x + availableWidth) {
       return;
     }
 
-    if (cursorPosition < text.length) {
+    if (_cursorPosition < _text.length) {
       context.buffer.writeStyled(
         cursorScreenX,
         offset.y,
-        text[cursorPosition],
+        _text[_cursorPosition],
         _cursorStyle,
       );
     } else {
