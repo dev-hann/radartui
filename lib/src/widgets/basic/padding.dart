@@ -22,10 +22,19 @@ class Padding extends SingleChildRenderObjectWidget {
 /// The render object for [Padding], which insets its child by the given [EdgeInsets].
 class RenderPadding extends SingleChildRenderBox {
   /// Creates a [RenderPadding] with the given [padding].
-  RenderPadding({required this.padding});
+  RenderPadding({required EdgeInsets padding}) : _padding = padding;
+
+  EdgeInsets _padding;
 
   /// The amount of inset to apply.
-  EdgeInsets padding;
+  EdgeInsets get padding => _padding;
+
+  /// Sets the padding and marks the render object as needing layout.
+  set padding(EdgeInsets v) {
+    if (_padding == v) return;
+    _padding = v;
+    markNeedsLayout();
+  }
 
   /// Deflates the incoming constraints by the padding amount.
   @override
