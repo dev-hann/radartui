@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A compact inline chart that renders a list of numeric [data] as a sparkline.
+///
+/// Maps each value to a block character whose height is proportional to the
+/// value's position within the data range. Optionally set [color] for the bars.
 class Sparkline extends StatelessWidget {
   const Sparkline({
     super.key,
