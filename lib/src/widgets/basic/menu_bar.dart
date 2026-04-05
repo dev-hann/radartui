@@ -255,6 +255,7 @@ class RenderMenuBar extends RenderBox {
     if (identical(_items, v)) return;
     _items = v;
     _invalidateCache();
+    markNeedsLayout();
   }
 
   /// Whether the menu bar currently has keyboard focus.
@@ -265,6 +266,7 @@ class RenderMenuBar extends RenderBox {
     if (_focused == v) return;
     _focused = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The index of the currently open dropdown, or -1 if none is open.
@@ -275,6 +277,7 @@ class RenderMenuBar extends RenderBox {
     if (_openMenuIndex == v) return;
     _openMenuIndex = v;
     _invalidateCache();
+    markNeedsLayout();
   }
 
   /// The index of the highlighted item in the open dropdown.
@@ -284,6 +287,7 @@ class RenderMenuBar extends RenderBox {
   set selectedItemIndex(int v) {
     if (_selectedItemIndex == v) return;
     _selectedItemIndex = v;
+    markNeedsPaint();
   }
 
   /// The background color of the menu bar.
@@ -294,6 +298,7 @@ class RenderMenuBar extends RenderBox {
     if (_backgroundColor == v) return;
     _backgroundColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   TextStyle? _cachedMenuClosedBgStyle;

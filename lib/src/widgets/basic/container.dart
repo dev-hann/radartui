@@ -95,6 +95,7 @@ class RenderContainer extends RenderBox
     _cachedBgStyle = null;
     _cachedBorderStyle = null;
     _cachedBorderSides = null;
+    markNeedsPaint();
   }
 
   /// Inner padding between the border and the child.

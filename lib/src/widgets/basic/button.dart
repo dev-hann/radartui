@@ -133,6 +133,7 @@ class RenderButton extends RenderBox {
     if (_enabled == value) return;
     _enabled = value;
     _invalidateStyleCache();
+    markNeedsPaint();
   }
 
   bool _focused;
@@ -141,6 +142,7 @@ class RenderButton extends RenderBox {
     if (_focused == value) return;
     _focused = value;
     _invalidateStyleCache();
+    markNeedsPaint();
   }
 
   ButtonStyle _style;
@@ -149,6 +151,7 @@ class RenderButton extends RenderBox {
     if (_style == value) return;
     _style = value;
     _invalidateStyleCache();
+    markNeedsLayout();
   }
 
   VoidCallback? onTap;

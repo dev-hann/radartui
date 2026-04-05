@@ -144,6 +144,7 @@ class RenderToggle extends RenderBox {
     if (_value == v) return;
     _value = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// Whether the toggle currently has keyboard focus.
@@ -154,6 +155,7 @@ class RenderToggle extends RenderBox {
     if (_focused == v) return;
     _focused = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// Whether the toggle is interactive.
@@ -164,6 +166,7 @@ class RenderToggle extends RenderBox {
     if (_enabled == v) return;
     _enabled = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color when the toggle is active.
@@ -174,6 +177,7 @@ class RenderToggle extends RenderBox {
     if (_activeColor == v) return;
     _activeColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color of the indicator when inactive.
@@ -184,6 +188,7 @@ class RenderToggle extends RenderBox {
     if (_inactiveColor == v) return;
     _inactiveColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// An optional text label displayed beside the toggle.
@@ -194,6 +199,7 @@ class RenderToggle extends RenderBox {
     if (_label == v) return;
     _label = v;
     _invalidateCache();
+    markNeedsLayout();
   }
 
   TextStyle? _cachedBackgroundStyle;

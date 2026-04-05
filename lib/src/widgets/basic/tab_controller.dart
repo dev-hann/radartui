@@ -318,6 +318,7 @@ class RenderTabBar extends RenderBox {
     if (identical(_tabs, value)) return;
     _tabs = value;
     _invalidateCache();
+    markNeedsLayout();
   }
 
   int _currentIndex;
@@ -330,6 +331,7 @@ class RenderTabBar extends RenderBox {
     if (_currentIndex == v) return;
     _currentIndex = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   bool _focused;
@@ -342,6 +344,7 @@ class RenderTabBar extends RenderBox {
     if (_focused == v) return;
     _focused = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   Color _indicatorColor;
@@ -354,6 +357,7 @@ class RenderTabBar extends RenderBox {
     if (_indicatorColor == v) return;
     _indicatorColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   Color _labelColor;
@@ -366,6 +370,7 @@ class RenderTabBar extends RenderBox {
     if (_labelColor == v) return;
     _labelColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   Color _unselectedLabelColor;
@@ -378,6 +383,7 @@ class RenderTabBar extends RenderBox {
     if (_unselectedLabelColor == v) return;
     _unselectedLabelColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   TextStyle? _labelStyle;
@@ -390,6 +396,7 @@ class RenderTabBar extends RenderBox {
     if (_labelStyle == v) return;
     _labelStyle = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   TextStyle? _unselectedLabelStyle;
@@ -402,6 +409,7 @@ class RenderTabBar extends RenderBox {
     if (_unselectedLabelStyle == v) return;
     _unselectedLabelStyle = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   EdgeInsets _labelPadding;
@@ -414,6 +422,7 @@ class RenderTabBar extends RenderBox {
     if (_labelPadding == v) return;
     _labelPadding = v;
     _invalidateCache();
+    markNeedsLayout();
   }
 
   TextStyle? _cachedSelectedStyle;
