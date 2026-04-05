@@ -206,17 +206,7 @@ class Actions extends StatefulWidget {
 
   /// Looks up the [Action] for intent type [T] by traversing ancestors.
   static Action? lookup<T extends Intent>(BuildContext context) {
-    final element = context as Element;
-    Element? current = element.parent;
-    while (current != null) {
-      if (current.widget is _ActionsScope) {
-        final scope = current.widget as _ActionsScope;
-        final action = scope.actions[T];
-        if (action != null) return action;
-      }
-      current = current.parent;
-    }
-    return null;
+    return lookupByType(T, context);
   }
 
   /// Looks up the [Action] for [intentType] by traversing ancestors.
