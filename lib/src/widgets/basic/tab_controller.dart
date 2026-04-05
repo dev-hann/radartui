@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// Controls the active tab index for [TabBar] and [TabBarView].
+///
+/// Notifies listeners when the index changes. Use [DefaultTabController] to
+/// provide a [TabController] to the widget tree via inheritance.
 class TabController extends ChangeNotifier {
   TabController({
     int initialIndex = 0,
@@ -22,6 +26,10 @@ class TabController extends ChangeNotifier {
   }
 }
 
+/// Provides a [TabController] to descendant widgets via inheritance.
+///
+/// Wrap a [TabBar] and [TabBarView] pair in a [DefaultTabController] so they
+/// share the same controller without passing it manually.
 class DefaultTabController extends InheritedWidget {
   const DefaultTabController({
     super.key,
@@ -43,6 +51,9 @@ class DefaultTabController extends InheritedWidget {
   }
 }
 
+/// A single tab entry displayed in a [TabBar].
+///
+/// Provide either [text] or [icon] (or both) for the tab's appearance.
 class Tab {
   const Tab({this.text, this.icon});
 
@@ -50,6 +61,10 @@ class Tab {
   final String? icon;
 }
 
+/// A horizontal row of [Tab] widgets that lets the user switch views.
+///
+/// Highlights the active tab and calls [onTabChanged] when a new tab is selected.
+/// Must be used with a [TabController] (typically via [DefaultTabController]).
 class TabBar extends StatefulWidget {
   const TabBar({
     super.key,
@@ -411,6 +426,10 @@ class RenderTabBar extends RenderBox {
   }
 }
 
+/// Displays the content corresponding to the active tab in a [TabBar].
+///
+/// Shows one child at a time based on the [TabController.index]. Must receive
+/// the same [controller] as the paired [TabBar].
 class TabBarView extends StatefulWidget {
   const TabBarView({
     super.key,
