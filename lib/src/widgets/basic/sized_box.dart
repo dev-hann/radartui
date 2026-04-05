@@ -40,13 +40,33 @@ class SizedBox extends SingleChildRenderObjectWidget {
 class RenderSizedBox extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
   /// Creates a [RenderSizedBox] with the given dimensions.
-  RenderSizedBox(this.boxWidth, this.boxHeight);
+  RenderSizedBox(int boxWidth, int boxHeight)
+      : _boxWidth = boxWidth,
+        _boxHeight = boxHeight;
+
+  int _boxWidth;
 
   /// The fixed width.
-  int boxWidth;
+  int get boxWidth => _boxWidth;
+
+  /// Sets the width and marks the render object as needing layout.
+  set boxWidth(int v) {
+    if (_boxWidth == v) return;
+    _boxWidth = v;
+    markNeedsLayout();
+  }
+
+  int _boxHeight;
 
   /// The fixed height.
-  int boxHeight;
+  int get boxHeight => _boxHeight;
+
+  /// Sets the height and marks the render object as needing layout.
+  set boxHeight(int v) {
+    if (_boxHeight == v) return;
+    _boxHeight = v;
+    markNeedsLayout();
+  }
 
   @override
   void performLayout(Constraints constraints) {
