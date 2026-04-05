@@ -65,12 +65,15 @@ class RenderContainer extends RenderBox
     Color? color,
     int? width,
     int? height,
-    this.padding,
-    this.margin,
-    this.border,
+    EdgeInsets? padding,
+    EdgeInsets? margin,
+    Border? border,
   })  : _color = color,
         _width = width,
-        _height = height;
+        _height = height,
+        _padding = padding,
+        _margin = margin,
+        _border = border;
 
   Color? _color;
 
@@ -88,15 +91,40 @@ class RenderContainer extends RenderBox
 
   int? _width;
   int? _height;
+  EdgeInsets? _padding;
+  EdgeInsets? _margin;
+  Border? _border;
 
   /// Inner padding between the border and the child.
-  EdgeInsets? padding;
+  EdgeInsets? get padding => _padding;
+
+  /// Sets the inner padding and marks layout as needed.
+  set padding(EdgeInsets? value) {
+    if (_padding == value) return;
+    _padding = value;
+    markNeedsLayout();
+  }
 
   /// Outer margin around the container.
-  EdgeInsets? margin;
+  EdgeInsets? get margin => _margin;
+
+  /// Sets the outer margin and marks layout as needed.
+  set margin(EdgeInsets? value) {
+    if (_margin == value) return;
+    _margin = value;
+    markNeedsLayout();
+  }
 
   /// The box-drawing border characters.
-  Border? border;
+  Border? get border => _border;
+
+  /// Sets the border characters and marks layout as needed.
+  set border(Border? value) {
+    if (_border == value) return;
+    _border = value;
+    _cachedBorderSides = null;
+    markNeedsLayout();
+  }
 
   TextStyle? _cachedBgStyle;
   TextStyle? _cachedBorderStyle;
@@ -105,14 +133,22 @@ class RenderContainer extends RenderBox
   /// The fixed width, or `null` to size from the child.
   int? get containerWidth => _width;
 
-  /// Sets the fixed width.
-  set containerWidth(int? value) => _width = value;
+  /// Sets the fixed width and marks layout as needed.
+  set containerWidth(int? value) {
+    if (_width == value) return;
+    _width = value;
+    markNeedsLayout();
+  }
 
   /// The fixed height, or `null` to size from the child.
   int? get containerHeight => _height;
 
-  /// Sets the fixed height.
-  set containerHeight(int? value) => _height = value;
+  /// Sets the fixed height and marks layout as needed.
+  set containerHeight(int? value) {
+    if (_height == value) return;
+    _height = value;
+    markNeedsLayout();
+  }
 
   bool get _hasBorder {
     if (border == null) return false;

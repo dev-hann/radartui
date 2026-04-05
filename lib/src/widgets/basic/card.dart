@@ -186,17 +186,18 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     }
   }
 
+  int _innerWidth(int width) => width > 2 ? width - 2 : 0;
+
   void _paintTopBorder(
     PaintingContext context,
     Offset offset,
     int width,
     TextStyle style,
   ) {
-    final int inner = width > 2 ? width - 2 : 0;
     context.writeString(
       offset.x,
       offset.y,
-      '┌${'─' * inner}┐',
+      '┌${'─' * _innerWidth(width)}┐',
       style,
     );
   }
@@ -227,11 +228,10 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     TextStyle style,
   ) {
     final int y = offset.y.toInt() + height - 1;
-    final int inner = width > 2 ? width - 2 : 0;
     context.writeString(
       offset.x,
       y,
-      '└${'─' * inner}┘',
+      '└${'─' * _innerWidth(width)}┘',
       style,
     );
   }

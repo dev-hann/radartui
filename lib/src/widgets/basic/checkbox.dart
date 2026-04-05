@@ -295,32 +295,20 @@ class RenderCheckbox extends RenderBox {
   }
 
   Color _getBackgroundColor() {
-    if (!enabled) {
-      return Color.brightBlack;
-    } else if (value) {
-      return activeColor;
-    } else {
-      return Color.black;
-    }
+    if (!enabled) return Color.brightBlack;
+    if (value) return activeColor;
+    return Color.black;
   }
 
   Color _getForegroundColor() {
-    if (!enabled) {
-      return Color.brightBlack;
-    } else if (value) {
-      return checkColor;
-    } else {
-      return Color.white;
-    }
+    if (!enabled) return Color.brightBlack;
+    if (value) return checkColor;
+    return Color.white;
   }
 
   String _getCheckChar() {
-    if (!enabled) {
-      return value ? '×' : '';
-    } else if (value) {
-      return '✓';
-    } else {
-      return '';
-    }
+    if (!enabled) return value ? '×' : '';
+    if (value) return '✓';
+    return '';
   }
 }

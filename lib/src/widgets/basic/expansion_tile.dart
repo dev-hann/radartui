@@ -336,8 +336,9 @@ class RenderExpansionTile extends RenderBox
       }
     }
 
+    final int childAndBorder = maxChildWidth + 2;
     final int totalWidth =
-        maxChildWidth + 2 > headerWidth ? maxChildWidth + 2 : headerWidth;
+        childAndBorder > headerWidth ? childAndBorder : headerWidth;
     final int totalHeight = headerH + totalChildHeight;
     size = Size(totalWidth, totalHeight);
   }
