@@ -10,7 +10,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      tester.assertBufferLines(['█']);
+      tester.assertBufferLines(['█│', '─┘']);
     });
 
     testWidgets('Form renders error text on validation failure', (
