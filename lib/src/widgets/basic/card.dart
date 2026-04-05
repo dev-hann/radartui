@@ -19,9 +19,29 @@ class Card extends SingleChildRenderObjectWidget {
 }
 
 class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
-  RenderCard({this.color, this.padding});
-  Color? color;
-  EdgeInsets? padding;
+  RenderCard({Color? color, EdgeInsets? padding})
+      : _color = color,
+        _padding = padding;
+
+  Color? _color;
+  EdgeInsets? _padding;
+
+  Color? get color => _color;
+  set color(Color? v) {
+    _color = v;
+    _invalidateCache();
+  }
+
+  EdgeInsets? get padding => _padding;
+  set padding(EdgeInsets? v) {
+    _padding = v;
+  }
+
+  TextStyle? _cachedBorderStyle;
+
+  void _invalidateCache() {
+    _cachedBorderStyle = null;
+  }
 
   @override
   void performLayout(Constraints constraints) {
@@ -88,13 +108,19 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     final totalPadding = padding ?? const EdgeInsets.all(0);
     final width = size!.width;
     final height = size!.height;
-    final borderStyle = TextStyle(backgroundColor: color);
+    _ensureStylesCached();
+    final TextStyle borderStyle = _cachedBorderStyle!;
 
     _paintBackground(context, offset, width, height);
     _paintChild(context, offset, totalPadding);
     _paintTopBorder(context, offset, width, borderStyle);
     _paintSideBorders(context, offset, width, height, borderStyle);
     _paintBottomBorder(context, offset, width, height, borderStyle);
+  }
+
+  void _ensureStylesCached() {
+    if (_cachedBorderStyle != null) return;
+    _cachedBorderStyle = TextStyle(backgroundColor: _color);
   }
 
   void _paintBackground(
@@ -104,7 +130,7 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     int height,
   ) {
     if (color == null) return;
-    final bgStyle = TextStyle(backgroundColor: color);
+    final TextStyle bgStyle = _cachedBorderStyle!;
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         context.buffer.writeStyled(offset.x + x, offset.y + y, ' ', bgStyle);
