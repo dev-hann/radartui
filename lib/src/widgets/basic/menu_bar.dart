@@ -211,12 +211,16 @@ class _MenuBarRenderWidget extends RenderObjectWidget {
 class RenderMenuBar extends RenderBox {
   /// Creates a [RenderMenuBar] with the given items and state.
   RenderMenuBar({
-    required this.items,
-    required this.focused,
-    required this.openMenuIndex,
-    required this.selectedItemIndex,
-    required this.backgroundColor,
-  });
+    required List<MenuBarItem> items,
+    required bool focused,
+    required int openMenuIndex,
+    required int selectedItemIndex,
+    required Color backgroundColor,
+  })  : _items = items,
+        _focused = focused,
+        _openMenuIndex = openMenuIndex,
+        _selectedItemIndex = selectedItemIndex,
+        _backgroundColor = backgroundColor;
 
   static const TextStyle _menuOpenBgStyle =
       TextStyle(backgroundColor: Color.white);
@@ -237,20 +241,60 @@ class RenderMenuBar extends RenderBox {
   static const TextStyle _dropdownShortcutNormalStyle =
       TextStyle(color: Color.brightBlack, backgroundColor: Color.black);
 
+  List<MenuBarItem> _items;
+  bool _focused;
+  int _openMenuIndex;
+  int _selectedItemIndex;
+  Color _backgroundColor;
+
   /// The top-level menu bar items.
-  List<MenuBarItem> items;
+  List<MenuBarItem> get items => _items;
+
+  /// Sets the menu bar items and invalidates cached styles.
+  set items(List<MenuBarItem> v) {
+    if (identical(_items, v)) return;
+    _items = v;
+    _invalidateCache();
+  }
 
   /// Whether the menu bar currently has keyboard focus.
-  bool focused;
+  bool get focused => _focused;
+
+  /// Sets the focus state and invalidates cached styles.
+  set focused(bool v) {
+    if (_focused == v) return;
+    _focused = v;
+    _invalidateCache();
+  }
 
   /// The index of the currently open dropdown, or -1 if none is open.
-  int openMenuIndex;
+  int get openMenuIndex => _openMenuIndex;
+
+  /// Sets the open menu index and invalidates cached styles.
+  set openMenuIndex(int v) {
+    if (_openMenuIndex == v) return;
+    _openMenuIndex = v;
+    _invalidateCache();
+  }
 
   /// The index of the highlighted item in the open dropdown.
-  int selectedItemIndex;
+  int get selectedItemIndex => _selectedItemIndex;
+
+  /// Sets the selected item index.
+  set selectedItemIndex(int v) {
+    if (_selectedItemIndex == v) return;
+    _selectedItemIndex = v;
+  }
 
   /// The background color of the menu bar.
-  Color backgroundColor;
+  Color get backgroundColor => _backgroundColor;
+
+  /// Sets the background color and invalidates cached styles.
+  set backgroundColor(Color v) {
+    if (_backgroundColor == v) return;
+    _backgroundColor = v;
+    _invalidateCache();
+  }
 
   TextStyle? _cachedMenuClosedBgStyle;
   TextStyle? _cachedMenuClosedFgStyle;
@@ -258,6 +302,11 @@ class RenderMenuBar extends RenderBox {
   List<int> _cachedItemWidths = const [];
   int _cachedDropdownWidth = 0;
   Map<String, int> _cachedShortcutWidths = const {};
+
+  void _invalidateCache() {
+    _cachedMenuClosedBgStyle = null;
+    _cachedMenuClosedFgStyle = null;
+  }
 
   void _ensureMenuBarStylesCached() {
     if (_cachedBgColor == backgroundColor && _cachedMenuClosedBgStyle != null) {
