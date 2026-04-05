@@ -68,39 +68,55 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     EdgeInsets totalPadding,
     int borderSize,
   ) {
+    child!.layout(
+      _buildChildConstraints(boxConstraints, totalPadding, borderSize),
+    );
+    size = _resolveCardSize(
+      boxConstraints,
+      totalPadding,
+      borderSize,
+      child!.size!,
+    );
+  }
+
+  BoxConstraints _buildChildConstraints(
+    BoxConstraints boxConstraints,
+    EdgeInsets totalPadding,
+    int borderSize,
+  ) {
     final availableWidth = boxConstraints.maxWidth - borderSize;
     final availableHeight = boxConstraints.maxHeight - borderSize;
-    final childMaxWidth =
-        availableWidth - totalPadding.left - totalPadding.right;
-    final childMaxHeight =
-        availableHeight - totalPadding.top - totalPadding.bottom;
+    return BoxConstraints(
+      minWidth: 0,
+      maxWidth: availableWidth - totalPadding.left - totalPadding.right,
+      minHeight: 0,
+      maxHeight: availableHeight - totalPadding.top - totalPadding.bottom,
+    );
+  }
 
-    child!.layout(
-      BoxConstraints(
-        minWidth: 0,
-        maxWidth: childMaxWidth,
-        minHeight: 0,
-        maxHeight: childMaxHeight,
+  Size _resolveCardSize(
+    BoxConstraints boxConstraints,
+    EdgeInsets totalPadding,
+    int borderSize,
+    Size childSize,
+  ) {
+    final contentWidth =
+        childSize.width + totalPadding.left + totalPadding.right + borderSize;
+    final rawHeight =
+        childSize.height + totalPadding.top + totalPadding.bottom + borderSize;
+    final minHeight = borderSize + totalPadding.top + 1 + totalPadding.bottom;
+    return Size(
+      _resolveDimension(
+        boxConstraints.minWidth,
+        boxConstraints.maxWidth,
+        contentWidth,
+      ),
+      _resolveDimension(
+        boxConstraints.minHeight,
+        boxConstraints.maxHeight,
+        rawHeight < minHeight ? minHeight : rawHeight,
       ),
     );
-
-    final cardWidth = _resolveDimension(
-      boxConstraints.minWidth,
-      boxConstraints.maxWidth,
-      child!.size!.width + totalPadding.left + totalPadding.right + borderSize,
-    );
-    final rawHeight = child!.size!.height +
-        totalPadding.top +
-        totalPadding.bottom +
-        borderSize;
-    final minHeight = borderSize + totalPadding.top + 1 + totalPadding.bottom;
-    final cardHeight = _resolveDimension(
-      boxConstraints.minHeight,
-      boxConstraints.maxHeight,
-      rawHeight < minHeight ? minHeight : rawHeight,
-    );
-
-    size = Size(cardWidth, cardHeight);
   }
 
   int _resolveDimension(int minDim, int maxDim, int contentDim) {
