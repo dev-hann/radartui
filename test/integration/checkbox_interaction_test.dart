@@ -22,7 +22,7 @@ void main() {
 
   group('Checkbox interaction', () {
     testWidgets('Checkbox toggles from false to true on Space', (tester) async {
-      var value = false;
+      bool value = false;
 
       tester.pumpWidget(
         Checkbox(value: value, onChanged: (newValue) => value = newValue!),
@@ -35,7 +35,7 @@ void main() {
     });
 
     testWidgets('Checkbox toggles from true to false on Space', (tester) async {
-      var value = true;
+      bool value = true;
 
       tester.pumpWidget(
         Checkbox(value: value, onChanged: (newValue) => value = newValue!),
@@ -48,7 +48,7 @@ void main() {
     });
 
     testWidgets('Checkbox toggles on Enter key', (tester) async {
-      var value = false;
+      bool value = false;
 
       tester.pumpWidget(
         Checkbox(value: value, onChanged: (newValue) => value = newValue!),
@@ -78,8 +78,8 @@ void main() {
     });
 
     testWidgets('Multiple checkbox interactions', (tester) async {
-      var value1 = false;
-      var value2 = true;
+      bool value1 = false;
+      bool value2 = true;
 
       tester.pumpWidget(
         Row(

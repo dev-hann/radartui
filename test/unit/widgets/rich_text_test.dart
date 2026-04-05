@@ -97,7 +97,7 @@ void main() {
     group('visitChildren', () {
       test('does not call visitor for span without children', () {
         const span = TextSpan(text: 'Hello');
-        var visitCount = 0;
+        int visitCount = 0;
         span.visitChildren((child) {
           visitCount++;
         });
