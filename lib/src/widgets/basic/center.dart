@@ -1,5 +1,8 @@
 import '../../../radartui.dart';
 
+/// Centers its child within itself.
+///
+/// Equivalent to `Align(alignment: Alignment.center, child: child)`.
 class Center extends StatelessWidget {
   const Center({super.key, this.child});
 
