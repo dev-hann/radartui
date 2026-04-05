@@ -355,12 +355,7 @@ class RenderExpansionTile extends RenderBox
     final String arrow = expanded ? '▼' : '▶';
     context.buffer.writeStyled(x, y, arrow, _cachedIconStyle!);
     context.buffer.writeStyled(x + 1, y, ' ', _cachedTitleStyle!);
-    int cx = x + 2;
-    for (int i = 0; i < title.length; i++) {
-      final String ch = title[i];
-      context.buffer.writeStyled(cx, y, ch, _cachedTitleBoldStyle!);
-      cx += charWidth(ch.codeUnitAt(0));
-    }
+    context.writeString(x + 2, y, title, _cachedTitleBoldStyle!);
   }
 
   void _ensureStylesCached() {

@@ -192,7 +192,7 @@ class RenderCircularProgressIndicator extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     final int labelLen =
-        (label != null && label!.isNotEmpty) ? 1 + label!.length : 0;
+        (label != null && label!.isNotEmpty) ? 1 + stringWidth(label!) : 0;
     size = Size(1 + labelLen, 1);
   }
 
@@ -204,12 +204,7 @@ class RenderCircularProgressIndicator extends RenderBox {
     context.buffer.writeStyled(offset.x, offset.y, frame, style);
 
     if (label != null && label!.isNotEmpty) {
-      int cx = offset.x + 2;
-      for (int i = 0; i < label!.length; i++) {
-        final String ch = label![i];
-        context.buffer.writeStyled(cx, offset.y, ch, style);
-        cx += charWidth(ch.codeUnitAt(0));
-      }
+      context.writeString(offset.x + 2, offset.y, label!, style);
     }
   }
 }

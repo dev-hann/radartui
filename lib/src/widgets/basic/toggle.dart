@@ -196,18 +196,37 @@ class RenderToggle extends RenderBox {
   TextStyle? _cachedBorderStyle;
   TextStyle? _cachedIndicatorStyle;
   TextStyle? _cachedLabelStyle;
+  int _cachedLabelWidth = 0;
+  String? _cachedLabelIdentity;
 
   void _invalidateCache() {
     _cachedBackgroundStyle = null;
     _cachedBorderStyle = null;
     _cachedIndicatorStyle = null;
     _cachedLabelStyle = null;
+    _cachedLabelWidth = _computeLabelWidth();
+    _cachedLabelIdentity = _label;
+  }
+
+  int _computeLabelWidth() {
+    if (_label != null && _label!.isNotEmpty) {
+      return stringWidth(_label!);
+    }
+    return 0;
+  }
+
+  int get _labelWidth {
+    if (!identical(_label, _cachedLabelIdentity)) {
+      _cachedLabelWidth = _computeLabelWidth();
+      _cachedLabelIdentity = _label;
+    }
+    return _cachedLabelWidth;
   }
 
   int _calculateWidth() {
     const int toggleWidth = 3;
     if (label != null && label!.isNotEmpty) {
-      return toggleWidth + 1 + stringWidth(label!);
+      return toggleWidth + 1 + _labelWidth;
     }
     return toggleWidth;
   }
@@ -263,11 +282,7 @@ class RenderToggle extends RenderBox {
 
   void _paintLabel(PaintingContext context, Offset offset) {
     if (label == null || label!.isEmpty) return;
-    final int labelX = offset.x + 4;
-    final TextStyle style = _cachedLabelStyle!;
-    for (int i = 0; i < label!.length; i++) {
-      context.buffer.writeStyled(labelX + i, offset.y, label![i], style);
-    }
+    context.writeString(offset.x + 4, offset.y, label!, _cachedLabelStyle!);
   }
 
   Color _getBackgroundColor() {
