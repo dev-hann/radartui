@@ -93,12 +93,8 @@ class _MenuBarState extends State<MenuBar> with FocusableState<MenuBar> {
         _selectedItemIndex = 0;
         focusNode.trapFocus = true;
       });
-    } else if (event.code == KeyCode.arrowLeft) {
-      setState(() {
-        _openMenuIndex = widget.items.isNotEmpty ? 0 : -1;
-        if (_openMenuIndex >= 0) focusNode.trapFocus = true;
-      });
-    } else if (event.code == KeyCode.arrowRight) {
+    } else if (event.code == KeyCode.arrowLeft ||
+        event.code == KeyCode.arrowRight) {
       setState(() {
         _openMenuIndex = widget.items.isNotEmpty ? 0 : -1;
         if (_openMenuIndex >= 0) focusNode.trapFocus = true;
