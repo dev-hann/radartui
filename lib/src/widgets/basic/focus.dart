@@ -38,10 +38,9 @@ class FocusNode extends ChangeNotifier {
   }
 
   void _setFocus(bool value) {
-    if (_hasFocus != value) {
-      _hasFocus = value;
-      notifyListeners();
-    }
+    if (_hasFocus == value) return;
+    _hasFocus = value;
+    notifyListeners();
   }
 
   @override

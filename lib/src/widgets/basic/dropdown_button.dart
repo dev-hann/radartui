@@ -250,6 +250,7 @@ class RenderDropdownButton extends RenderBox {
     if (_text == v) return;
     _text = v;
     _invalidateCache();
+    markNeedsLayout();
   }
 
   /// Whether the button currently has keyboard focus.
@@ -260,6 +261,7 @@ class RenderDropdownButton extends RenderBox {
     if (_focused == v) return;
     _focused = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// Whether the dropdown menu is currently open.
@@ -269,6 +271,7 @@ class RenderDropdownButton extends RenderBox {
   set isOpen(bool v) {
     if (_isOpen == v) return;
     _isOpen = v;
+    markNeedsPaint();
   }
 
   /// Whether the button is interactive.
@@ -279,26 +282,25 @@ class RenderDropdownButton extends RenderBox {
     if (_enabled == v) return;
     _enabled = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
-  /// The color applied when the button has focus.
   Color get focusColor => _focusColor;
 
-  /// Sets the focus color.
   set focusColor(Color v) {
     if (_focusColor == v) return;
     _focusColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
-  /// The background color of the button.
   Color get backgroundColor => _backgroundColor;
 
-  /// Sets the background color.
   set backgroundColor(Color v) {
     if (_backgroundColor == v) return;
     _backgroundColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   TextStyle? _cachedBgStyle;
@@ -427,6 +429,7 @@ class RenderDropdownMenu extends RenderBox {
   set selectedIndex(int v) {
     if (_selectedIndex == v) return;
     _selectedIndex = v;
+    markNeedsPaint();
   }
 
   /// The background color of unselected items.

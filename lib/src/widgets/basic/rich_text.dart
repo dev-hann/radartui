@@ -139,10 +139,9 @@ class RenderRichText extends RenderBox {
 
   /// Sets the text span and marks layout as needed.
   set text(TextSpan value) {
-    if (_text != value) {
-      _text = value;
-      markNeedsLayout();
-    }
+    if (_text == value) return;
+    _text = value;
+    markNeedsLayout();
   }
 
   int? _maxLines;
@@ -152,10 +151,9 @@ class RenderRichText extends RenderBox {
 
   /// Sets the max lines and marks layout as needed.
   set maxLines(int? value) {
-    if (_maxLines != value) {
-      _maxLines = value;
-      markNeedsLayout();
-    }
+    if (_maxLines == value) return;
+    _maxLines = value;
+    markNeedsLayout();
   }
 
   TextOverflow _overflow;
@@ -165,10 +163,9 @@ class RenderRichText extends RenderBox {
 
   /// Sets the overflow strategy and marks layout as needed.
   set overflow(TextOverflow value) {
-    if (_overflow != value) {
-      _overflow = value;
-      markNeedsLayout();
-    }
+    if (_overflow == value) return;
+    _overflow = value;
+    markNeedsLayout();
   }
 
   List<_StyledSegment> _segments = [];
