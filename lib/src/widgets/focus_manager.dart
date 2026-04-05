@@ -88,17 +88,18 @@ class FocusManager extends NavigatorObserver {
 
   void _popScope() {
     _currentScope?.dispose();
-    if (_savedScopes.isNotEmpty) {
-      final saved = _savedScopes.removeLast();
-      _currentScope = saved.scope;
-      _currentScope!.activate();
-      if (saved.focusedNode != null &&
-          _currentScope!.nodes.contains(saved.focusedNode) &&
-          saved.focusedNode!.canRequestFocus) {
-        _currentScope!.setFocus(saved.focusedNode!);
-      }
-    } else {
+    if (_savedScopes.isEmpty) {
       _currentScope = null;
+      WidgetsBinding.instance.scheduleFrame();
+      return;
+    }
+    final saved = _savedScopes.removeLast();
+    _currentScope = saved.scope;
+    _currentScope!.activate();
+    if (saved.focusedNode != null &&
+        _currentScope!.nodes.contains(saved.focusedNode) &&
+        saved.focusedNode!.canRequestFocus) {
+      _currentScope!.setFocus(saved.focusedNode!);
     }
     WidgetsBinding.instance.scheduleFrame();
   }
