@@ -1,12 +1,5 @@
 import '../../../radartui.dart';
-
-Widget _defaultSelectedBuilder<T>(T item) {
-  return Text('> $item');
-}
-
-Widget _defaultUnselectedBuilder<T>(T item) {
-  return Text('  $item');
-}
+import 'selectable_defaults.dart';
 
 /// A scrollable list of selectable items with keyboard navigation.
 ///
@@ -24,8 +17,8 @@ class ListView<T> extends StatefulWidget {
     this.wrapAroundNavigation = false,
     this.controller,
     this.itemExtent,
-  })  : selectedBuilder = selectedBuilder ?? _defaultSelectedBuilder,
-        unselectedBuilder = unselectedBuilder ?? _defaultUnselectedBuilder;
+  })  : selectedBuilder = selectedBuilder ?? defaultSelectedBuilder,
+        unselectedBuilder = unselectedBuilder ?? defaultUnselectedBuilder;
 
   /// The list of items to display.
   final List<T> items;
