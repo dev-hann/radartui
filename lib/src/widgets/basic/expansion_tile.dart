@@ -243,6 +243,7 @@ class RenderExpansionTile extends RenderBox
     if (_title == v) return;
     _title = v;
     _invalidateCache();
+    markNeedsLayout();
   }
 
   /// Whether the tile is currently expanded.
@@ -253,6 +254,7 @@ class RenderExpansionTile extends RenderBox
     if (_expanded == v) return;
     _expanded = v;
     _invalidateCache();
+    markNeedsLayout();
   }
 
   /// Whether the tile currently has keyboard focus.
@@ -263,6 +265,7 @@ class RenderExpansionTile extends RenderBox
     if (_focused == v) return;
     _focused = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color of the title when expanded.
@@ -273,6 +276,7 @@ class RenderExpansionTile extends RenderBox
     if (_expandedColor == v) return;
     _expandedColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color of the title when collapsed.
@@ -283,6 +287,7 @@ class RenderExpansionTile extends RenderBox
     if (_collapsedColor == v) return;
     _collapsedColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color of the expand/collapse arrow icon.
@@ -293,6 +298,7 @@ class RenderExpansionTile extends RenderBox
     if (_iconColor == v) return;
     _iconColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   TextStyle? _cachedIconStyle;
