@@ -50,11 +50,19 @@ class OverlayState extends State<Overlay> {
   void insert(OverlayEntry entry, {OverlayEntry? below, OverlayEntry? above}) {
     entry._overlay = this;
     if (below != null) {
-      final index = _entries.indexOf(below);
-      _entries.insert(index, entry);
+      final int index = _entries.indexOf(below);
+      if (index == -1) {
+        _entries.add(entry);
+      } else {
+        _entries.insert(index, entry);
+      }
     } else if (above != null) {
-      final index = _entries.indexOf(above);
-      _entries.insert(index + 1, entry);
+      final int index = _entries.indexOf(above);
+      if (index == -1) {
+        _entries.add(entry);
+      } else {
+        _entries.insert(index + 1, entry);
+      }
     } else {
       _entries.add(entry);
     }
