@@ -322,18 +322,15 @@ class RenderSlider extends RenderBox {
 
   void _paintTrack(
       PaintingContext context, int x, int y, int trackWidth, int thumbPos) {
-    for (int i = 0; i < trackWidth; i++) {
-      final bool isThumb = i == thumbPos;
-      final String ch = isThumb ? '●' : '─';
-      final TextStyle style;
-      if (isThumb) {
-        style = _cachedThumbStyle!;
-      } else if (i <= thumbPos) {
-        style = _cachedActiveTrackStyle!;
-      } else {
-        style = _cachedInactiveTrackStyle!;
-      }
-      context.buffer.writeStyled(x + i, y, ch, style);
+    if (trackWidth <= 0) return;
+    if (thumbPos > 0) {
+      context.writeString(x, y, '─' * thumbPos, _cachedActiveTrackStyle!);
+    }
+    context.writeString(x + thumbPos, y, '●', _cachedThumbStyle!);
+    final int afterThumb = trackWidth - thumbPos - 1;
+    if (afterThumb > 0) {
+      context.writeString(
+          x + thumbPos + 1, y, '─' * afterThumb, _cachedInactiveTrackStyle!);
     }
   }
 
