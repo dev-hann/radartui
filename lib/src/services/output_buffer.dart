@@ -118,23 +118,27 @@ class OutputBuffer {
     clear();
   }
 
+  static const int _fullClearThreshold = 10;
+
   /// Returns `true` if the previous frame had significantly more content than the current one.
   bool needsFullClear() {
-    // Check if current content footprint is smaller than previous
-    // This indicates we might need to clear remnants
     int currentContent = 0;
     int previousContent = 0;
+    final int totalCells = terminal.height * terminal.width;
 
     for (int y = 0; y < terminal.height; y++) {
       for (int x = 0; x < terminal.width; x++) {
+        final int visited = y * terminal.width + x;
+        if (previousContent >
+            currentContent + (totalCells - visited) + _fullClearThreshold) {
+          return true;
+        }
         if (_grid[y][x].char != ' ') currentContent++;
         if (_previousGrid[y][x].char != ' ') previousContent++;
       }
     }
 
-    // If previous frame had significantly more content, we might have remnants
-    return previousContent >
-        currentContent + 10; // Threshold to avoid false positives
+    return previousContent > currentContent + _fullClearThreshold;
   }
 
   /// Clears using a full clear only when remnants are likely, otherwise uses a smart clear.
