@@ -29,7 +29,7 @@ class Cell {
   }
 
   @override
-  int get hashCode => char.hashCode ^ (style?.hashCode ?? 0);
+  int get hashCode => Object.hash(char, style);
 }
 
 /// Manages a grid of character cells and renders diffs to the terminal.
