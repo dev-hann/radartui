@@ -317,7 +317,7 @@ class RenderMenuBar extends RenderBox {
       final TextStyle fgBgStyle =
           isOpen ? _menuOpenFgStyle : _cachedMenuClosedFgStyle!;
       context.fillBackground(x, y, itemWidth, bgStyle);
-      context.buffer.writeStyled(x + 1, y, item.label, fgBgStyle);
+      context.writeString(x + 1, y, item.label, fgBgStyle);
       x += itemWidth;
     }
   }
@@ -390,7 +390,7 @@ class RenderMenuBar extends RenderBox {
       final TextStyle shortcutStyle = isSelected
           ? _dropdownShortcutSelectedStyle
           : _dropdownShortcutNormalStyle;
-      context.buffer.writeStyled(shortcutX, y, item.shortcut!, shortcutStyle);
+      context.writeString(shortcutX, y, item.shortcut!, shortcutStyle);
     }
   }
 }
