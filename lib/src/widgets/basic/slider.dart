@@ -338,12 +338,6 @@ class RenderSlider extends RenderBox {
   }
 
   void _paintLabel(PaintingContext context, int startX, int y) {
-    final TextStyle style = _cachedLabelStyle!;
-    int cx = startX;
-    for (int i = 0; i < label!.length; i++) {
-      final String ch = label![i];
-      context.buffer.writeStyled(cx, y, ch, style);
-      cx += charWidth(ch.codeUnitAt(0));
-    }
+    context.writeString(startX, y, label!, _cachedLabelStyle!);
   }
 }

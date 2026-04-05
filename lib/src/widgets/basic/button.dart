@@ -169,19 +169,11 @@ class RenderButton extends RenderBox {
     final TextStyle bgStyle = _cachedBgStyle!;
 
     for (int y = 0; y < size!.height; y++) {
-      for (int x = 0; x < size!.width; x++) {
-        context.buffer.writeStyled(offset.x + x, offset.y + y, ' ', bgStyle);
-      }
+      context.fillBackground(offset.x, offset.y + y, size!.width, bgStyle);
     }
 
-    final int textX = offset.x + padding.left;
     final int textY = offset.y + padding.top;
-    int x = textX;
-    for (int i = 0; i < text.length; i++) {
-      final String ch = text[i];
-      context.buffer.writeStyled(x, textY, ch, textStyle);
-      x += charWidth(ch.codeUnitAt(0));
-    }
+    context.writeString(offset.x + padding.left, textY, text, textStyle);
   }
 
   void _ensureStylesCached() {

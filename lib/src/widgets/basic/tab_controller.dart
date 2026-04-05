@@ -462,19 +462,12 @@ class RenderTabBar extends RenderBox {
 
   int _paintTabContent(
       PaintingContext context, int x, int y, Tab tab, TextStyle style) {
-    int dx = 0;
     if (tab.icon != null) {
       context.buffer.writeStyled(x, y, tab.icon!, style);
-      dx += charWidth(tab.icon!.codeUnitAt(0));
+      final int iconW = charWidth(tab.icon!.codeUnitAt(0));
+      return context.writeString(x + iconW, y, tab.text ?? '', style);
     }
-    if (tab.text != null) {
-      for (int j = 0; j < tab.text!.length; j++) {
-        final String ch = tab.text![j];
-        context.buffer.writeStyled(x + dx, y, ch, style);
-        dx += charWidth(ch.codeUnitAt(0));
-      }
-    }
-    return dx;
+    return context.writeString(x, y, tab.text ?? '', style);
   }
 
   void _paintSelectedIndicator(

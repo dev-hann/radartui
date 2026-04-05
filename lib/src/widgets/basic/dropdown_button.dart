@@ -283,30 +283,12 @@ class RenderDropdownButton extends RenderBox {
     final TextStyle bgStyle = _cachedBgStyle!;
     final TextStyle fgBgStyle = _cachedFgBgStyle!;
     final int textW = _textWidth;
-    _fillBackground(
-        context, offset.x.toInt(), offset.y.toInt(), textW + 3, bgStyle);
-    final int cx = _paintChars(
-        context, offset.x.toInt() + 1, offset.y.toInt(), text, fgBgStyle);
+    final int x = offset.x.toInt();
+    final int y = offset.y.toInt();
+    context.fillBackground(x, y, textW + 3, bgStyle);
+    final int cx = context.writeString(x + 1, y, text, fgBgStyle);
     final String arrow = isOpen ? ' ▲' : ' ▼';
-    _paintChars(context, cx, offset.y.toInt(), arrow, fgBgStyle);
-  }
-
-  void _fillBackground(
-      PaintingContext context, int x, int y, int width, TextStyle style) {
-    for (int i = 0; i < width; i++) {
-      context.buffer.writeStyled(x + i, y, ' ', style);
-    }
-  }
-
-  int _paintChars(PaintingContext context, int startX, int y, String text,
-      TextStyle style) {
-    int cx = startX;
-    for (int i = 0; i < text.length; i++) {
-      final String ch = text[i];
-      context.buffer.writeStyled(cx, y, ch, style);
-      cx += charWidth(ch.codeUnitAt(0));
-    }
-    return cx;
+    context.writeString(cx, y, arrow, fgBgStyle);
   }
 }
 
@@ -417,6 +399,8 @@ class RenderDropdownMenu extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     _ensureStylesCached();
+    final int x = offset.x.toInt();
+    final int y = offset.y.toInt();
     for (int i = 0; i < items.length; i++) {
       final DropdownMenuItem item = items[i];
       final bool isSelected = i == selectedIndex;
@@ -427,37 +411,10 @@ class RenderDropdownMenu extends RenderBox {
               ? _cachedSelectedEnabledFg!
               : _cachedSelectedDisabledFg!)
           : (item.enabled ? _cachedNormalEnabledFg! : _cachedNormalDisabledFg!);
-      _fillRow(context, offset.x.toInt(), offset.y.toInt() + i,
-          size!.width.toInt(), bgStyle);
+      context.fillBackground(x, y + i, size!.width.toInt(), bgStyle);
       final String prefix = isSelected ? '> ' : '  ';
-      _paintChars(
-          context, offset.x.toInt(), offset.y.toInt() + i, prefix, fgBgStyle);
-      _paintLabel(context, offset.x.toInt() + 2, offset.y.toInt() + i,
-          item.label, fgBgStyle);
-    }
-  }
-
-  void _fillRow(
-      PaintingContext context, int x, int y, int width, TextStyle style) {
-    for (int i = 0; i < width; i++) {
-      context.buffer.writeStyled(x + i, y, ' ', style);
-    }
-  }
-
-  void _paintChars(
-      PaintingContext context, int x, int y, String str, TextStyle style) {
-    for (int i = 0; i < str.length; i++) {
-      context.buffer.writeStyled(x + i, y, str[i], style);
-    }
-  }
-
-  void _paintLabel(PaintingContext context, int startX, int y, String label,
-      TextStyle style) {
-    int cx = startX;
-    for (int i = 0; i < label.length; i++) {
-      final String ch = label[i];
-      context.buffer.writeStyled(cx, y, ch, style);
-      cx += charWidth(ch.codeUnitAt(0));
+      context.writeString(x, y + i, prefix, fgBgStyle);
+      context.writeString(x + 2, y + i, item.label, fgBgStyle);
     }
   }
 }

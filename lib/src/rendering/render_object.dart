@@ -12,6 +12,26 @@ class PaintingContext {
   /// Paints the [child] render object at the given [offset].
   void paintChild(RenderObject child, Offset offset) =>
       child.paint(this, offset);
+
+  /// Fills a horizontal run of [width] cells at ([x], [y]) with styled spaces.
+  void fillBackground(int x, int y, int width, TextStyle style) {
+    for (int i = 0; i < width; i++) {
+      buffer.writeStyled(x + i, y, ' ', style);
+    }
+  }
+
+  /// Writes [text] starting at ([x], [y]) with the given [style],
+  /// advancing the cursor by [charWidth] per character.
+  ///
+  /// Returns the x-position immediately after the last character written.
+  int writeString(int x, int y, String text, TextStyle style) {
+    for (int i = 0; i < text.length; i++) {
+      final String ch = text[i];
+      buffer.writeStyled(x, y, ch, style);
+      x += charWidth(ch.codeUnitAt(0));
+    }
+    return x;
+  }
 }
 
 /// Opaque data attached to a child render object by its parent.

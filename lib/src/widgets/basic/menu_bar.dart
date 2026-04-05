@@ -318,9 +318,7 @@ class RenderMenuBar extends RenderBox {
           isOpen ? _menuOpenBgStyle : _cachedMenuClosedBgStyle!;
       final TextStyle fgBgStyle =
           isOpen ? _menuOpenFgStyle : _cachedMenuClosedFgStyle!;
-      for (int j = 0; j < itemWidth; j++) {
-        context.buffer.writeStyled(x + j, y, ' ', bgStyle);
-      }
+      context.fillBackground(x, y, itemWidth, bgStyle);
       context.buffer.writeStyled(x + 1, y, item.label, fgBgStyle);
       x += itemWidth;
     }
@@ -383,12 +381,10 @@ class RenderMenuBar extends RenderBox {
         : (item.enabled
             ? _dropdownNormalEnabledFgStyle
             : _dropdownNormalDisabledFgStyle);
-    for (int cx = 0; cx < maxWidth; cx++) {
-      context.buffer.writeStyled(x + cx, y, ' ', bgStyle);
-    }
+    context.fillBackground(x, y, maxWidth, bgStyle);
     final String prefix = isSelected ? '> ' : '  ';
-    context.buffer.writeStyled(x, y, prefix, fgBgStyle);
-    context.buffer.writeStyled(x + 2, y, item.label, fgBgStyle);
+    context.writeString(x, y, prefix, fgBgStyle);
+    context.writeString(x + 2, y, item.label, fgBgStyle);
     if (item.shortcut != null) {
       final int sw =
           _cachedShortcutWidths[item.shortcut!] ?? stringWidth(item.shortcut!);
