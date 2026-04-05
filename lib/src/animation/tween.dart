@@ -34,7 +34,7 @@ class ColorTween extends Tween<Color> {
     if (beginValue == endValue) return begin;
 
     final int startIdx = beginValue % 16;
-    final int endIdx = end.value % 16;
+    final int endIdx = endValue % 16;
 
     if (startIdx == endIdx) return begin;
 
