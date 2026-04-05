@@ -6,7 +6,7 @@
 - in-progress: 구현 중
 - completed: 완료
 
-## Loop Counter: 80
+## Loop Counter: 81
 
 ## Scan Level: 3
 
@@ -25,5 +25,5 @@ _None_
 - [completed] 2026-04-05-75: Add doc comments to all 11 foundation classes. dart analyze: 0, dart test: 821/821. **Git pushed.**
 - [completed] 2026-04-05-76: Refactor RenderContainer._paintBorder() (66 -> 27 lines). Extract _BorderSides record. dart analyze: 0, dart test: 821/821.
 - [completed] 2026-04-05-77: Add doc comments to top 6 widget classes (Text, Container, Row, Column, Button, TextField). dart analyze: 0, dart test: 821/821.
-- [completed] 2026-04-05-78: Add doc comments to 6 more widget classes (Align, Card, Checkbox, Dialog, Icon, Padding). dart analyze: 0, dart test: 821/821.
+- [completed] 2026-04-05-80: Add doc comments to 6 complex widget classes (DataTable, Form, Stack, Toggle, Radio, DropdownButton). dart analyze: 0, dart test: 821/821. **Git pushed.**
 - [completed] 2026-04-05-79: Add doc comments to 6 more widget classes (Builder, Center, Spacer, SizedBox, Positioned, ListView). dart analyze: 0, dart test: 821/821.
