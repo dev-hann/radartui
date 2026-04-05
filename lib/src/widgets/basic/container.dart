@@ -224,12 +224,7 @@ class RenderContainer extends RenderBox
     }
   }
 
-  void _paintBorder(
-    PaintingContext context,
-    Offset innerOffset,
-    int innerWidth,
-    int innerHeight,
-  ) {
+  void _ensureBorderCached() {
     _cachedBorderStyle ??= TextStyle(backgroundColor: _color);
     _cachedBorderSides ??= _BorderSides(
       left: border!.left.isNotEmpty,
@@ -238,6 +233,15 @@ class RenderContainer extends RenderBox
       bottom: border!.bottom.isNotEmpty,
       style: _cachedBorderStyle!,
     );
+  }
+
+  void _paintBorder(
+    PaintingContext context,
+    Offset innerOffset,
+    int innerWidth,
+    int innerHeight,
+  ) {
+    _ensureBorderCached();
     final sides = _cachedBorderSides!;
     if (sides.top) {
       _paintHorizontalBorder(context, innerOffset, innerWidth, border!.top,
