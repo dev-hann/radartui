@@ -326,8 +326,8 @@ class RenderRichText extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     for (int lineIndex = 0; lineIndex < _lines.length; lineIndex++) {
       final line = _lines[lineIndex];
-      int x = offset.x.toInt();
-      final int y = offset.y.toInt() + lineIndex;
+      int x = offset.x;
+      final int y = offset.y + lineIndex;
       for (final run in line.runs) {
         x = _paintRun(context, x, y, run);
       }

@@ -311,8 +311,8 @@ class RenderRadio extends RenderBox {
 
   void _paintBackground(PaintingContext context, Offset offset) {
     context.fillBackground(
-      offset.x.toInt(),
-      offset.y.toInt(),
+      offset.x,
+      offset.y,
       3,
       _cachedBackgroundStyle!,
     );

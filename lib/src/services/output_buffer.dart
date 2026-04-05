@@ -48,11 +48,11 @@ class OutputBuffer {
   void resize() {
     _grid = List.generate(
       terminal.height,
-      (_) => List.generate(terminal.width, (_) => Cell.empty),
+      (_) => List.filled(terminal.width, Cell.empty),
     );
     _previousGrid = List.generate(
       terminal.height,
-      (_) => List.generate(terminal.width, (_) => Cell.empty),
+      (_) => List.filled(terminal.width, Cell.empty),
     );
   }
 

@@ -170,8 +170,7 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     if (color == null) return;
     final TextStyle bgStyle = _cachedBorderStyle!;
     for (int y = 0; y < height; y++) {
-      context.fillBackground(
-          offset.x.toInt(), offset.y.toInt() + y, width, bgStyle);
+      context.fillBackground(offset.x, offset.y + y, width, bgStyle);
     }
   }
 
@@ -229,7 +228,7 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     int height,
     TextStyle style,
   ) {
-    final int y = offset.y.toInt() + height - 1;
+    final int y = offset.y + height - 1;
     context.writeString(
       offset.x,
       y,

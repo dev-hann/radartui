@@ -463,8 +463,8 @@ class RenderTabBar extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     _ensureStylesCached();
-    final int y = offset.y.toInt();
-    int x = offset.x.toInt();
+    final int y = offset.y;
+    int x = offset.x;
     for (int i = 0; i < _tabs.length; i++) {
       final Tab tab = _tabs[i];
       final bool isSelected = i == currentIndex;

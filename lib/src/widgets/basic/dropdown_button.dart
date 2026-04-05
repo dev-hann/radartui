@@ -350,8 +350,8 @@ class RenderDropdownButton extends RenderBox {
     final TextStyle bgStyle = _cachedBgStyle!;
     final TextStyle fgBgStyle = _cachedFgBgStyle!;
     final int textW = _textWidth;
-    final int x = offset.x.toInt();
-    final int y = offset.y.toInt();
+    final int x = offset.x;
+    final int y = offset.y;
     context.fillBackground(x, y, textW + 3, bgStyle);
     final int cx = context.writeString(x + 1, y, _text, fgBgStyle);
     final String arrow = _isOpen ? ' ▲' : ' ▼';
@@ -517,8 +517,8 @@ class RenderDropdownMenu extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     _ensureStylesCached();
-    final int x = offset.x.toInt();
-    final int y = offset.y.toInt();
+    final int x = offset.x;
+    final int y = offset.y;
     final int w = size!.width.toInt();
     final TextStyle selectedBg = _cachedSelectedBg!;
     final TextStyle normalBg = _cachedNormalBg!;

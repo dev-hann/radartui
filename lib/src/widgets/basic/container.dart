@@ -240,8 +240,8 @@ class RenderContainer extends RenderBox
     _cachedBgStyle ??= TextStyle(backgroundColor: _color);
     for (int y = 0; y < innerHeight; y++) {
       context.fillBackground(
-        innerOffset.x.toInt(),
-        innerOffset.y.toInt() + y,
+        innerOffset.x,
+        innerOffset.y + y,
         innerWidth,
         _cachedBgStyle!,
       );

@@ -226,11 +226,11 @@ class RenderLinearProgressIndicator extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     _ensureStylesCached();
     final int w = size!.width;
-    _paintBackground(context, offset.x.toInt(), offset.y.toInt(), w);
+    _paintBackground(context, offset.x, offset.y, w);
     if (value != null) {
-      _paintDeterminate(context, offset.x.toInt(), offset.y.toInt(), w);
+      _paintDeterminate(context, offset.x, offset.y, w);
     } else {
-      _paintIndeterminate(context, offset.x.toInt(), offset.y.toInt(), w);
+      _paintIndeterminate(context, offset.x, offset.y, w);
     }
   }
 

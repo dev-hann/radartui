@@ -316,10 +316,9 @@ class RenderSlider extends RenderBox {
     final int w = size!.width;
     final int trackWidth = _trackWidth(w);
     final int thumbPos = _thumbPosition(trackWidth);
-    _paintTrack(
-        context, offset.x.toInt(), offset.y.toInt(), trackWidth, thumbPos);
+    _paintTrack(context, offset.x, offset.y, trackWidth, thumbPos);
     if (label != null && label!.isNotEmpty) {
-      _paintLabel(context, offset.x.toInt() + trackWidth + 2, offset.y.toInt());
+      _paintLabel(context, offset.x + trackWidth + 2, offset.y);
     }
   }
 

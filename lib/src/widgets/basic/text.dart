@@ -235,8 +235,8 @@ class RenderText extends RenderBox {
       final line = _lines[lineIndex];
       if (line.isNotEmpty) {
         context.writeString(
-          offset.x.toInt(),
-          offset.y.toInt() + lineIndex,
+          offset.x,
+          offset.y + lineIndex,
           line,
           effectiveStyle,
         );

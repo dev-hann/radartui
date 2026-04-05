@@ -345,8 +345,8 @@ class RenderMenuBar extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final int x = offset.x.toInt();
-    final int y = offset.y.toInt();
+    final int x = offset.x;
+    final int y = offset.y;
     _paintMenuBarItems(context, x, y);
     if (openMenuIndex >= 0 && openMenuIndex < items.length) {
       _paintDropdownMenu(context, x, y);

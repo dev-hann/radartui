@@ -351,7 +351,7 @@ class RenderExpansionTile extends RenderBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    _paintHeader(context, offset.x.toInt(), offset.y.toInt());
+    _paintHeader(context, offset.x, offset.y);
     if (expanded) {
       for (final child in children) {
         final ExpansionTileParentData childData =
