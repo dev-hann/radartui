@@ -117,6 +117,7 @@ class _TreeViewState<T> extends State<TreeView<T>>
   late TreeController _controller;
   bool _ownsController = false;
   int _selectedIndex = 0;
+  List<_FlatNode<T>>? _cachedFlatNodes;
 
   @override
   FocusNode? get providedFocusNode => widget.focusNode;
@@ -148,15 +149,21 @@ class _TreeViewState<T> extends State<TreeView<T>>
       }
       _initController();
     }
+    _cachedFlatNodes = null;
   }
 
   void _onControllerChanged() {
+    _cachedFlatNodes = null;
     setState(() {});
+  }
+
+  List<_FlatNode<T>> _getFlatNodes() {
+    return _cachedFlatNodes ??= _buildFlatNodes();
   }
 
   @override
   void onKeyEvent(KeyEvent event) {
-    final flatNodes = _buildFlatNodes();
+    final flatNodes = _getFlatNodes();
     if (flatNodes.isEmpty) return;
 
     if (event.code == KeyCode.arrowUp) {
@@ -204,7 +211,7 @@ class _TreeViewState<T> extends State<TreeView<T>>
 
   @override
   Widget build(BuildContext context) {
-    final flatNodes = _buildFlatNodes();
+    final flatNodes = _getFlatNodes();
     if (flatNodes.isEmpty) {
       return const SizedBox();
     }
