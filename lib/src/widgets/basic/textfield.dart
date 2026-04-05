@@ -446,7 +446,6 @@ class _TextField extends RenderObjectWidget {
 
 /// Render object that paints a text input field with cursor and border.
 class RenderTextField extends RenderBox {
-  /// Creates a [RenderTextField] with the given text and display configuration.
   RenderTextField({
     required this.text,
     required this.cursorPosition,
@@ -455,7 +454,16 @@ class RenderTextField extends RenderBox {
     required this.hasFocus,
   });
 
-  /// The current text content to display.
+  static const TextStyle _cursorStyle = TextStyle(
+    color: Color.black,
+    backgroundColor: Color.cyan,
+    bold: true,
+  );
+  static const TextStyle _borderStyle = TextStyle(
+    color: Color.cyan,
+    bold: true,
+  );
+
   String text;
 
   /// The position of the cursor within the text.
@@ -558,26 +566,19 @@ class RenderTextField extends RenderBox {
       return;
     }
 
-    const cursorStyle = TextStyle(
-      color: Color.black,
-      backgroundColor: Color.cyan,
-      bold: true,
-    );
-
     if (cursorPosition < text.length) {
       context.buffer.writeStyled(
         cursorScreenX,
         offset.y,
         text[cursorPosition],
-        cursorStyle,
+        _cursorStyle,
       );
     } else {
-      context.buffer.writeStyled(cursorScreenX, offset.y, '█', cursorStyle);
+      context.buffer.writeStyled(cursorScreenX, offset.y, '█', _cursorStyle);
     }
   }
 
   void _drawBorder(PaintingContext context, Offset offset, Size borderSize) {
-    const borderStyle = TextStyle(color: Color.cyan, bold: true);
     final int width = borderSize.width.toInt();
     final int bufferHeight = context.buffer.terminal.height;
     final int bufferWidth = context.buffer.terminal.width;
@@ -588,7 +589,7 @@ class RenderTextField extends RenderBox {
       width,
       bufferHeight,
       bufferWidth,
-      borderStyle,
+      _borderStyle,
     );
     _drawBorderCorners(
       context,
@@ -596,7 +597,7 @@ class RenderTextField extends RenderBox {
       width,
       bufferHeight,
       bufferWidth,
-      borderStyle,
+      _borderStyle,
     );
   }
 
