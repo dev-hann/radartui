@@ -207,7 +207,7 @@ class RenderToggle extends RenderBox {
   int _calculateWidth() {
     const int toggleWidth = 3;
     if (label != null && label!.isNotEmpty) {
-      return toggleWidth + 1 + label!.length;
+      return toggleWidth + 1 + stringWidth(label!);
     }
     return toggleWidth;
   }
