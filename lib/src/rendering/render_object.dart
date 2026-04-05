@@ -15,9 +15,7 @@ class PaintingContext {
 
   /// Fills a horizontal run of [width] cells at ([x], [y]) with styled spaces.
   void fillBackground(int x, int y, int width, TextStyle style) {
-    for (int i = 0; i < width; i++) {
-      buffer.writeStyled(x + i, y, ' ', style);
-    }
+    writeString(x, y, ' ' * width, style);
   }
 
   /// Writes [text] starting at ([x], [y]) with the given [style],
