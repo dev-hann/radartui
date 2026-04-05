@@ -1,6 +1,10 @@
 import 'dart:async';
 import '../../../radartui.dart';
 
+/// A modal dialog with a title, message, and optional action buttons.
+///
+/// Use [showDialog] to display. Actions are laid out in a row at the bottom.
+/// Pressing Escape or the escape key dismisses the dialog.
 class Dialog extends StatelessWidget {
   const Dialog({
     super.key,
@@ -39,12 +43,13 @@ class Dialog extends StatelessWidget {
       columnChildren.add(_buildActionRow());
     }
 
-    Widget dialogContent = Column(children: columnChildren);
     final effectivePadding = padding ?? const EdgeInsets.all(2);
-    dialogContent = Padding(padding: effectivePadding, child: dialogContent);
-    dialogContent = Container(color: backgroundColor, child: dialogContent);
 
-    return dialogContent;
+    return Card(
+      color: backgroundColor,
+      padding: effectivePadding,
+      child: Column(children: columnChildren),
+    );
   }
 
   Widget _buildActionRow() {

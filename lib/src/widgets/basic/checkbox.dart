@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A material-design checkbox that toggles between checked (✓) and unchecked states.
+///
+/// Responds to [KeyCode.space] and [KeyCode.enter] to toggle. Wrap in
+/// [Focus] to enable keyboard navigation.
 class Checkbox extends StatefulWidget {
   const Checkbox({
     super.key,

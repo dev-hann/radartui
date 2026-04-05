@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A material-design-inspired card with an optional background color, border, and padding.
+///
+/// Renders a box-drawing character border around its [child]. Without a child,
+/// defaults to a zero-sized [SizedBox].
 class Card extends SingleChildRenderObjectWidget {
   const Card({super.key, Widget? child, this.color, this.padding})
       : super(child: child ?? const SizedBox());

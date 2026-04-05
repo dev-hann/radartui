@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// Displays a single Unicode character (glyph) with optional color styling.
+///
+/// Use for rendering box-drawing characters, icons, or other single-character
+/// symbols in the terminal.
 class Icon extends StatelessWidget {
   const Icon({super.key, required this.icon, this.color});
 

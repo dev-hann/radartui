@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// Insets its child by the given [padding].
+///
+/// For example, `Padding(padding: EdgeInsets.all(2), child: Text('hi'))`
+/// adds 2 cells of padding on all sides of the text.
 class Padding extends SingleChildRenderObjectWidget {
   const Padding({super.key, required this.padding, required super.child});
   final EdgeInsets padding;
