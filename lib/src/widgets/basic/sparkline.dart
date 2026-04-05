@@ -83,11 +83,21 @@ class _SparklineRenderWidget extends RenderObjectWidget {
 class RenderSparkline extends RenderBox {
   RenderSparkline({
     required this.chars,
-    required this.color,
-  });
+    required Color color,
+  }) : _color = color;
 
   List<String> chars;
-  Color color;
+
+  Color _color;
+  Color get color => _color;
+  set color(Color value) {
+    if (_color == value) return;
+    _color = value;
+    _cachedStyle = null;
+    markNeedsPaint();
+  }
+
+  TextStyle? _cachedStyle;
 
   @override
   void performLayout(Constraints constraints) {
@@ -96,13 +106,10 @@ class RenderSparkline extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    _cachedStyle ??= TextStyle(color: _color);
+    final TextStyle style = _cachedStyle!;
     for (int i = 0; i < chars.length; i++) {
-      context.buffer.writeStyled(
-        offset.x + i,
-        offset.y,
-        chars[i],
-        TextStyle(color: color),
-      );
+      context.buffer.writeStyled(offset.x + i, offset.y, chars[i], style);
     }
   }
 }
