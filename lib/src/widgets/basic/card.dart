@@ -190,12 +190,13 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     int width,
     TextStyle style,
   ) {
-    context.buffer.writeStyled(offset.x, offset.y, '┌', style);
     final int inner = width > 2 ? width - 2 : 0;
-    if (inner > 0) {
-      context.writeString(offset.x + 1, offset.y.toInt(), '─' * inner, style);
-    }
-    context.buffer.writeStyled(offset.x + width - 1, offset.y, '┐', style);
+    context.writeString(
+      offset.x,
+      offset.y,
+      '┌${'─' * inner}┐',
+      style,
+    );
   }
 
   void _paintSideBorders(
@@ -224,15 +225,11 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     TextStyle style,
   ) {
     final int y = offset.y.toInt() + height - 1;
-    context.buffer.writeStyled(offset.x, y, '└', style);
     final int inner = width > 2 ? width - 2 : 0;
-    if (inner > 0) {
-      context.writeString(offset.x + 1, y, '─' * inner, style);
-    }
-    context.buffer.writeStyled(
-      offset.x + width - 1,
+    context.writeString(
+      offset.x,
       y,
-      '┘',
+      '└${'─' * inner}┘',
       style,
     );
   }
