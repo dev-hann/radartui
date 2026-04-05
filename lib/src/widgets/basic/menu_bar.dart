@@ -305,12 +305,15 @@ class RenderMenuBar extends RenderBox {
   TextStyle? _cachedMenuClosedFgStyle;
   Color? _cachedBgColor;
   List<int> _cachedItemWidths = const [];
+  List<MenuBarItem>? _cachedItemsIdentity;
   int _cachedDropdownWidth = 0;
+  int _cachedOpenMenuIndex = -2;
   Map<String, int> _cachedShortcutWidths = const {};
 
   void _invalidateCache() {
     _cachedMenuClosedBgStyle = null;
     _cachedMenuClosedFgStyle = null;
+    _cachedItemsIdentity = null;
   }
 
   void _ensureMenuBarStylesCached() {
@@ -323,22 +326,40 @@ class RenderMenuBar extends RenderBox {
     _cachedBgColor = backgroundColor;
   }
 
-  @override
-  void performLayout(Constraints constraints) {
-    int totalWidth = 0;
+  void _ensureItemWidthsCached() {
+    if (identical(_items, _cachedItemsIdentity)) return;
     final widths = <int>[];
-    for (final item in items) {
-      final int w = stringWidth(item.label) + 2;
-      widths.add(w);
-      totalWidth += w;
+    for (final item in _items) {
+      widths.add(stringWidth(item.label) + 2);
     }
     _cachedItemWidths = widths;
-    _cachedShortcutWidths = {};
-    int maxDropdownHeight = 1;
+    _cachedItemsIdentity = _items;
+  }
+
+  void _ensureDropdownCached() {
+    if (_cachedOpenMenuIndex == openMenuIndex &&
+        identical(_items, _cachedItemsIdentity)) {
+      return;
+    }
+    _cachedShortcutWidths = const {};
     _cachedDropdownWidth = 0;
-    if (openMenuIndex >= 0 && openMenuIndex < items.length) {
-      maxDropdownHeight += items[openMenuIndex].children.length;
-      _cachedDropdownWidth = _computeMaxDropdownWidth(items[openMenuIndex]);
+    if (openMenuIndex >= 0 && openMenuIndex < _items.length) {
+      _cachedDropdownWidth = _computeMaxDropdownWidth(_items[openMenuIndex]);
+    }
+    _cachedOpenMenuIndex = openMenuIndex;
+  }
+
+  @override
+  void performLayout(Constraints constraints) {
+    _ensureItemWidthsCached();
+    int totalWidth = 0;
+    for (final w in _cachedItemWidths) {
+      totalWidth += w;
+    }
+    _ensureDropdownCached();
+    int maxDropdownHeight = 1;
+    if (openMenuIndex >= 0 && openMenuIndex < _items.length) {
+      maxDropdownHeight += _items[openMenuIndex].children.length;
     }
     size = Size(totalWidth, maxDropdownHeight);
   }
