@@ -214,16 +214,13 @@ class RenderContainer extends RenderBox
   ) {
     if (_color == null) return;
     _cachedBgStyle ??= TextStyle(backgroundColor: _color);
-    final TextStyle bgStyle = _cachedBgStyle!;
     for (int y = 0; y < innerHeight; y++) {
-      for (int x = 0; x < innerWidth; x++) {
-        context.buffer.writeStyled(
-          innerOffset.x + x,
-          innerOffset.y + y,
-          ' ',
-          bgStyle,
-        );
-      }
+      context.fillBackground(
+        innerOffset.x.toInt(),
+        innerOffset.y.toInt() + y,
+        innerWidth,
+        _cachedBgStyle!,
+      );
     }
   }
 
