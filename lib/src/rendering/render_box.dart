@@ -57,6 +57,7 @@ mixin ContainerRenderObjectMixin<C extends RenderObject, D extends ParentData>
 
   /// Adds a [child] to the end of the children list.
   void add(C child) {
+    setupParentData(child);
     child.parent = this;
     _children.add(child);
   }
