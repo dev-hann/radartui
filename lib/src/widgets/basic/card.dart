@@ -166,9 +166,8 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     if (color == null) return;
     final TextStyle bgStyle = _cachedBorderStyle!;
     for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        context.buffer.writeStyled(offset.x + x, offset.y + y, ' ', bgStyle);
-      }
+      context.fillBackground(
+          offset.x.toInt(), offset.y.toInt() + y, width, bgStyle);
     }
   }
 
@@ -192,8 +191,9 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     TextStyle style,
   ) {
     context.buffer.writeStyled(offset.x, offset.y, '┌', style);
-    for (int x = 1; x < width - 1; x++) {
-      context.buffer.writeStyled(offset.x + x, offset.y, '─', style);
+    final int inner = width > 2 ? width - 2 : 0;
+    if (inner > 0) {
+      context.writeString(offset.x + 1, offset.y.toInt(), '─' * inner, style);
     }
     context.buffer.writeStyled(offset.x + width - 1, offset.y, '┐', style);
   }
@@ -223,18 +223,15 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     int height,
     TextStyle style,
   ) {
-    context.buffer.writeStyled(offset.x, offset.y + height - 1, '└', style);
-    for (int x = 1; x < width - 1; x++) {
-      context.buffer.writeStyled(
-        offset.x + x,
-        offset.y + height - 1,
-        '─',
-        style,
-      );
+    final int y = offset.y.toInt() + height - 1;
+    context.buffer.writeStyled(offset.x, y, '└', style);
+    final int inner = width > 2 ? width - 2 : 0;
+    if (inner > 0) {
+      context.writeString(offset.x + 1, y, '─' * inner, style);
     }
     context.buffer.writeStyled(
       offset.x + width - 1,
-      offset.y + height - 1,
+      y,
       '┘',
       style,
     );

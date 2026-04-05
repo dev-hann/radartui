@@ -232,27 +232,20 @@ class RenderLinearProgressIndicator extends RenderBox {
   }
 
   void _paintBackground(PaintingContext context, int x, int y, int width) {
-    final TextStyle style = _cachedBgStyle!;
-    for (int i = 0; i < width; i++) {
-      context.buffer.writeStyled(x + i, y, '░', style);
-    }
+    if (width <= 0) return;
+    context.writeString(x, y, '░' * width, _cachedBgStyle!);
   }
 
   void _paintDeterminate(PaintingContext context, int x, int y, int width) {
     final int filled = (value!.clamp(0.0, 1.0) * width).round();
-    final TextStyle style = _cachedFillStyle!;
-    for (int i = 0; i < filled && i < width; i++) {
-      context.buffer.writeStyled(x + i, y, '█', style);
-    }
+    if (filled <= 0) return;
+    context.writeString(x, y, '█' * filled, _cachedFillStyle!);
   }
 
   void _paintIndeterminate(PaintingContext context, int x, int y, int width) {
     final int blockWidth = (width * 0.3).round().clamp(1, width);
     final int maxStart = width - blockWidth;
     final int start = (animValue * maxStart).round().clamp(0, maxStart);
-    final TextStyle style = _cachedFillStyle!;
-    for (int i = start; i < start + blockWidth && i < width; i++) {
-      context.buffer.writeStyled(x + i, y, '█', style);
-    }
+    context.writeString(x + start, y, '█' * blockWidth, _cachedFillStyle!);
   }
 }

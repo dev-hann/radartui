@@ -180,14 +180,15 @@ class RenderText extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    final TextStyle effectiveStyle = style ?? const TextStyle();
     for (int lineIndex = 0; lineIndex < _lines.length; lineIndex++) {
       final line = _lines[lineIndex];
-      for (int charIndex = 0; charIndex < line.length; charIndex++) {
-        context.buffer.writeStyled(
-          offset.x + charIndex,
-          offset.y + lineIndex,
-          line[charIndex],
-          style,
+      if (line.isNotEmpty) {
+        context.writeString(
+          offset.x.toInt(),
+          offset.y.toInt() + lineIndex,
+          line,
+          effectiveStyle,
         );
       }
     }

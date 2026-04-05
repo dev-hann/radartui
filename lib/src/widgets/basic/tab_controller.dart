@@ -472,10 +472,9 @@ class RenderTabBar extends RenderBox {
 
   void _paintSelectedIndicator(
       PaintingContext context, int y, int start, int end) {
-    final TextStyle style = _cachedIndicatorStyle!;
-    for (int ix = start; ix < end; ix++) {
-      context.buffer.writeStyled(ix, y + 1, '─', style);
-    }
+    final int width = end - start;
+    if (width <= 0) return;
+    context.writeString(start, y + 1, '─' * width, _cachedIndicatorStyle!);
   }
 
   void _ensureStylesCached() {
