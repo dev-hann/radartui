@@ -185,14 +185,12 @@ class RenderDivider extends RenderBox {
     final lineChar = character.isNotEmpty ? character[0] : '─';
 
     for (int y = 0; y < thickness && y < dividerHeight; y++) {
-      for (int x = 0; x < size!.width; x++) {
-        context.buffer.writeStyled(
-          offset.x + x,
-          offset.y + y,
-          lineChar,
-          textStyle,
-        );
-      }
+      context.writeString(
+        offset.x,
+        offset.y + y,
+        lineChar * size!.width,
+        textStyle,
+      );
     }
   }
 }
