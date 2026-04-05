@@ -6,7 +6,7 @@
 - in-progress: 구현 중
 - completed: 완료
 
-## Loop Counter: 86
+## Loop Counter: 87
 
 ## Scan Level: 3
 
@@ -30,3 +30,4 @@ _None_
 - [completed] 2026-04-05-84: Cache TextStyle in RenderSparkline.paint() — build once per color change instead of per char. dart analyze: 0, dart test: 821/821.
 - [completed] 2026-04-05-79: Add doc comments to 6 more widget classes (Builder, Center, Spacer, SizedBox, Positioned, ListView). dart analyze: 0, dart test: 821/821.
 - [completed] 2026-04-05-85: Add doc comments to TextSpan, DefaultTextStyle, LayoutBuilder, TreeController. dart analyze: 0, dart test: 821/821. **Git pushed.**
+- [completed] 2026-04-05-87: Cache TextStyle in RenderDivider + RenderVerticalDivider (2 render objects). dart analyze: 0, dart test: 821/821.
