@@ -137,15 +137,31 @@ class _CircularProgressIndicatorRenderWidget extends RenderObjectWidget {
 class RenderCircularProgressIndicator extends RenderBox {
   RenderCircularProgressIndicator({
     required this.frame,
-    required this.color,
-    this.backgroundColor,
+    required Color color,
+    Color? backgroundColor,
     this.label,
-  });
+  })  : _color = color,
+        _backgroundColor = backgroundColor;
 
   String frame;
-  Color color;
-  Color? backgroundColor;
+  Color _color;
+  Color get color => _color;
+  set color(Color value) {
+    if (_color == value) return;
+    _color = value;
+    _cachedStyle = null;
+  }
+
+  Color? _backgroundColor;
+  Color? get backgroundColor => _backgroundColor;
+  set backgroundColor(Color? value) {
+    if (_backgroundColor == value) return;
+    _backgroundColor = value;
+    _cachedStyle = null;
+  }
+
   String? label;
+  TextStyle? _cachedStyle;
 
   @override
   void performLayout(Constraints constraints) {
@@ -156,10 +172,9 @@ class RenderCircularProgressIndicator extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final TextStyle style = TextStyle(
-      color: color,
-      backgroundColor: backgroundColor,
-    );
+    _cachedStyle ??=
+        TextStyle(color: _color, backgroundColor: _backgroundColor);
+    final TextStyle style = _cachedStyle!;
     context.buffer.writeStyled(offset.x, offset.y, frame, style);
 
     if (label != null && label!.isNotEmpty) {
