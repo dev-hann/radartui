@@ -173,10 +173,8 @@ class OutputBuffer {
   /// Clears using a full clear only when remnants are likely, otherwise uses a smart clear.
   void conditionalClear() {
     if (needsFullClear()) {
-      // Use aggressive clearing only when remnants are likely
       clearAll();
     } else {
-      // Use smart clearing for smooth rendering
       smartClear();
     }
   }

@@ -42,7 +42,6 @@ class ChangeNotifier {
   /// If a listener is added or removed during this method, the change will
   /// not affect the current notification.
   void notifyListeners() {
-    // Create a copy to avoid concurrent modification issues
     final List<Function()> localListeners = List.from(_listeners);
 
     for (final Function() listener in localListeners) {
