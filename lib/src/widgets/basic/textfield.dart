@@ -211,6 +211,15 @@ class TextEditingController extends ChangeNotifier {
   }
 }
 
+/// A single-line or multi-line text input field.
+///
+/// Supports keyboard navigation, text selection, clipboard operations,
+/// and configurable [maxLength]. Use [TextEditingController] for
+/// programmatic access to the text and selection state.
+/// A single-line or multi-line text input field.
+///
+/// Supports keyboard navigation, text selection, clipboard, and configurable
+/// [obscureText] for [maxLines].
 class TextField extends StatefulWidget {
   const TextField({
     super.key,

@@ -2,6 +2,10 @@ import '../../../radartui.dart';
 
 enum TextOverflow { clip, ellipsis, fade }
 
+/// A run of text with optional styling.
+///
+/// Displays [data] in the terminal using the given [style]. Supports
+/// [softWrap], [maxLines], and [TextOverflow] modes.
 class Text extends RenderObjectWidget {
   const Text(
     this.data, {
