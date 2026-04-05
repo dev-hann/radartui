@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A convenience widget that combines common painting, positioning, and sizing.
+///
+/// Supports [color] background, [width]/[height] constraints, [padding],
+/// [margin], and box-drawing [border] characters.
 class Container extends SingleChildRenderObjectWidget {
   const Container({
     super.key,

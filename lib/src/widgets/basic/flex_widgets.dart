@@ -1,5 +1,13 @@
 import '../../../radartui.dart';
 
+/// A [Flex] that lays out children in a horizontal line.
+///
+/// Use [MainAxisAlignment] and [CrossAxisAlignment] to control spacing.
+/// Children can be wrapped in [Expanded] or [Flexible] to distribute space.
+/// A [Flex] that lays out children in a horizontal line.
+///
+/// Use [MainAxisAlignment] and [CrossAxisAlignment] to control spacing.
+/// Children can be wrapped in [Expanded] or [Flexible] to distribute space.
 class Row extends Flex {
   const Row({
     super.key,
@@ -10,6 +18,14 @@ class Row extends Flex {
   }) : super(direction: Axis.horizontal);
 }
 
+/// A [Flex] that lays out children in a vertical line.
+///
+/// Use [MainAxisAlignment] and [CrossAxisAlignment] to control spacing.
+/// Children can be wrapped in [Expanded] or [Flexible] to distribute space.
+/// A [Flex] that lays out children in a vertical line.
+///
+/// Use [MainAxisAlignment] and [CrossAxisAlignment] to control spacing.
+/// Children can be wrapped in [Expanded] or [Flexible] to distribute space.
 class Column extends Flex {
   const Column({
     super.key,

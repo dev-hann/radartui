@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A pressable button widget that responds to keyboard input.
+///
+/// Use [onPressed] for click handling. Supports [style] and [focusStyle]
+/// customization, and [enabled] for disabled state.
 class Button extends StatefulWidget {
   const Button({
     super.key,
@@ -20,34 +24,8 @@ class Button extends StatefulWidget {
 }
 
 class _ButtonState extends State<Button> with FocusableState<Button> {
-  late AnimationController _controller;
-  late Animation<Color> _colorAnim;
-
   @override
   FocusNode? get providedFocusNode => widget.focusNode;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 150),
-    );
-    _colorAnim = ColorTween(
-      begin: widget.style?.backgroundColor ?? Color.blue,
-      end: widget.style?.focusBackgroundColor ?? Color.brightBlue,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-    _controller.addListener(() => setState(() {}));
-  }
-
-  @override
-  void onFocusChange(bool focused) {
-    super.onFocusChange(focused);
-    if (focused) {
-      _controller.forward();
-    } else {
-      _controller.reverse();
-    }
-  }
 
   @override
   void onKeyEvent(KeyEvent event) {
@@ -67,10 +45,7 @@ class _ButtonState extends State<Button> with FocusableState<Button> {
 
   @override
   Widget build(BuildContext context) {
-    final currentBackgroundColor = _colorAnim.value;
-    final style = (widget.style ?? const ButtonStyle()).copyWith(
-      backgroundColor: currentBackgroundColor,
-    );
+    final style = widget.style ?? const ButtonStyle();
 
     return _ButtonRenderWidget(
       text: widget.text,
@@ -79,12 +54,6 @@ class _ButtonState extends State<Button> with FocusableState<Button> {
       style: style,
       onTap: _onTap,
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }
 
@@ -142,99 +111,32 @@ class RenderButton extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     final padding = style.padding;
-    final width = text.length + padding.left + padding.right;
+    final width = stringWidth(text) + padding.left + padding.right;
     final height = 1 + padding.top + padding.bottom;
     size = Size(width, height);
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final padding = style.padding;
-    final textStyle = _getTextStyle();
-    final backgroundColor = _getBackgroundColor();
+    final EdgeInsets padding = style.padding;
+    final TextStyle textStyle = _getTextStyle();
+    final Color backgroundColor = _getBackgroundColor();
+    final TextStyle bgStyle = TextStyle(backgroundColor: backgroundColor);
 
     for (int y = 0; y < size!.height; y++) {
       for (int x = 0; x < size!.width; x++) {
-        context.buffer.writeStyled(
-          offset.x + x,
-          offset.y + y,
-          ' ',
-          TextStyle(backgroundColor: backgroundColor),
-        );
+        context.buffer.writeStyled(offset.x + x, offset.y + y, ' ', bgStyle);
       }
     }
 
-    if (focused) {
-      _drawBorder(context, offset);
-    }
-
-    final textX = offset.x + padding.left;
-    final textY = offset.y + padding.top;
+    final int textX = offset.x + padding.left;
+    final int textY = offset.y + padding.top;
+    int x = textX;
     for (int i = 0; i < text.length; i++) {
-      context.buffer.writeStyled(textX + i, textY, text[i], textStyle);
+      final String ch = text[i];
+      context.buffer.writeStyled(x, textY, ch, textStyle);
+      x += charWidth(ch.codeUnitAt(0));
     }
-  }
-
-  void _drawBorder(PaintingContext context, Offset offset) {
-    final borderStyle = TextStyle(
-      color: style.focusColor,
-      backgroundColor: _getBackgroundColor(),
-    );
-
-    _drawBorderEdges(context, offset, borderStyle);
-    _drawBorderCorners(context, offset, borderStyle);
-  }
-
-  void _drawBorderEdges(
-    PaintingContext context,
-    Offset offset,
-    TextStyle borderStyle,
-  ) {
-    for (int x = 0; x < size!.width; x++) {
-      context.buffer.writeStyled(offset.x + x, offset.y, '─', borderStyle);
-      context.buffer.writeStyled(
-        offset.x + x,
-        offset.y + size!.height - 1,
-        '─',
-        borderStyle,
-      );
-    }
-
-    for (int y = 0; y < size!.height; y++) {
-      context.buffer.writeStyled(offset.x, offset.y + y, '│', borderStyle);
-      context.buffer.writeStyled(
-        offset.x + size!.width - 1,
-        offset.y + y,
-        '│',
-        borderStyle,
-      );
-    }
-  }
-
-  void _drawBorderCorners(
-    PaintingContext context,
-    Offset offset,
-    TextStyle borderStyle,
-  ) {
-    context.buffer.writeStyled(offset.x, offset.y, '┌', borderStyle);
-    context.buffer.writeStyled(
-      offset.x + size!.width - 1,
-      offset.y,
-      '┐',
-      borderStyle,
-    );
-    context.buffer.writeStyled(
-      offset.x,
-      offset.y + size!.height - 1,
-      '└',
-      borderStyle,
-    );
-    context.buffer.writeStyled(
-      offset.x + size!.width - 1,
-      offset.y + size!.height - 1,
-      '┘',
-      borderStyle,
-    );
   }
 
   TextStyle _getTextStyle() {
