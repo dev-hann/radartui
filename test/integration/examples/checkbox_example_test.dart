@@ -9,29 +9,25 @@ void main() {
       await tester.pumpAndSettle();
 
       tester.assertContains('Checkbox Widget Example');
-      tester.assertContains('Interactive Checkboxes');
       tester.assertContains('Enable notifications');
       tester.assertContains('Auto-save documents');
-      tester.assertContains('Green themed checkbox');
-      tester.assertContains('Custom colors checkbox');
+      tester.assertContains('Dark mode');
     });
 
-    testWidgets('shows disabled checkboxes', (tester) async {
+    testWidgets('shows checked state', (tester) async {
       tester.pumpWidget(const CheckboxExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Disabled Checkboxes');
-      tester.assertContains('Disabled unchecked');
-      tester.assertContains('Disabled checked');
+      tester.assertContains('Auto-save: ON');
     });
 
     testWidgets('displays current selection status', (tester) async {
       tester.pumpWidget(const CheckboxExample());
       await tester.pumpAndSettle();
 
-      tester.assertContains('Current Selection Status');
-      tester.assertContains('Notifications:');
-      tester.assertContains('Auto-save:');
+      tester.assertContains('Notifications: OFF');
+      tester.assertContains('Auto-save: ON');
+      tester.assertContains('Dark mode: OFF');
     });
 
     testWidgets('can be found by type', (tester) async {

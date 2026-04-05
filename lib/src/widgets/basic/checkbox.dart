@@ -145,19 +145,71 @@ class _CheckboxRenderWidget extends RenderObjectWidget {
 
 class RenderCheckbox extends RenderBox {
   RenderCheckbox({
-    required this.value,
-    required this.tristate,
-    required this.focused,
-    required this.enabled,
-    required this.activeColor,
-    required this.checkColor,
-  });
-  bool value;
-  bool tristate;
-  bool focused;
-  bool enabled;
-  Color activeColor;
-  Color checkColor;
+    required bool value,
+    required bool tristate,
+    required bool focused,
+    required bool enabled,
+    required Color activeColor,
+    required Color checkColor,
+  })  : _value = value,
+        _tristate = tristate,
+        _focused = focused,
+        _enabled = enabled,
+        _activeColor = activeColor,
+        _checkColor = checkColor;
+
+  bool _value;
+  bool _tristate;
+  bool _focused;
+  bool _enabled;
+  Color _activeColor;
+  Color _checkColor;
+
+  bool get value => _value;
+  set value(bool v) {
+    _value = v;
+    _invalidateCache();
+  }
+
+  bool get tristate => _tristate;
+  set tristate(bool v) {
+    _tristate = v;
+    _invalidateCache();
+  }
+
+  bool get focused => _focused;
+  set focused(bool v) {
+    _focused = v;
+    _invalidateCache();
+  }
+
+  bool get enabled => _enabled;
+  set enabled(bool v) {
+    _enabled = v;
+    _invalidateCache();
+  }
+
+  Color get activeColor => _activeColor;
+  set activeColor(Color v) {
+    _activeColor = v;
+    _invalidateCache();
+  }
+
+  Color get checkColor => _checkColor;
+  set checkColor(Color v) {
+    _checkColor = v;
+    _invalidateCache();
+  }
+
+  TextStyle? _cachedBackgroundStyle;
+  TextStyle? _cachedBorderStyle;
+  TextStyle? _cachedIndicatorStyle;
+
+  void _invalidateCache() {
+    _cachedBackgroundStyle = null;
+    _cachedBorderStyle = null;
+    _cachedIndicatorStyle = null;
+  }
 
   @override
   void performLayout(Constraints constraints) {
@@ -167,61 +219,43 @@ class RenderCheckbox extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final backgroundColor = _getBackgroundColor();
-    final foregroundColor = _getForegroundColor();
-    final borderColor =
-        focused ? activeColor : (enabled ? Color.white : Color.brightBlack);
-
-    _paintBackground(context, offset, backgroundColor);
-    _paintBorder(context, offset, borderColor, backgroundColor);
-
-    final checkChar = _getCheckChar();
+    _ensureStylesCached();
+    _paintBackground(context, offset);
+    _paintBorder(context, offset);
+    final String checkChar = _getCheckChar();
     if (checkChar.isNotEmpty) {
-      _paintIndicator(
-          context, offset, checkChar, foregroundColor, backgroundColor);
+      _paintIndicator(context, offset, checkChar);
     }
   }
 
-  void _paintBackground(
-    PaintingContext context,
-    Offset offset,
-    Color backgroundColor,
-  ) {
+  void _ensureStylesCached() {
+    if (_cachedBackgroundStyle != null) return;
+    final Color bg = _getBackgroundColor();
+    final Color fg = _getForegroundColor();
+    final Color border =
+        focused ? activeColor : (enabled ? Color.white : Color.brightBlack);
+    _cachedBackgroundStyle = TextStyle(backgroundColor: bg);
+    _cachedBorderStyle = TextStyle(color: border, backgroundColor: bg);
+    _cachedIndicatorStyle = TextStyle(color: fg, backgroundColor: bg);
+  }
+
+  void _paintBackground(PaintingContext context, Offset offset) {
+    final TextStyle style = _cachedBackgroundStyle!;
     for (int x = 0; x < 3; x++) {
-      context.buffer.writeStyled(
-        offset.x + x,
-        offset.y,
-        ' ',
-        TextStyle(backgroundColor: backgroundColor),
-      );
+      context.buffer.writeStyled(offset.x + x, offset.y, ' ', style);
     }
   }
 
-  void _paintBorder(
-    PaintingContext context,
-    Offset offset,
-    Color borderColor,
-    Color backgroundColor,
-  ) {
-    final borderStyle =
-        TextStyle(color: borderColor, backgroundColor: backgroundColor);
-    context.buffer.writeStyled(offset.x, offset.y, '[', borderStyle);
-    context.buffer.writeStyled(offset.x + 2, offset.y, ']', borderStyle);
+  void _paintBorder(PaintingContext context, Offset offset) {
+    final TextStyle style = _cachedBorderStyle!;
+    context.buffer.writeStyled(offset.x, offset.y, '[', style);
+    context.buffer.writeStyled(offset.x + 2, offset.y, ']', style);
   }
 
   void _paintIndicator(
-    PaintingContext context,
-    Offset offset,
-    String checkChar,
-    Color foregroundColor,
-    Color backgroundColor,
-  ) {
-    context.buffer.writeStyled(
-      offset.x + 1,
-      offset.y,
-      checkChar,
-      TextStyle(color: foregroundColor, backgroundColor: backgroundColor),
-    );
+      PaintingContext context, Offset offset, String checkChar) {
+    context.buffer
+        .writeStyled(offset.x + 1, offset.y, checkChar, _cachedIndicatorStyle!);
   }
 
   Color _getBackgroundColor() {

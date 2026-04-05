@@ -9,18 +9,16 @@ class CheckboxExample extends StatefulWidget {
 }
 
 class _CheckboxExampleState extends State<CheckboxExample> {
-  bool _option1 = false;
-  bool _option2 = true;
-  bool _option3 = false;
-  bool _option4 = true;
+  bool _checked1 = false;
+  bool _checked2 = true;
+  bool _checked3 = false;
   StreamSubscription? _keySubscription;
 
   @override
   void initState() {
     super.initState();
-    _keySubscription = ServicesBinding.instance.keyboard.keyEvents.listen((
-      key,
-    ) {
+    _keySubscription =
+        ServicesBinding.instance.keyboard.keyEvents.listen((key) {
       _handleKeyEvent(key);
     });
   }
@@ -34,14 +32,13 @@ class _CheckboxExampleState extends State<CheckboxExample> {
   void _handleKeyEvent(KeyEvent keyEvent) {
     if (keyEvent.code == KeyCode.escape) {
       Navigator.of(context).pop();
-      return;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(1),
+      padding: const EdgeInsets.all(2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -50,100 +47,66 @@ class _CheckboxExampleState extends State<CheckboxExample> {
             style: TextStyle(color: Color.brightCyan, bold: true),
           ),
           const SizedBox(height: 1),
-          const Text(
-            'Interactive Checkboxes:',
-            style: TextStyle(color: Color.cyan, bold: true),
-          ),
           Row(
             children: [
               Checkbox(
-                value: _option1,
-                onChanged: (value) {
+                value: _checked1,
+                onChanged: (bool? value) {
                   setState(() {
-                    _option1 = value ?? false;
+                    _checked1 = value ?? false;
                   });
                 },
               ),
-              const SizedBox(width: 2),
-              Text('Enable notifications ${_option1.toString()}'),
+              const SizedBox(width: 1),
+              const Text('Enable notifications'),
             ],
           ),
           Row(
             children: [
               Checkbox(
-                value: _option2,
-                onChanged: (value) {
+                value: _checked2,
+                onChanged: (bool? value) {
                   setState(() {
-                    _option2 = value ?? false;
+                    _checked2 = value ?? false;
                   });
                 },
               ),
-              const SizedBox(width: 2),
+              const SizedBox(width: 1),
               const Text('Auto-save documents'),
             ],
           ),
           Row(
             children: [
               Checkbox(
-                value: _option3,
-                onChanged: (value) {
+                value: _checked3,
+                onChanged: (bool? value) {
                   setState(() {
-                    _option3 = value ?? false;
+                    _checked3 = value ?? false;
                   });
                 },
                 activeColor: Color.green,
               ),
-              const SizedBox(width: 2),
-              const Text('Green themed checkbox'),
-            ],
-          ),
-          Row(
-            children: [
-              Checkbox(
-                value: _option4,
-                onChanged: (value) {
-                  setState(() {
-                    _option4 = value ?? false;
-                  });
-                },
-                activeColor: Color.red,
-                checkColor: Color.yellow,
-              ),
-              const SizedBox(width: 2),
-              const Text('Custom colors checkbox'),
+              const SizedBox(width: 1),
+              const Text('Dark mode'),
             ],
           ),
           const SizedBox(height: 1),
-          const Text(
-            'Disabled Checkboxes:',
-            style: TextStyle(color: Color.cyan, bold: true),
+          Text(
+            'Notifications: ${_checked1 ? "ON" : "OFF"}',
+            style: TextStyle(color: _checked1 ? Color.green : Color.red),
           ),
-          const Row(
-            children: [
-              Checkbox(value: false, onChanged: null),
-              SizedBox(width: 2),
-              Text('Disabled unchecked'),
-            ],
+          Text(
+            'Auto-save: ${_checked2 ? "ON" : "OFF"}',
+            style: TextStyle(color: _checked2 ? Color.green : Color.red),
           ),
-          const Row(
-            children: [
-              Checkbox(value: true, onChanged: null),
-              SizedBox(width: 2),
-              Text('Disabled checked'),
-            ],
+          Text(
+            'Dark mode: ${_checked3 ? "ON" : "OFF"}',
+            style: TextStyle(color: _checked3 ? Color.green : Color.red),
           ),
           const SizedBox(height: 1),
           const Text(
-            'Current Selection Status:',
-            style: TextStyle(color: Color.cyan, bold: true),
-          ),
-          Text(
-            'Notifications: ${_option1 ? "ON" : "OFF"}',
-            style: TextStyle(color: _option1 ? Color.green : Color.red),
-          ),
-          Text(
-            'Auto-save: ${_option2 ? "ON" : "OFF"}',
-            style: TextStyle(color: _option2 ? Color.green : Color.red),
+            'Press ESC to return to main menu',
+            style: TextStyle(color: Color.yellow, italic: true),
           ),
         ],
       ),
