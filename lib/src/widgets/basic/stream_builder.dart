@@ -65,28 +65,34 @@ class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
   void _subscribe() {
     if (widget.stream != null) {
       _subscription = widget.stream!.listen(
-        (T data) {
-          setState(() {
-            _snapshot = AsyncSnapshot<T>.withData(ConnectionState.active, data);
-          });
-        },
-        onError: (Object error, StackTrace stackTrace) {
-          setState(() {
-            _snapshot = AsyncSnapshot<T>.withError(
-              ConnectionState.active,
-              error,
-              stackTrace,
-            );
-          });
-        },
-        onDone: () {
-          setState(() {
-            _snapshot = _snapshot.inState(ConnectionState.done);
-          });
-        },
+        _onStreamData,
+        onError: _onStreamError,
+        onDone: _onStreamDone,
       );
       _snapshot = _snapshot.inState(ConnectionState.waiting);
     }
+  }
+
+  void _onStreamData(T data) {
+    setState(() {
+      _snapshot = AsyncSnapshot<T>.withData(ConnectionState.active, data);
+    });
+  }
+
+  void _onStreamError(Object error, StackTrace stackTrace) {
+    setState(() {
+      _snapshot = AsyncSnapshot<T>.withError(
+        ConnectionState.active,
+        error,
+        stackTrace,
+      );
+    });
+  }
+
+  void _onStreamDone() {
+    setState(() {
+      _snapshot = _snapshot.inState(ConnectionState.done);
+    });
   }
 
   void _unsubscribe() {

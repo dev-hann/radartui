@@ -333,20 +333,15 @@ class RenderRichText extends RenderBox {
       final line = _lines[lineIndex];
       int x = offset.x.toInt();
       final int y = offset.y.toInt() + lineIndex;
-
       for (final run in line.runs) {
-        if (run.style != null) {
-          x = context.writeString(x, y, run.text, run.style!);
-        } else {
-          x = context.writeString(
-            x,
-            y,
-            run.text,
-            const TextStyle(),
-          );
-        }
+        x = _paintRun(context, x, y, run);
       }
     }
+  }
+
+  int _paintRun(PaintingContext context, int x, int y, _StyledRun run) {
+    final style = run.style ?? const TextStyle();
+    return context.writeString(x, y, run.text, style);
   }
 }
 

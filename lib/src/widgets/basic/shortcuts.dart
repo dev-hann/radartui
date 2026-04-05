@@ -145,14 +145,20 @@ class Shortcuts extends StatefulWidget {
     Element? current = element.parent;
     while (current != null) {
       if (current.widget is _ShortcutsScope) {
-        final scope = current.widget as _ShortcutsScope;
-        for (final entry in scope.shortcuts.entries) {
-          if (entry.key.accepts(event)) {
-            return entry.value;
-          }
-        }
+        final match = _matchShortcut(
+          event,
+          current.widget as _ShortcutsScope,
+        );
+        if (match != null) return match;
       }
       current = current.parent;
+    }
+    return null;
+  }
+
+  static Intent? _matchShortcut(KeyEvent event, _ShortcutsScope scope) {
+    for (final entry in scope.shortcuts.entries) {
+      if (entry.key.accepts(event)) return entry.value;
     }
     return null;
   }

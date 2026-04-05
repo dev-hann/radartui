@@ -199,23 +199,21 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
 
   List<int> _calculateColumnWidths() {
     final widths = <int>[];
-
     for (int i = 0; i < widget.columns.length; i++) {
-      int maxWidth = stringWidth(widget.columns[i].label);
-
-      for (final row in widget.rows) {
-        if (i < row.cells.length) {
-          final int cellWidth = stringWidth(row.cells[i].value);
-          if (cellWidth > maxWidth) {
-            maxWidth = cellWidth;
-          }
-        }
-      }
-
-      widths.add(maxWidth);
+      widths.add(_maxColumnWidth(i));
     }
-
     return widths;
+  }
+
+  int _maxColumnWidth(int columnIndex) {
+    int maxWidth = stringWidth(widget.columns[columnIndex].label);
+    for (final row in widget.rows) {
+      if (columnIndex < row.cells.length) {
+        final int cellWidth = stringWidth(row.cells[columnIndex].value);
+        if (cellWidth > maxWidth) maxWidth = cellWidth;
+      }
+    }
+    return maxWidth;
   }
 
   Widget _buildHeaderRow(List<int> columnWidths) {
