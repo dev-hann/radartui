@@ -123,13 +123,21 @@ class RenderDivider extends RenderBox {
   RenderDivider({
     required this.dividerHeight,
     required this.thickness,
-    required this.color,
+    required Color color,
     required this.character,
-  });
+  }) : _color = color;
   int dividerHeight;
   int thickness;
-  Color color;
+  Color _color;
+  Color get color => _color;
+  set color(Color value) {
+    if (_color == value) return;
+    _color = value;
+    _cachedStyle = null;
+  }
+
   String character;
+  TextStyle? _cachedStyle;
 
   @override
   void performLayout(Constraints constraints) {
@@ -139,7 +147,8 @@ class RenderDivider extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final textStyle = TextStyle(color: color);
+    _cachedStyle ??= TextStyle(color: _color);
+    final TextStyle textStyle = _cachedStyle!;
     final lineChar = character.isNotEmpty ? character[0] : '─';
 
     for (int y = 0; y < thickness && y < dividerHeight; y++) {
@@ -159,13 +168,21 @@ class RenderVerticalDivider extends RenderBox {
   RenderVerticalDivider({
     required this.dividerWidth,
     required this.thickness,
-    required this.color,
+    required Color color,
     required this.character,
-  });
+  }) : _color = color;
   int dividerWidth;
   int thickness;
-  Color color;
+  Color _color;
+  Color get color => _color;
+  set color(Color value) {
+    if (_color == value) return;
+    _color = value;
+    _cachedStyle = null;
+  }
+
   String character;
+  TextStyle? _cachedStyle;
 
   @override
   void performLayout(Constraints constraints) {
@@ -175,7 +192,8 @@ class RenderVerticalDivider extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final textStyle = TextStyle(color: color);
+    _cachedStyle ??= TextStyle(color: _color);
+    final TextStyle textStyle = _cachedStyle!;
     final lineChar = character.isNotEmpty ? character[0] : '│';
 
     for (int x = 0; x < thickness && x < dividerWidth; x++) {
