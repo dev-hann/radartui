@@ -243,6 +243,25 @@ class RenderDropdownButton extends RenderBox {
   /// The background color of the button.
   Color backgroundColor;
 
+  TextStyle? _cachedBgStyle;
+  TextStyle? _cachedFgBgStyle;
+  Color? _cachedBgColor;
+  Color? _cachedFgColor;
+
+  void _ensureStylesCached() {
+    final Color bgColor = focused ? focusColor : backgroundColor;
+    final Color fgColor = enabled ? Color.white : Color.brightBlack;
+    if (_cachedBgColor == bgColor &&
+        _cachedFgColor == fgColor &&
+        _cachedBgStyle != null) {
+      return;
+    }
+    _cachedBgStyle = TextStyle(backgroundColor: bgColor);
+    _cachedFgBgStyle = TextStyle(color: fgColor, backgroundColor: bgColor);
+    _cachedBgColor = bgColor;
+    _cachedFgColor = fgColor;
+  }
+
   int get _textWidth => stringWidth(text);
 
   @override
@@ -252,11 +271,9 @@ class RenderDropdownButton extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final Color bgColor = focused ? focusColor : backgroundColor;
-    final Color fgColor = enabled ? Color.white : Color.brightBlack;
-    final TextStyle bgStyle = TextStyle(backgroundColor: bgColor);
-    final TextStyle fgBgStyle =
-        TextStyle(color: fgColor, backgroundColor: bgColor);
+    _ensureStylesCached();
+    final TextStyle bgStyle = _cachedBgStyle!;
+    final TextStyle fgBgStyle = _cachedFgBgStyle!;
     final int textW = _textWidth;
     _fillBackground(
         context, offset.x.toInt(), offset.y.toInt(), textW + 3, bgStyle);
