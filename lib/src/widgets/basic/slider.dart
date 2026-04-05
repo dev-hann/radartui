@@ -191,6 +191,7 @@ class RenderSlider extends RenderBox {
     if (_value == v) return;
     _value = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The minimum slider value.
@@ -201,6 +202,7 @@ class RenderSlider extends RenderBox {
     if (_min == v) return;
     _min = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The maximum slider value.
@@ -211,6 +213,7 @@ class RenderSlider extends RenderBox {
     if (_max == v) return;
     _max = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// Whether the slider currently has keyboard focus.
@@ -221,6 +224,7 @@ class RenderSlider extends RenderBox {
     if (_focused == v) return;
     _focused = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// Whether the slider is interactive (has an [onChanged] callback).
@@ -231,6 +235,7 @@ class RenderSlider extends RenderBox {
     if (_enabled == v) return;
     _enabled = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color of the active (filled) track portion.
@@ -241,6 +246,7 @@ class RenderSlider extends RenderBox {
     if (_activeColor == v) return;
     _activeColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color of the inactive (unfilled) track portion.
@@ -251,6 +257,7 @@ class RenderSlider extends RenderBox {
     if (_inactiveColor == v) return;
     _inactiveColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color of the thumb indicator.
@@ -261,6 +268,7 @@ class RenderSlider extends RenderBox {
     if (_thumbColor == v) return;
     _thumbColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// An optional label displayed beside the slider.
@@ -271,6 +279,7 @@ class RenderSlider extends RenderBox {
     if (_label == v) return;
     _label = v;
     _invalidateCache();
+    markNeedsLayout();
   }
 
   TextStyle? _cachedActiveTrackStyle;
