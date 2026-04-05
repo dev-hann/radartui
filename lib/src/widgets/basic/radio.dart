@@ -92,6 +92,7 @@ class _RadioState<T> extends State<Radio<T>> with FocusableState<Radio<T>> {
       focused: hasFocus,
       enabled: widget.onChanged != null,
       activeColor: currentBackgroundColor,
+      focusColor: widget.activeColor ?? Color.blue,
       checkColor: widget.checkColor ?? Color.white,
       onTap: _onTap,
     );
@@ -110,6 +111,7 @@ class _RadioRenderWidget extends RenderObjectWidget {
     required this.focused,
     required this.enabled,
     required this.activeColor,
+    required this.focusColor,
     required this.checkColor,
     this.onTap,
   });
@@ -117,6 +119,7 @@ class _RadioRenderWidget extends RenderObjectWidget {
   final bool focused;
   final bool enabled;
   final Color activeColor;
+  final Color focusColor;
   final Color checkColor;
   final VoidCallback? onTap;
 
@@ -129,6 +132,7 @@ class _RadioRenderWidget extends RenderObjectWidget {
         focused: focused,
         enabled: enabled,
         activeColor: activeColor,
+        focusColor: focusColor,
         checkColor: checkColor,
         onTap: onTap,
       );
@@ -142,10 +146,10 @@ class _RadioRenderWidget extends RenderObjectWidget {
     radio.focused = focused;
     radio.enabled = enabled;
     radio.activeColor = activeColor;
+    radio.focusColor = focusColor;
     radio.checkColor = checkColor;
     radio.onTap = onTap;
 
-    // Force repaint if selection state changed
     if (oldSelected != selected) {
       radio.markNeedsLayout();
     }
@@ -154,19 +158,79 @@ class _RadioRenderWidget extends RenderObjectWidget {
 
 class RenderRadio extends RenderBox {
   RenderRadio({
-    required this.selected,
-    required this.focused,
-    required this.enabled,
-    required this.activeColor,
-    required this.checkColor,
-    this.onTap,
-  });
-  bool selected;
-  bool focused;
-  bool enabled;
-  Color activeColor;
-  Color checkColor;
-  VoidCallback? onTap;
+    required bool selected,
+    required bool focused,
+    required bool enabled,
+    required Color activeColor,
+    required Color focusColor,
+    required Color checkColor,
+    VoidCallback? onTap,
+  })  : _selected = selected,
+        _focused = focused,
+        _enabled = enabled,
+        _activeColor = activeColor,
+        _focusColor = focusColor,
+        _checkColor = checkColor,
+        _onTap = onTap;
+
+  bool _selected;
+  bool _focused;
+  bool _enabled;
+  Color _activeColor;
+  Color _focusColor;
+  Color _checkColor;
+  VoidCallback? _onTap;
+
+  bool get selected => _selected;
+  set selected(bool v) {
+    _selected = v;
+    _invalidateCache();
+  }
+
+  bool get focused => _focused;
+  set focused(bool v) {
+    _focused = v;
+    _invalidateCache();
+  }
+
+  bool get enabled => _enabled;
+  set enabled(bool v) {
+    _enabled = v;
+    _invalidateCache();
+  }
+
+  Color get activeColor => _activeColor;
+  set activeColor(Color v) {
+    _activeColor = v;
+    _invalidateCache();
+  }
+
+  Color get focusColor => _focusColor;
+  set focusColor(Color v) {
+    _focusColor = v;
+    _invalidateCache();
+  }
+
+  Color get checkColor => _checkColor;
+  set checkColor(Color v) {
+    _checkColor = v;
+    _invalidateCache();
+  }
+
+  VoidCallback? get onTap => _onTap;
+  set onTap(VoidCallback? v) {
+    _onTap = v;
+  }
+
+  TextStyle? _cachedBackgroundStyle;
+  TextStyle? _cachedBorderStyle;
+  TextStyle? _cachedIndicatorStyle;
+
+  void _invalidateCache() {
+    _cachedBackgroundStyle = null;
+    _cachedBorderStyle = null;
+    _cachedIndicatorStyle = null;
+  }
 
   @override
   void performLayout(Constraints constraints) {
@@ -176,71 +240,50 @@ class RenderRadio extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final backgroundColor = _getBackgroundColor();
-    final foregroundColor = _getForegroundColor();
-    final borderColor =
-        focused ? activeColor : (enabled ? Color.white : Color.brightBlack);
-
-    _paintBackground(context, offset, backgroundColor);
-    _paintBorder(context, offset, borderColor, backgroundColor);
-
-    final selectionChar = _getSelectionChar();
+    _ensureStylesCached();
+    _paintBackground(context, offset);
+    _paintBorder(context, offset);
+    final String selectionChar = _getSelectionChar();
     if (selectionChar.isNotEmpty) {
-      _paintIndicator(
-          context, offset, selectionChar, foregroundColor, backgroundColor);
+      _paintIndicator(context, offset, selectionChar);
     }
   }
 
-  void _paintBackground(
-    PaintingContext context,
-    Offset offset,
-    Color backgroundColor,
-  ) {
+  void _ensureStylesCached() {
+    if (_cachedBackgroundStyle != null) return;
+    final Color bg = _getBackgroundColor();
+    final Color fg = _getForegroundColor();
+    final Color border =
+        focused ? focusColor : (enabled ? Color.white : Color.brightBlack);
+    _cachedBackgroundStyle = TextStyle(backgroundColor: bg);
+    _cachedBorderStyle = TextStyle(color: border, backgroundColor: bg);
+    _cachedIndicatorStyle = TextStyle(color: fg, backgroundColor: bg);
+  }
+
+  void _paintBackground(PaintingContext context, Offset offset) {
+    final TextStyle style = _cachedBackgroundStyle!;
     for (int x = 0; x < 3; x++) {
-      context.buffer.writeStyled(
-        offset.x + x,
-        offset.y,
-        ' ',
-        TextStyle(backgroundColor: backgroundColor),
-      );
+      context.buffer.writeStyled(offset.x + x, offset.y, ' ', style);
     }
   }
 
-  void _paintBorder(
-    PaintingContext context,
-    Offset offset,
-    Color borderColor,
-    Color backgroundColor,
-  ) {
-    final borderStyle =
-        TextStyle(color: borderColor, backgroundColor: backgroundColor);
-    context.buffer.writeStyled(offset.x, offset.y, '(', borderStyle);
-    context.buffer.writeStyled(offset.x + 2, offset.y, ')', borderStyle);
+  void _paintBorder(PaintingContext context, Offset offset) {
+    final TextStyle style = _cachedBorderStyle!;
+    context.buffer.writeStyled(offset.x, offset.y, '(', style);
+    context.buffer.writeStyled(offset.x + 2, offset.y, ')', style);
   }
 
   void _paintIndicator(
-    PaintingContext context,
-    Offset offset,
-    String selectionChar,
-    Color foregroundColor,
-    Color backgroundColor,
-  ) {
+      PaintingContext context, Offset offset, String selectionChar) {
     context.buffer.writeStyled(
-      offset.x + 1,
-      offset.y,
-      selectionChar,
-      TextStyle(color: foregroundColor, backgroundColor: backgroundColor),
-    );
+        offset.x + 1, offset.y, selectionChar, _cachedIndicatorStyle!);
   }
 
   Color _getBackgroundColor() {
     if (!enabled) {
       return Color.brightBlack;
-    } else if (selected) {
-      return activeColor;
-    } else {
-      return Color.black;
     }
+    return activeColor;
   }
 
   Color _getForegroundColor() {
