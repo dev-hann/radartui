@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// Manages the expand/collapse state of a [TreeView].
+///
+/// Each node is identified by an [Object] key. Use [toggleNode] to expand
+/// or collapse, and [isExpanded] to query state.
 class TreeController extends ChangeNotifier {
   TreeController({Set<Object>? initialExpandedKeys})
       : _expandedKeys = Set<Object>.from(initialExpandedKeys ?? <Object>{});

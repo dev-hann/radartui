@@ -1,5 +1,10 @@
 import '../../../radartui.dart';
 
+/// An inherited widget that sets the default [TextStyle] for descendant
+/// [Text] and [RichText] widgets.
+///
+/// Retrieve via [DefaultTextStyle.of]. If no DefaultTextStyle ancestor exists,
+/// returns a default [TextStyle()].
 class DefaultTextStyle extends InheritedWidget {
   const DefaultTextStyle({
     super.key,
