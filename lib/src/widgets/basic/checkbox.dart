@@ -189,6 +189,7 @@ class RenderCheckbox extends RenderBox {
     if (_value == v) return;
     _value = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// Whether the checkbox supports a tri-state (null) value.
@@ -199,6 +200,7 @@ class RenderCheckbox extends RenderBox {
     if (_tristate == v) return;
     _tristate = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// Whether the checkbox currently has keyboard focus.
@@ -209,6 +211,7 @@ class RenderCheckbox extends RenderBox {
     if (_focused == v) return;
     _focused = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// Whether the checkbox is interactive.
@@ -219,6 +222,7 @@ class RenderCheckbox extends RenderBox {
     if (_enabled == v) return;
     _enabled = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color of the filled background when checked.
@@ -229,6 +233,7 @@ class RenderCheckbox extends RenderBox {
     if (_activeColor == v) return;
     _activeColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color of the check mark character.
@@ -239,6 +244,7 @@ class RenderCheckbox extends RenderBox {
     if (_checkColor == v) return;
     _checkColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   TextStyle? _cachedBackgroundStyle;

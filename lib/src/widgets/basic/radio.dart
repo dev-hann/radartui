@@ -206,6 +206,7 @@ class RenderRadio extends RenderBox {
     if (_selected == v) return;
     _selected = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// Whether this radio currently has keyboard focus.
@@ -216,6 +217,7 @@ class RenderRadio extends RenderBox {
     if (_focused == v) return;
     _focused = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// Whether this radio is interactive.
@@ -226,6 +228,7 @@ class RenderRadio extends RenderBox {
     if (_enabled == v) return;
     _enabled = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color of the filled indicator when selected.
@@ -236,6 +239,7 @@ class RenderRadio extends RenderBox {
     if (_activeColor == v) return;
     _activeColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The border color when focused.
@@ -246,6 +250,7 @@ class RenderRadio extends RenderBox {
     if (_focusColor == v) return;
     _focusColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The color of the check dot.
@@ -256,6 +261,7 @@ class RenderRadio extends RenderBox {
     if (_checkColor == v) return;
     _checkColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// An optional tap callback.

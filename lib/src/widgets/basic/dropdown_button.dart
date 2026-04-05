@@ -420,6 +420,7 @@ class RenderDropdownMenu extends RenderBox {
     if (identical(_items, v)) return;
     _items = v;
     _invalidateCache();
+    markNeedsLayout();
   }
 
   /// The index of the currently highlighted item.
@@ -440,6 +441,7 @@ class RenderDropdownMenu extends RenderBox {
     if (_dropdownColor == v) return;
     _dropdownColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The background color of the selected item.
@@ -450,6 +452,7 @@ class RenderDropdownMenu extends RenderBox {
     if (_focusColor == v) return;
     _focusColor = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   TextStyle? _cachedSelectedBg;
