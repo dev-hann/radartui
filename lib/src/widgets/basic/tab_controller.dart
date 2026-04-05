@@ -161,16 +161,20 @@ class _TabBarState extends State<TabBar> with FocusableState<TabBar> {
           initialIndex: 0,
           length: widget.tabs.length,
         );
+        _internalController!.addListener(_onControllerChange);
+      } else {
+        widget.controller!.addListener(_onControllerChange);
       }
-      widget.controller?.addListener(_onControllerChange);
     }
     if (widget.tabs.length != oldWidget.tabs.length) {
       if (widget.controller == null && _internalController != null) {
+        _internalController!.removeListener(_onControllerChange);
         _internalController!.dispose();
         _internalController = TabController(
           initialIndex: 0,
           length: widget.tabs.length,
         );
+        _internalController!.addListener(_onControllerChange);
       }
     }
   }
