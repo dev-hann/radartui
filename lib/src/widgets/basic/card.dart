@@ -51,10 +51,11 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   /// The inner padding between the card border and its child.
   EdgeInsets? get padding => _padding;
 
-  /// Sets the inner padding.
+  /// Sets the inner padding and marks layout as needed.
   set padding(EdgeInsets? v) {
     if (_padding == v) return;
     _padding = v;
+    markNeedsLayout();
   }
 
   TextStyle? _cachedBorderStyle;

@@ -124,6 +124,7 @@ class RenderButton extends RenderBox {
     if (_text == value) return;
     _text = value;
     _cachedTextWidth = stringWidth(_text);
+    markNeedsLayout();
   }
 
   bool _enabled;

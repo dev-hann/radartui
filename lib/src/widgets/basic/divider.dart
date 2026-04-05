@@ -144,17 +144,38 @@ class _VerticalDividerRenderWidget extends RenderObjectWidget {
 class RenderDivider extends RenderBox {
   /// Creates a [RenderDivider] with the given dimensions and visual properties.
   RenderDivider({
-    required this.dividerHeight,
-    required this.thickness,
+    required int dividerHeight,
+    required int thickness,
     required Color color,
-    required this.character,
-  }) : _color = color;
+    required String character,
+  })  : _dividerHeight = dividerHeight,
+        _thickness = thickness,
+        _color = color,
+        _character = character;
+
+  int _dividerHeight;
 
   /// The total height of the divider area.
-  int dividerHeight;
+  int get dividerHeight => _dividerHeight;
+
+  /// Sets the total height and marks layout as needed.
+  set dividerHeight(int value) {
+    if (_dividerHeight == value) return;
+    _dividerHeight = value;
+    markNeedsLayout();
+  }
+
+  int _thickness;
 
   /// The number of rows actually drawn.
-  int thickness;
+  int get thickness => _thickness;
+
+  /// Sets the thickness and marks layout as needed.
+  set thickness(int value) {
+    if (_thickness == value) return;
+    _thickness = value;
+    markNeedsLayout();
+  }
 
   Color _color;
 
@@ -168,23 +189,33 @@ class RenderDivider extends RenderBox {
     _cachedStyle = null;
   }
 
+  String _character;
+
   /// The character used to draw the line.
-  String character;
+  String get character => _character;
+
+  /// Sets the character and marks layout as needed.
+  set character(String value) {
+    if (_character == value) return;
+    _character = value;
+    markNeedsLayout();
+  }
+
   TextStyle? _cachedStyle;
 
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
-    size = Size(boxConstraints.maxWidth, dividerHeight);
+    size = Size(boxConstraints.maxWidth, _dividerHeight);
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
     _cachedStyle ??= TextStyle(color: _color);
     final TextStyle textStyle = _cachedStyle!;
-    final lineChar = character.isNotEmpty ? character[0] : '─';
+    final lineChar = _character.isNotEmpty ? _character[0] : '─';
 
-    for (int y = 0; y < thickness && y < dividerHeight; y++) {
+    for (int y = 0; y < _thickness && y < _dividerHeight; y++) {
       context.writeString(
         offset.x,
         offset.y + y,
@@ -199,17 +230,38 @@ class RenderDivider extends RenderBox {
 class RenderVerticalDivider extends RenderBox {
   /// Creates a [RenderVerticalDivider] with the given dimensions and visual properties.
   RenderVerticalDivider({
-    required this.dividerWidth,
-    required this.thickness,
+    required int dividerWidth,
+    required int thickness,
     required Color color,
-    required this.character,
-  }) : _color = color;
+    required String character,
+  })  : _dividerWidth = dividerWidth,
+        _thickness = thickness,
+        _color = color,
+        _character = character;
+
+  int _dividerWidth;
 
   /// The total width of the divider area.
-  int dividerWidth;
+  int get dividerWidth => _dividerWidth;
+
+  /// Sets the total width and marks layout as needed.
+  set dividerWidth(int value) {
+    if (_dividerWidth == value) return;
+    _dividerWidth = value;
+    markNeedsLayout();
+  }
+
+  int _thickness;
 
   /// The number of columns actually drawn.
-  int thickness;
+  int get thickness => _thickness;
+
+  /// Sets the thickness and marks layout as needed.
+  set thickness(int value) {
+    if (_thickness == value) return;
+    _thickness = value;
+    markNeedsLayout();
+  }
 
   Color _color;
 
@@ -223,23 +275,33 @@ class RenderVerticalDivider extends RenderBox {
     _cachedStyle = null;
   }
 
+  String _character;
+
   /// The character used to draw the line.
-  String character;
+  String get character => _character;
+
+  /// Sets the character and marks layout as needed.
+  set character(String value) {
+    if (_character == value) return;
+    _character = value;
+    markNeedsLayout();
+  }
+
   TextStyle? _cachedStyle;
 
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
-    size = Size(dividerWidth, boxConstraints.maxHeight);
+    size = Size(_dividerWidth, boxConstraints.maxHeight);
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
     _cachedStyle ??= TextStyle(color: _color);
     final TextStyle textStyle = _cachedStyle!;
-    final lineChar = character.isNotEmpty ? character[0] : '│';
+    final lineChar = _character.isNotEmpty ? _character[0] : '│';
 
-    for (int x = 0; x < thickness && x < dividerWidth; x++) {
+    for (int x = 0; x < _thickness && x < _dividerWidth; x++) {
       for (int y = 0; y < size!.height; y++) {
         context.buffer.writeStyled(
           offset.x + x,

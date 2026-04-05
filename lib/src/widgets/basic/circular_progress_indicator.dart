@@ -152,15 +152,27 @@ class _CircularProgressIndicatorRenderWidget extends RenderObjectWidget {
 class RenderCircularProgressIndicator extends RenderBox {
   /// Creates a [RenderCircularProgressIndicator].
   RenderCircularProgressIndicator({
-    required this.frame,
+    required String frame,
     required Color color,
     Color? backgroundColor,
-    this.label,
-  })  : _color = color,
-        _backgroundColor = backgroundColor;
+    String? label,
+  })  : _frame = frame,
+        _color = color,
+        _backgroundColor = backgroundColor,
+        _label = label;
+
+  String _frame;
 
   /// The current animation frame character to display.
-  String frame;
+  String get frame => _frame;
+
+  /// Sets the animation frame and marks layout as needed.
+  set frame(String value) {
+    if (_frame == value) return;
+    _frame = value;
+    markNeedsLayout();
+  }
+
   Color _color;
 
   /// The color of the spinner character.
@@ -185,8 +197,18 @@ class RenderCircularProgressIndicator extends RenderBox {
     _cachedStyle = null;
   }
 
+  String? _label;
+
   /// An optional label rendered to the right of the spinner.
-  String? label;
+  String? get label => _label;
+
+  /// Sets the label and marks layout as needed.
+  set label(String? value) {
+    if (_label == value) return;
+    _label = value;
+    markNeedsLayout();
+  }
+
   TextStyle? _cachedStyle;
 
   @override
