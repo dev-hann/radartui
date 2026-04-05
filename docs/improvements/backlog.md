@@ -5,7 +5,7 @@
 - in-progress: 구현 중
 - completed: 완료
 
-## Loop Counter: 72
+## Loop Counter: 73
 
 ## Scan Level: 3
 
@@ -85,3 +85,4 @@ _None_
 - [completed] 2026-04-05-69: Cache TextStyle allocation in RenderCard.paint() (2 allocs → 1 cached style). dart analyze: 0 issues, dart test: 1080/1080
 - [completed] 2026-04-05-70: Cache TextStyle allocations in RenderSlider.paint() (4 styles: active track, inactive track, thumb, label). dart analyze: 0 issues, dart test: 1080/1080
 - [completed] 2026-04-05-71: Cache TextStyle allocations in RenderTabBar.paint() (3 styles: selected, unselected, indicator). dart analyze: 0 issues, dart test: 1080/1080
+- [completed] 2026-04-05-72: Reduce TextStyle allocations in RenderDropdownButton + RenderDropdownMenu (build 2 styles per paint, pass to helpers). dart analyze: 0 issues, dart test: 1080/1080
