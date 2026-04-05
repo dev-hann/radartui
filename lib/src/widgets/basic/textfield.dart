@@ -481,6 +481,7 @@ class RenderTextField extends RenderBox {
   set text(String v) {
     if (_text == v) return;
     _text = v;
+    markNeedsLayout();
   }
 
   /// The position of the cursor within the text.
@@ -490,6 +491,7 @@ class RenderTextField extends RenderBox {
   set cursorPosition(int v) {
     if (_cursorPosition == v) return;
     _cursorPosition = v;
+    markNeedsLayout();
   }
 
   /// Placeholder text shown when [text] is empty.
@@ -500,6 +502,7 @@ class RenderTextField extends RenderBox {
     if (_placeholder == v) return;
     _placeholder = v;
     _cachedPlaceholderStyle = null;
+    markNeedsLayout();
   }
 
   /// The text style applied to the input text.
@@ -510,6 +513,7 @@ class RenderTextField extends RenderBox {
     if (_style == v) return;
     _style = v;
     _cachedPlaceholderStyle = null;
+    markNeedsPaint();
   }
 
   /// Whether the text field currently has keyboard focus.
@@ -519,6 +523,7 @@ class RenderTextField extends RenderBox {
   set hasFocus(bool v) {
     if (_hasFocus == v) return;
     _hasFocus = v;
+    markNeedsPaint();
   }
 
   TextStyle? _cachedPlaceholderStyle;
