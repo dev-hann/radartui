@@ -141,18 +141,32 @@ class OutputBuffer {
     final int totalCells = terminal.height * terminal.width;
 
     for (int y = 0; y < terminal.height; y++) {
-      for (int x = 0; x < terminal.width; x++) {
-        final int visited = y * terminal.width + x;
-        if (previousContent >
-            currentContent + (totalCells - visited) + _fullClearThreshold) {
-          return true;
-        }
-        if (_grid[y][x].char != ' ') currentContent++;
-        if (_previousGrid[y][x].char != ' ') previousContent++;
-      }
+      final result =
+          _scanRowContent(y, currentContent, previousContent, totalCells);
+      if (result.$1) return true;
+      currentContent = result.$2;
+      previousContent = result.$3;
     }
 
     return previousContent > currentContent + _fullClearThreshold;
+  }
+
+  (bool, int, int) _scanRowContent(
+    int y,
+    int currentContent,
+    int previousContent,
+    int totalCells,
+  ) {
+    for (int x = 0; x < terminal.width; x++) {
+      final int visited = y * terminal.width + x;
+      if (previousContent >
+          currentContent + (totalCells - visited) + _fullClearThreshold) {
+        return (true, currentContent, previousContent);
+      }
+      if (_grid[y][x].char != ' ') currentContent++;
+      if (_previousGrid[y][x].char != ' ') previousContent++;
+    }
+    return (false, currentContent, previousContent);
   }
 
   /// Clears using a full clear only when remnants are likely, otherwise uses a smart clear.
