@@ -1,0 +1,319 @@
+import '../../../radartui.dart';
+
+class ExpansionTileController extends ChangeNotifier {
+  bool _isExpanded = false;
+
+  bool get isExpanded => _isExpanded;
+
+  void expand() {
+    if (_isExpanded) return;
+    _isExpanded = true;
+    notifyListeners();
+  }
+
+  void collapse() {
+    if (!_isExpanded) return;
+    _isExpanded = false;
+    notifyListeners();
+  }
+
+  void toggle() {
+    _isExpanded = !_isExpanded;
+    notifyListeners();
+  }
+}
+
+class ExpansionTile extends StatefulWidget {
+  const ExpansionTile({
+    super.key,
+    required this.title,
+    this.children = const [],
+    this.initiallyExpanded = false,
+    this.onExpansionChanged,
+    this.controller,
+    this.expandedColor,
+    this.collapsedColor,
+    this.iconColor,
+    this.focusNode,
+  });
+
+  final String title;
+  final List<Widget> children;
+  final bool initiallyExpanded;
+  final ValueChanged<bool>? onExpansionChanged;
+  final ExpansionTileController? controller;
+  final Color? expandedColor;
+  final Color? collapsedColor;
+  final Color? iconColor;
+  final FocusNode? focusNode;
+
+  @override
+  State<ExpansionTile> createState() => _ExpansionTileState();
+}
+
+class _ExpansionTileState extends State<ExpansionTile>
+    with FocusableState<ExpansionTile> {
+  late ExpansionTileController _controller;
+  bool _isControllerOwned = false;
+
+  @override
+  FocusNode? get providedFocusNode => widget.focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller != null) {
+      _controller = widget.controller!;
+    } else {
+      _controller = ExpansionTileController();
+      _isControllerOwned = true;
+    }
+    if (widget.initiallyExpanded) {
+      _controller._isExpanded = true;
+    }
+    _controller.addListener(_onControllerChange);
+  }
+
+  @override
+  void didUpdateWidget(ExpansionTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      _controller.removeListener(_onControllerChange);
+      if (_isControllerOwned) _controller.dispose();
+      if (widget.controller != null) {
+        _controller = widget.controller!;
+        _isControllerOwned = false;
+      } else {
+        _controller = ExpansionTileController();
+        _isControllerOwned = true;
+      }
+      _controller.addListener(_onControllerChange);
+    }
+  }
+
+  void _onControllerChange() {
+    setState(() {});
+    widget.onExpansionChanged?.call(_controller.isExpanded);
+  }
+
+  @override
+  void onKeyEvent(KeyEvent event) {
+    if (event.code == KeyCode.enter ||
+        event.code == KeyCode.space ||
+        (event.code == KeyCode.char && event.char == ' ')) {
+      _controller.toggle();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onControllerChange);
+    if (_isControllerOwned) _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bool expanded = _controller.isExpanded;
+    return _ExpansionTileRenderWidget(
+      title: widget.title,
+      expanded: expanded,
+      focused: hasFocus,
+      expandedColor: widget.expandedColor ?? Color.cyan,
+      collapsedColor: widget.collapsedColor ?? Color.white,
+      iconColor: widget.iconColor ?? Color.white,
+      children: expanded ? widget.children : const [],
+    );
+  }
+}
+
+class _ExpansionTileRenderWidget extends MultiChildRenderObjectWidget {
+  const _ExpansionTileRenderWidget({
+    required this.title,
+    required this.expanded,
+    required this.focused,
+    required this.expandedColor,
+    required this.collapsedColor,
+    required this.iconColor,
+    required super.children,
+  });
+
+  final String title;
+  final bool expanded;
+  final bool focused;
+  final Color expandedColor;
+  final Color collapsedColor;
+  final Color iconColor;
+
+  @override
+  MultiChildRenderObjectElement createElement() =>
+      MultiChildRenderObjectElement(this);
+
+  @override
+  RenderExpansionTile createRenderObject(BuildContext context) =>
+      RenderExpansionTile(
+        title: title,
+        expanded: expanded,
+        focused: focused,
+        expandedColor: expandedColor,
+        collapsedColor: collapsedColor,
+        iconColor: iconColor,
+      );
+
+  @override
+  void updateRenderObject(BuildContext context, RenderObject renderObject) {
+    final render = renderObject as RenderExpansionTile;
+    final bool needsLayout =
+        render.title != title || render.expanded != expanded;
+    render.title = title;
+    render.expanded = expanded;
+    render.focused = focused;
+    render.expandedColor = expandedColor;
+    render.collapsedColor = collapsedColor;
+    render.iconColor = iconColor;
+    if (needsLayout) {
+      render.markNeedsLayout();
+    }
+  }
+}
+
+class ExpansionTileParentData extends ParentData {
+  Offset offset = Offset.zero;
+}
+
+class RenderExpansionTile extends RenderBox
+    with ContainerRenderObjectMixin<RenderBox, ExpansionTileParentData> {
+  RenderExpansionTile({
+    required String title,
+    required bool expanded,
+    required bool focused,
+    required Color expandedColor,
+    required Color collapsedColor,
+    required Color iconColor,
+  })  : _title = title,
+        _expanded = expanded,
+        _focused = focused,
+        _expandedColor = expandedColor,
+        _collapsedColor = collapsedColor,
+        _iconColor = iconColor;
+
+  String _title;
+  bool _expanded;
+  bool _focused;
+  Color _expandedColor;
+  Color _collapsedColor;
+  Color _iconColor;
+
+  String get title => _title;
+  set title(String v) {
+    _title = v;
+    _invalidateCache();
+  }
+
+  bool get expanded => _expanded;
+  set expanded(bool v) {
+    _expanded = v;
+    _invalidateCache();
+  }
+
+  bool get focused => _focused;
+  set focused(bool v) {
+    _focused = v;
+    _invalidateCache();
+  }
+
+  Color get expandedColor => _expandedColor;
+  set expandedColor(Color v) {
+    _expandedColor = v;
+    _invalidateCache();
+  }
+
+  Color get collapsedColor => _collapsedColor;
+  set collapsedColor(Color v) {
+    _collapsedColor = v;
+    _invalidateCache();
+  }
+
+  Color get iconColor => _iconColor;
+  set iconColor(Color v) {
+    _iconColor = v;
+    _invalidateCache();
+  }
+
+  TextStyle? _cachedIconStyle;
+  TextStyle? _cachedTitleStyle;
+  TextStyle? _cachedTitleBoldStyle;
+
+  void _invalidateCache() {
+    _cachedIconStyle = null;
+    _cachedTitleStyle = null;
+    _cachedTitleBoldStyle = null;
+  }
+
+  @override
+  void setupParentData(RenderObject child) {
+    if (child.parentData is! ExpansionTileParentData) {
+      child.parentData = ExpansionTileParentData();
+    }
+  }
+
+  @override
+  void performLayout(Constraints constraints) {
+    final int headerWidth = 2 + stringWidth(title);
+    const int headerH = 1;
+
+    int maxChildWidth = headerWidth;
+    int totalChildHeight = 0;
+
+    if (expanded) {
+      for (final child in children) {
+        child.layout(constraints);
+        final ExpansionTileParentData childData =
+            child.parentData as ExpansionTileParentData;
+        childData.offset = Offset(2, headerH + totalChildHeight);
+        maxChildWidth = maxChildWidth > child.size!.width
+            ? maxChildWidth
+            : child.size!.width;
+        totalChildHeight += child.size!.height;
+      }
+    }
+
+    final int totalWidth =
+        maxChildWidth + 2 > headerWidth ? maxChildWidth + 2 : headerWidth;
+    final int totalHeight = headerH + totalChildHeight;
+    size = Size(totalWidth, totalHeight);
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    _paintHeader(context, offset.x.toInt(), offset.y.toInt());
+    if (expanded) {
+      for (final child in children) {
+        final ExpansionTileParentData childData =
+            child.parentData as ExpansionTileParentData;
+        context.paintChild(child, offset + childData.offset);
+      }
+    }
+  }
+
+  void _paintHeader(PaintingContext context, int x, int y) {
+    _ensureStylesCached();
+    final String arrow = expanded ? '▼' : '▶';
+    context.buffer.writeStyled(x, y, arrow, _cachedIconStyle!);
+    context.buffer.writeStyled(x + 1, y, ' ', _cachedTitleStyle!);
+    int cx = x + 2;
+    for (int i = 0; i < title.length; i++) {
+      final String ch = title[i];
+      context.buffer.writeStyled(cx, y, ch, _cachedTitleBoldStyle!);
+      cx += charWidth(ch.codeUnitAt(0));
+    }
+  }
+
+  void _ensureStylesCached() {
+    if (_cachedIconStyle != null) return;
+    final Color titleColor = expanded ? expandedColor : collapsedColor;
+    _cachedIconStyle = TextStyle(color: iconColor);
+    _cachedTitleStyle = TextStyle(color: titleColor);
+    _cachedTitleBoldStyle = TextStyle(color: titleColor, bold: focused);
+  }
+}
