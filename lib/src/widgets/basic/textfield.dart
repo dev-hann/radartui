@@ -478,6 +478,27 @@ class RenderTextField extends RenderBox {
   /// Whether the text field currently has keyboard focus.
   bool hasFocus;
 
+  TextStyle? _cachedPlaceholderStyle;
+  TextStyle? _placeholderCacheKey;
+
+  TextStyle _resolveDisplayStyle() {
+    final baseStyle = style ?? const TextStyle(color: Color.white);
+    if (text.isEmpty && placeholder != null) {
+      if (_cachedPlaceholderStyle == null || _placeholderCacheKey != style) {
+        _cachedPlaceholderStyle = TextStyle(
+          color: Color.brightBlack,
+          backgroundColor: baseStyle.backgroundColor,
+          bold: false,
+          italic: true,
+          underline: false,
+        );
+        _placeholderCacheKey = style;
+      }
+      return _cachedPlaceholderStyle!;
+    }
+    return baseStyle;
+  }
+
   @override
   void performLayout(Constraints constraints) {
     final displayText =
@@ -506,20 +527,6 @@ class RenderTextField extends RenderBox {
     if (hasFocus) {
       _paintCursor(context, offset, displayText, scrollOffset);
     }
-  }
-
-  TextStyle _resolveDisplayStyle() {
-    final baseStyle = style ?? const TextStyle(color: Color.white);
-    if (text.isEmpty && placeholder != null) {
-      return TextStyle(
-        color: Color.brightBlack,
-        backgroundColor: baseStyle.backgroundColor,
-        bold: false,
-        italic: true,
-        underline: false,
-      );
-    }
-    return baseStyle;
   }
 
   int _computeScrollOffset(int textLength) {
