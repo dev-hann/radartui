@@ -46,6 +46,7 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     if (_color == v) return;
     _color = v;
     _invalidateCache();
+    markNeedsPaint();
   }
 
   /// The inner padding between the card border and its child.
