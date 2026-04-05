@@ -34,5 +34,38 @@ void main() {
       expect(border.right, equals(''));
       expect(border.bottom, equals(''));
     });
+
+    test('Border equality - identical values are equal', () {
+      const a = Border(top: '─', left: '│', right: '│', bottom: '─');
+      const b = Border(top: '─', left: '│', right: '│', bottom: '─');
+      expect(a, equals(b));
+      expect(a.hashCode, equals(b.hashCode));
+    });
+
+    test('Border equality - different values are not equal', () {
+      const a = Border(top: '─', left: '│', right: '│', bottom: '─');
+      const b = Border(top: '═', left: '║', right: '║', bottom: '═');
+      expect(a, isNot(equals(b)));
+    });
+
+    test('Border.all equals identical Border', () {
+      const a = Border.all;
+      const b = Border(top: '─', left: '│', right: '│', bottom: '─');
+      expect(a, equals(b));
+      expect(a.hashCode, equals(b.hashCode));
+    });
+
+    test('Border.none equals empty Border', () {
+      const a = Border.none;
+      const b = Border(top: '', left: '', right: '', bottom: '');
+      expect(a, equals(b));
+      expect(a.hashCode, equals(b.hashCode));
+    });
+
+    test('Border equality - partial sides differ', () {
+      final a = Border.only(top: '─');
+      final b = Border.only(bottom: '─');
+      expect(a, isNot(equals(b)));
+    });
   });
 }
