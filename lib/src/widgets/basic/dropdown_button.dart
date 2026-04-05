@@ -399,17 +399,21 @@ class RenderDropdownMenu extends RenderBox {
     _ensureStylesCached();
     final int x = offset.x.toInt();
     final int y = offset.y.toInt();
+    final int w = size!.width.toInt();
+    final TextStyle selectedBg = _cachedSelectedBg!;
+    final TextStyle normalBg = _cachedNormalBg!;
+    final TextStyle selectedEnabled = _cachedSelectedEnabledFg!;
+    final TextStyle selectedDisabled = _cachedSelectedDisabledFg!;
+    final TextStyle normalEnabled = _cachedNormalEnabledFg!;
+    final TextStyle normalDisabled = _cachedNormalDisabledFg!;
     for (int i = 0; i < items.length; i++) {
       final DropdownMenuItem item = items[i];
       final bool isSelected = i == selectedIndex;
-      final TextStyle bgStyle =
-          isSelected ? _cachedSelectedBg! : _cachedNormalBg!;
+      final TextStyle bgStyle = isSelected ? selectedBg : normalBg;
       final TextStyle fgBgStyle = isSelected
-          ? (item.enabled
-              ? _cachedSelectedEnabledFg!
-              : _cachedSelectedDisabledFg!)
-          : (item.enabled ? _cachedNormalEnabledFg! : _cachedNormalDisabledFg!);
-      context.fillBackground(x, y + i, size!.width.toInt(), bgStyle);
+          ? (item.enabled ? selectedEnabled : selectedDisabled)
+          : (item.enabled ? normalEnabled : normalDisabled);
+      context.fillBackground(x, y + i, w, bgStyle);
       final String prefix = isSelected ? '> ' : '  ';
       context.writeString(x, y + i, prefix, fgBgStyle);
       context.writeString(x + 2, y + i, item.label, fgBgStyle);

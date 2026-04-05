@@ -247,7 +247,7 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
     final row = widget.rows[rowIndex];
     final parts = _buildCellParts(row, columnWidths);
     final rowText = parts.join('  ');
-    return _styledRowText(rowText, row.selected, rowIndex);
+    return _styledRowText(rowText, rowIndex);
   }
 
   List<String> _buildCellParts(DataRow row, List<int> columnWidths) {
@@ -269,9 +269,8 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
     return parts;
   }
 
-  Widget _styledRowText(String rowText, bool selected, int rowIndex) {
-    final isRowFocused = hasFocus && rowIndex == _focusedRowIndex;
-    if (isRowFocused) {
+  Widget _styledRowText(String rowText, int rowIndex) {
+    if (hasFocus && rowIndex == _focusedRowIndex) {
       return Text(
         rowText,
         style: const TextStyle(
@@ -279,8 +278,7 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
           backgroundColor: Color.white,
         ),
       );
-    } else {
-      return Text(rowText);
     }
+    return Text(rowText);
   }
 }
