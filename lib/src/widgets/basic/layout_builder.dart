@@ -3,6 +3,11 @@ import '../../../radartui.dart';
 typedef LayoutWidgetBuilder = Widget Function(
     BuildContext context, BoxConstraints constraints);
 
+/// Builds its child widget tree based on the parent's [BoxConstraints].
+///
+/// The [builder] callback receives the current constraints and returns a
+/// widget. Useful for widgets that need to know their available size before
+/// choosing how to render.
 class LayoutBuilder extends StatelessWidget {
   const LayoutBuilder({super.key, required this.builder});
 

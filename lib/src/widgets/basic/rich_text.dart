@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// An immutable span of styled text with optional children.
+///
+/// Forms a tree of styled text segments. Each span can override [style]
+/// from its parent. Use [plainText] to get the unstyled concatenation.
 class TextSpan {
   const TextSpan({this.text, this.children, this.style});
 
