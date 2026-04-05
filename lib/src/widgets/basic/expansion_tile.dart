@@ -6,27 +6,36 @@ import '../../../radartui.dart';
 class ExpansionTileController extends ChangeNotifier {
   bool _isExpanded = false;
 
+  /// Whether the tile is currently expanded.
   bool get isExpanded => _isExpanded;
 
+  /// Expands the tile if currently collapsed.
   void expand() {
     if (_isExpanded) return;
     _isExpanded = true;
     notifyListeners();
   }
 
+  /// Collapses the tile if currently expanded.
   void collapse() {
     if (!_isExpanded) return;
     _isExpanded = false;
     notifyListeners();
   }
 
+  /// Toggles between expanded and collapsed states.
   void toggle() {
     _isExpanded = !_isExpanded;
     notifyListeners();
   }
 }
 
+/// A widget that expands or collapses to reveal [children] below a [title].
+///
+/// Press Enter or Space to toggle. Use [ExpansionTileController] for
+/// programmatic control over the expanded state.
 class ExpansionTile extends StatefulWidget {
+  /// Creates an [ExpansionTile] with the given [title] and optional [children].
   const ExpansionTile({
     super.key,
     required this.title,
@@ -40,14 +49,31 @@ class ExpansionTile extends StatefulWidget {
     this.focusNode,
   });
 
+  /// The title text displayed in the header row.
   final String title;
+
+  /// The child widgets revealed when expanded.
   final List<Widget> children;
+
+  /// Whether the tile starts in the expanded state.
   final bool initiallyExpanded;
+
+  /// Called when the expansion state changes.
   final ValueChanged<bool>? onExpansionChanged;
+
+  /// An optional external controller for the expansion state.
   final ExpansionTileController? controller;
+
+  /// The color of the title text when expanded.
   final Color? expandedColor;
+
+  /// The color of the title text when collapsed.
   final Color? collapsedColor;
+
+  /// The color of the expand/collapse arrow icon.
   final Color? iconColor;
+
+  /// An optional focus node for keyboard navigation.
   final FocusNode? focusNode;
 
   @override
@@ -180,12 +206,16 @@ class _ExpansionTileRenderWidget extends MultiChildRenderObjectWidget {
   }
 }
 
+/// Parent data for children of [RenderExpansionTile], storing their offset.
 class ExpansionTileParentData extends ParentData {
+  /// The offset at which this child is painted.
   Offset offset = Offset.zero;
 }
 
+/// Render object that paints an expandable tile with a header and children.
 class RenderExpansionTile extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, ExpansionTileParentData> {
+  /// Creates a [RenderExpansionTile] with the given title and visual configuration.
   RenderExpansionTile({
     required String title,
     required bool expanded,
@@ -207,37 +237,55 @@ class RenderExpansionTile extends RenderBox
   Color _collapsedColor;
   Color _iconColor;
 
+  /// The title text displayed in the header.
   String get title => _title;
+
+  /// Sets the title text and invalidates the paint cache.
   set title(String v) {
     _title = v;
     _invalidateCache();
   }
 
+  /// Whether the tile is currently expanded.
   bool get expanded => _expanded;
+
+  /// Sets the expanded state and invalidates the paint cache.
   set expanded(bool v) {
     _expanded = v;
     _invalidateCache();
   }
 
+  /// Whether the tile currently has keyboard focus.
   bool get focused => _focused;
+
+  /// Sets the focus state and invalidates the paint cache.
   set focused(bool v) {
     _focused = v;
     _invalidateCache();
   }
 
+  /// The color of the title when expanded.
   Color get expandedColor => _expandedColor;
+
+  /// Sets the expanded title color and invalidates the paint cache.
   set expandedColor(Color v) {
     _expandedColor = v;
     _invalidateCache();
   }
 
+  /// The color of the title when collapsed.
   Color get collapsedColor => _collapsedColor;
+
+  /// Sets the collapsed title color and invalidates the paint cache.
   set collapsedColor(Color v) {
     _collapsedColor = v;
     _invalidateCache();
   }
 
+  /// The color of the expand/collapse arrow icon.
   Color get iconColor => _iconColor;
+
+  /// Sets the icon color and invalidates the paint cache.
   set iconColor(Color v) {
     _iconColor = v;
     _invalidateCache();

@@ -5,6 +5,7 @@ import '../../../radartui.dart';
 /// Responds to [KeyCode.space] and [KeyCode.enter] to toggle. Wrap in
 /// [Focus] to enable keyboard navigation.
 class Checkbox extends StatefulWidget {
+  /// Creates a [Checkbox] with the given [value] and optional [onChanged].
   const Checkbox({
     super.key,
     required this.value,
@@ -14,11 +15,23 @@ class Checkbox extends StatefulWidget {
     this.activeColor,
     this.checkColor,
   });
+
+  /// Whether the checkbox is currently checked.
   final bool value;
+
+  /// Called when the user toggles the checkbox.
   final ValueChanged<bool?>? onChanged;
+
+  /// Whether the checkbox supports a third "null" state.
   final bool tristate;
+
+  /// An optional focus node for keyboard navigation.
   final FocusNode? focusNode;
+
+  /// The color of the filled checkbox when checked.
   final Color? activeColor;
+
+  /// The color of the check mark inside the box.
   final Color? checkColor;
 
   @override
@@ -140,14 +153,15 @@ class _CheckboxRenderWidget extends RenderObjectWidget {
     checkbox.activeColor = activeColor;
     checkbox.checkColor = checkColor;
 
-    // Force repaint if value changed
     if (oldValue != value) {
       checkbox.markNeedsLayout();
     }
   }
 }
 
+/// Render object that paints a checkbox with border, fill, and check indicator.
 class RenderCheckbox extends RenderBox {
+  /// Creates a [RenderCheckbox] with the given value and visual state.
   RenderCheckbox({
     required bool value,
     required bool tristate,
@@ -169,37 +183,55 @@ class RenderCheckbox extends RenderBox {
   Color _activeColor;
   Color _checkColor;
 
+  /// Whether the checkbox is currently checked.
   bool get value => _value;
+
+  /// Sets the checked state and invalidates the paint cache.
   set value(bool v) {
     _value = v;
     _invalidateCache();
   }
 
+  /// Whether the checkbox supports a tri-state (null) value.
   bool get tristate => _tristate;
+
+  /// Sets the tristate flag and invalidates the paint cache.
   set tristate(bool v) {
     _tristate = v;
     _invalidateCache();
   }
 
+  /// Whether the checkbox currently has keyboard focus.
   bool get focused => _focused;
+
+  /// Sets the focus state and invalidates the paint cache.
   set focused(bool v) {
     _focused = v;
     _invalidateCache();
   }
 
+  /// Whether the checkbox is interactive.
   bool get enabled => _enabled;
+
+  /// Sets the enabled state and invalidates the paint cache.
   set enabled(bool v) {
     _enabled = v;
     _invalidateCache();
   }
 
+  /// The color of the filled background when checked.
   Color get activeColor => _activeColor;
+
+  /// Sets the active color and invalidates the paint cache.
   set activeColor(Color v) {
     _activeColor = v;
     _invalidateCache();
   }
 
+  /// The color of the check mark character.
   Color get checkColor => _checkColor;
+
+  /// Sets the check color and invalidates the paint cache.
   set checkColor(Color v) {
     _checkColor = v;
     _invalidateCache();
@@ -217,7 +249,6 @@ class RenderCheckbox extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    // Checkbox is always 3x1 size
     size = const Size(3, 1);
   }
 

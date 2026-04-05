@@ -1,34 +1,52 @@
 import '../../../radartui.dart';
 
+/// Configuration for a single column in a [DataTable].
 class DataColumn {
+  /// Creates a [DataColumn] with the given [label].
   const DataColumn({required this.label, this.numeric = false, this.onSort});
 
+  /// The header label for this column.
   final String label;
+
+  /// Whether this column contains numeric data (right-aligned).
   final bool numeric;
+
+  /// An optional callback when the column header is activated for sorting.
   final void Function(int columnIndex, bool ascending)? onSort;
 }
 
+/// A single cell value within a [DataRow].
 class DataCell {
+  /// Creates a [DataCell] with the given string [value].
   const DataCell(this.value);
 
+  /// The text content of the cell.
   final String value;
 }
 
+/// A single row of [DataCell]s in a [DataTable].
 class DataRow {
+  /// Creates a [DataRow] with the given [cells].
   const DataRow({
     required this.cells,
     this.onSelectChanged,
     this.selected = false,
   });
 
+  /// The cell values for this row.
   final List<DataCell> cells;
+
+  /// Called when the row selection state changes.
   final void Function(bool selected)? onSelectChanged;
+
+  /// Whether this row is currently selected.
   final bool selected;
 }
 
 /// A table widget that displays data in rows and columns with configurable
 /// headers, cell alignment, and optional row selection.
 class DataTable extends StatefulWidget {
+  /// Creates a [DataTable] with the given [columns] and [rows].
   const DataTable({
     super.key,
     required this.columns,
@@ -38,10 +56,19 @@ class DataTable extends StatefulWidget {
     this.showCheckboxColumn = false,
   });
 
+  /// The column definitions for the table header.
   final List<DataColumn> columns;
+
+  /// The data rows to display.
   final List<DataRow> rows;
+
+  /// The index of the column currently used for sorting, or `null`.
   final int? sortColumnIndex;
+
+  /// Whether the sort is ascending.
   final bool sortAscending;
+
+  /// Whether to show a checkbox column for row selection.
   final bool showCheckboxColumn;
 
   @override

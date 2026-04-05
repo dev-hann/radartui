@@ -1,10 +1,11 @@
 import '../../../radartui.dart';
 
-/// A horizontal or vertical line that separates content.
+/// A horizontal line that separates content.
 ///
-/// Draws a [character] (default `─`) with optional [indent] and [endIndent].
+/// Draws a [character] (default `─`) with optional [height] and [thickness].
 /// Use [VerticalDivider] for a vertical separator.
 class Divider extends StatelessWidget {
+  /// Creates a [Divider] with optional [height], [thickness], and [color].
   const Divider({
     super.key,
     this.height,
@@ -12,9 +13,17 @@ class Divider extends StatelessWidget {
     this.color,
     this.character,
   });
+
+  /// The total height allocated for the divider.
   final int? height;
+
+  /// The number of rows actually drawn as the divider line.
   final int? thickness;
+
+  /// The color of the divider line.
   final Color? color;
+
+  /// The character used to draw the line; defaults to `─`.
   final String? character;
 
   @override
@@ -28,7 +37,11 @@ class Divider extends StatelessWidget {
   }
 }
 
+/// A vertical line that separates content.
+///
+/// Draws a [character] (default `│`) with optional [width] and [thickness].
 class VerticalDivider extends StatelessWidget {
+  /// Creates a [VerticalDivider] with optional [width], [thickness], and [color].
   const VerticalDivider({
     super.key,
     this.width,
@@ -36,9 +49,17 @@ class VerticalDivider extends StatelessWidget {
     this.color,
     this.character,
   });
+
+  /// The total width allocated for the divider.
   final int? width;
+
+  /// The number of columns actually drawn as the divider line.
   final int? thickness;
+
+  /// The color of the divider line.
   final Color? color;
+
+  /// The character used to draw the line; defaults to `│`.
   final String? character;
 
   @override
@@ -119,23 +140,35 @@ class _VerticalDividerRenderWidget extends RenderObjectWidget {
   }
 }
 
+/// Render object that paints a horizontal divider line.
 class RenderDivider extends RenderBox {
+  /// Creates a [RenderDivider] with the given dimensions and visual properties.
   RenderDivider({
     required this.dividerHeight,
     required this.thickness,
     required Color color,
     required this.character,
   }) : _color = color;
+
+  /// The total height of the divider area.
   int dividerHeight;
+
+  /// The number of rows actually drawn.
   int thickness;
+
   Color _color;
+
+  /// The color of the divider line.
   Color get color => _color;
+
+  /// Sets the color and invalidates the paint cache.
   set color(Color value) {
     if (_color == value) return;
     _color = value;
     _cachedStyle = null;
   }
 
+  /// The character used to draw the line.
   String character;
   TextStyle? _cachedStyle;
 
@@ -164,23 +197,35 @@ class RenderDivider extends RenderBox {
   }
 }
 
+/// Render object that paints a vertical divider line.
 class RenderVerticalDivider extends RenderBox {
+  /// Creates a [RenderVerticalDivider] with the given dimensions and visual properties.
   RenderVerticalDivider({
     required this.dividerWidth,
     required this.thickness,
     required Color color,
     required this.character,
   }) : _color = color;
+
+  /// The total width of the divider area.
   int dividerWidth;
+
+  /// The number of columns actually drawn.
   int thickness;
+
   Color _color;
+
+  /// The color of the divider line.
   Color get color => _color;
+
+  /// Sets the color and invalidates the paint cache.
   set color(Color value) {
     if (_color == value) return;
     _color = value;
     _cachedStyle = null;
   }
 
+  /// The character used to draw the line.
   String character;
   TextStyle? _cachedStyle;
 

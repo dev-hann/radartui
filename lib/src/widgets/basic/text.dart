@@ -1,5 +1,6 @@
 import '../../../radartui.dart';
 
+/// How text overflow should be handled.
 enum TextOverflow { clip, ellipsis, fade }
 
 /// A run of text with optional styling.
@@ -7,6 +8,7 @@ enum TextOverflow { clip, ellipsis, fade }
 /// Displays [data] in the terminal using the given [style]. Supports
 /// [softWrap], [maxLines], and [TextOverflow] modes.
 class Text extends RenderObjectWidget {
+  /// Creates a [Text] widget displaying [data] with optional [style].
   const Text(
     this.data, {
     super.key,
@@ -15,10 +17,20 @@ class Text extends RenderObjectWidget {
     this.maxLines,
     this.overflow = TextOverflow.clip,
   });
+
+  /// The text string to display.
   final String data;
+
+  /// The style applied to the text.
   final TextStyle? style;
+
+  /// Whether the text should wrap at word boundaries.
   final bool softWrap;
+
+  /// The maximum number of lines to display, or `null` for unlimited.
   final int? maxLines;
+
+  /// How visual overflow should be handled.
   final TextOverflow overflow;
 
   @override
@@ -50,7 +62,9 @@ class Text extends RenderObjectWidget {
   }
 }
 
+/// Render object that lays out and paints plain text with wrapping and overflow.
 class RenderText extends RenderBox {
+  /// Creates a [RenderText] with the given text content and display configuration.
   RenderText({
     required this.text,
     this.style,
@@ -58,10 +72,20 @@ class RenderText extends RenderBox {
     this.maxLines,
     this.overflow = TextOverflow.clip,
   });
+
+  /// The text string to render.
   String text;
+
+  /// The text style to apply.
   TextStyle? style;
+
+  /// Whether to wrap text at word boundaries.
   bool softWrap;
+
+  /// The maximum number of lines, or `null` for unlimited.
   int? maxLines;
+
+  /// How visual overflow is handled.
   TextOverflow overflow;
   List<String> _lines = [];
 

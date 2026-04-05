@@ -5,6 +5,10 @@ import '../../../radartui.dart';
 /// Displays a rotating arc or static fill to represent progress [value] (0.0–1.0).
 /// Use [CircularProgressIndicator.adaptive] for platform-specific styling.
 class CircularProgressIndicator extends StatefulWidget {
+  /// Creates a [CircularProgressIndicator].
+  ///
+  /// The [speed] controls how fast the spinner rotates. Override [frames] to
+  /// provide custom animation frames (defaults to Braille spinner characters).
   const CircularProgressIndicator({
     super.key,
     this.color,
@@ -14,10 +18,19 @@ class CircularProgressIndicator extends StatefulWidget {
     this.frames,
   });
 
+  /// The color of the spinner character.
   final Color? color;
+
+  /// The background color behind the spinner.
   final Color? backgroundColor;
+
+  /// An optional label displayed to the right of the spinner.
   final String? label;
+
+  /// The duration each frame is displayed before advancing.
   final Duration speed;
+
+  /// Custom animation frames; defaults to a Braille-dot spinner sequence.
   final List<String>? frames;
 
   @override
@@ -134,7 +147,10 @@ class _CircularProgressIndicatorRenderWidget extends RenderObjectWidget {
   }
 }
 
+/// The render object for [CircularProgressIndicator], which paints a single
+/// animation frame character and optional label.
 class RenderCircularProgressIndicator extends RenderBox {
+  /// Creates a [RenderCircularProgressIndicator].
   RenderCircularProgressIndicator({
     required this.frame,
     required Color color,
@@ -143,9 +159,14 @@ class RenderCircularProgressIndicator extends RenderBox {
   })  : _color = color,
         _backgroundColor = backgroundColor;
 
+  /// The current animation frame character to display.
   String frame;
   Color _color;
+
+  /// The color of the spinner character.
   Color get color => _color;
+
+  /// Sets the spinner color and invalidates the cached style.
   set color(Color value) {
     if (_color == value) return;
     _color = value;
@@ -153,13 +174,18 @@ class RenderCircularProgressIndicator extends RenderBox {
   }
 
   Color? _backgroundColor;
+
+  /// The background color behind the spinner.
   Color? get backgroundColor => _backgroundColor;
+
+  /// Sets the background color and invalidates the cached style.
   set backgroundColor(Color? value) {
     if (_backgroundColor == value) return;
     _backgroundColor = value;
     _cachedStyle = null;
   }
 
+  /// An optional label rendered to the right of the spinner.
   String? label;
   TextStyle? _cachedStyle;
 

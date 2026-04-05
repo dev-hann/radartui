@@ -5,6 +5,7 @@ import '../../../radartui.dart';
 /// Displays as a labeled indicator that flips between active and inactive
 /// states. Calls [onChanged] with the new value when activated.
 class Toggle extends StatefulWidget {
+  /// Creates a [Toggle] with the given [value] and optional [onChanged].
   const Toggle({
     super.key,
     required this.value,
@@ -15,11 +16,22 @@ class Toggle extends StatefulWidget {
     this.label,
   });
 
+  /// Whether the toggle is currently in the active (on) state.
   final bool value;
+
+  /// Called when the user toggles the value.
   final ValueChanged<bool>? onChanged;
+
+  /// An optional focus node for keyboard navigation.
   final FocusNode? focusNode;
+
+  /// The color of the toggle when in the active state.
   final Color? activeColor;
+
+  /// The color of the indicator when in the inactive state.
   final Color? inactiveColor;
+
+  /// An optional text label displayed beside the toggle.
   final String? label;
 
   @override
@@ -102,7 +114,9 @@ class _ToggleRenderWidget extends RenderObjectWidget {
   }
 }
 
+/// Render object that paints a toggle switch with border, indicator, and optional label.
 class RenderToggle extends RenderBox {
+  /// Creates a [RenderToggle] with the given value and visual configuration.
   RenderToggle({
     required bool value,
     required bool focused,
@@ -124,37 +138,55 @@ class RenderToggle extends RenderBox {
   Color _inactiveColor;
   String? _label;
 
+  /// Whether the toggle is in the active (on) state.
   bool get value => _value;
+
+  /// Sets the toggle value and invalidates the paint cache.
   set value(bool v) {
     _value = v;
     _invalidateCache();
   }
 
+  /// Whether the toggle currently has keyboard focus.
   bool get focused => _focused;
+
+  /// Sets the focus state and invalidates the paint cache.
   set focused(bool v) {
     _focused = v;
     _invalidateCache();
   }
 
+  /// Whether the toggle is interactive.
   bool get enabled => _enabled;
+
+  /// Sets the enabled state and invalidates the paint cache.
   set enabled(bool v) {
     _enabled = v;
     _invalidateCache();
   }
 
+  /// The color when the toggle is active.
   Color get activeColor => _activeColor;
+
+  /// Sets the active color and invalidates the paint cache.
   set activeColor(Color v) {
     _activeColor = v;
     _invalidateCache();
   }
 
+  /// The color of the indicator when inactive.
   Color get inactiveColor => _inactiveColor;
+
+  /// Sets the inactive color and invalidates the paint cache.
   set inactiveColor(Color v) {
     _inactiveColor = v;
     _invalidateCache();
   }
 
+  /// An optional text label displayed beside the toggle.
   String? get label => _label;
+
+  /// Sets the label and invalidates the paint cache.
   set label(String? v) {
     _label = v;
     _invalidateCache();

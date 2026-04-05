@@ -1,38 +1,98 @@
 import 'logger.dart';
 
+/// Represents the type of key pressed on the keyboard.
 enum KeyCode {
+  /// An unrecognized key.
   unknown,
+
+  /// The up arrow key.
   arrowUp,
+
+  /// The down arrow key.
   arrowDown,
+
+  /// The left arrow key.
   arrowLeft,
+
+  /// The right arrow key.
   arrowRight,
+
+  /// The enter (return) key.
   enter,
+
+  /// The space bar.
   space,
+
+  /// The escape key.
   escape,
+
+  /// The tab key.
   tab,
+
+  /// The backspace key.
   backspace,
+
+  /// The delete key.
   delete,
+
+  /// The home key.
   home,
+
+  /// The end key.
   end,
+
+  /// The page up key.
   pageUp,
+
+  /// The page down key.
   pageDown,
+
+  /// The insert key.
   insert,
+
+  /// The F1 function key.
   f1,
+
+  /// The F2 function key.
   f2,
+
+  /// The F3 function key.
   f3,
+
+  /// The F4 function key.
   f4,
+
+  /// The F5 function key.
   f5,
+
+  /// The F6 function key.
   f6,
+
+  /// The F7 function key.
   f7,
+
+  /// The F8 function key.
   f8,
+
+  /// The F9 function key.
   f9,
+
+  /// The F10 function key.
   f10,
+
+  /// The F11 function key.
   f11,
+
+  /// The F12 function key.
   f12,
+
+  /// A printable character key.
   char,
 }
 
+/// Represents a keyboard input event with optional modifier keys.
 class KeyEvent {
+  /// Creates a [KeyEvent].
   const KeyEvent({
     required this.code,
     this.char,
@@ -42,11 +102,22 @@ class KeyEvent {
     this.isMetaPressed = false,
   });
 
+  /// The key code identifying which key was pressed.
   final KeyCode code;
+
+  /// The character produced by the key press, or `null` for non-character keys.
   final String? char;
+
+  /// Whether the shift modifier is pressed.
   final bool isShiftPressed;
+
+  /// Whether the alt modifier is pressed.
   final bool isAltPressed;
+
+  /// Whether the ctrl modifier is pressed.
   final bool isCtrlPressed;
+
+  /// Whether the meta modifier is pressed.
   final bool isMetaPressed;
 
   @override
@@ -67,10 +138,12 @@ class KeyEvent {
   }
 }
 
+/// Parses raw terminal input bytes into [KeyEvent] objects.
 class KeyParser {
   static const List<int> _csi = [27, 91];
   static const List<int> _ss3 = [27, 79];
 
+  /// Parses a list of raw bytes from terminal input into a [KeyEvent].
   static KeyEvent parse(List<int> data) {
     if (data.isEmpty) return const KeyEvent(code: KeyCode.unknown);
 

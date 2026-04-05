@@ -5,13 +5,22 @@ import '../../../radartui.dart';
 /// Use with [Shortcuts] widget to bind actions to key combinations.
 /// Example: `ShortcutActivator(key: KeyCode.s, ctrl: true)` for Ctrl+S.
 class ShortcutActivator {
+  /// Creates a [ShortcutActivator] for the given [key] with optional modifiers.
   const ShortcutActivator({required this.key, this.ctrl, this.alt, this.shift});
 
+  /// The key code that triggers this shortcut.
   final KeyCode key;
+
+  /// Whether the Ctrl modifier must be held.
   final bool? ctrl;
+
+  /// Whether the Alt modifier must be held.
   final bool? alt;
+
+  /// Whether the Shift modifier must be held.
   final bool? shift;
 
+  /// Returns `true` if [event] matches this activator's key and modifiers.
   bool accepts(KeyEvent event) {
     if (event.code != key) {
       if (key == KeyCode.char) {
@@ -52,21 +61,29 @@ class ShortcutActivator {
   }
 }
 
+/// An opaque object representing a user intent triggered by a shortcut.
 class Intent {
+  /// Creates an [Intent].
   const Intent();
 }
 
+/// An action that can be invoked in response to an [Intent].
 class Action<T extends Intent> {
+  /// Creates an [Action].
   const Action();
 
+  /// Invokes this action with the given [intent].
   Object? invoke(T intent) {
     return null;
   }
 }
 
+/// An [Action] subclass that delegates invocation to a callback.
 class CallbackAction extends Action<Intent> {
+  /// Creates a [CallbackAction] that calls [onInvoke] when triggered.
   CallbackAction({required this.onInvoke});
 
+  /// The callback to invoke when this action is triggered.
   final Object? Function(Intent) onInvoke;
 
   @override
@@ -75,9 +92,12 @@ class CallbackAction extends Action<Intent> {
   }
 }
 
+/// Dispatches [Action]s in response to [Intent]s.
 class ActionDispatcher {
+  /// Creates an [ActionDispatcher].
   const ActionDispatcher();
 
+  /// Invokes [action] with [intent] and returns the result.
   Object? invokeAction(Action action, Intent intent) {
     return action.invoke(intent);
   }
@@ -99,17 +119,27 @@ class _ShortcutsScope extends InheritedWidget {
   }
 }
 
+/// A widget that maps [ShortcutActivator]s to [Intent]s for its descendants.
+///
+/// Place [Shortcuts] above the widgets that should respond to key bindings.
+/// Use [ShortcutActionsHandler] to connect shortcuts to actions.
 class Shortcuts extends StatefulWidget {
+  /// Creates a [Shortcuts] widget with the given [shortcuts] map.
   const Shortcuts({super.key, required this.shortcuts, required this.child});
 
+  /// The map of keyboard shortcuts to intents.
   final Map<ShortcutActivator, Intent> shortcuts;
+
+  /// The widget subtree that can trigger these shortcuts.
   final Widget child;
 
+  /// Retrieves the nearest shortcut map from the widget tree.
   static Map<ShortcutActivator, Intent>? of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<_ShortcutsScope>();
     return scope?.shortcuts;
   }
 
+  /// Looks up the [Intent] for [event] by traversing ancestors.
   static Intent? lookup(KeyEvent event, BuildContext context) {
     final element = context as Element;
     Element? current = element.parent;
@@ -154,17 +184,27 @@ class _ActionsScope extends InheritedWidget {
   }
 }
 
+/// A widget that maps [Intent] types to [Action]s for its descendants.
+///
+/// Place [Actions] above [ShortcutActionsHandler] so intents can be resolved
+/// to concrete actions when a shortcut is triggered.
 class Actions extends StatefulWidget {
+  /// Creates an [Actions] widget with the given [actions] map.
   const Actions({super.key, required this.actions, required this.child});
 
+  /// The map of intent types to actions.
   final Map<Type, Action> actions;
+
+  /// The widget subtree that can invoke these actions.
   final Widget child;
 
+  /// Retrieves the nearest action map from the widget tree.
   static Map<Type, Action>? of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<_ActionsScope>();
     return scope?.actions;
   }
 
+  /// Looks up the [Action] for intent type [T] by traversing ancestors.
   static Action? lookup<T extends Intent>(BuildContext context) {
     final element = context as Element;
     Element? current = element.parent;
@@ -179,6 +219,7 @@ class Actions extends StatefulWidget {
     return null;
   }
 
+  /// Looks up the [Action] for [intentType] by traversing ancestors.
   static Action? lookupByType(Type intentType, BuildContext context) {
     final element = context as Element;
     Element? current = element.parent;
@@ -193,6 +234,7 @@ class Actions extends StatefulWidget {
     return null;
   }
 
+  /// Invokes the action matching [intent]'s runtime type.
   static Object? invoke(BuildContext context, Intent intent) {
     final action = lookupByType(intent.runtimeType, context);
     if (action == null) return null;
@@ -210,9 +252,15 @@ class _ActionsState extends State<Actions> {
   }
 }
 
+/// A widget that connects [Shortcuts] to [Actions] by listening for key events.
+///
+/// Must be a descendant of both [Shortcuts] and [Actions] widgets.
+/// When a key matches a shortcut, the corresponding intent's action is invoked.
 class ShortcutActionsHandler extends StatefulWidget {
+  /// Creates a [ShortcutActionsHandler] that wraps [child].
   const ShortcutActionsHandler({super.key, required this.child});
 
+  /// The widget subtree that receives shortcut handling.
   final Widget child;
 
   @override

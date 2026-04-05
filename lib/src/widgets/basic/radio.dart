@@ -5,6 +5,7 @@ import '../../../radartui.dart';
 /// Use [groupValue] to identify the currently selected value for the group.
 /// When the user activates this radio, [onChanged] is called with [value].
 class Radio<T> extends StatefulWidget {
+  /// Creates a [Radio] with the given [value] and [groupValue].
   const Radio({
     super.key,
     required this.value,
@@ -14,11 +15,23 @@ class Radio<T> extends StatefulWidget {
     this.activeColor,
     this.checkColor,
   });
+
+  /// The value represented by this radio button.
   final T value;
+
+  /// The currently selected value in the radio group.
   final T? groupValue;
+
+  /// Called when the user selects this radio button.
   final ValueChanged<T?>? onChanged;
+
+  /// An optional focus node for keyboard navigation.
   final FocusNode? focusNode;
+
+  /// The color of the filled indicator when selected.
   final Color? activeColor;
+
+  /// The color of the check dot inside the indicator.
   final Color? checkColor;
 
   @override
@@ -160,7 +173,9 @@ class _RadioRenderWidget extends RenderObjectWidget {
   }
 }
 
+/// Render object that paints a radio button with border, fill, and indicator.
 class RenderRadio extends RenderBox {
+  /// Creates a [RenderRadio] with the given selection and visual state.
   RenderRadio({
     required bool selected,
     required bool focused,
@@ -185,43 +200,64 @@ class RenderRadio extends RenderBox {
   Color _checkColor;
   VoidCallback? _onTap;
 
+  /// Whether this radio is currently selected.
   bool get selected => _selected;
+
+  /// Sets the selection state and invalidates the paint cache.
   set selected(bool v) {
     _selected = v;
     _invalidateCache();
   }
 
+  /// Whether this radio currently has keyboard focus.
   bool get focused => _focused;
+
+  /// Sets the focus state and invalidates the paint cache.
   set focused(bool v) {
     _focused = v;
     _invalidateCache();
   }
 
+  /// Whether this radio is interactive.
   bool get enabled => _enabled;
+
+  /// Sets the enabled state and invalidates the paint cache.
   set enabled(bool v) {
     _enabled = v;
     _invalidateCache();
   }
 
+  /// The color of the filled indicator when selected.
   Color get activeColor => _activeColor;
+
+  /// Sets the active color and invalidates the paint cache.
   set activeColor(Color v) {
     _activeColor = v;
     _invalidateCache();
   }
 
+  /// The border color when focused.
   Color get focusColor => _focusColor;
+
+  /// Sets the focus color and invalidates the paint cache.
   set focusColor(Color v) {
     _focusColor = v;
     _invalidateCache();
   }
 
+  /// The color of the check dot.
   Color get checkColor => _checkColor;
+
+  /// Sets the check color and invalidates the paint cache.
   set checkColor(Color v) {
     _checkColor = v;
     _invalidateCache();
   }
 
+  /// An optional tap callback.
   VoidCallback? get onTap => _onTap;
+
+  /// Sets the tap callback.
   set onTap(VoidCallback? v) {
     _onTap = v;
   }
@@ -238,7 +274,6 @@ class RenderRadio extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    // Radio is always 3x1 size
     size = const Size(3, 1);
   }
 

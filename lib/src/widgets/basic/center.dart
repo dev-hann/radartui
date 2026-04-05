@@ -4,8 +4,10 @@ import '../../../radartui.dart';
 ///
 /// Equivalent to `Align(alignment: Alignment.center, child: child)`.
 class Center extends StatelessWidget {
+  /// Creates a [Center] widget with the given optional [child].
   const Center({super.key, this.child});
 
+  /// The widget to center within the available space.
   final Widget? child;
 
   @override

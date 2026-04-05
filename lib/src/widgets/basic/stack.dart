@@ -14,16 +14,32 @@ class Stack extends MultiChildRenderObjectWidget {
   void updateRenderObject(BuildContext context, RenderObject renderObject) {}
 }
 
+/// Parent data used by [Positioned] to specify a child's placement in a [Stack].
 class StackParentData extends ParentData {
+  /// The offset from the left edge of the stack.
   int? left;
+
+  /// The offset from the top edge of the stack.
   int? top;
+
+  /// The offset from the right edge of the stack.
   int? right;
+
+  /// The offset from the bottom edge of the stack.
   int? bottom;
+
+  /// An explicit width for the child.
   int? width;
+
+  /// An explicit height for the child.
   int? height;
+
+  /// The resolved paint offset computed during layout.
   Offset offset = Offset.zero;
 }
 
+/// The render object for [Stack], which layers children on top of each other
+/// and positions them via [StackParentData].
 class RenderStack extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, StackParentData> {
   @override

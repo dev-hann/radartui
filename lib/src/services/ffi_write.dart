@@ -16,6 +16,7 @@ typedef _CloseDart = int Function(int);
 typedef _IsattyNative = Int Function(Int);
 typedef _IsattyDart = int Function(int);
 
+/// Provides low-level terminal output via FFI calls to libc.
 class FfiWrite {
   FfiWrite._() {
     _lib = _loadLib();
@@ -25,6 +26,7 @@ class FfiWrite {
     _isatty = _lib.lookupFunction<_IsattyNative, _IsattyDart>('isatty');
   }
 
+  /// The singleton instance of [FfiWrite].
   static final FfiWrite instance = FfiWrite._();
 
   late final DynamicLibrary _lib;
@@ -41,6 +43,7 @@ class FfiWrite {
     throw UnsupportedError('FfiWrite: unsupported platform');
   }
 
+  /// Opens `/dev/tty` for direct terminal output; returns the file descriptor or -1 on failure.
   int openTty() {
     if (_isatty(1) == 0) return -1;
     final path = '/dev/tty'.toNativeUtf8();
@@ -54,6 +57,7 @@ class FfiWrite {
     }
   }
 
+  /// Writes [data] as UTF-8 bytes to the terminal file descriptor.
   void writeString(String data) {
     final fd = _ttyFd ?? 1;
     final encoded = utf8.encode(data);
@@ -68,6 +72,7 @@ class FfiWrite {
     }
   }
 
+  /// Closes the previously opened TTY file descriptor.
   void closeTty() {
     if (_ttyFd != null) {
       _close(_ttyFd!);

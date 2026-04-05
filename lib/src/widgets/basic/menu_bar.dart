@@ -5,12 +5,16 @@ import '../../../radartui.dart';
 /// Each [MenuBarItem] appears as a button in the menu bar. Activating it opens
 /// a dropdown showing its [children].
 class MenuBarItem {
+  /// Creates a [MenuBarItem] with the given [label] and [children].
   const MenuBarItem({
     required this.label,
     required this.children,
   });
 
+  /// The text label displayed on the menu bar.
   final String label;
+
+  /// The dropdown menu entries for this bar item.
   final List<MenuItem> children;
 }
 
@@ -19,6 +23,7 @@ class MenuBarItem {
 /// Has a [label], an optional [onSelected] callback, an optional [shortcut] label,
 /// and an [enabled] flag. When [enabled] is false, the item appears dimmed.
 class MenuItem {
+  /// Creates a [MenuItem] with the given [label].
   const MenuItem({
     required this.label,
     this.onSelected,
@@ -26,9 +31,16 @@ class MenuItem {
     this.enabled = true,
   });
 
+  /// The text label displayed for this menu entry.
   final String label;
+
+  /// Called when the user selects this menu entry.
   final VoidCallback? onSelected;
+
+  /// An optional shortcut hint displayed alongside the label (e.g. "Ctrl+S").
   final String? shortcut;
+
+  /// Whether this item can be selected.
   final bool enabled;
 }
 
@@ -37,6 +49,7 @@ class MenuItem {
 /// Renders a top bar with menu labels. Pressing Enter or the activation key
 /// opens a dropdown for the focused menu item.
 class MenuBar extends StatefulWidget {
+  /// Creates a [MenuBar] with the given [items].
   const MenuBar({
     super.key,
     required this.items,
@@ -44,8 +57,13 @@ class MenuBar extends StatefulWidget {
     this.focusNode,
   });
 
+  /// The top-level menu entries displayed in the bar.
   final List<MenuBarItem> items;
+
+  /// The background color of the menu bar.
   final Color? backgroundColor;
+
+  /// An optional focus node for keyboard navigation.
   final FocusNode? focusNode;
 
   @override
@@ -195,7 +213,9 @@ class _MenuBarRenderWidget extends RenderObjectWidget {
   }
 }
 
+/// Render object that paints a horizontal menu bar with optional dropdown menus.
 class RenderMenuBar extends RenderBox {
+  /// Creates a [RenderMenuBar] with the given items and state.
   RenderMenuBar({
     required this.items,
     required this.focused,
@@ -204,10 +224,19 @@ class RenderMenuBar extends RenderBox {
     required this.backgroundColor,
   });
 
+  /// The top-level menu bar items.
   List<MenuBarItem> items;
+
+  /// Whether the menu bar currently has keyboard focus.
   bool focused;
+
+  /// The index of the currently open dropdown, or -1 if none is open.
   int openMenuIndex;
+
+  /// The index of the highlighted item in the open dropdown.
   int selectedItemIndex;
+
+  /// The background color of the menu bar.
   Color backgroundColor;
 
   @override

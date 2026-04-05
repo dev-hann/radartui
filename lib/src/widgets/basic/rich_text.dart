@@ -5,12 +5,19 @@ import '../../../radartui.dart';
 /// Forms a tree of styled text segments. Each span can override [style]
 /// from its parent. Use [plainText] to get the unstyled concatenation.
 class TextSpan {
+  /// Creates a [TextSpan] with optional [text], [children], and [style].
   const TextSpan({this.text, this.children, this.style});
 
+  /// The text content of this span, or `null` if this is a container span.
   final String? text;
+
+  /// Child spans that inherit this span's style.
   final List<TextSpan>? children;
+
+  /// The text style applied to this span and inherited by children.
   final TextStyle? style;
 
+  /// Returns the unstyled plain-text content of this span and its descendants.
   String get plainText {
     final buffer = StringBuffer();
     _collectPlainText(buffer);
@@ -28,6 +35,7 @@ class TextSpan {
     }
   }
 
+  /// Recursively visits all descendant spans, calling [visitor] on each.
   void visitChildren(void Function(TextSpan) visitor) {
     if (children != null) {
       for (final child in children!) {
@@ -77,7 +85,9 @@ class _StyledSegment {
   final TextStyle? style;
 }
 
+/// A widget that renders a [TextSpan] tree with mixed styles and line wrapping.
 class RichText extends RenderObjectWidget {
+  /// Creates a [RichText] widget with the given styled [text] span.
   const RichText({
     super.key,
     required this.text,
@@ -85,8 +95,13 @@ class RichText extends RenderObjectWidget {
     this.overflow = TextOverflow.clip,
   });
 
+  /// The root span of the styled text tree to render.
   final TextSpan text;
+
+  /// The maximum number of lines to display, or `null` for unlimited.
   final int? maxLines;
+
+  /// How to handle text that overflows the [maxLines] limit.
   final TextOverflow overflow;
 
   @override
@@ -106,7 +121,9 @@ class RichText extends RenderObjectWidget {
   }
 }
 
+/// Render object that lays out and paints a [TextSpan] tree with line wrapping.
 class RenderRichText extends RenderBox {
+  /// Creates a [RenderRichText] with the given text and overflow configuration.
   RenderRichText({
     required TextSpan text,
     int? maxLines,
@@ -116,7 +133,11 @@ class RenderRichText extends RenderBox {
         _overflow = overflow;
 
   TextSpan _text;
+
+  /// The styled text span to render.
   TextSpan get text => _text;
+
+  /// Sets the text span and marks layout as needed.
   set text(TextSpan value) {
     if (_text != value) {
       _text = value;
@@ -125,7 +146,11 @@ class RenderRichText extends RenderBox {
   }
 
   int? _maxLines;
+
+  /// The maximum number of lines, or `null` for unlimited.
   int? get maxLines => _maxLines;
+
+  /// Sets the max lines and marks layout as needed.
   set maxLines(int? value) {
     if (_maxLines != value) {
       _maxLines = value;
@@ -134,7 +159,11 @@ class RenderRichText extends RenderBox {
   }
 
   TextOverflow _overflow;
+
+  /// The text overflow handling strategy.
   TextOverflow get overflow => _overflow;
+
+  /// Sets the overflow strategy and marks layout as needed.
   set overflow(TextOverflow value) {
     if (_overflow != value) {
       _overflow = value;

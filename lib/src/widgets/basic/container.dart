@@ -5,6 +5,7 @@ import '../../../radartui.dart';
 /// Supports [color] background, [width]/[height] constraints, [padding],
 /// [margin], and box-drawing [border] characters.
 class Container extends SingleChildRenderObjectWidget {
+  /// Creates a [Container] with optional styling and a single [child].
   const Container({
     super.key,
     Widget? child,
@@ -15,11 +16,23 @@ class Container extends SingleChildRenderObjectWidget {
     this.margin,
     this.border,
   }) : super(child: child ?? const SizedBox());
+
+  /// The background color of the container.
   final Color? color;
+
+  /// The fixed width of the container, or `null` to size from the child.
   final int? width;
+
+  /// The fixed height of the container, or `null` to size from the child.
   final int? height;
+
+  /// Inner padding between the border and the child.
   final EdgeInsets? padding;
+
+  /// Outer margin around the container.
   final EdgeInsets? margin;
+
+  /// The box-drawing border characters to draw around the container.
   final Border? border;
 
   @override
@@ -44,8 +57,10 @@ class Container extends SingleChildRenderObjectWidget {
   }
 }
 
+/// Render object that paints a container with optional background, border, padding, and margin.
 class RenderContainer extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
+  /// Creates a [RenderContainer] with the given visual properties.
   RenderContainer({
     Color? color,
     int? width,
@@ -56,8 +71,13 @@ class RenderContainer extends RenderBox
   })  : _color = color,
         _width = width,
         _height = height;
+
   Color? _color;
+
+  /// The background color, or `null` for a transparent background.
   Color? get color => _color;
+
+  /// Sets the background color.
   set color(Color? value) {
     if (_color == value) return;
     _color = value;
@@ -66,16 +86,28 @@ class RenderContainer extends RenderBox
 
   int? _width;
   int? _height;
+
+  /// Inner padding between the border and the child.
   EdgeInsets? padding;
+
+  /// Outer margin around the container.
   EdgeInsets? margin;
+
+  /// The box-drawing border characters.
   Border? border;
 
   TextStyle? _cachedBgStyle;
 
+  /// The fixed width, or `null` to size from the child.
   int? get containerWidth => _width;
+
+  /// Sets the fixed width.
   set containerWidth(int? value) => _width = value;
 
+  /// The fixed height, or `null` to size from the child.
   int? get containerHeight => _height;
+
+  /// Sets the fixed height.
   set containerHeight(int? value) => _height = value;
 
   bool get _hasBorder {

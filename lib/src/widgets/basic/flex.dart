@@ -5,6 +5,9 @@ import '../../../radartui.dart';
 /// Use [Row] for horizontal or [Column] for vertical instead of using [Flex]
 /// directly. Controls alignment via [MainAxisAlignment] and [CrossAxisAlignment].
 class Flex extends MultiChildRenderObjectWidget {
+  /// Creates a [Flex] layout widget.
+  ///
+  /// Prefer using [Row] or [Column] instead of [Flex] directly.
   const Flex({
     super.key,
     required super.children,
@@ -13,9 +16,17 @@ class Flex extends MultiChildRenderObjectWidget {
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisSize = MainAxisSize.max,
   });
+
+  /// The direction along which children are laid out.
   final Axis direction;
+
+  /// How children are distributed along the main axis.
   final MainAxisAlignment mainAxisAlignment;
+
+  /// How children are aligned on the cross axis.
   final CrossAxisAlignment crossAxisAlignment;
+
+  /// How much space the flex should occupy on the main axis.
   final MainAxisSize mainAxisSize;
 
   @override
@@ -36,17 +47,28 @@ class Flex extends MultiChildRenderObjectWidget {
   }
 }
 
+/// The render object for [Flex], responsible for measuring and positioning
+/// children along a main axis with flex expansion support.
 class RenderFlex extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, FlexParentData> {
+  /// Creates a [RenderFlex] with the given layout parameters.
   RenderFlex({
     required this.direction,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisSize = MainAxisSize.max,
   });
+
+  /// The direction along which children are laid out.
   Axis direction;
+
+  /// How children are distributed along the main axis.
   MainAxisAlignment mainAxisAlignment;
+
+  /// How children are aligned on the cross axis.
   CrossAxisAlignment crossAxisAlignment;
+
+  /// How much space the flex should occupy on the main axis.
   MainAxisSize mainAxisSize;
 
   @override

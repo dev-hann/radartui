@@ -4,14 +4,20 @@ import '../../../radartui.dart';
 ///
 /// Each item has a [value] of type [T], a display [label], and an [enabled] flag.
 class DropdownMenuItem<T> {
+  /// Creates a [DropdownMenuItem] with the given [value] and [label].
   const DropdownMenuItem({
     required this.value,
     required this.label,
     this.enabled = true,
   });
 
+  /// The value represented by this menu item.
   final T value;
+
+  /// The text displayed for this item.
   final String label;
+
+  /// Whether this item can be selected.
   final bool enabled;
 }
 
@@ -20,6 +26,7 @@ class DropdownMenuItem<T> {
 /// Displays the currently selected [value] and opens a popup menu when activated.
 /// Use [hint] to show placeholder text when no value is selected.
 class DropdownButton<T> extends StatefulWidget {
+  /// Creates a [DropdownButton] with the given [items] and [onChanged] callback.
   const DropdownButton({
     super.key,
     required this.items,
@@ -32,13 +39,28 @@ class DropdownButton<T> extends StatefulWidget {
     this.dropdownColor,
   });
 
+  /// The list of menu items to choose from.
   final List<DropdownMenuItem<T>> items;
+
+  /// The currently selected value, or `null` if nothing is selected.
   final T? value;
+
+  /// Called when the user selects a new item.
   final ValueChanged<T?>? onChanged;
+
+  /// Placeholder text shown when no value is selected.
   final String? hint;
+
+  /// An optional focus node for keyboard navigation.
   final FocusNode? focusNode;
+
+  /// The border color when the button has focus.
   final Color? focusColor;
+
+  /// The background color of the closed button.
   final Color? backgroundColor;
+
+  /// The background color of the dropdown menu popup.
   final Color? dropdownColor;
 
   @override
@@ -191,7 +213,9 @@ class _DropdownButtonRenderWidget extends RenderObjectWidget {
   }
 }
 
+/// Render object that paints the closed dropdown button with text and arrow.
 class RenderDropdownButton extends RenderBox {
+  /// Creates a [RenderDropdownButton] with the given display configuration.
   RenderDropdownButton({
     required this.text,
     required this.focused,
@@ -201,11 +225,22 @@ class RenderDropdownButton extends RenderBox {
     required this.backgroundColor,
   });
 
+  /// The text label displayed on the button.
   String text;
+
+  /// Whether the button currently has keyboard focus.
   bool focused;
+
+  /// Whether the dropdown menu is currently open.
   bool isOpen;
+
+  /// Whether the button is interactive.
   bool enabled;
+
+  /// The color applied when the button has focus.
   Color focusColor;
+
+  /// The background color of the button.
   Color backgroundColor;
 
   int get _textWidth => stringWidth(text);
@@ -285,7 +320,9 @@ class _DropdownMenuRenderWidget extends RenderObjectWidget {
   }
 }
 
+/// Render object that paints the open dropdown menu popup with selectable items.
 class RenderDropdownMenu extends RenderBox {
+  /// Creates a [RenderDropdownMenu] with the given items and visual configuration.
   RenderDropdownMenu({
     required this.items,
     required this.selectedIndex,
@@ -293,9 +330,16 @@ class RenderDropdownMenu extends RenderBox {
     required this.focusColor,
   });
 
+  /// The list of menu items to display.
   List<DropdownMenuItem> items;
+
+  /// The index of the currently highlighted item.
   int selectedIndex;
+
+  /// The background color of unselected items.
   Color dropdownColor;
+
+  /// The background color of the selected item.
   Color focusColor;
 
   @override

@@ -2,12 +2,10 @@ import '../../../radartui.dart';
 
 /// A horizontal bar that fills proportionally to [value] (0.0–1.0).
 ///
-/// Displays a colored bar within a fixed-height track. Supports custom
-/// [backgroundColor] and [valueColor].
-/// A horizontal bar that fills proportionally to a [value] (0.0–1.0).
-///
-/// Renders [backgroundColor] behind the filled portion with [valueColor].
+/// Displays a colored bar within a fixed-height track. When [value] is `null`,
+/// shows an indeterminate animation. Supports custom [backgroundColor] and [color].
 class LinearProgressIndicator extends StatefulWidget {
+  /// Creates a [LinearProgressIndicator] with an optional [value].
   const LinearProgressIndicator({
     super.key,
     this.value,
@@ -16,9 +14,16 @@ class LinearProgressIndicator extends StatefulWidget {
     this.indicatorWidth,
   });
 
+  /// The progress value between 0.0 and 1.0, or `null` for indeterminate.
   final double? value;
+
+  /// The color of the unfilled track background.
   final Color? backgroundColor;
+
+  /// The color of the filled progress bar.
   final Color? color;
+
+  /// The fixed width of the indicator, or `null` to fill available space.
   final int? indicatorWidth;
 
   @override
@@ -130,7 +135,9 @@ class _LinearProgressIndicatorRenderWidget extends RenderObjectWidget {
   }
 }
 
+/// Render object that paints a linear progress bar with determinate or indeterminate fill.
 class RenderLinearProgressIndicator extends RenderBox {
+  /// Creates a [RenderLinearProgressIndicator] with the given value and colors.
   RenderLinearProgressIndicator({
     required double? value,
     required double animValue,
@@ -149,29 +156,44 @@ class RenderLinearProgressIndicator extends RenderBox {
   Color _color;
   int? _indicatorWidth;
 
+  /// The progress value (0.0–1.0), or `null` for indeterminate.
   double? get value => _value;
+
+  /// Sets the progress value.
   set value(double? v) {
     _value = v;
   }
 
+  /// The current animation value for indeterminate mode.
   double get animValue => _animValue;
+
+  /// Sets the animation value.
   set animValue(double v) {
     _animValue = v;
   }
 
+  /// The background track color.
   Color get backgroundColor => _backgroundColor;
+
+  /// Sets the background color.
   set backgroundColor(Color v) {
     _backgroundColor = v;
     _invalidateCache();
   }
 
+  /// The filled bar color.
   Color get color => _color;
+
+  /// Sets the fill color.
   set color(Color v) {
     _color = v;
     _invalidateCache();
   }
 
+  /// The fixed width, or `null` to fill available space.
   int? get indicatorWidth => _indicatorWidth;
+
+  /// Sets the indicator width.
   set indicatorWidth(int? v) {
     _indicatorWidth = v;
   }

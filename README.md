@@ -1,59 +1,58 @@
-# RadarTUI: A Flutter-Inspired TUI Framework for Dart
+# RadarTUI
 
+A Flutter-inspired TUI framework for Dart. Build terminal UIs with declarative widgets, state management, diff-based rendering, and a rich widget library.
+
+[![pub package](https://img.shields.io/pub/v/radartui.svg)](https://pub.dev/packages/radartui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform: Dart](https://img.shields.io/badge/Platform-Dart-blue.svg)](https://dart.dev)
-[![Style: effective_dart](https://img.shields.io/badge/style-effective_dart-40c4ff.svg)](https://dart.dev/guides/language/effective-dart)
-
-**RadarTUI is a Flutter-style framework for building beautiful and responsive Terminal User Interfaces (TUIs) using Dart.** Easily develop complex terminal applications with a declarative widget paradigm.
+[![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-blue)](https://pub.dev/packages/radartui)
 
 ---
 
-## 🎯 Key Features
+## Key Features
 
-- **✨ Declarative UI**: A Flutter-like widget tree structure where the UI automatically updates when the state changes.
-- **📦 Rich Widget Library**: Provides essential layout and UI widgets like `Row`, `Column`, `Text`, `Container`, `Button`, `TextField`, and more.
-- **⚡️ Efficient Rendering**: Intelligent diff-based terminal rendering optimization that only redraws the parts that have changed.
-- **⌨️ Flexible Input Handling**: Easily handle keyboard events and interact with the application state.
-- **🎨 Flexible Layout System**: Easily configure complex UIs with a powerful Flexbox-based layout widget.
-- **🧭 Intuitive State Management**: Clear and predictable state management through `StatelessWidget` and `StatefulWidget` patterns.
+- **Declarative UI** - Flutter-like widget tree structure where the UI automatically updates when state changes
+- **Rich Widget Library** - `Row`, `Column`, `Text`, `Container`, `Button`, `TextField`, `DataTable`, `TabBar`, and more
+- **Efficient Rendering** - Diff-based terminal rendering that only redraws changed cells
+- **Flexible Layout System** - Flexbox-based layout with `Flex`, `Stack`, `Wrap`, `GridView`, and `ListView`
+- **State Management** - `StatelessWidget`, `StatefulWidget`, and `InheritedWidget` patterns
+- **Focus Management** - Keyboard navigation and focus control between widgets
+- **Animation System** - `AnimationController`, `Tween`, `CurvedAnimation` with easing curves
+- **Navigation** - `Navigator`, `Route`, and `Dialog` for multi-screen apps
+- **Keyboard Shortcuts** - `Shortcuts`, `Actions`, and `ShortcutActionsHandler` system
+- **Widget Testing** - Built-in testing framework for TUI applications
 
-## 🏗️ Architecture
+## Architecture
 
-RadarTUI follows a layered architecture inspired by Flutter. Each layer has a clearly defined role, enhancing the code's maintainability and scalability.
+RadarTUI follows a layered architecture inspired by Flutter:
 
 ```
 ┌──────────────────────────┐
-│     Application Layer    │ (User Applications)
+│     Application Layer    │  User Applications
 ├──────────────────────────┤
-│       Widgets Layer      │ (Declarative UI Widgets)
+│       Widgets Layer      │  Declarative UI Widgets
 ├──────────────────────────┤
-│      Scheduler Layer     │ (Frame Scheduling & Lifecycle)
+│      Scheduler Layer     │  Frame Scheduling & Lifecycle
 ├──────────────────────────┤
-│      Rendering Layer     │ (Layout & Painting)
+│      Rendering Layer     │  Layout & Painting
 ├──────────────────────────┤
-│       Services Layer     │ (Terminal Control, I/O)
+│       Services Layer     │  Terminal Control, I/O
 ├──────────────────────────┤
-│      Foundation Layer    │ (Basic Data Types)
+│      Foundation Layer    │  Basic Data Types
 └──────────────────────────┘
 ```
 
-For more detailed architecture information, please refer to the [AGENTS.md](AGENTS.md) document.
-
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Add Dependency
 
-Add RadarTUI to your `pubspec.yaml` file.
+Add RadarTUI to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  radartui:
-    path: ../ # Or specify the pub.dev version
+  radartui: ^0.0.2
 ```
 
-### 2. Basic Example Code
-
-Here is a simple counter application example.
+### 2. Create Your First App
 
 ```dart
 import 'package:radartui/radartui.dart';
@@ -97,8 +96,8 @@ class _CounterAppState extends State<CounterApp> {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        'Press any key to increment the counter: $_counter
-Press 'q' to quit.',
+        'Press any key to increment the counter: $_counter\n'
+        "Press 'q' to quit.",
         style: const TextStyle(color: AnsiColor.green),
       ),
     );
@@ -106,51 +105,33 @@ Press 'q' to quit.',
 }
 ```
 
-## 📦 How to Run Examples
+### 3. Run Examples
 
-Check out the various examples included in the project to see the features of RadarTUI.
+```sh
+cd example
+dart pub get
+dart run
+```
 
-1.  Navigate to the `example` directory.
+## Available Widgets
 
-    ```sh
-    cd example
-    ```
+| Category | Widgets |
+|----------|---------|
+| Layout | `Row`, `Column`, `Flex`, `Expanded`, `SizedBox`, `Padding`, `Center`, `Align`, `Spacer`, `Stack`, `Positioned`, `Wrap`, `GridView`, `ListView` |
+| Display | `Text`, `RichText`, `Icon`, `Container`, `Card`, `Divider`, `SizedBox`, `DataTable` |
+| Input | `Button`, `TextField`, `Checkbox`, `Radio`, `Toggle`, `Slider`, `DropdownButton`, `Form` |
+| Navigation | `Navigator`, `Dialog`, `TabBar`, `TabBarView`, `MenuBar` |
+| Status | `StatusBar`, `Toast`, `LinearProgressIndicator`, `CircularProgressIndicator` |
+| Utility | `Builder`, `LayoutBuilder`, `StreamBuilder`, `FutureBuilder`, `SingleChildScrollView` |
 
-2.  Install dependencies.
+## API Reference
 
-    ```sh
-    dart pub get
-    ```
+Full API documentation is available at [pub.dev/documentation/radartui](https://pub.dev/documentation/radartui/latest/).
 
-3.  Run the desired example. (`main.dart` provides a menu to select various examples)
-    ```sh
-    dart run
-    ```
+## Contributing
 
-## 🗺️ Roadmap
+Contributions are welcome! Bug reports, feature suggestions, and code contributions are appreciated.
 
-RadarTUI is continuously evolving. Many core features are already implemented:
-
-### ✅ Implemented
-- **Animation System**: Basic animation support with indicators
-- **Focus Management System**: Keyboard navigation and focus control between widgets
-- **Theme System**: Centralized management of colors and styles for the entire application
-- **Widget Testing Framework**: Testing utilities for TUI applications
-- **Advanced Layout Widgets**: `Grid`, `Stack`, `ListView`, `Wrap`, `IndexedStack`
-- **Rich Widgets**: `DataTable`, `TabBar`/`TabBarView`, `DropdownButton`, `Icon`
-- **Input Handling**: `Shortcuts`/`Actions` for keyboard shortcuts
-
-### 🚧 Planned
-- **Enhanced Animation System**: Smooth visual transitions for state changes
-- **Mouse Support**: Optional mouse event handling
-- **More Widgets**: Additional Flutter-compatible widgets
-
-## 🤝 Contributing
-
-Contributions to RadarTUI are welcome! Bug reports, feature suggestions, code contributions, and any other form of participation are appreciated.
-
-Before you start contributing, reading the [AGENTS.md](AGENTS.md) architecture document will be very helpful in understanding the project structure.
-
-## 📜 License
+## License
 
 RadarTUI is distributed under the [MIT License](LICENSE).

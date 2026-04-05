@@ -11,21 +11,31 @@ class _SavedScope {
   final FocusNode? focusedNode;
 }
 
+/// Manages focus across the widget tree, analogous to Flutter's [FocusManager].
+///
+/// Handles keyboard events for focus traversal (Tab/Shift+Tab) and dispatches
+/// key events to the currently focused node.
 class FocusManager extends NavigatorObserver {
   FocusManager._();
   static FocusManager? _instance;
+
+  /// The singleton instance of [FocusManager].
   static FocusManager get instance => _instance ??= FocusManager._();
 
   FocusScope? _currentScope;
   final List<_SavedScope> _savedScopes = [];
+
+  /// The current focus scope, or null if not initialized.
   FocusScope? get currentScope => _currentScope;
   StreamSubscription<KeyEvent>? _keySubscription;
   Stream<KeyEvent>? _testKeyEvents;
 
+  /// Sets a test key event stream for testing purposes.
   void setTestKeyEvents(Stream<KeyEvent> stream) {
     _testKeyEvents = stream;
   }
 
+  /// Initializes the focus manager and starts listening to keyboard events.
   void initialize() {
     _keySubscription?.cancel();
     Stream<KeyEvent> stream;
@@ -37,6 +47,7 @@ class FocusManager extends NavigatorObserver {
     _keySubscription = stream.listen(_handleKeyEvent);
   }
 
+  /// Disposes the focus manager, canceling subscriptions and cleaning up scopes.
   void dispose() {
     _keySubscription?.cancel();
     _keySubscription = null;
@@ -115,6 +126,7 @@ class FocusManager extends NavigatorObserver {
     }
   }
 
+  /// Registers a [FocusNode] with the current focus scope.
   void registerNode(FocusNode node) {
     if (_currentScope == null) {
       _currentScope = FocusScope();
@@ -123,21 +135,26 @@ class FocusManager extends NavigatorObserver {
     _currentScope!.addNode(node);
   }
 
+  /// Unregisters a [FocusNode] from the current focus scope.
   void unregisterNode(FocusNode node) {
     _currentScope?.removeNode(node);
   }
 
+  /// Requests focus for the given [node].
   void requestFocus(FocusNode node) {
     _currentScope?.requestFocus(node);
   }
 
+  /// Pushes a new focus scope, typically for a dialog.
   void pushDialogScope() {
     _pushScope();
   }
 
+  /// Pops the current focus scope, restoring the previous one.
   void popDialogScope() {
     _popScope();
   }
 
+  /// The currently focused node, or null if nothing is focused.
   FocusNode? get currentFocus => _currentScope?.currentFocus;
 }

@@ -1,12 +1,18 @@
 import 'framework.dart';
 import 'scroll_controller.dart';
 
+/// A mixin for [State] subclasses that need scroll management.
+///
+/// Automatically manages a [ScrollController], handling ownership (provided vs.
+/// internally created) and rebuilding on scroll changes.
 mixin ScrollableState<T extends StatefulWidget> on State<T> {
   late ScrollController _scrollController;
   bool _ownsScrollController = false;
 
+  /// Override to provide an external [ScrollController], or return null to use an internal one.
   ScrollController? get providedScrollController => null;
 
+  /// The [ScrollController] used by this widget.
   ScrollController get scrollController => _scrollController;
 
   void _onScrollChanged() {
