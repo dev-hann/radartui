@@ -17,17 +17,18 @@ class Cell {
   static const empty = Cell(' ');
 
   @override
-  bool operator ==(Object other) =>
-      other is Cell && char == other.char && _styleEquals(style, other.style);
-
-  @override
-  int get hashCode => char.hashCode ^ (style?.hashCode ?? 0);
-
-  static bool _styleEquals(TextStyle? a, TextStyle? b) {
+  bool operator ==(Object other) {
+    if (other is! Cell) return false;
+    if (char != other.char) return false;
+    final TextStyle? a = style;
+    final TextStyle? b = other.style;
     if (a == null && b == null) return true;
     if (a == null || b == null) return false;
     return a == b;
   }
+
+  @override
+  int get hashCode => char.hashCode ^ (style?.hashCode ?? 0);
 }
 
 /// Manages a grid of character cells and renders diffs to the terminal.
@@ -76,8 +77,16 @@ class OutputBuffer {
   ///
   /// Unlike calling [writeStyled] per character, this checks row bounds once
   /// and silently clips characters that fall outside the column range.
-  void writeStringBatch(int x, int y, String text, TextStyle? style) {
-    if (y < 0 || y >= terminal.height) return;
+  ///
+  /// Returns the total width advance (sum of [charWidth] for all characters).
+  int writeStringBatch(int x, int y, String text, TextStyle? style) {
+    if (y < 0 || y >= terminal.height) {
+      int totalWidth = 0;
+      for (int i = 0; i < text.length; i++) {
+        totalWidth += charWidth(text.codeUnitAt(i));
+      }
+      return totalWidth;
+    }
     final int w = terminal.width;
     int col = x;
     for (int i = 0; i < text.length; i++) {
@@ -87,6 +96,7 @@ class OutputBuffer {
       }
       col += charWidth(ch.codeUnitAt(0));
     }
+    return col - x;
   }
 
   void _fillRow(int y) {
@@ -107,6 +117,7 @@ class OutputBuffer {
   /// Clears both the grid and the terminal, forcing a full redraw on next flush.
   void clearAll() {
     terminal.clear();
+    _previousGridPopulated = false;
     for (int y = 0; y < terminal.height; y++) {
       _fillRow(y);
       _fillPreviousRow(y, const Cell(''));
@@ -120,8 +131,11 @@ class OutputBuffer {
 
   static const int _fullClearThreshold = 10;
 
+  bool _previousGridPopulated = false;
+
   /// Returns `true` if the previous frame had significantly more content than the current one.
   bool needsFullClear() {
+    if (!_previousGridPopulated) return false;
     int currentContent = 0;
     int previousContent = 0;
     final int totalCells = terminal.height * terminal.width;
@@ -219,9 +233,22 @@ class OutputBuffer {
     return buf.toString();
   }
 
+  TextStyle? _cachedAnsiStyle;
+  String? _cachedAnsiCode;
+
+  String _getCachedAnsiEscapeCode(TextStyle? style) {
+    if (style == _cachedAnsiStyle && _cachedAnsiCode != null) {
+      return _cachedAnsiCode!;
+    }
+    final String code = _buildAnsiEscapeCode(style);
+    _cachedAnsiStyle = style;
+    _cachedAnsiCode = code;
+    return code;
+  }
+
   /// Renders only the changed cells to the terminal since the last flush.
   void flush() {
-    final StringBuffer buffer = StringBuffer();
+    _flushBuffer.clear();
     int cursorX = -1;
     int cursorY = -1;
     TextStyle? currentStyle;
@@ -229,7 +256,7 @@ class OutputBuffer {
     for (int y = 0; y < terminal.height; y++) {
       final result = _flushRow(
         y,
-        buffer,
+        _flushBuffer,
         cursorX: cursorX,
         cursorY: cursorY,
         currentStyle: currentStyle,
@@ -238,11 +265,13 @@ class OutputBuffer {
       cursorY = result.$2;
       currentStyle = result.$3;
     }
-    buffer.write('\x1b[0m');
-    buffer.write('\x1b[1;1H');
-    terminal.backend.write(buffer.toString());
+    _flushBuffer.write('\x1b[0m');
+    _flushBuffer.write('\x1b[1;1H');
+    terminal.backend.write(_flushBuffer.toString());
     terminal.backend.flush();
   }
+
+  final StringBuffer _flushBuffer = StringBuffer();
 
   (int, int, TextStyle?) _flushRow(
     int y,
@@ -288,13 +317,14 @@ class OutputBuffer {
     final TextStyle? newStyle = cell.style;
     if (newStyle != currentStyle) {
       currentStyle = newStyle;
-      buffer.write(_buildAnsiEscapeCode(currentStyle));
+      buffer.write(_getCachedAnsiEscapeCode(currentStyle));
     }
 
     buffer.write(cell.char);
     final int newCursorX = x + charWidth(cell.char.codeUnitAt(0));
 
     _previousGrid[y][x] = cell;
+    _previousGridPopulated = true;
     if (newCursorX - x == 2 && x + 1 < terminal.width) {
       _previousGrid[y][x + 1] = _grid[y][x + 1];
     }

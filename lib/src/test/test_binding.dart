@@ -369,13 +369,14 @@ class TestOutputBuffer implements OutputBuffer {
   }
 
   @override
-  void writeStringBatch(int x, int y, String text, TextStyle? style) {
+  int writeStringBatch(int x, int y, String text, TextStyle? style) {
     int cx = x;
     for (int i = 0; i < text.length; i++) {
       final String ch = text[i];
       writeStyled(cx, y, ch, style);
       cx += charWidth(ch.codeUnitAt(0));
     }
+    return cx - x;
   }
 
   List<String> get output => _output;

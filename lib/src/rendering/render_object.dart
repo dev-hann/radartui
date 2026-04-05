@@ -23,11 +23,7 @@ class PaintingContext {
   ///
   /// Returns the x-position immediately after the last character written.
   int writeString(int x, int y, String text, TextStyle style) {
-    buffer.writeStringBatch(x, y, text, style);
-    for (int i = 0; i < text.length; i++) {
-      x += charWidth(text.codeUnitAt(i));
-    }
-    return x;
+    return x + buffer.writeStringBatch(x, y, text, style);
   }
 }
 
