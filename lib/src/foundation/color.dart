@@ -62,6 +62,15 @@ class Color {
 
   @override
   String toString() => 'Color($value)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Color && value == other.value;
+  }
+
+  @override
+  int get hashCode => value;
 }
 
 /// Predefined [Color] constants following material naming conventions.
