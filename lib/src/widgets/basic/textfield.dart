@@ -499,11 +499,12 @@ class RenderTextField extends RenderBox {
     return baseStyle;
   }
 
+  String get _displayText =>
+      text.isEmpty && placeholder != null ? placeholder! : text;
+
   @override
   void performLayout(Constraints constraints) {
-    final displayText =
-        text.isEmpty && placeholder != null ? placeholder! : text;
-    final desiredWidth = (displayText.length + 1).clamp(
+    final desiredWidth = (_displayText.length + 1).clamp(
       1,
       Constraints.infinity,
     );
@@ -513,8 +514,7 @@ class RenderTextField extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final displayText =
-        text.isEmpty && placeholder != null ? placeholder! : text;
+    final displayText = _displayText;
     final displayStyle = _resolveDisplayStyle();
 
     if (hasFocus) {
