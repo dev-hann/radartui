@@ -160,19 +160,48 @@ class RenderGridView extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, GridParentData> {
   /// Creates a [RenderGridView] with the given column count and spacing.
   RenderGridView({
-    required this.crossAxisCount,
-    required this.mainAxisSpacing,
-    required this.crossAxisSpacing,
-  });
+    required int crossAxisCount,
+    required int mainAxisSpacing,
+    required int crossAxisSpacing,
+  })  : _crossAxisCount = crossAxisCount,
+        _mainAxisSpacing = mainAxisSpacing,
+        _crossAxisSpacing = crossAxisSpacing;
+
+  int _crossAxisCount;
 
   /// The number of columns in the grid.
-  int crossAxisCount;
+  int get crossAxisCount => _crossAxisCount;
+
+  /// Sets the column count and marks the render object as needing layout.
+  set crossAxisCount(int v) {
+    if (_crossAxisCount == v) return;
+    _crossAxisCount = v;
+    markNeedsLayout();
+  }
+
+  int _mainAxisSpacing;
 
   /// The vertical spacing between rows.
-  int mainAxisSpacing;
+  int get mainAxisSpacing => _mainAxisSpacing;
+
+  /// Sets the main axis spacing and marks the render object as needing layout.
+  set mainAxisSpacing(int v) {
+    if (_mainAxisSpacing == v) return;
+    _mainAxisSpacing = v;
+    markNeedsLayout();
+  }
+
+  int _crossAxisSpacing;
 
   /// The horizontal spacing between columns.
-  int crossAxisSpacing;
+  int get crossAxisSpacing => _crossAxisSpacing;
+
+  /// Sets the cross axis spacing and marks the render object as needing layout.
+  set crossAxisSpacing(int v) {
+    if (_crossAxisSpacing == v) return;
+    _crossAxisSpacing = v;
+    markNeedsLayout();
+  }
 
   @override
   void setupParentData(RenderObject child) {
