@@ -58,6 +58,10 @@ class _FlatNode<T> {
   final int depth;
 }
 
+/// A collapsible tree view that renders hierarchical data.
+///
+/// Uses [roots] as the top-level nodes and [getChildren] to traverse deeper.
+/// Each node is built by [builder]. The [TreeController] manages expand/collapse state.
 class TreeView<T> extends StatefulWidget {
   const TreeView({
     super.key,

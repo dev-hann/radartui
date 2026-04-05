@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A widget that layers its children on top of each other.
+///
+/// The first child is the base; subsequent children are painted on top.
+/// Use [Positioned] to place children at specific offsets within the stack.
 class Stack extends MultiChildRenderObjectWidget {
   const Stack({super.key, required super.children});
 

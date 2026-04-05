@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A boolean toggle switch (on/off).
+///
+/// Displays as a labeled indicator that flips between active and inactive
+/// states. Calls [onChanged] with the new value when activated.
 class Toggle extends StatefulWidget {
   const Toggle({
     super.key,
