@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A horizontal or vertical line that separates content.
+///
+/// Draws a [character] (default `─`) with optional [indent] and [endIndent].
+/// Use [VerticalDivider] for a vertical separator.
 class Divider extends StatelessWidget {
   const Divider({
     super.key,

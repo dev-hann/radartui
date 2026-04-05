@@ -1,5 +1,9 @@
 import '../../../radartui.dart';
 
+/// A horizontal bar typically rendered at the bottom of the screen.
+///
+/// Displays [left], [center], and [right] widgets in a row with an optional
+/// [backgroundColor] and [foregroundColor].
 class StatusBar extends StatelessWidget {
   const StatusBar({
     super.key,
