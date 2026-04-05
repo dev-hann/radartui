@@ -288,21 +288,12 @@ class RenderFlex extends RenderBox
   }
 
   BoxConstraints _getConstraintsForNonFlexChild(BoxConstraints constraints) {
-    if (direction == Axis.horizontal) {
-      return BoxConstraints(
-        minWidth: 0,
-        maxWidth: constraints.maxWidth,
-        minHeight: 0,
-        maxHeight: constraints.maxHeight,
-      );
-    } else {
-      return BoxConstraints(
-        minWidth: 0,
-        maxWidth: constraints.maxWidth,
-        minHeight: 0,
-        maxHeight: constraints.maxHeight,
-      );
-    }
+    return BoxConstraints(
+      minWidth: 0,
+      maxWidth: constraints.maxWidth,
+      minHeight: 0,
+      maxHeight: constraints.maxHeight,
+    );
   }
 
   BoxConstraints _getConstraintsForFlexChild(
@@ -311,34 +302,47 @@ class RenderFlex extends RenderBox
     FlexFit fit,
   ) {
     if (direction == Axis.horizontal) {
-      if (fit == FlexFit.tight) {
-        return BoxConstraints.tightFor(
-          width: maxExtent,
-          height: constraints.maxHeight,
-        );
-      } else {
-        return BoxConstraints(
-          minWidth: 0,
-          maxWidth: maxExtent,
-          minHeight: 0,
-          maxHeight: constraints.maxHeight,
-        );
-      }
-    } else {
-      if (fit == FlexFit.tight) {
-        return BoxConstraints.tightFor(
-          width: constraints.maxWidth,
-          height: maxExtent,
-        );
-      } else {
-        return BoxConstraints(
-          minWidth: 0,
-          maxWidth: constraints.maxWidth,
-          minHeight: 0,
-          maxHeight: maxExtent,
-        );
-      }
+      return _horizontalFlexConstraints(constraints, maxExtent, fit);
     }
+    return _verticalFlexConstraints(constraints, maxExtent, fit);
+  }
+
+  BoxConstraints _horizontalFlexConstraints(
+    BoxConstraints constraints,
+    int maxExtent,
+    FlexFit fit,
+  ) {
+    if (fit == FlexFit.tight) {
+      return BoxConstraints.tightFor(
+        width: maxExtent,
+        height: constraints.maxHeight,
+      );
+    }
+    return BoxConstraints(
+      minWidth: 0,
+      maxWidth: maxExtent,
+      minHeight: 0,
+      maxHeight: constraints.maxHeight,
+    );
+  }
+
+  BoxConstraints _verticalFlexConstraints(
+    BoxConstraints constraints,
+    int maxExtent,
+    FlexFit fit,
+  ) {
+    if (fit == FlexFit.tight) {
+      return BoxConstraints.tightFor(
+        width: constraints.maxWidth,
+        height: maxExtent,
+      );
+    }
+    return BoxConstraints(
+      minWidth: 0,
+      maxWidth: constraints.maxWidth,
+      minHeight: 0,
+      maxHeight: maxExtent,
+    );
   }
 
   @override
