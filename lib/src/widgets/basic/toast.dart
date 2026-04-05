@@ -19,8 +19,24 @@ class Toast {
     final overlay = Overlay.of(context);
     if (overlay == null) return;
 
-    late OverlayEntry entry;
-    entry = OverlayEntry(
+    final entry = _buildOverlayEntry(
+      message,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+    );
+
+    overlay.insert(entry);
+    Future.delayed(duration, () {
+      if (entry.mounted) entry.remove();
+    });
+  }
+
+  static OverlayEntry _buildOverlayEntry(
+    String message, {
+    Color? backgroundColor,
+    Color? textColor,
+  }) {
+    return OverlayEntry(
       builder: (context) => Positioned(
         bottom: 1,
         left: 0,
@@ -37,13 +53,5 @@ class Toast {
         ),
       ),
     );
-
-    overlay.insert(entry);
-
-    Future.delayed(duration, () {
-      if (entry.mounted) {
-        entry.remove();
-      }
-    });
   }
 }
