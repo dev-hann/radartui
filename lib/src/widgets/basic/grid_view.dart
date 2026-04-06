@@ -70,7 +70,7 @@ class _GridViewState<T> extends State<GridView<T>>
   @override
   void onKeyEvent(KeyEvent event) {
     final totalItems = widget.items.length;
-    if (totalItems == 0) return;
+    if (widget.items.isEmpty) return;
 
     if (event.code == KeyCode.arrowUp) {
       _moveSelection(-widget.crossAxisCount);

@@ -101,7 +101,7 @@ class _ListViewState<T> extends State<ListView<T>>
     _viewportHeight = mediaQuery?.data.size.height ?? 24;
 
     final itemCount = widget.items.length;
-    if (itemCount == 0) {
+    if (widget.items.isEmpty) {
       return const SizedBox();
     }
 
