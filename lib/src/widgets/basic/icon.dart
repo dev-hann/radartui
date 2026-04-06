@@ -16,7 +16,10 @@ class Icon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(icon, style: TextStyle(color: color));
+    return Text(
+      icon,
+      style: color == null ? const TextStyle() : TextStyle(color: color),
+    );
   }
 }
 
