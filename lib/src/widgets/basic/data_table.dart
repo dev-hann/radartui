@@ -205,7 +205,7 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
     final columnWidths = _getColumnWidths();
     final headerRow = _buildHeaderRow(columnWidths);
 
-    final visibleRows = [];
+    final visibleRows = <Widget>[];
     final scrollOffset = _scrollController.offset.clamp(0, widget.rows.length);
     final visibleCount = _viewportHeight.clamp(1, widget.rows.length);
     final endIndex = (scrollOffset + visibleCount).clamp(0, widget.rows.length);
@@ -243,7 +243,7 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
   }
 
   Widget _buildHeaderRow(List<int> columnWidths) {
-    final parts = [];
+    final parts = <String>[];
 
     if (widget.showCheckboxColumn) {
       parts.add('   ');
