@@ -292,7 +292,7 @@ class RenderCheckbox extends RenderBox {
 
   void _paintBorder(PaintingContext context, Offset offset) {
     final TextStyle style = _cachedBorderStyle!;
-    final String borderChars =
+    const String borderChars =
         '${BoxDrawingConstants.leftTee}${BoxDrawingConstants.rightTee}';
     context.writeString(offset.x, offset.y, borderChars, style);
   }
