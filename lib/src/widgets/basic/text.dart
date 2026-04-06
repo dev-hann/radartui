@@ -233,12 +233,12 @@ class RenderText extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     final effectiveStyle = _getEffectiveStyle();
-    for (int lineIndex = 0; lineIndex < _lines.length; lineIndex++) {
-      final line = _lines[lineIndex];
+    for (final entry in _lines.asMap().entries) {
+      final line = entry.value;
       if (line.isNotEmpty) {
         context.writeString(
           offset.x,
-          offset.y + lineIndex,
+          offset.y + entry.key,
           line,
           effectiveStyle,
         );
