@@ -130,18 +130,22 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
   }
 
   void _handleOpenKeyEvent(KeyEvent event) {
-    if (event.code == KeyCode.arrowUp) {
-      setState(() {
-        _selectedIndex = (_selectedIndex - 1).clamp(0, widget.items.length - 1);
-      });
-    } else if (event.code == KeyCode.arrowDown) {
-      setState(() {
-        _selectedIndex = (_selectedIndex + 1).clamp(0, widget.items.length - 1);
-      });
-    } else if (event.code == KeyCode.enter) {
-      _activateSelectedItem();
-    } else if (event.code == KeyCode.escape) {
-      _closeDropdown();
+    final int maxIndex = widget.items.length - 1;
+    switch (event.code) {
+      case KeyCode.arrowUp:
+        setState(() {
+          _selectedIndex = (_selectedIndex - 1).clamp(0, maxIndex);
+        });
+      case KeyCode.arrowDown:
+        setState(() {
+          _selectedIndex = (_selectedIndex + 1).clamp(0, maxIndex);
+        });
+      case KeyCode.enter:
+        _activateSelectedItem();
+      case KeyCode.escape:
+        _closeDropdown();
+      default:
+        break;
     }
   }
 

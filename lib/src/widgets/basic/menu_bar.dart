@@ -133,32 +133,51 @@ class _MenuBarState extends State<MenuBar> with FocusableState<MenuBar> {
   }
 
   void _handleOpenKeyEvent(KeyEvent event) {
-    if (event.code == KeyCode.arrowLeft) {
-      setState(() {
-        _openMenuIndex =
-            (_openMenuIndex - 1 + widget.items.length) % widget.items.length;
-        _selectedItemIndex = 0;
-      });
-    } else if (event.code == KeyCode.arrowRight) {
-      setState(() {
-        _openMenuIndex = (_openMenuIndex + 1) % widget.items.length;
-        _selectedItemIndex = 0;
-      });
-    } else if (event.code == KeyCode.arrowUp) {
-      final int itemCount = widget.items[_openMenuIndex].children.length;
-      setState(() {
-        _selectedItemIndex = (_selectedItemIndex - 1).clamp(0, itemCount - 1);
-      });
-    } else if (event.code == KeyCode.arrowDown) {
-      final int itemCount = widget.items[_openMenuIndex].children.length;
-      setState(() {
-        _selectedItemIndex = (_selectedItemIndex + 1).clamp(0, itemCount - 1);
-      });
-    } else if (event.code == KeyCode.enter) {
-      _activateSelectedItem();
-    } else if (event.code == KeyCode.escape) {
-      _closeMenu();
+    switch (event.code) {
+      case KeyCode.arrowLeft:
+        _navigateLeft();
+      case KeyCode.arrowRight:
+        _navigateRight();
+      case KeyCode.arrowUp:
+        _navigateUp();
+      case KeyCode.arrowDown:
+        _navigateDown();
+      case KeyCode.enter:
+        _activateSelectedItem();
+      case KeyCode.escape:
+        _closeMenu();
+      default:
+        break;
     }
+  }
+
+  void _navigateLeft() {
+    setState(() {
+      _openMenuIndex =
+          (_openMenuIndex - 1 + widget.items.length) % widget.items.length;
+      _selectedItemIndex = 0;
+    });
+  }
+
+  void _navigateRight() {
+    setState(() {
+      _openMenuIndex = (_openMenuIndex + 1) % widget.items.length;
+      _selectedItemIndex = 0;
+    });
+  }
+
+  void _navigateUp() {
+    final int itemCount = widget.items[_openMenuIndex].children.length;
+    setState(() {
+      _selectedItemIndex = (_selectedItemIndex - 1).clamp(0, itemCount - 1);
+    });
+  }
+
+  void _navigateDown() {
+    final int itemCount = widget.items[_openMenuIndex].children.length;
+    setState(() {
+      _selectedItemIndex = (_selectedItemIndex + 1).clamp(0, itemCount - 1);
+    });
   }
 
   void _activateSelectedItem() {
