@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../../radartui.dart';
 import 'selectable_defaults.dart';
 
@@ -239,10 +241,7 @@ class RenderGridView extends RenderBox
   int _computeMaxRowHeight() {
     int maxRowHeight = 1;
     for (final child in children) {
-      final childHeight = child.size?.height ?? 1;
-      if (childHeight > maxRowHeight) {
-        maxRowHeight = childHeight;
-      }
+      maxRowHeight = math.max(maxRowHeight, child.size?.height ?? 1);
     }
     return maxRowHeight;
   }
