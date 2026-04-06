@@ -494,11 +494,7 @@ class RenderMenuBar extends RenderBox {
   ) {
     final TextStyle bgStyle =
         isSelected ? _dropdownSelectedBgStyle : _dropdownNormalBgStyle;
-    final TextStyle fgBgStyle = isSelected
-        ? _dropdownSelectedFgStyle
-        : (item.enabled
-            ? _dropdownNormalEnabledFgStyle
-            : _dropdownNormalDisabledFgStyle);
+    final TextStyle fgBgStyle = _getFgStyle(isSelected, item.enabled);
     context.fillBackground(x, y, maxWidth, bgStyle);
     final String prefix = isSelected
         ? BoxDrawingConstants.checkmark
@@ -509,10 +505,23 @@ class RenderMenuBar extends RenderBox {
       final int sw =
           _cachedShortcutWidths[item.shortcut!] ?? stringWidth(item.shortcut!);
       final int shortcutX = x + maxWidth - sw;
-      final TextStyle shortcutStyle = isSelected
-          ? _dropdownShortcutSelectedStyle
-          : _dropdownShortcutNormalStyle;
+      final TextStyle shortcutStyle = _getShortcutStyle(isSelected);
       context.writeString(shortcutX, y, item.shortcut!, shortcutStyle);
     }
+  }
+
+  TextStyle _getFgStyle(bool isSelected, bool enabled) {
+    if (!isSelected) {
+      return enabled
+          ? _dropdownNormalEnabledFgStyle
+          : _dropdownNormalDisabledFgStyle;
+    }
+    return _dropdownSelectedFgStyle;
+  }
+
+  TextStyle _getShortcutStyle(bool isSelected) {
+    return isSelected
+        ? _dropdownShortcutSelectedStyle
+        : _dropdownShortcutNormalStyle;
   }
 }

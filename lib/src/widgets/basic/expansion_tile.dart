@@ -105,23 +105,6 @@ class _ExpansionTileState extends State<ExpansionTile>
     _controller.addListener(_onControllerChange);
   }
 
-  @override
-  void didUpdateWidget(ExpansionTile oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.controller != oldWidget.controller) {
-      _controller.removeListener(_onControllerChange);
-      if (_isControllerOwned) _controller.dispose();
-      if (widget.controller != null) {
-        _controller = widget.controller!;
-        _isControllerOwned = false;
-      } else {
-        _controller = ExpansionTileController();
-        _isControllerOwned = true;
-      }
-      _controller.addListener(_onControllerChange);
-    }
-  }
-
   void _onControllerChange() {
     setState(() {});
     widget.onExpansionChanged?.call(_controller.isExpanded);

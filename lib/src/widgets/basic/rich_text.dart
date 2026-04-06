@@ -349,13 +349,14 @@ class RenderRichText extends RenderBox {
 }
 
 class _StyledRun {
-  _StyledRun(this.text, this.style) : effectiveStyle = style ?? _defaultStyle;
+  _StyledRun(this.text, this.style);
 
   static const TextStyle _defaultStyle = TextStyle();
 
   final String text;
   final TextStyle? style;
-  final TextStyle effectiveStyle;
+
+  TextStyle get effectiveStyle => style ?? _defaultStyle;
 }
 
 class _StyledLine {
