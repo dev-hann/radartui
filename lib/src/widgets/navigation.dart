@@ -194,6 +194,14 @@ class NavigatorState extends State<Navigator> {
     }
   }
 
+  void _scheduleFrameForRoute(Route route) {
+    if (route.fullScreenRender) {
+      WidgetsBinding.instance.scheduleFrameWithClear();
+    } else {
+      WidgetsBinding.instance.scheduleFrame();
+    }
+  }
+
   /// Pushes the given [route] onto the navigator stack.
   ///
   /// Returns a future that completes with the pop result when the route is popped.
@@ -203,11 +211,7 @@ class NavigatorState extends State<Navigator> {
     setState(() {
       _addRoute(route, completer);
     });
-    if (route.fullScreenRender) {
-      WidgetsBinding.instance.scheduleFrameWithClear();
-    } else {
-      WidgetsBinding.instance.scheduleFrame();
-    }
+    _scheduleFrameForRoute(route);
     _notifyObservers((observer) => observer.didPush(route, previousRoute));
     return completer.future;
   }
@@ -224,11 +228,7 @@ class NavigatorState extends State<Navigator> {
       setState(() {
         _removeLast(result);
       });
-      if (currentRoute.fullScreenRender) {
-        WidgetsBinding.instance.scheduleFrameWithClear();
-      } else {
-        WidgetsBinding.instance.scheduleFrame();
-      }
+      _scheduleFrameForRoute(currentRoute);
       return true;
     }
     return false;
@@ -255,11 +255,7 @@ class NavigatorState extends State<Navigator> {
       }
       _addRoute(route, completer);
     });
-    if (route.fullScreenRender) {
-      WidgetsBinding.instance.scheduleFrameWithClear();
-    } else {
-      WidgetsBinding.instance.scheduleFrame();
-    }
+    _scheduleFrameForRoute(route);
     _notifyObservers(
       (observer) => observer.didReplace(newRoute: route, oldRoute: oldRoute),
     );
