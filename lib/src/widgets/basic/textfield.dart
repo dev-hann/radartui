@@ -693,9 +693,8 @@ class RenderTextField extends RenderBox {
     int bufferWidth,
     TextStyle style,
   ) {
-    final int clipStart = startX < 0 ? 0 : startX;
-    final int clipEnd =
-        startX + width > bufferWidth ? bufferWidth : startX + width;
+    final int clipStart = startX.clamp(0, bufferWidth);
+    final int clipEnd = (startX + width).clamp(0, bufferWidth);
     final int clippedWidth = clipEnd - clipStart;
     if (clippedWidth <= 0) return;
     context.writeString(clipStart, y, '─' * clippedWidth, style);
