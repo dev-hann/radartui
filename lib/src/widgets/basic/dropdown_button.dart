@@ -155,8 +155,8 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
 
   @override
   Widget build(BuildContext context) {
-    final int currentIdx = _currentValueIndex;
-    final String displayText =
+    final currentIdx = _currentValueIndex;
+    final displayText =
         currentIdx >= 0 ? widget.items[currentIdx].label : (widget.hint ?? '');
 
     return Column(

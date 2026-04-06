@@ -143,7 +143,7 @@ class _ExpansionTileState extends State<ExpansionTile>
 
   @override
   Widget build(BuildContext context) {
-    final bool expanded = _controller.isExpanded;
+    final expanded = _controller.isExpanded;
     return _ExpansionTileRenderWidget(
       title: widget.title,
       expanded: expanded,
