@@ -13,6 +13,17 @@ class DataColumn {
 
   /// An optional callback when the column header is activated for sorting.
   final void Function(int columnIndex, bool ascending)? onSort;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is DataColumn &&
+        other.label == label &&
+        other.numeric == numeric;
+  }
+
+  @override
+  int get hashCode => Object.hash(label, numeric);
 }
 
 /// A single cell value within a [DataRow].
@@ -22,6 +33,15 @@ class DataCell {
 
   /// The text content of the cell.
   final String value;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is DataCell && other.value == value;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 /// A single row of [DataCell]s in a [DataTable].
@@ -41,6 +61,26 @@ class DataRow {
 
   /// Whether this row is currently selected.
   final bool selected;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is DataRow &&
+        other.selected == selected &&
+        _listEquals(other.cells, cells);
+  }
+
+  @override
+  int get hashCode => Object.hash(cells, selected);
+
+  static bool _listEquals(List<DataCell> a, List<DataCell> b) {
+    if (identical(a, b)) return true;
+    if (a.length != b.length) return false;
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
+  }
 }
 
 /// A table widget that displays data in rows and columns with configurable

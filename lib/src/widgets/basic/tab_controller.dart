@@ -70,6 +70,15 @@ class Tab {
 
   /// The icon character displayed on the tab.
   final String? icon;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Tab && other.text == text && other.icon == icon;
+  }
+
+  @override
+  int get hashCode => Object.hash(text, icon);
 }
 
 /// A horizontal row of [Tab] widgets that lets the user switch views.

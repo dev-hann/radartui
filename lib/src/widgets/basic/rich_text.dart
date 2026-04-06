@@ -17,6 +17,28 @@ class TextSpan {
   /// The text style applied to this span and inherited by children.
   final TextStyle? style;
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is TextSpan &&
+        other.text == text &&
+        other.style == style &&
+        _listEquals(other.children, children);
+  }
+
+  @override
+  int get hashCode => Object.hash(text, style, children);
+
+  static bool _listEquals(List<TextSpan>? a, List<TextSpan>? b) {
+    if (identical(a, b)) return true;
+    if (a == null || b == null) return false;
+    if (a.length != b.length) return false;
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
+  }
+
   /// Returns the unstyled plain-text content of this span and its descendants.
   String get plainText {
     final buffer = StringBuffer();
