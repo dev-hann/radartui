@@ -228,19 +228,29 @@ class TextEditingController extends ChangeNotifier {
   /// Moves the cursor one word to the left.
   void moveCursorWordLeft() {
     if (_cursorPosition == 0) return;
-    int pos = _cursorPosition - 1;
+    _cursorPosition = _findPrevWordBoundary(_cursorPosition);
+    clearSelection();
+    notifyListeners();
+  }
+
+  int _findPrevWordBoundary(int startPos) {
+    int pos = startPos - 1;
     while (pos > 0 && _text[pos - 1] != ' ') {
       pos--;
     }
-    _cursorPosition = pos;
-    clearSelection();
-    notifyListeners();
+    return pos;
   }
 
   /// Moves the cursor one word to the right.
   void moveCursorWordRight() {
     if (_cursorPosition >= _text.length) return;
-    int pos = _cursorPosition;
+    _cursorPosition = _findNextWordBoundary(_cursorPosition);
+    clearSelection();
+    notifyListeners();
+  }
+
+  int _findNextWordBoundary(int startPos) {
+    int pos = startPos;
     while (pos < _text.length && _text[pos] == ' ') {
       pos++;
     }
@@ -250,9 +260,7 @@ class TextEditingController extends ChangeNotifier {
     while (pos < _text.length && _text[pos] == ' ') {
       pos++;
     }
-    _cursorPosition = pos;
-    clearSelection();
-    notifyListeners();
+    return pos;
   }
 
   /// Clears all text and resets the cursor to the start.
