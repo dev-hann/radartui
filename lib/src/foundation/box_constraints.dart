@@ -65,9 +65,9 @@ class BoxConstraints extends Constraints {
 
   /// Whether these constraints satisfy the invariant: 0 <= min <= max.
   bool get isNormalized =>
-      minWidth >= 0.0 &&
+      minWidth >= 0 &&
       minWidth <= maxWidth &&
-      minHeight >= 0.0 &&
+      minHeight >= 0 &&
       minHeight <= maxHeight;
 
   /// Returns new constraints with the minimum width and height set to zero.
