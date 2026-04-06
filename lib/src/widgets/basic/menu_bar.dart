@@ -26,10 +26,10 @@ class MenuBarItem {
     if (other is! MenuBarItem) return false;
     if (label != other.label) return false;
     if (children.length != other.children.length) return false;
-    for (int i = 0; i < children.length; i++) {
-      if (children[i] != other.children[i]) return false;
-    }
-    return true;
+    return List.generate(
+      children.length,
+      (i) => children[i] == other.children[i],
+    ).every((equal) => equal);
   }
 
   @override
