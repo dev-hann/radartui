@@ -126,6 +126,22 @@ class KeyEvent {
       (code == KeyCode.char && char == ' ');
 
   @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is KeyEvent &&
+        code == other.code &&
+        char == other.char &&
+        isShiftPressed == other.isShiftPressed &&
+        isAltPressed == other.isAltPressed &&
+        isCtrlPressed == other.isCtrlPressed &&
+        isMetaPressed == other.isMetaPressed;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      code, char, isShiftPressed, isAltPressed, isCtrlPressed, isMetaPressed);
+
+  @override
   String toString() {
     final modifiers = <String>[];
     if (isCtrlPressed) modifiers.add('Ctrl');
