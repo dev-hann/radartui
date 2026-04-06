@@ -23,6 +23,15 @@ class TextSelection {
     if (!isValid) return '';
     return fullText.substring(start, end);
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is TextSelection && start == other.start && end == other.end;
+  }
+
+  @override
+  int get hashCode => Object.hash(start, end);
 }
 
 /// A simple in-memory clipboard for cut, copy, and paste operations.
