@@ -207,8 +207,10 @@ class RenderContainer extends RenderBox
     final totalMargin = margin ?? EdgeInsets.zero;
     final totalPadding = padding ?? EdgeInsets.zero;
     final innerOffset = offset + Offset(totalMargin.left, totalMargin.top);
-    final innerWidth = size!.width - totalMargin.left - totalMargin.right;
-    final innerHeight = size!.height - totalMargin.top - totalMargin.bottom;
+    final innerWidth = (size!.width - totalMargin.left - totalMargin.right)
+        .clamp(0, size!.width);
+    final innerHeight = (size!.height - totalMargin.top - totalMargin.bottom)
+        .clamp(0, size!.height);
 
     _paintBackground(context, innerOffset, innerWidth, innerHeight);
 
@@ -338,4 +340,18 @@ class _BorderSides {
   final bool top;
   final bool bottom;
   final TextStyle style;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is _BorderSides &&
+        other.left == left &&
+        other.right == right &&
+        other.top == top &&
+        other.bottom == bottom &&
+        other.style == style;
+  }
+
+  @override
+  int get hashCode => Object.hash(left, right, top, bottom, style);
 }

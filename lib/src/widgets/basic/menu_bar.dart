@@ -16,6 +16,21 @@ class MenuBarItem {
 
   /// The dropdown menu entries for this bar item.
   final List<MenuItem> children;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! MenuBarItem) return false;
+    if (label != other.label) return false;
+    if (children.length != other.children.length) return false;
+    for (int i = 0; i < children.length; i++) {
+      if (children[i] != other.children[i]) return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode => Object.hash(label, children);
 }
 
 /// A single entry inside a [MenuBarItem] dropdown.
@@ -42,6 +57,18 @@ class MenuItem {
 
   /// Whether this item can be selected.
   final bool enabled;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is MenuItem &&
+        other.label == label &&
+        other.shortcut == shortcut &&
+        other.enabled == enabled;
+  }
+
+  @override
+  int get hashCode => Object.hash(label, shortcut, enabled);
 }
 
 /// A horizontal menu bar containing [MenuBarItem] entries.
