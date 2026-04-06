@@ -65,8 +65,10 @@ mixin FocusableState<T extends StatefulWidget> on State<T> {
   void didUpdateWidget(covariant T oldWidget) {
     super.didUpdateWidget(oldWidget);
     final newProvidedNode = providedFocusNode;
-    if (newProvidedNode != null && newProvidedNode != _focusNode) {
-      _swapFocusNode(newProvidedNode!);
+    if (newProvidedNode != null) {
+      if (newProvidedNode != _focusNode) {
+        _swapFocusNode(newProvidedNode);
+      }
     }
   }
 
