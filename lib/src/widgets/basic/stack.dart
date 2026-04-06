@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../../radartui.dart';
 
 /// A widget that layers its children on top of each other.
@@ -75,8 +77,8 @@ class RenderStack extends RenderBox
       setupParentData(child);
       final childParentData = child.parentData as StackParentData;
       _layoutChild(child, childParentData, boxConstraints, childConstraints);
-      if (child.size!.width > maxWidth) maxWidth = child.size!.width;
-      if (child.size!.height > maxHeight) maxHeight = child.size!.height;
+      maxWidth = math.max(maxWidth, child.size!.width);
+      maxHeight = math.max(maxHeight, child.size!.height);
     }
     return Size(maxWidth, maxHeight);
   }
