@@ -62,9 +62,7 @@ class _SliderState extends State<Slider> with FocusableState<Slider> {
   void onKeyEvent(KeyEvent event) {
     if (widget.onChanged == null) return;
 
-    final int step = widget.divisions != null
-        ? ((widget.max - widget.min) / widget.divisions!).round()
-        : 1;
+    final int step = _calculateStep();
 
     if (event.code == KeyCode.arrowRight || event.code == KeyCode.arrowUp) {
       final int newValue = (widget.value + step).clamp(widget.min, widget.max);
@@ -78,6 +76,12 @@ class _SliderState extends State<Slider> with FocusableState<Slider> {
         widget.onChanged!.call(newValue);
       }
     }
+  }
+
+  int _calculateStep() {
+    return widget.divisions != null
+        ? ((widget.max - widget.min) / widget.divisions!).round()
+        : 1;
   }
 
   @override
