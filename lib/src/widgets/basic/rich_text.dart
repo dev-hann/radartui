@@ -353,15 +353,16 @@ class RenderRichText extends RenderBox {
   }
 
   int _paintRun(PaintingContext context, int x, int y, _StyledRun run) {
-    final style = run.style ?? const TextStyle();
-    return context.writeString(x, y, run.text, style);
+    return context.writeString(x, y, run.text, run.effectiveStyle);
   }
 }
 
 class _StyledRun {
-  _StyledRun(this.text, this.style);
+  _StyledRun(this.text, this.style)
+      : effectiveStyle = style ?? const TextStyle();
   final String text;
   final TextStyle? style;
+  final TextStyle effectiveStyle;
 }
 
 class _StyledLine {
