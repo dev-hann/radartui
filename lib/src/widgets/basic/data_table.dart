@@ -283,10 +283,10 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
 
     for (int i = 0; i < widget.columns.length; i++) {
       final width = columnWidths[i];
+      final column = widget.columns[i];
       final cellValue = i < row.cells.length ? row.cells[i].value : '';
-      final paddedValue = widget.columns[i].numeric
-          ? cellValue.padLeft(width)
-          : cellValue.padRight(width);
+      final paddedValue =
+          column.numeric ? cellValue.padLeft(width) : cellValue.padRight(width);
       parts.add(paddedValue);
     }
 
