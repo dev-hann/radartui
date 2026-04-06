@@ -675,14 +675,47 @@ class RenderTextField extends RenderBox {
     int bufferWidth,
     TextStyle borderStyle,
   ) {
+    _drawTopBorder(context, offset, width, bufferWidth, borderStyle);
+    _drawBottomBorder(
+        context, offset, width, bufferHeight, bufferWidth, borderStyle);
+    _drawLeftBorder(context, offset, bufferHeight, borderStyle);
+    _drawRightBorder(
+        context, offset, width, bufferHeight, bufferWidth, borderStyle);
+  }
+
+  void _drawTopBorder(
+    PaintingContext context,
+    Offset offset,
+    int width,
+    int bufferWidth,
+    TextStyle borderStyle,
+  ) {
     if (offset.y > 0) {
       _drawHorizontalLine(
           context, offset.x, offset.y - 1, width, bufferWidth, borderStyle);
     }
+  }
+
+  void _drawBottomBorder(
+    PaintingContext context,
+    Offset offset,
+    int width,
+    int bufferHeight,
+    int bufferWidth,
+    TextStyle borderStyle,
+  ) {
     if (offset.y + 1 < bufferHeight) {
       _drawHorizontalLine(
           context, offset.x, offset.y + 1, width, bufferWidth, borderStyle);
     }
+  }
+
+  void _drawLeftBorder(
+    PaintingContext context,
+    Offset offset,
+    int bufferHeight,
+    TextStyle borderStyle,
+  ) {
     if (offset.x > 0) {
       context.buffer.writeStyled(
         offset.x - 1,
@@ -691,6 +724,16 @@ class RenderTextField extends RenderBox {
         borderStyle,
       );
     }
+  }
+
+  void _drawRightBorder(
+    PaintingContext context,
+    Offset offset,
+    int width,
+    int bufferHeight,
+    int bufferWidth,
+    TextStyle borderStyle,
+  ) {
     if (offset.x + width < bufferWidth) {
       context.buffer.writeStyled(
         offset.x + width,
