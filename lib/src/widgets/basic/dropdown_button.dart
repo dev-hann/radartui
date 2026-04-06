@@ -19,6 +19,17 @@ class DropdownMenuItem<T> {
 
   /// Whether this item can be selected.
   final bool enabled;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is DropdownMenuItem<T> &&
+        other.label == label &&
+        other.enabled == enabled;
+  }
+
+  @override
+  int get hashCode => Object.hash(label, enabled);
 }
 
 /// A dropdown selector that lets the user choose one item from a list.

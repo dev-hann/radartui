@@ -256,6 +256,32 @@ class ButtonStyle {
   /// Whether the button text is rendered bold.
   final bool bold;
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ButtonStyle &&
+        other.foregroundColor == foregroundColor &&
+        other.backgroundColor == backgroundColor &&
+        other.focusColor == focusColor &&
+        other.focusBackgroundColor == focusBackgroundColor &&
+        other.disabledColor == disabledColor &&
+        other.disabledBackgroundColor == disabledBackgroundColor &&
+        other.padding == padding &&
+        other.bold == bold;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        foregroundColor,
+        backgroundColor,
+        focusColor,
+        focusBackgroundColor,
+        disabledColor,
+        disabledBackgroundColor,
+        padding,
+        bold,
+      );
+
   /// Creates a copy of this style with the given fields replaced.
   ButtonStyle copyWith({
     Color? foregroundColor,
