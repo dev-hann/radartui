@@ -37,13 +37,9 @@ mixin RenderObjectWithChildMixin<C extends RenderObject> on RenderObject {
 
   /// Sets the single child of this render object.
   set child(C? value) {
-    if (_child != null) {
-      _child!.parent = null;
-    }
+    _child?.parent = null;
     _child = value;
-    if (_child != null) {
-      _child!.parent = this;
-    }
+    _child?.parent = this;
   }
 
   /// Whether this render object currently has a child.

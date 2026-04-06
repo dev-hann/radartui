@@ -352,10 +352,9 @@ class RenderExpansionTile extends RenderBox
   }
 
   void _ensureStylesCached() {
-    if (_cachedIconStyle != null) return;
     final Color titleColor = expanded ? expandedColor : collapsedColor;
-    _cachedIconStyle = TextStyle(color: iconColor);
-    _cachedTitleStyle = TextStyle(color: titleColor);
-    _cachedTitleBoldStyle = TextStyle(color: titleColor, bold: focused);
+    _cachedIconStyle ??= TextStyle(color: iconColor);
+    _cachedTitleStyle ??= TextStyle(color: titleColor);
+    _cachedTitleBoldStyle ??= TextStyle(color: titleColor, bold: focused);
   }
 }
