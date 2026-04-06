@@ -76,6 +76,17 @@ class RouteSettings {
 
   /// Optional arguments passed to the route.
   final Object? arguments;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is RouteSettings &&
+        name == other.name &&
+        arguments == other.arguments;
+  }
+
+  @override
+  int get hashCode => Object.hash(name, arguments);
 }
 
 /// A route backed by a builder function, analogous to Flutter's [PageRoute].
