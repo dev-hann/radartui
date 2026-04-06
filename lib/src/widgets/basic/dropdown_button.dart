@@ -87,6 +87,7 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
   int _selectedIndex = 0;
   int? _cachedValueIndex;
   List<DropdownMenuItem<T>>? _cachedItemsIdentity;
+  Map<T?, int>? _cachedValueToIndexMap;
 
   @override
   FocusNode? get providedFocusNode => widget.focusNode;
@@ -97,16 +98,15 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
         _cachedValueIndex != null) {
       return _cachedValueIndex!;
     }
+    _cachedValueToIndexMap = {};
     for (int i = 0; i < widget.items.length; i++) {
+      _cachedValueToIndexMap![widget.items[i].value] = i;
       if (widget.items[i].value == widget.value) {
         _cachedValueIndex = i;
-        _cachedItemsIdentity = widget.items;
-        return i;
       }
     }
-    _cachedValueIndex = -1;
     _cachedItemsIdentity = widget.items;
-    return -1;
+    return _cachedValueIndex!;
   }
 
   @override
