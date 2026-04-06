@@ -259,15 +259,15 @@ class RenderRichText extends RenderBox {
   ) {
     final segmentLines = segment.text.split('\n');
 
-    for (int lineIdx = 0; lineIdx < segmentLines.length; lineIdx++) {
-      if (lineIdx > 0) {
+    for (final entry in segmentLines.asMap().entries) {
+      if (entry.key > 0) {
         lines.add(currentLine);
         currentLine = _StyledLine.empty();
         currentX = 0;
       }
 
       currentLine = _wrapSegmentText(
-        segmentLines[lineIdx],
+        entry.value,
         segment.style,
         maxWidth,
         lines,
@@ -327,22 +327,22 @@ class RenderRichText extends RenderBox {
     _StyledLine currentLine,
   ) {
     final segmentLines = segment.text.split('\n');
-    for (int lineIdx = 0; lineIdx < segmentLines.length; lineIdx++) {
-      if (lineIdx > 0) {
+    for (final entry in segmentLines.asMap().entries) {
+      if (entry.key > 0) {
         lines.add(currentLine);
         currentLine = _StyledLine.empty();
       }
-      currentLine.add(segmentLines[lineIdx], segment.style);
+      currentLine.add(entry.value, segment.style);
     }
     return currentLine;
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    for (int lineIndex = 0; lineIndex < _lines.length; lineIndex++) {
-      final line = _lines[lineIndex];
+    for (final entry in _lines.asMap().entries) {
+      final line = entry.value;
       int x = offset.x;
-      final int y = offset.y + lineIndex;
+      final int y = offset.y + entry.key;
       for (final run in line.runs) {
         x = _paintRun(context, x, y, run);
       }
