@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../../radartui.dart';
 
 /// Controls the expanded/collapsed state of an [ExpansionTile].
@@ -335,16 +337,13 @@ class RenderExpansionTile extends RenderBox
         final ExpansionTileParentData childData =
             child.parentData as ExpansionTileParentData;
         childData.offset = Offset(2, headerH + totalChildHeight);
-        maxChildWidth = maxChildWidth > child.size!.width
-            ? maxChildWidth
-            : child.size!.width;
+        maxChildWidth = math.max(maxChildWidth, child.size!.width);
         totalChildHeight += child.size!.height;
       }
     }
 
     final int childAndBorder = maxChildWidth + 2;
-    final int totalWidth =
-        childAndBorder > headerWidth ? childAndBorder : headerWidth;
+    final int totalWidth = math.max(childAndBorder, headerWidth);
     final int totalHeight = headerH + totalChildHeight;
     size = Size(totalWidth, totalHeight);
   }
