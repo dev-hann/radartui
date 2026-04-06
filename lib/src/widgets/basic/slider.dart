@@ -1,4 +1,5 @@
 import '../../../radartui.dart';
+import '../../foundation/drawing_constants.dart';
 
 /// A horizontal slider for selecting a numeric value within a range.
 ///
@@ -348,13 +349,22 @@ class RenderSlider extends RenderBox {
       PaintingContext context, int x, int y, int trackWidth, int thumbPos) {
     if (trackWidth <= 0) return;
     if (thumbPos > 0) {
-      context.writeString(x, y, '─' * thumbPos, _cachedActiveTrackStyle!);
+      context.writeString(
+        x,
+        y,
+        BoxDrawingConstants.horizontal * thumbPos,
+        _cachedActiveTrackStyle!,
+      );
     }
     context.writeString(x + thumbPos, y, '●', _cachedThumbStyle!);
     final int afterThumb = trackWidth - thumbPos - 1;
     if (afterThumb > 0) {
       context.writeString(
-          x + thumbPos + 1, y, '─' * afterThumb, _cachedInactiveTrackStyle!);
+        x + thumbPos + 1,
+        y,
+        BoxDrawingConstants.horizontal * afterThumb,
+        _cachedInactiveTrackStyle!,
+      );
     }
   }
 

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import '../../../radartui.dart';
+import '../../foundation/drawing_constants.dart';
 
 /// A top-level menu entry containing a [label] and a list of [MenuItem] children.
 ///
@@ -480,7 +481,9 @@ class RenderMenuBar extends RenderBox {
             ? _dropdownNormalEnabledFgStyle
             : _dropdownNormalDisabledFgStyle);
     context.fillBackground(x, y, maxWidth, bgStyle);
-    final String prefix = isSelected ? '> ' : '  ';
+    final String prefix = isSelected
+        ? BoxDrawingConstants.checkmark
+        : BoxDrawingConstants.spacePrefix;
     context.writeString(x, y, prefix, fgBgStyle);
     context.writeString(x + 2, y, item.label, fgBgStyle);
     if (item.shortcut != null) {

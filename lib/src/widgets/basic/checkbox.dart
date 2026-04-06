@@ -1,4 +1,5 @@
 import '../../../radartui.dart';
+import '../../foundation/drawing_constants.dart';
 
 /// A material-design checkbox that toggles between checked (✓) and unchecked states.
 ///
@@ -291,7 +292,9 @@ class RenderCheckbox extends RenderBox {
 
   void _paintBorder(PaintingContext context, Offset offset) {
     final TextStyle style = _cachedBorderStyle!;
-    context.writeString(offset.x, offset.y, '[ ]', style);
+    final String borderChars =
+        '${BoxDrawingConstants.leftTee}${BoxDrawingConstants.rightTee}';
+    context.writeString(offset.x, offset.y, borderChars, style);
   }
 
   void _paintIndicator(

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import '../../../radartui.dart';
+import '../../foundation/drawing_constants.dart';
 
 /// A data model for a single option in a [DropdownButton].
 ///
@@ -389,7 +390,9 @@ class RenderDropdownButton extends RenderBox {
     final int y = offset.y;
     context.fillBackground(x, y, textW + 3, bgStyle);
     final int cx = context.writeString(x + 1, y, _text, fgBgStyle);
-    final String arrow = _isOpen ? ' ▲' : ' ▼';
+    final String arrow = _isOpen
+        ? ' ${BoxDrawingConstants.arrowUp}'
+        : ' ${BoxDrawingConstants.arrowDown}';
     context.writeString(cx, y, arrow, fgBgStyle);
   }
 }

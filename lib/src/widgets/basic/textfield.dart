@@ -1,5 +1,6 @@
 import 'dart:async';
 import '../../../radartui.dart';
+import '../../foundation/drawing_constants.dart';
 
 /// Represents a text selection range within a string.
 class TextSelection {
@@ -634,7 +635,12 @@ class RenderTextField extends RenderBox {
         _cursorStyle,
       );
     } else {
-      context.buffer.writeStyled(cursorScreenX, offset.y, '█', _cursorStyle);
+      context.buffer.writeStyled(
+        cursorScreenX,
+        offset.y,
+        BoxDrawingConstants.fullBlockCursor,
+        _cursorStyle,
+      );
     }
   }
 
@@ -678,10 +684,20 @@ class RenderTextField extends RenderBox {
           context, offset.x, offset.y + 1, width, bufferWidth, borderStyle);
     }
     if (offset.x > 0) {
-      context.buffer.writeStyled(offset.x - 1, offset.y, '│', borderStyle);
+      context.buffer.writeStyled(
+        offset.x - 1,
+        offset.y,
+        BoxDrawingConstants.vertical,
+        borderStyle,
+      );
     }
     if (offset.x + width < bufferWidth) {
-      context.buffer.writeStyled(offset.x + width, offset.y, '│', borderStyle);
+      context.buffer.writeStyled(
+        offset.x + width,
+        offset.y,
+        BoxDrawingConstants.vertical,
+        borderStyle,
+      );
     }
   }
 
@@ -697,7 +713,12 @@ class RenderTextField extends RenderBox {
     final int clipEnd = (startX + width).clamp(0, bufferWidth);
     final int clippedWidth = clipEnd - clipStart;
     if (clippedWidth <= 0) return;
-    context.writeString(clipStart, y, '─' * clippedWidth, style);
+    context.writeString(
+      clipStart,
+      y,
+      BoxDrawingConstants.horizontal * clippedWidth,
+      style,
+    );
   }
 
   void _drawBorderCorners(
@@ -708,10 +729,14 @@ class RenderTextField extends RenderBox {
     int bufferWidth,
     TextStyle borderStyle,
   ) {
-    _drawCorner(context, offset.x - 1, offset.y - 1, '┌', borderStyle);
-    _drawCorner(context, offset.x + width, offset.y - 1, '┐', borderStyle);
-    _drawCorner(context, offset.x - 1, offset.y + 1, '└', borderStyle);
-    _drawCorner(context, offset.x + width, offset.y + 1, '┘', borderStyle);
+    _drawCorner(context, offset.x - 1, offset.y - 1,
+        BoxDrawingConstants.topLeft, borderStyle);
+    _drawCorner(context, offset.x + width, offset.y - 1,
+        BoxDrawingConstants.topRight, borderStyle);
+    _drawCorner(context, offset.x - 1, offset.y + 1,
+        BoxDrawingConstants.bottomLeft, borderStyle);
+    _drawCorner(context, offset.x + width, offset.y + 1,
+        BoxDrawingConstants.bottomRight, borderStyle);
   }
 
   void _drawCorner(
