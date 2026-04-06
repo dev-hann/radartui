@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import '../../../radartui.dart';
+import '../../foundation/utils.dart' show listEquals;
 
 /// An immutable span of styled text with optional children.
 ///
@@ -25,18 +26,11 @@ class TextSpan {
     return other is TextSpan &&
         other.text == text &&
         other.style == style &&
-        _listEquals(other.children, children);
+        listEquals(other.children, children);
   }
 
   @override
   int get hashCode => Object.hash(text, style, children);
-
-  static bool _listEquals(List<TextSpan>? a, List<TextSpan>? b) {
-    if (identical(a, b)) return true;
-    if (a == null || b == null) return false;
-    if (a.length != b.length) return false;
-    return List.generate(a.length, (i) => a[i] == b[i]).every((equal) => equal);
-  }
 
   /// Returns the unstyled plain-text content of this span and its descendants.
   String get plainText {

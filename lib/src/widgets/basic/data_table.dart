@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import '../../../radartui.dart';
+import '../../foundation/utils.dart' show listEquals;
 
 /// Configuration for a single column in a [DataTable].
 class DataColumn {
@@ -69,17 +70,11 @@ class DataRow {
     if (identical(this, other)) return true;
     return other is DataRow &&
         other.selected == selected &&
-        _listEquals(other.cells, cells);
+        listEquals(other.cells, cells);
   }
 
   @override
   int get hashCode => Object.hash(cells, selected);
-
-  static bool _listEquals(List<DataCell> a, List<DataCell> b) {
-    if (identical(a, b)) return true;
-    if (a.length != b.length) return false;
-    return List.generate(a.length, (i) => a[i] == b[i]).every((equal) => equal);
-  }
 }
 
 /// A table widget that displays data in rows and columns with configurable
