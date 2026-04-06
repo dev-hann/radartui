@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../../radartui.dart';
 
 /// An immutable span of styled text with optional children.
@@ -220,13 +222,7 @@ class RenderRichText extends RenderBox {
   }
 
   int _computeMaxLineWidth() {
-    int computedWidth = 0;
-    for (final line in _lines) {
-      if (line.length > computedWidth) {
-        computedWidth = line.length;
-      }
-    }
-    return computedWidth;
+    return _lines.fold(0, (max, line) => math.max(max, line.length));
   }
 
   List<_StyledLine> _wrapLines(List<_StyledSegment> segments, int maxWidth) {

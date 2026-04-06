@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../../radartui.dart';
 
 /// How text overflow should be handled.
@@ -174,13 +176,7 @@ class RenderText extends RenderBox {
   }
 
   int _maxLineWidth() {
-    int computedWidth = 0;
-    for (final line in _lines) {
-      if (line.length > computedWidth) {
-        computedWidth = line.length;
-      }
-    }
-    return computedWidth;
+    return _lines.fold(0, (max, line) => math.max(max, line.length));
   }
 
   List<String> _wrapText(String text, int maxWidth) {
