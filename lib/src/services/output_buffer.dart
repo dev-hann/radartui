@@ -4,17 +4,12 @@ import 'terminal.dart';
 
 /// Represents a single character cell with optional text styling.
 class Cell {
-  /// Creates a [Cell] with the given [char] and optional [style].
   const Cell(this.char, [this.style]);
 
-  /// The character displayed in this cell.
-  final String char;
-
-  /// The text style applied to this cell, or `null` for default styling.
-  final TextStyle? style;
-
-  /// An empty cell containing a single space with no styling.
   static const empty = Cell(' ');
+
+  final String char;
+  final TextStyle? style;
 
   @override
   bool operator ==(Object other) {
