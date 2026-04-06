@@ -35,6 +35,21 @@ mixin FocusableState<T extends StatefulWidget> on State<T> {
     onFocusChange(focused);
   }
 
+  void _swapFocusNode(FocusNode newProvidedNode) {
+    _focusNode.removeListener(_onFocusChange);
+    FocusManager.instance.unregisterNode(_focusNode);
+    if (_isFocusNodeOwned) {
+      _focusNode.dispose();
+    }
+
+    _focusNode = newProvidedNode;
+    _isFocusNodeOwned = false;
+    FocusManager.instance.registerNode(_focusNode);
+    _focusNode.onKeyEvent = onKeyEvent;
+    _focusNode.addListener(_onFocusChange);
+    _hasFocus = _focusNode.hasFocus;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -51,18 +66,7 @@ mixin FocusableState<T extends StatefulWidget> on State<T> {
     super.didUpdateWidget(oldWidget);
     final newProvidedNode = providedFocusNode;
     if (newProvidedNode != null && newProvidedNode != _focusNode) {
-      _focusNode.removeListener(_onFocusChange);
-      FocusManager.instance.unregisterNode(_focusNode);
-      if (_isFocusNodeOwned) {
-        _focusNode.dispose();
-      }
-
-      _focusNode = newProvidedNode;
-      _isFocusNodeOwned = false;
-      FocusManager.instance.registerNode(_focusNode);
-      _focusNode.onKeyEvent = onKeyEvent;
-      _focusNode.addListener(_onFocusChange);
-      _hasFocus = _focusNode.hasFocus;
+      _swapFocusNode(newProvidedNode!);
     }
   }
 
