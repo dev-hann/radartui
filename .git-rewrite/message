@@ -1,0 +1,1 @@
+WIP on main: c3d94c0 perf: cache value-to-index mapping in DropdownButton — eliminate O(n) linear search on every render

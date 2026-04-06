@@ -100,6 +100,7 @@ class RenderText extends RenderBox {
   set style(TextStyle? v) {
     if (_style == v) return;
     _style = v;
+    _effectiveStyle = null;
     markNeedsPaint();
   }
 
@@ -140,6 +141,7 @@ class RenderText extends RenderBox {
   }
 
   List<String> _lines = [];
+  TextStyle? _effectiveStyle;
 
   @override
   void performLayout(Constraints constraints) {
@@ -177,6 +179,10 @@ class RenderText extends RenderBox {
 
   int _maxLineWidth() {
     return _lines.fold(0, (max, line) => math.max(max, line.length));
+  }
+
+  TextStyle _getEffectiveStyle() {
+    return _effectiveStyle ??= style ?? const TextStyle();
   }
 
   List<String> _wrapText(String text, int maxWidth) {
@@ -226,7 +232,7 @@ class RenderText extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final TextStyle effectiveStyle = style ?? const TextStyle();
+    final effectiveStyle = _getEffectiveStyle();
     for (int lineIndex = 0; lineIndex < _lines.length; lineIndex++) {
       final line = _lines[lineIndex];
       if (line.isNotEmpty) {

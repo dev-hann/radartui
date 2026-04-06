@@ -1,0 +1,7 @@
+tree 7fd0784bdd9f7e7b7ba74f2be6fa4a442993f776
+parent c3d94c0855b3eaf7bba0db9f50cd93e9bccd7e78
+parent 3ffe754ec25a9d2f41e9b66f833be7dfd1ea504a
+author RadarTUI CI <ci@radartui.dev> 1775481716 +0000
+committer RadarTUI CI <ci@radartui.dev> 1775481716 +0000
+
+WIP on main: c3d94c0 perf: cache value-to-index mapping in DropdownButton — eliminate O(n) linear search on every render
