@@ -73,7 +73,9 @@ class RenderContainer extends RenderBox
         _height = height,
         _padding = padding,
         _margin = margin,
-        _border = border;
+        _border = border {
+    _invalidateBorderDimensions();
+  }
 
   Color? _color;
   int? _width;
@@ -81,6 +83,9 @@ class RenderContainer extends RenderBox
   EdgeInsets? _padding;
   EdgeInsets? _margin;
   Border? _border;
+  bool _cachedHasBorder = false;
+  int _cachedBorderHorizontal = 0;
+  int _cachedBorderVertical = 0;
   TextStyle? _cachedBgStyle;
   TextStyle? _cachedBorderStyle;
   _BorderSides? _cachedBorderSides;
@@ -126,6 +131,7 @@ class RenderContainer extends RenderBox
     if (_border == value) return;
     _border = value;
     _cachedBorderSides = null;
+    _invalidateBorderDimensions();
     markNeedsLayout();
   }
 
@@ -149,20 +155,30 @@ class RenderContainer extends RenderBox
     markNeedsLayout();
   }
 
-  bool get _hasBorder {
-    if (border == null) return false;
-    return border!.top.isNotEmpty ||
-        border!.right.isNotEmpty ||
-        border!.bottom.isNotEmpty ||
-        border!.left.isNotEmpty;
-  }
+  bool get _hasBorder => _cachedHasBorder;
+  int get _borderHorizontal => _cachedBorderHorizontal;
+  int get _borderVertical => _cachedBorderVertical;
 
-  int get _borderHorizontal => _hasBorder
-      ? (border!.left.isNotEmpty ? 1 : 0) + (border!.right.isNotEmpty ? 1 : 0)
-      : 0;
-  int get _borderVertical => _hasBorder
-      ? (border!.top.isNotEmpty ? 1 : 0) + (border!.bottom.isNotEmpty ? 1 : 0)
-      : 0;
+  void _invalidateBorderDimensions() {
+    if (_border == null) {
+      _cachedHasBorder = false;
+      _cachedBorderHorizontal = 0;
+      _cachedBorderVertical = 0;
+      return;
+    }
+    _cachedHasBorder = _border!.top.isNotEmpty ||
+        _border!.right.isNotEmpty ||
+        _border!.bottom.isNotEmpty ||
+        _border!.left.isNotEmpty;
+    _cachedBorderHorizontal = _cachedHasBorder
+        ? (_border!.left.isNotEmpty ? 1 : 0) +
+            (_border!.right.isNotEmpty ? 1 : 0)
+        : 0;
+    _cachedBorderVertical = _cachedHasBorder
+        ? (_border!.top.isNotEmpty ? 1 : 0) +
+            (_border!.bottom.isNotEmpty ? 1 : 0)
+        : 0;
+  }
 
   @override
   void performLayout(Constraints constraints) {
