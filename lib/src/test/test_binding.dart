@@ -123,7 +123,7 @@ class TestTerminal implements Terminal {
   TestTerminal({int width = 80, int height = 24})
       : _width = width,
         _height = height,
-        _grid = List.generate(height, (_) => List.generate(width, (_) => ' '));
+        _grid = List.generate(height, (_) => List.filled(width, ' '));
   int _width;
   int _height;
   final List<List<String>> _grid;
@@ -139,7 +139,7 @@ class TestTerminal implements Terminal {
   void setSize(int newWidth, int newHeight) {
     final newGrid = List.generate(
       newHeight,
-      (_) => List.generate(newWidth, (_) => ' '),
+      (_) => List.filled(newWidth, ' '),
     );
     for (int y = 0; y < _height && y < newHeight; y++) {
       for (int x = 0; x < _width && x < newWidth; x++) {
@@ -280,7 +280,7 @@ class TestOutputBuffer implements OutputBuffer {
   TestOutputBuffer(this.terminal)
       : _styleGrid = List.generate(
           terminal.height,
-          (_) => List.generate(terminal.width, (_) => null),
+          (_) => List.filled(terminal.width, null),
         );
   @override
   final TestTerminal terminal;
@@ -346,7 +346,7 @@ class TestOutputBuffer implements OutputBuffer {
   void resizeStyleGrid() {
     _styleGrid.clear();
     for (int y = 0; y < terminal.height; y++) {
-      _styleGrid.add(List.generate(terminal.width, (_) => null));
+      _styleGrid.add(List.filled(terminal.width, null));
     }
   }
 
