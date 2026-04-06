@@ -517,10 +517,7 @@ class RenderTabBar extends RenderBox {
   }
 
   int _tabContentWidth(int tabIndex) {
-    if (tabIndex < _cachedTabWidths.length) return _cachedTabWidths[tabIndex];
-    final Tab tab = _tabs[tabIndex];
-    return stringWidth(tab.text ?? '') +
-        (tab.icon != null ? charWidth(tab.icon!.codeUnitAt(0)) : 0);
+    return _cachedTabWidths[tabIndex];
   }
 }
 
