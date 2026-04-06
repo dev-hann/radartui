@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../../radartui.dart';
 
 /// Configuration for a single column in a [DataTable].
@@ -237,8 +239,8 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
     int maxWidth = stringWidth(widget.columns[columnIndex].label);
     for (final row in widget.rows) {
       if (columnIndex < row.cells.length) {
-        final int cellWidth = stringWidth(row.cells[columnIndex].value);
-        if (cellWidth > maxWidth) maxWidth = cellWidth;
+        maxWidth =
+            math.max(maxWidth, stringWidth(row.cells[columnIndex].value));
       }
     }
     return maxWidth;

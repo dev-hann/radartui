@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../../radartui.dart';
 
 /// A data model for a single option in a [DropdownButton].
@@ -519,8 +521,7 @@ class RenderDropdownMenu extends RenderBox {
   int _computeMaxItemWidth() {
     int maxWidth = 0;
     for (final item in _items) {
-      final int w = stringWidth(item.label);
-      if (w > maxWidth) maxWidth = w;
+      maxWidth = math.max(maxWidth, stringWidth(item.label));
     }
     return maxWidth;
   }

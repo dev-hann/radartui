@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../../radartui.dart';
 
 /// A widget that displays its children in a horizontal or vertical line.
@@ -225,10 +227,8 @@ class RenderFlex extends RenderBox
       if (_getFlex(child) != 0) continue;
       child.layout(boxConstraints.loosen());
       mainExtent += _childMainExtent(isHorizontal, child);
-      final childCross = _childCrossExtent(isHorizontal, child);
-      if (childCross > crossExtent) {
-        crossExtent = childCross;
-      }
+      crossExtent =
+          math.max(crossExtent, _childCrossExtent(isHorizontal, child));
     }
     return _FlexMeasurement(mainExtent: mainExtent, crossExtent: crossExtent);
   }
@@ -253,10 +253,8 @@ class RenderFlex extends RenderBox
         _getFit(child),
       ));
       allocatedSpace += _childMainExtent(isHorizontal, child);
-      final childCross = _childCrossExtent(isHorizontal, child);
-      if (childCross > maxCrossExtent) {
-        maxCrossExtent = childCross;
-      }
+      maxCrossExtent =
+          math.max(maxCrossExtent, _childCrossExtent(isHorizontal, child));
     }
     return _FlexMeasurement(
       mainExtent: allocatedSpace,

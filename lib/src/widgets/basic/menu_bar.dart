@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../../radartui.dart';
 
 /// A top-level menu entry containing a [label] and a list of [MenuItem] children.
@@ -439,7 +441,7 @@ class RenderMenuBar extends RenderBox {
         shortcutWidths[child.shortcut!] = sw;
         w += 2 + sw;
       }
-      if (w > maxWidth) maxWidth = w;
+      maxWidth = math.max(maxWidth, w);
     }
     _cachedShortcutWidths = shortcutWidths;
     return maxWidth + 2;

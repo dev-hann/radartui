@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../../radartui.dart';
 
 /// A compact inline chart that renders a list of numeric [data] as a sparkline.
@@ -38,8 +40,8 @@ class Sparkline extends StatelessWidget {
     double minVal = data[0];
     double maxVal = data[0];
     for (final v in data) {
-      if (v < minVal) minVal = v;
-      if (v > maxVal) maxVal = v;
+      minVal = math.min(minVal, v);
+      maxVal = math.max(maxVal, v);
     }
 
     final double range = maxVal - minVal;
