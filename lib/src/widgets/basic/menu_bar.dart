@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import '../../../radartui.dart';
 import '../../foundation/drawing_constants.dart';
+import '../../foundation/utils.dart' show listEquals;
 
 /// A top-level menu entry containing a [label] and a list of [MenuItem] children.
 ///
@@ -23,13 +24,9 @@ class MenuBarItem {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    if (other is! MenuBarItem) return false;
-    if (label != other.label) return false;
-    if (children.length != other.children.length) return false;
-    return List.generate(
-      children.length,
-      (i) => children[i] == other.children[i],
-    ).every((equal) => equal);
+    return other is MenuBarItem &&
+        label == other.label &&
+        listEquals(children, other.children);
   }
 
   @override
