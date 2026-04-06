@@ -58,7 +58,8 @@ class _SingleChildScrollViewState extends State<SingleChildScrollView>
     } else {
       viewportSize = mediaQuery?.data.size.width ?? 80;
     }
-    final int maxScroll = (_contentExtent - viewportSize).clamp(0, 999999);
+    final int maxScroll =
+        (_contentExtent - viewportSize).clamp(0, Constraints.infinity);
     final delta = _computeScrollDelta(event, viewportSize);
 
     if (delta != 0) {
@@ -211,7 +212,8 @@ class _RenderScrollViewport extends RenderBox
         : child!.size!.width;
     final int viewportExtent =
         scrollDirection == Axis.vertical ? size!.height : size!.width;
-    final int maxOffset = (childExtent - viewportExtent).clamp(0, 999999);
+    final int maxOffset =
+        (childExtent - viewportExtent).clamp(0, Constraints.infinity);
     final int effectiveOffset = scrollOffset.clamp(0, maxOffset);
 
     int dx = 0;
