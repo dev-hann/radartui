@@ -84,15 +84,27 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
     with FocusableState<DropdownButton<T>> {
   bool _isOpen = false;
   int _selectedIndex = 0;
+  int? _cachedValueIndex;
+  List<DropdownMenuItem<T>>? _cachedItemsIdentity;
 
   @override
   FocusNode? get providedFocusNode => widget.focusNode;
 
   int get _currentValueIndex {
     if (widget.value == null) return -1;
-    for (int i = 0; i < widget.items.length; i++) {
-      if (widget.items[i].value == widget.value) return i;
+    if (identical(widget.items, _cachedItemsIdentity) &&
+        _cachedValueIndex != null) {
+      return _cachedValueIndex!;
     }
+    for (int i = 0; i < widget.items.length; i++) {
+      if (widget.items[i].value == widget.value) {
+        _cachedValueIndex = i;
+        _cachedItemsIdentity = widget.items;
+        return i;
+      }
+    }
+    _cachedValueIndex = -1;
+    _cachedItemsIdentity = widget.items;
     return -1;
   }
 
@@ -151,6 +163,16 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
   void onFocusChange(bool focused) {
     super.onFocusChange(focused);
     if (!focused && _isOpen) _closeDropdown();
+  }
+
+  @override
+  void didUpdateWidget(DropdownButton<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value ||
+        !identical(oldWidget.items, widget.items)) {
+      _cachedValueIndex = null;
+      _cachedItemsIdentity = null;
+    }
   }
 
   @override

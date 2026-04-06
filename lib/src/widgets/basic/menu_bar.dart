@@ -134,7 +134,8 @@ class _MenuBarState extends State<MenuBar> with FocusableState<MenuBar> {
   void _handleOpenKeyEvent(KeyEvent event) {
     if (event.code == KeyCode.arrowLeft) {
       setState(() {
-        _openMenuIndex = (_openMenuIndex - 1) % widget.items.length;
+        _openMenuIndex =
+            (_openMenuIndex - 1 + widget.items.length) % widget.items.length;
         _selectedItemIndex = 0;
       });
     } else if (event.code == KeyCode.arrowRight) {

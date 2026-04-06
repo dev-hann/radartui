@@ -122,10 +122,13 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
   int _focusedColumnIndex = 0;
   late ScrollController _scrollController;
   List<int> _cachedColumnWidths = const [];
+  int? _cachedViewportHeight;
 
   int get _viewportHeight {
+    if (_cachedViewportHeight != null) return _cachedViewportHeight!;
     final mediaQuery = context.findAncestorWidgetOfExactType<MediaQuery>();
-    return (mediaQuery?.data.size.height ?? 24) - 1;
+    _cachedViewportHeight = (mediaQuery?.data.size.height ?? 24) - 1;
+    return _cachedViewportHeight!;
   }
 
   @override
@@ -140,6 +143,7 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
     if (oldWidget.columns != widget.columns || oldWidget.rows != widget.rows) {
       _cachedColumnWidths = const [];
     }
+    _cachedViewportHeight = null;
   }
 
   @override
