@@ -469,7 +469,7 @@ class RenderTabBar extends RenderBox {
     _ensureTabWidthsCached();
     int totalWidth = 0;
     for (final w in _cachedTabWidths) {
-      totalWidth += labelPadding.left + w + labelPadding.right;
+      totalWidth += w + labelPadding.horizontal;
     }
     if (_tabs.isNotEmpty && _tabs.length > 1) {
       totalWidth += _tabs.length - 1;

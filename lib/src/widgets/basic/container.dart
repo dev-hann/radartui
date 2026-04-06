@@ -223,10 +223,10 @@ class RenderContainer extends RenderBox
     final totalMargin = margin ?? EdgeInsets.zero;
     final totalPadding = padding ?? EdgeInsets.zero;
     final innerOffset = offset + Offset(totalMargin.left, totalMargin.top);
-    final innerWidth = (size!.width - totalMargin.left - totalMargin.right)
-        .clamp(0, size!.width);
-    final innerHeight = (size!.height - totalMargin.top - totalMargin.bottom)
-        .clamp(0, size!.height);
+    final innerWidth =
+        (size!.width - totalMargin.horizontal).clamp(0, size!.width);
+    final innerHeight =
+        (size!.height - totalMargin.vertical).clamp(0, size!.height);
 
     _paintBackground(context, innerOffset, innerWidth, innerHeight);
 
