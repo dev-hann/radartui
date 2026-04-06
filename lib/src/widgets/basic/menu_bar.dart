@@ -309,6 +309,7 @@ class RenderMenuBar extends RenderBox {
   int _cachedDropdownWidth = 0;
   int _cachedOpenMenuIndex = -2;
   Map<String, int> _cachedShortcutWidths = const {};
+  int _cachedDropdownX = 0;
 
   void _invalidateCache() {
     _cachedMenuClosedBgStyle = null;
@@ -343,8 +344,10 @@ class RenderMenuBar extends RenderBox {
     }
     _cachedShortcutWidths = const {};
     _cachedDropdownWidth = 0;
+    _cachedDropdownX = 0;
     if (openMenuIndex >= 0 && openMenuIndex < _items.length) {
       _cachedDropdownWidth = _computeMaxDropdownWidth(_items[openMenuIndex]);
+      _cachedDropdownX = _computeDropdownX();
     }
     _cachedOpenMenuIndex = openMenuIndex;
   }
@@ -380,9 +383,7 @@ class RenderMenuBar extends RenderBox {
     for (int i = 0; i < items.length; i++) {
       final MenuBarItem item = items[i];
       final bool isOpen = i == openMenuIndex;
-      final int itemWidth = i < _cachedItemWidths.length
-          ? _cachedItemWidths[i]
-          : stringWidth(item.label) + 2;
+      final int itemWidth = _cachedItemWidths[i];
       final TextStyle bgStyle =
           isOpen ? _menuOpenBgStyle : _cachedMenuClosedBgStyle!;
       final TextStyle fgBgStyle =
@@ -393,12 +394,10 @@ class RenderMenuBar extends RenderBox {
     }
   }
 
-  int _calculateDropdownX(int baseX) {
-    int menuX = baseX;
+  int _computeDropdownX() {
+    int menuX = 0;
     for (int i = 0; i < openMenuIndex; i++) {
-      menuX += i < _cachedItemWidths.length
-          ? _cachedItemWidths[i]
-          : stringWidth(items[i].label) + 2;
+      menuX += _cachedItemWidths[i];
     }
     return menuX;
   }
@@ -420,7 +419,7 @@ class RenderMenuBar extends RenderBox {
   }
 
   void _paintDropdownMenu(PaintingContext context, int baseX, int y) {
-    final int menuX = _calculateDropdownX(baseX);
+    final int menuX = baseX + _cachedDropdownX;
     final MenuBarItem openItem = items[openMenuIndex];
     final int maxWidth = _cachedDropdownWidth;
     for (int row = 0; row < openItem.children.length; row++) {
