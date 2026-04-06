@@ -10,3 +10,4 @@ pubspec.lock
 # Worktrees
 .worktrees/
 
+dart-sdk/
