@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../foundation.dart';
 import '../services.dart';
 import '../widgets.dart';
@@ -153,8 +155,7 @@ class WidgetTester {
 
   void assertBufferLines(List<String> expected) {
     final List<String> actual = lines;
-    final int maxHeight =
-        actual.length > expected.length ? actual.length : expected.length;
+    final int maxHeight = math.max(actual.length, expected.length);
     final List<String> diffs = _collectLineDiffs(actual, expected, maxHeight);
     if (diffs.isNotEmpty) {
       throw _buildBufferMismatchError(actual, diffs);
