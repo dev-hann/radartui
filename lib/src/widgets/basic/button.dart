@@ -168,8 +168,8 @@ class RenderButton extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     final padding = style.padding;
-    final width = _cachedTextWidth + padding.left + padding.right;
-    final height = 1 + padding.top + padding.bottom;
+    final width = _cachedTextWidth + padding.horizontal;
+    final height = 1 + padding.vertical;
     size = Size(width, height);
   }
 

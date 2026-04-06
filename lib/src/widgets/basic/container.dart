@@ -180,8 +180,8 @@ class RenderContainer extends RenderBox
     }
 
     size = Size(
-      containerW + totalMargin.left + totalMargin.right,
-      containerH + totalMargin.top + totalMargin.bottom,
+      containerW + totalMargin.horizontal,
+      containerH + totalMargin.vertical,
     );
   }
 
@@ -190,10 +190,8 @@ class RenderContainer extends RenderBox
     int containerH,
     EdgeInsets totalPadding,
   ) {
-    final int horizPad =
-        totalPadding.left + totalPadding.right + _borderHorizontal;
-    final int vertPad =
-        totalPadding.top + totalPadding.bottom + _borderVertical;
+    final int horizPad = totalPadding.horizontal + _borderHorizontal;
+    final int vertPad = totalPadding.vertical + _borderVertical;
     child!.layout(BoxConstraints(
       maxWidth: containerW - horizPad,
       maxHeight: containerH - vertPad,

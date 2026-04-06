@@ -45,15 +45,15 @@ class RenderPadding extends SingleChildRenderBox {
   @override
   Size computeSizeFromChild(BoxConstraints constraints, Size childSize) {
     return Size(
-      childSize.width + padding.left + padding.right,
-      childSize.height + padding.top + padding.bottom,
+      childSize.width + padding.horizontal,
+      childSize.height + padding.vertical,
     );
   }
 
   /// Returns the size when there is no child (just the padding dimensions).
   @override
   Size computeSizeWithoutChild(BoxConstraints constraints) =>
-      Size(padding.left + padding.right, padding.top + padding.bottom);
+      Size(padding.horizontal, padding.vertical);
 
   /// Offsets the child by the left and top padding.
   @override

@@ -104,8 +104,8 @@ class BoxConstraints extends Constraints {
 
   /// Returns new constraints reduced by the given [edge] insets (e.g. padding).
   BoxConstraints deflate(EdgeInsets edge) {
-    final horizontal = edge.left + edge.right;
-    final vertical = edge.top + edge.bottom;
+    final horizontal = edge.horizontal;
+    final vertical = edge.vertical;
 
     final deflatedMaxWidth = (maxWidth - horizontal).clamp(
       0,

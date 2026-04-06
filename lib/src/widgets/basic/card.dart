@@ -118,11 +118,9 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     int borderSize,
     Size childSize,
   ) {
-    final contentWidth =
-        childSize.width + totalPadding.left + totalPadding.right + borderSize;
-    final rawHeight =
-        childSize.height + totalPadding.top + totalPadding.bottom + borderSize;
-    final minHeight = borderSize + totalPadding.top + 1 + totalPadding.bottom;
+    final contentWidth = childSize.width + totalPadding.horizontal + borderSize;
+    final rawHeight = childSize.height + totalPadding.vertical + borderSize;
+    final minHeight = borderSize + totalPadding.vertical + 1;
     return Size(
       _resolveDimension(
         boxConstraints.minWidth,
