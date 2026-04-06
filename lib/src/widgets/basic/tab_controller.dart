@@ -149,12 +149,18 @@ class _TabBarState extends State<TabBar> with FocusableState<TabBar> {
   void initState() {
     super.initState();
     if (widget.controller == null) {
-      _internalController = TabController(
-        initialIndex: 0,
-        length: widget.tabs.length,
-      );
+      _internalController = _createInternalController();
     }
     _controller.addListener(_onControllerChange);
+  }
+
+  TabController _createInternalController() {
+    final controller = TabController(
+      initialIndex: 0,
+      length: widget.tabs.length,
+    );
+    controller.addListener(_onControllerChange);
+    return controller;
   }
 
   @override
@@ -166,11 +172,7 @@ class _TabBarState extends State<TabBar> with FocusableState<TabBar> {
         _internalController?.dispose();
       }
       if (widget.controller == null) {
-        _internalController = TabController(
-          initialIndex: 0,
-          length: widget.tabs.length,
-        );
-        _internalController!.addListener(_onControllerChange);
+        _internalController = _createInternalController();
       } else {
         widget.controller!.addListener(_onControllerChange);
       }
@@ -179,11 +181,7 @@ class _TabBarState extends State<TabBar> with FocusableState<TabBar> {
       if (widget.controller == null && _internalController != null) {
         _internalController!.removeListener(_onControllerChange);
         _internalController!.dispose();
-        _internalController = TabController(
-          initialIndex: 0,
-          length: widget.tabs.length,
-        );
-        _internalController!.addListener(_onControllerChange);
+        _internalController = _createInternalController();
       }
     }
   }
@@ -442,7 +440,7 @@ class RenderTabBar extends RenderBox {
   TextStyle? _cachedSelectedStyle;
   TextStyle? _cachedUnselectedStyle;
   TextStyle? _cachedIndicatorStyle;
-  List<int> _cachedTabWidths = const [];
+  List<int> _cachedTabWidths = [];
   List<Tab>? _cachedTabsIdentity;
 
   void _invalidateCache() {

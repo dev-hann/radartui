@@ -118,7 +118,7 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
   int _focusedRowIndex = 0;
   int _focusedColumnIndex = 0;
   late ScrollController _scrollController;
-  List<int> _cachedColumnWidths = const [];
+  List<int> _cachedColumnWidths = [];
   int? _cachedViewportHeight;
 
   int get _viewportHeight {
@@ -138,7 +138,7 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
   void didUpdateWidget(DataTable oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.columns != widget.columns || oldWidget.rows != widget.rows) {
-      _cachedColumnWidths = const [];
+      _cachedColumnWidths = [];
     }
     _cachedViewportHeight = null;
   }

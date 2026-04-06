@@ -354,11 +354,11 @@ class RenderMenuBar extends RenderBox {
   TextStyle? _cachedMenuClosedBgStyle;
   TextStyle? _cachedMenuClosedFgStyle;
   Color? _cachedBgColor;
-  List<int> _cachedItemWidths = const [];
+  List<int> _cachedItemWidths = [];
   List<MenuBarItem>? _cachedItemsIdentity;
   int _cachedDropdownWidth = 0;
   int _cachedOpenMenuIndex = -2;
-  Map<String, int> _cachedShortcutWidths = const {};
+  Map<String, int> _cachedShortcutWidths = {};
   int _cachedDropdownX = 0;
 
   void _invalidateCache() {
