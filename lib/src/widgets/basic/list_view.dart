@@ -81,12 +81,15 @@ class _ListViewState<T> extends State<ListView<T>>
   }
 
   void _handleCharKey(String? char, int totalItems) {
-    if (char == 'k') {
+    if (char == _vimUpKey) {
       _moveSelection(-1);
-    } else if (char == 'j') {
+    } else if (char == _vimDownKey) {
       _moveSelection(1);
     }
   }
+
+  static const String _vimUpKey = 'k';
+  static const String _vimDownKey = 'j';
 
   void _handleActivationKey(bool isActivationKey, int totalItems) {
     if (isActivationKey && selectedIndex >= 0 && selectedIndex < totalItems) {
