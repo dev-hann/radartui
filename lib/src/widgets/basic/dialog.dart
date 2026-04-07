@@ -67,11 +67,11 @@ class Dialog extends StatelessWidget {
 
   Widget _buildActionRow() {
     final actionWidgets = <Widget>[];
-    for (final entry in actions!.asMap().entries) {
-      if (entry.key > 0) {
+    for (int i = 0; i < actions!.length; i++) {
+      if (i > 0) {
         actionWidgets.add(const Container(width: 2));
       }
-      actionWidgets.add(entry.value);
+      actionWidgets.add(actions![i]);
     }
     return Row(children: actionWidgets);
   }
