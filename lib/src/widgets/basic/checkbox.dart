@@ -316,9 +316,5 @@ class RenderCheckbox extends RenderBox {
     return Color.white;
   }
 
-  String _getCheckChar() {
-    if (!enabled) return value ? '×' : '';
-    if (value) return '✓';
-    return '';
-  }
+  String _getCheckChar() => !enabled ? (value ? '×' : '') : (value ? '✓' : '');
 }

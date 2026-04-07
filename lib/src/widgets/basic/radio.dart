@@ -350,13 +350,6 @@ class RenderRadio extends RenderBox {
     }
   }
 
-  String _getSelectionChar() {
-    if (!enabled) {
-      return selected ? '×' : '';
-    } else if (selected) {
-      return '●';
-    } else {
-      return '';
-    }
-  }
+  String _getSelectionChar() =>
+      !enabled ? (selected ? '×' : '') : (selected ? '●' : '');
 }
