@@ -251,10 +251,8 @@ class TextEditingController extends ChangeNotifier {
 
   int _findNextWordBoundary(int startPos) {
     int pos = startPos;
-    while (pos < _text.length && _text[pos] == ' ') {
-      pos++;
-    }
-    while (pos < _text.length && _text[pos] != ' ') {
+    while (pos < _text.length) {
+      if (_text[pos] != ' ') break;
       pos++;
     }
     while (pos < _text.length && _text[pos] == ' ') {
