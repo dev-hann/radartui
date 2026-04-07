@@ -88,6 +88,7 @@ class RenderText extends RenderBox {
   set text(String v) {
     if (_text == v) return;
     _text = v;
+    _invalidateLayoutCache();
     markNeedsLayout();
   }
 
@@ -113,6 +114,7 @@ class RenderText extends RenderBox {
   set softWrap(bool v) {
     if (_softWrap == v) return;
     _softWrap = v;
+    _invalidateLayoutCache();
     markNeedsLayout();
   }
 
@@ -125,6 +127,7 @@ class RenderText extends RenderBox {
   set maxLines(int? v) {
     if (_maxLines == v) return;
     _maxLines = v;
+    _invalidateLayoutCache();
     markNeedsLayout();
   }
 
@@ -142,6 +145,21 @@ class RenderText extends RenderBox {
 
   List<String> _lines = [];
   TextStyle? _effectiveStyle;
+  List<String> _cachedLines = [];
+  String? _cachedTextIdentity;
+  String? _cachedSplitChar;
+  int _cachedMaxWidth = -1;
+  bool _cachedSoftWrap = false;
+  int? _cachedMaxLines;
+
+  void _invalidateLayoutCache() {
+    _cachedLines = [];
+    _cachedTextIdentity = null;
+    _cachedSplitChar = null;
+    _cachedMaxWidth = -1;
+    _cachedSoftWrap = false;
+    _cachedMaxLines = null;
+  }
 
   @override
   void performLayout(Constraints constraints) {
@@ -190,6 +208,15 @@ class RenderText extends RenderBox {
       return text.isEmpty ? [''] : text.split('\n');
     }
 
+    if (_cachedTextIdentity == text &&
+        _cachedSplitChar == '\n' &&
+        _cachedMaxWidth == maxWidth &&
+        _cachedSoftWrap == softWrap &&
+        _cachedMaxLines == maxLines &&
+        _cachedLines.isNotEmpty) {
+      return _cachedLines;
+    }
+
     final lines = <String>[];
     final paragraphs = text.split('\n');
 
@@ -205,7 +232,14 @@ class RenderText extends RenderBox {
       }
     }
 
-    return lines.isEmpty ? [''] : lines;
+    final result = lines.isEmpty ? [''] : lines;
+    _cachedTextIdentity = text;
+    _cachedSplitChar = '\n';
+    _cachedMaxWidth = maxWidth;
+    _cachedSoftWrap = softWrap;
+    _cachedMaxLines = maxLines;
+    _cachedLines = result;
+    return result;
   }
 
   List<String> _wrapParagraph(String paragraph, int maxWidth) {
@@ -233,12 +267,12 @@ class RenderText extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     final effectiveStyle = _getEffectiveStyle();
-    for (final entry in _lines.asMap().entries) {
-      final line = entry.value;
+    for (int i = 0; i < _lines.length; i++) {
+      final line = _lines[i];
       if (line.isNotEmpty) {
         context.writeString(
           offset.x,
-          offset.y + entry.key,
+          offset.y + i,
           line,
           effectiveStyle,
         );
