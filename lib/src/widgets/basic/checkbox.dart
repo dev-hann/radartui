@@ -53,10 +53,7 @@ class _CheckboxState extends State<Checkbox> with FocusableState<Checkbox> {
       duration: const Duration(milliseconds: 100),
       initialValue: widget.value ? 1.0 : 0.0,
     );
-    _colorAnim = ColorTween(
-      begin: Color.black,
-      end: widget.activeColor ?? Color.blue,
-    ).animate(_controller);
+    _colorAnim = _createColorAnimation(_controller);
     _controller.addListener(() => setState(() {}));
   }
 
@@ -68,6 +65,13 @@ class _CheckboxState extends State<Checkbox> with FocusableState<Checkbox> {
       final newValue = !widget.value;
       widget.onChanged!(newValue);
     }
+  }
+
+  Animation<Color> _createColorAnimation(AnimationController controller) {
+    return ColorTween(
+      begin: Color.black,
+      end: widget.activeColor ?? Color.blue,
+    ).animate(controller);
   }
 
   @override
@@ -83,10 +87,7 @@ class _CheckboxState extends State<Checkbox> with FocusableState<Checkbox> {
     }
 
     if (oldWidget.activeColor != widget.activeColor) {
-      _colorAnim = ColorTween(
-        begin: Color.black,
-        end: widget.activeColor ?? Color.blue,
-      ).animate(_controller);
+      _colorAnim = _createColorAnimation(_controller);
     }
   }
 
