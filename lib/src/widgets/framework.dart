@@ -663,7 +663,8 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
     Widget newWidgetChild,
     List<Element?> oldChildren,
   ) {
-    for (int j = 0; j < oldChildren.length; j++) {
+    final int oldChildCount = oldChildren.length;
+    for (int j = 0; j < oldChildCount; j++) {
       final oldChild = oldChildren[j];
       if (oldChild != null &&
           Widget.canUpdate(oldChild.widget, newWidgetChild)) {
