@@ -1,5 +1,15 @@
 import '../../../radartui.dart';
 
+bool _mapsEqual<K, V>(Map<K, V> map1, Map<K, V> map2) {
+  if (map1.length != map2.length) return false;
+  for (final key in map1.keys) {
+    if (!map2.containsKey(key) || map1[key] != map2[key]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 /// Represents a keyboard shortcut (key + optional modifiers).
 ///
 /// Use with [Shortcuts] widget to bind actions to key combinations.
@@ -103,12 +113,17 @@ class _ShortcutsScope extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_ShortcutsScope oldWidget) {
-    if (shortcuts.length != oldWidget.shortcuts.length) return true;
-    for (final key in shortcuts.keys) {
-      if (!oldWidget.shortcuts.containsKey(key)) return true;
-      if (shortcuts[key] != oldWidget.shortcuts[key]) return true;
+    return !_mapsEqual(shortcuts, oldWidget.shortcuts);
+  }
+
+  bool _mapsEqual<K, V>(Map<K, V> map1, Map<K, V> map2) {
+    if (map1.length != map2.length) return false;
+    for (final key in map1.keys) {
+      if (!map2.containsKey(key) || map1[key] != map2[key]) {
+        return false;
+      }
     }
-    return false;
+    return true;
   }
 }
 
@@ -174,12 +189,7 @@ class _ActionsScope extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_ActionsScope oldWidget) {
-    if (actions.length != oldWidget.actions.length) return true;
-    for (final key in actions.keys) {
-      if (!oldWidget.actions.containsKey(key)) return true;
-      if (actions[key] != oldWidget.actions[key]) return true;
-    }
-    return false;
+    return !_mapsEqual(actions, oldWidget.actions);
   }
 }
 
