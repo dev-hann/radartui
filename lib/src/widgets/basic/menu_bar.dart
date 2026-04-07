@@ -352,6 +352,7 @@ class RenderMenuBar extends RenderBox {
   TextStyle? _cachedMenuClosedFgStyle;
   Color? _cachedBgColor;
   List<int> _cachedItemWidths = [];
+  List<int> _cachedCumulativeWidths = [];
   List<MenuBarItem>? _cachedItemsIdentity;
   int _cachedDropdownWidth = 0;
   int _cachedOpenMenuIndex = -2;
@@ -377,8 +378,13 @@ class RenderMenuBar extends RenderBox {
   void _ensureItemWidthsCached() {
     if (identical(_items, _cachedItemsIdentity)) return;
     final widths = <int>[];
+    _cachedCumulativeWidths = <int>[];
+    int cumulative = 0;
     for (final item in _items) {
-      widths.add(stringWidth(item.label) + 2);
+      final w = stringWidth(item.label) + 2;
+      widths.add(w);
+      cumulative += w;
+      _cachedCumulativeWidths.add(cumulative);
     }
     _cachedItemWidths = widths;
     _cachedItemsIdentity = _items;
@@ -442,11 +448,10 @@ class RenderMenuBar extends RenderBox {
   }
 
   int _computeDropdownX() {
-    int menuX = 0;
-    for (int i = 0; i < openMenuIndex; i++) {
-      menuX += _cachedItemWidths[i];
+    if (openMenuIndex > 0 && openMenuIndex <= _cachedCumulativeWidths.length) {
+      return _cachedCumulativeWidths[openMenuIndex - 1];
     }
-    return menuX;
+    return 0;
   }
 
   int _computeMaxDropdownWidth(MenuBarItem item) {
