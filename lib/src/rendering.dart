@@ -11,3 +11,4 @@ library rendering;
 export 'rendering/render_box.dart';
 export 'rendering/render_object.dart';
 export 'rendering/single_child_render_box.dart';
+export 'rendering/style_cache_mixin.dart';

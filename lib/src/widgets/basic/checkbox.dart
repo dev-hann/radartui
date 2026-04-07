@@ -249,14 +249,10 @@ class RenderCheckbox extends RenderBox {
     markNeedsPaint();
   }
 
-  TextStyle? _cachedBackgroundStyle;
-  TextStyle? _cachedBorderStyle;
-  TextStyle? _cachedIndicatorStyle;
+  final StyleCache _styleCache = StyleCache();
 
   void _invalidateCache() {
-    _cachedBackgroundStyle = null;
-    _cachedBorderStyle = null;
-    _cachedIndicatorStyle = null;
+    _styleCache.clear();
   }
 
   @override
@@ -276,23 +272,27 @@ class RenderCheckbox extends RenderBox {
   }
 
   void _ensureStylesCached() {
-    if (_cachedBackgroundStyle != null) return;
+    if (_styleCache.isValid) return;
     final Color bg = _getBackgroundColor();
     final Color fg = _getForegroundColor();
     final Color border =
         focused ? activeColor : (enabled ? Color.white : Color.brightBlack);
-    _cachedBackgroundStyle = TextStyle(backgroundColor: bg);
-    _cachedBorderStyle = TextStyle(color: border, backgroundColor: bg);
-    _cachedIndicatorStyle = TextStyle(color: fg, backgroundColor: bg);
+    _styleCache.get('background', () => TextStyle(backgroundColor: bg));
+    _styleCache.get(
+        'border', () => TextStyle(color: border, backgroundColor: bg));
+    _styleCache.get(
+        'indicator', () => TextStyle(color: fg, backgroundColor: bg));
   }
 
   void _paintBackground(PaintingContext context, Offset offset) {
-    final TextStyle style = _cachedBackgroundStyle!;
+    final TextStyle style =
+        _styleCache.get('background', () => throw UnimplementedError());
     context.fillBackground(offset.x, offset.y, 3, style);
   }
 
   void _paintBorder(PaintingContext context, Offset offset) {
-    final TextStyle style = _cachedBorderStyle!;
+    final TextStyle style =
+        _styleCache.get('border', () => throw UnimplementedError());
     const String borderChars =
         '${BoxDrawingConstants.leftTee}${BoxDrawingConstants.rightTee}';
     context.writeString(offset.x, offset.y, borderChars, style);
@@ -300,8 +300,9 @@ class RenderCheckbox extends RenderBox {
 
   void _paintIndicator(
       PaintingContext context, Offset offset, String checkChar) {
-    context.buffer
-        .writeStyled(offset.x + 1, offset.y, checkChar, _cachedIndicatorStyle!);
+    final TextStyle style =
+        _styleCache.get('indicator', () => throw UnimplementedError());
+    context.buffer.writeStyled(offset.x + 1, offset.y, checkChar, style);
   }
 
   Color _getBackgroundColor() {
