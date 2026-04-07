@@ -72,30 +72,35 @@ class _GridViewState<T> extends State<GridView<T>>
     final totalItems = widget.items.length;
     if (widget.items.isEmpty) return;
 
-    if (event.code == KeyCode.arrowUp) {
-      _moveSelection(-widget.crossAxisCount);
-    } else if (event.code == KeyCode.arrowDown) {
-      _moveSelection(widget.crossAxisCount);
-    } else if (event.code == KeyCode.arrowLeft) {
-      _moveSelection(-1);
-    } else if (event.code == KeyCode.arrowRight) {
-      _moveSelection(1);
-    } else if (event.isActivationKey) {
-      if (selectedIndex >= 0 && selectedIndex < totalItems) {
-        widget.onItemSelected?.call(selectedIndex, widget.items[selectedIndex]);
-      }
+    switch (event.code) {
+      case KeyCode.arrowUp:
+        _moveSelection(-widget.crossAxisCount);
+      case KeyCode.arrowDown:
+        _moveSelection(widget.crossAxisCount);
+      case KeyCode.arrowLeft:
+        _moveSelection(-1);
+      case KeyCode.arrowRight:
+        _moveSelection(1);
+      default:
+        if (event.isActivationKey &&
+            selectedIndex >= 0 &&
+            selectedIndex < totalItems) {
+          widget.onItemSelected
+              ?.call(selectedIndex, widget.items[selectedIndex]);
+        }
     }
   }
 
   void _moveSelection(int delta) {
     setState(() {
-      final totalItems = widget.items.length;
-      if (totalItems == 0) return;
+      if (widget.items.isEmpty) return;
 
       if (widget.wrapAroundNavigation) {
-        selectedIndex = wrapSelectableIndex(selectedIndex + delta, totalItems);
+        selectedIndex =
+            wrapSelectableIndex(selectedIndex + delta, widget.items.length);
       } else {
-        selectedIndex = (selectedIndex + delta).clamp(0, totalItems - 1);
+        selectedIndex =
+            (selectedIndex + delta).clamp(0, widget.items.length - 1);
       }
     });
   }

@@ -67,16 +67,24 @@ class _ListViewState<T> extends State<ListView<T>>
 
   @override
   void onKeyEvent(KeyEvent event) {
-    if (event.code == KeyCode.arrowUp ||
-        (event.code == KeyCode.char && event.char == 'k')) {
-      _moveSelection(-1);
-    } else if (event.code == KeyCode.arrowDown ||
-        (event.code == KeyCode.char && event.char == 'j')) {
-      _moveSelection(1);
-    } else if (event.isActivationKey) {
-      if (selectedIndex >= 0 && selectedIndex < widget.items.length) {
-        widget.onItemSelected?.call(selectedIndex, widget.items[selectedIndex]);
-      }
+    switch (event.code) {
+      case KeyCode.arrowUp:
+        _moveSelection(-1);
+      case KeyCode.arrowDown:
+        _moveSelection(1);
+      case KeyCode.char:
+        if (event.char == 'k') {
+          _moveSelection(-1);
+        } else if (event.char == 'j') {
+          _moveSelection(1);
+        }
+      default:
+        if (event.isActivationKey &&
+            selectedIndex >= 0 &&
+            selectedIndex < widget.items.length) {
+          widget.onItemSelected
+              ?.call(selectedIndex, widget.items[selectedIndex]);
+        }
     }
   }
 

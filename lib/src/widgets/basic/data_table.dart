@@ -146,29 +146,35 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
 
   @override
   void onKeyEvent(KeyEvent event) {
-    if (event.code == KeyCode.arrowUp) {
-      _moveSelection(-1);
-    } else if (event.code == KeyCode.arrowDown) {
-      _moveSelection(1);
-    } else if (event.code == KeyCode.arrowLeft) {
-      setState(() {
-        _focusedColumnIndex = (_focusedColumnIndex - 1).clamp(
-          0,
-          widget.columns.length - 1,
-        );
-      });
-    } else if (event.code == KeyCode.arrowRight) {
-      setState(() {
-        _focusedColumnIndex = (_focusedColumnIndex + 1).clamp(
-          0,
-          widget.columns.length - 1,
-        );
-      });
-    } else if (event.code == KeyCode.enter) {
-      _triggerSort();
-    } else if (event.code == KeyCode.space ||
-        (event.code == KeyCode.char && event.char == ' ')) {
-      _toggleSelection();
+    switch (event.code) {
+      case KeyCode.arrowUp:
+        _moveSelection(-1);
+      case KeyCode.arrowDown:
+        _moveSelection(1);
+      case KeyCode.arrowLeft:
+        setState(() {
+          _focusedColumnIndex = (_focusedColumnIndex - 1).clamp(
+            0,
+            widget.columns.length - 1,
+          );
+        });
+      case KeyCode.arrowRight:
+        setState(() {
+          _focusedColumnIndex = (_focusedColumnIndex + 1).clamp(
+            0,
+            widget.columns.length - 1,
+          );
+        });
+      case KeyCode.enter:
+        _triggerSort();
+      case KeyCode.space:
+        _toggleSelection();
+      case KeyCode.char:
+        if (event.char == ' ') {
+          _toggleSelection();
+        }
+      default:
+        break;
     }
   }
 
