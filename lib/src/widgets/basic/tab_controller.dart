@@ -480,7 +480,8 @@ class RenderTabBar extends RenderBox {
     _ensureStylesCached();
     final int y = offset.y;
     int x = offset.x;
-    for (int i = 0; i < _tabs.length; i++) {
+    final int tabsLength = _tabs.length;
+    for (int i = 0; i < tabsLength; i++) {
       final Tab tab = _tabs[i];
       final bool isSelected = i == currentIndex;
       final TextStyle style =
@@ -493,7 +494,7 @@ class RenderTabBar extends RenderBox {
         _paintSelectedIndicator(context, y,
             x - labelPadding.right - contentWidth, x - labelPadding.right);
       }
-      if (i < _tabs.length - 1) x += 1;
+      if (i < tabsLength - 1) x += 1;
     }
   }
 

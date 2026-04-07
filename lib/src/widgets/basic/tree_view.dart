@@ -219,7 +219,8 @@ class _TreeViewState<T> extends State<TreeView<T>>
     _selectedIndex = _selectedIndex.clamp(0, flatNodes.length - 1);
 
     final children = <Widget>[];
-    for (int i = 0; i < flatNodes.length; i++) {
+    final int flatNodesLength = flatNodes.length;
+    for (int i = 0; i < flatNodesLength; i++) {
       final flat = flatNodes[i];
       final key = widget.nodeKey(flat.node);
       final expanded = _controller.isExpanded(key);

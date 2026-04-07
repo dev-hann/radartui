@@ -253,7 +253,8 @@ class RenderRichText extends RenderBox {
   ) {
     final segmentLines = segment.text.split('\n');
 
-    for (int i = 0; i < segmentLines.length; i++) {
+    final int segmentLinesLength = segmentLines.length;
+    for (int i = 0; i < segmentLinesLength; i++) {
       if (i > 0) {
         lines.add(currentLine);
         currentLine = _StyledLine.empty();
@@ -321,7 +322,8 @@ class RenderRichText extends RenderBox {
     _StyledLine currentLine,
   ) {
     final segmentLines = segment.text.split('\n');
-    for (int i = 0; i < segmentLines.length; i++) {
+    final int segmentLinesLength = segmentLines.length;
+    for (int i = 0; i < segmentLinesLength; i++) {
       if (i > 0) {
         lines.add(currentLine);
         currentLine = _StyledLine.empty();
@@ -333,7 +335,8 @@ class RenderRichText extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    for (int i = 0; i < _lines.length; i++) {
+    final int linesLength = _lines.length;
+    for (int i = 0; i < linesLength; i++) {
       final line = _lines[i];
       int x = offset.x;
       final int y = offset.y + i;

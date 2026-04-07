@@ -433,7 +433,8 @@ class RenderMenuBar extends RenderBox {
   void _paintMenuBarItems(PaintingContext context, int startX, int y) {
     _ensureMenuBarStylesCached();
     int x = startX;
-    for (int i = 0; i < items.length; i++) {
+    final int itemsLength = items.length;
+    for (int i = 0; i < itemsLength; i++) {
       final MenuBarItem item = items[i];
       final bool isOpen = i == openMenuIndex;
       final int itemWidth = _cachedItemWidths[i];

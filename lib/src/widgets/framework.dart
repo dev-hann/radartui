@@ -643,7 +643,8 @@ class MultiChildRenderObjectElement extends RenderObjectElement {
 
     container.clear();
 
-    for (int i = 0; i < newWidgetList.length; i++) {
+    final int newWidgetListLength = newWidgetList.length;
+    for (int i = 0; i < newWidgetListLength; i++) {
       final newWidgetChild = newWidgetList[i];
       final child = _findOrCreateChild(newWidgetChild, oldChildren);
       newChildren.add(child);

@@ -255,7 +255,8 @@ class RenderGridView extends RenderBox
     int x = 0;
     int y = 0;
 
-    for (int i = 0; i < children.length; i++) {
+    final int childrenLength = children.length;
+    for (int i = 0; i < childrenLength; i++) {
       final child = children[i];
       final parentData = child.parentData as GridParentData;
 

@@ -572,7 +572,8 @@ class RenderDropdownMenu extends RenderBox {
     final TextStyle selectedDisabled = _cachedSelectedDisabledFg!;
     final TextStyle normalEnabled = _cachedNormalEnabledFg!;
     final TextStyle normalDisabled = _cachedNormalDisabledFg!;
-    for (int i = 0; i < _items.length; i++) {
+    final int itemsLength = _items.length;
+    for (int i = 0; i < itemsLength; i++) {
       final DropdownMenuItem item = _items[i];
       final bool isSelected = i == _selectedIndex;
       final TextStyle bgStyle = isSelected ? selectedBg : normalBg;

@@ -267,7 +267,8 @@ class RenderText extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     final effectiveStyle = _getEffectiveStyle();
-    for (int i = 0; i < _lines.length; i++) {
+    final int linesLength = _lines.length;
+    for (int i = 0; i < linesLength; i++) {
       final line = _lines[i];
       if (line.isNotEmpty) {
         context.writeString(
