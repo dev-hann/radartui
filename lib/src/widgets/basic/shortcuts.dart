@@ -1,5 +1,5 @@
 import '../../../radartui.dart';
-import '../../foundation/utils.dart' show listEquals;
+import '../../foundation/utils.dart' show listEquals, mapEquals;
 
 /// Represents a keyboard shortcut (key + optional modifiers).
 ///
@@ -104,8 +104,7 @@ class _ShortcutsScope extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_ShortcutsScope oldWidget) {
-    return !listEquals(
-        shortcuts.keys.toList(), oldWidget.shortcuts.keys.toList());
+    return !mapEquals(shortcuts, oldWidget.shortcuts);
   }
 }
 
