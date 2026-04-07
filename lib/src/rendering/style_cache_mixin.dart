@@ -36,3 +36,33 @@ class StyleCache {
   /// Whether the cache is valid (not cleared since last access).
   bool get isValid => _isValid;
 }
+
+/// A cache for string width calculations.
+///
+/// Caches the result of [stringWidth] to avoid recalculating
+/// on every paint call. Widths are recalculated only when the
+/// string changes or the cache is explicitly invalidated.
+class TextWidthCache {
+  /// Creates a new text width cache.
+  TextWidthCache();
+
+  String? _cachedText;
+  int _cachedWidth = 0;
+
+  /// Gets the width of [text], using cached value if text is identical.
+  ///
+  /// Uses identity comparison to detect changes, which is more efficient
+  /// than string equality for frequently-reused strings.
+  int get(String text) {
+    if (!identical(text, _cachedText)) {
+      _cachedWidth = stringWidth(text);
+      _cachedText = text;
+    }
+    return _cachedWidth;
+  }
+
+  /// Invalidates the cache, forcing width recalculation on next access.
+  void invalidate() {
+    _cachedText = null;
+  }
+}

@@ -114,16 +114,15 @@ class RenderButton extends RenderBox {
   })  : _text = text,
         _enabled = enabled,
         _focused = focused,
-        _style = style {
-    _cachedTextWidth = stringWidth(_text);
-  }
+        _style = style;
+
+  final TextWidthCache _textWidthCache = TextWidthCache();
 
   String _text;
   String get text => _text;
   set text(String value) {
     if (_text == value) return;
     _text = value;
-    _cachedTextWidth = stringWidth(_text);
     markNeedsLayout();
   }
 
@@ -158,7 +157,6 @@ class RenderButton extends RenderBox {
 
   TextStyle? _cachedTextStyle;
   TextStyle? _cachedBgStyle;
-  late int _cachedTextWidth;
 
   void _invalidateStyleCache() {
     _cachedTextStyle = null;
@@ -168,7 +166,7 @@ class RenderButton extends RenderBox {
   @override
   void performLayout(Constraints constraints) {
     final padding = style.padding;
-    final width = _cachedTextWidth + padding.horizontal;
+    final width = _textWidthCache.get(_text) + padding.horizontal;
     final height = 1 + padding.vertical;
     size = Size(width, height);
   }

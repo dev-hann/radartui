@@ -203,34 +203,26 @@ class RenderToggle extends RenderBox {
     markNeedsLayout();
   }
 
+  final TextWidthCache _labelWidthCache = TextWidthCache();
+
   TextStyle? _cachedBackgroundStyle;
   TextStyle? _cachedBorderStyle;
   TextStyle? _cachedIndicatorStyle;
   TextStyle? _cachedLabelStyle;
-  int _cachedLabelWidth = 0;
-  String? _cachedLabelIdentity;
 
   void _invalidateCache() {
     _cachedBackgroundStyle = null;
     _cachedBorderStyle = null;
     _cachedIndicatorStyle = null;
     _cachedLabelStyle = null;
-    _cachedLabelIdentity = null;
-  }
-
-  int _computeLabelWidth() {
-    if (_label != null && _label!.isNotEmpty) {
-      return stringWidth(_label!);
-    }
-    return 0;
+    _labelWidthCache.invalidate();
   }
 
   int get _labelWidth {
-    if (!identical(_label, _cachedLabelIdentity)) {
-      _cachedLabelWidth = _computeLabelWidth();
-      _cachedLabelIdentity = _label;
+    if (_label != null && _label!.isNotEmpty) {
+      return _labelWidthCache.get(_label!);
     }
-    return _cachedLabelWidth;
+    return 0;
   }
 
   int _calculateWidth() {
