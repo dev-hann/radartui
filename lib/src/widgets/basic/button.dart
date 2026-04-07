@@ -226,7 +226,7 @@ class ButtonStyle {
     this.focusBackgroundColor = Color.brightBlue,
     this.disabledColor = Color.brightBlack,
     this.disabledBackgroundColor = Color.black,
-    this.padding = const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
+    this.padding = EdgeInsets.horizontalTwo,
     this.bold = false,
   });
 

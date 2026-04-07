@@ -36,6 +36,12 @@ class EdgeInsets {
   /// Zero insets on all sides.
   static const EdgeInsets zero = EdgeInsets.all(0);
 
+  /// Horizontal padding of 1 unit on left and right.
+  static const EdgeInsets horizontalOne = EdgeInsets.symmetric(horizontal: 1);
+
+  /// Horizontal padding of 2 units on left and right.
+  static const EdgeInsets horizontalTwo = EdgeInsets.symmetric(horizontal: 2);
+
   /// The total horizontal inset (left + right).
   int get horizontal => left + right;
 

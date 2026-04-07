@@ -228,8 +228,7 @@ class _TabBarState extends State<TabBar> with FocusableState<TabBar> {
       unselectedLabelColor: widget.unselectedLabelColor ?? Color.brightBlack,
       labelStyle: widget.labelStyle,
       unselectedLabelStyle: widget.unselectedLabelStyle,
-      labelPadding:
-          widget.labelPadding ?? const EdgeInsets.symmetric(horizontal: 1),
+      labelPadding: widget.labelPadding ?? EdgeInsets.horizontalOne,
     );
   }
 }
