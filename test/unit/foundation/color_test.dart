@@ -175,10 +175,6 @@ void main() {
       test('transparent has value -1', () {
         expect(Colors.transparent.value, equals(-1));
       });
-
-      test('black54 has value 16', () {
-        expect(Colors.black54.value, equals(16));
-      });
     });
   });
 

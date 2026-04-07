@@ -75,8 +75,7 @@ class Color {
 
 /// Predefined [Color] constants following material naming conventions.
 ///
-/// Provides the same ANSI 16-color palette as [Color] plus additional
-/// semantic colors like [Colors.black54].
+/// Provides same ANSI 16-color palette as [Color].
 class Colors {
   /// Black (ANSI 0).
   static const Color black = Color(0);
@@ -128,9 +127,6 @@ class Colors {
 
   /// No color.
   static const Color transparent = Color(-1);
-
-  /// Semi-transparent black used for barrier overlays.
-  static const Color black54 = Color(16);
 }
 
 /// Font family options for terminal text rendering.
