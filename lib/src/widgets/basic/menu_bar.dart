@@ -475,7 +475,8 @@ class RenderMenuBar extends RenderBox {
     final int menuX = baseX + _cachedDropdownX;
     final MenuBarItem openItem = items[openMenuIndex];
     final int maxWidth = _cachedDropdownWidth;
-    for (int row = 0; row < openItem.children.length; row++) {
+    final int childCount = openItem.children.length;
+    for (int row = 0; row < childCount; row++) {
       _paintDropdownRow(
         context,
         menuX,

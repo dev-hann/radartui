@@ -77,11 +77,7 @@ class OutputBuffer {
   /// Returns the total width advance (sum of [charWidth] for all characters).
   int writeStringBatch(int x, int y, String text, TextStyle? style) {
     if (y < 0 || y >= terminal.height) {
-      int totalWidth = 0;
-      for (int i = 0; i < text.length; i++) {
-        totalWidth += charWidth(text.codeUnitAt(i));
-      }
-      return totalWidth;
+      return _computeTextWidth(text);
     }
     final int w = terminal.width;
     int col = x;
@@ -93,6 +89,15 @@ class OutputBuffer {
       col += charWidth(ch.codeUnitAt(0));
     }
     return col - x;
+  }
+
+  int _computeTextWidth(String text) {
+    int totalWidth = 0;
+    final int textLength = text.length;
+    for (int i = 0; i < textLength; i++) {
+      totalWidth += charWidth(text.codeUnitAt(i));
+    }
+    return totalWidth;
   }
 
   void _fillRow(int y) {

@@ -231,7 +231,8 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
 
   List<int> _calculateColumnWidths() {
     final widths = <int>[];
-    for (int i = 0; i < widget.columns.length; i++) {
+    final int columnCount = widget.columns.length;
+    for (int i = 0; i < columnCount; i++) {
       widths.add(_maxColumnWidth(i));
     }
     return widths;
@@ -255,7 +256,8 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
       parts.add('   ');
     }
 
-    for (int i = 0; i < widget.columns.length; i++) {
+    final int columnCount = widget.columns.length;
+    for (int i = 0; i < columnCount; i++) {
       final column = widget.columns[i];
       final width = columnWidths[i];
       String label = column.label;
@@ -287,7 +289,8 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
       parts.add(row.selected ? '[x]' : '[ ]');
     }
 
-    for (int i = 0; i < widget.columns.length; i++) {
+    final int columnCount = widget.columns.length;
+    for (int i = 0; i < columnCount; i++) {
       final width = columnWidths[i];
       final column = widget.columns[i];
       final cellValue = i < row.cells.length ? row.cells[i].value : '';
