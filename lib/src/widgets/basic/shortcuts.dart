@@ -147,8 +147,10 @@ class Shortcuts extends StatefulWidget {
   }
 
   static Intent? _matchShortcut(KeyEvent event, _ShortcutsScope scope) {
-    for (final entry in scope.shortcuts.entries) {
-      if (entry.key.accepts(event)) return entry.value;
+    final keys = scope.shortcuts.keys.toList();
+    final int keyCount = keys.length;
+    for (int i = 0; i < keyCount; i++) {
+      if (keys[i].accepts(event)) return scope.shortcuts[keys[i]];
     }
     return null;
   }
