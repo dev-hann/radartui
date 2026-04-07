@@ -1,14 +1,5 @@
 import '../../../radartui.dart';
-
-bool _mapsEqual<K, V>(Map<K, V> map1, Map<K, V> map2) {
-  if (map1.length != map2.length) return false;
-  for (final key in map1.keys) {
-    if (!map2.containsKey(key) || map1[key] != map2[key]) {
-      return false;
-    }
-  }
-  return true;
-}
+import '../../foundation/utils.dart' show listEquals;
 
 /// Represents a keyboard shortcut (key + optional modifiers).
 ///
@@ -113,17 +104,8 @@ class _ShortcutsScope extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_ShortcutsScope oldWidget) {
-    return !_mapsEqual(shortcuts, oldWidget.shortcuts);
-  }
-
-  bool _mapsEqual<K, V>(Map<K, V> map1, Map<K, V> map2) {
-    if (map1.length != map2.length) return false;
-    for (final key in map1.keys) {
-      if (!map2.containsKey(key) || map1[key] != map2[key]) {
-        return false;
-      }
-    }
-    return true;
+    return !listEquals(
+        shortcuts.keys.toList(), oldWidget.shortcuts.keys.toList());
   }
 }
 
@@ -189,7 +171,7 @@ class _ActionsScope extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_ActionsScope oldWidget) {
-    return !_mapsEqual(actions, oldWidget.actions);
+    return !listEquals(actions.keys.toList(), oldWidget.actions.keys.toList());
   }
 }
 
