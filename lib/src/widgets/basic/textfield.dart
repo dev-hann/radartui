@@ -657,47 +657,65 @@ class RenderTextField extends RenderBox {
     final int bufferHeight = context.buffer.terminal.height;
     final int bufferWidth = context.buffer.terminal.width;
 
-    void drawHorizontalLine(int yOffset) {
-      final int targetY = offset.y + yOffset;
-      if (targetY < 0 || targetY >= bufferHeight) return;
-      final int clipStart = offset.x.clamp(0, bufferWidth);
-      final int clipEnd = (offset.x + width).clamp(0, bufferWidth);
-      final int clippedWidth = clipEnd - clipStart;
-      if (clippedWidth <= 0) return;
-      context.writeString(
-        clipStart,
-        targetY,
-        BoxDrawingConstants.horizontal * clippedWidth,
-        _borderStyle,
-      );
-    }
+    _drawHorizontalLine(context, offset, width, bufferHeight, bufferWidth, -1);
+    _drawHorizontalLine(context, offset, width, bufferHeight, bufferWidth, 1);
+    _drawVerticalBorder(context, offset, bufferWidth, -1);
+    _drawVerticalBorder(context, offset, bufferWidth, width);
+    _drawCorner(context, offset, -1, -1, BoxDrawingConstants.topLeft);
+    _drawCorner(context, offset, width, -1, BoxDrawingConstants.topRight);
+    _drawCorner(context, offset, -1, 1, BoxDrawingConstants.bottomLeft);
+    _drawCorner(context, offset, width, 1, BoxDrawingConstants.bottomRight);
+  }
 
-    void drawVerticalBorder(int xOffset) {
-      final int targetX = offset.x + xOffset;
-      if (targetX < 0 || targetX >= bufferWidth) return;
-      context.buffer.writeStyled(
-        targetX,
-        offset.y,
-        BoxDrawingConstants.vertical,
-        _borderStyle,
-      );
-    }
+  void _drawHorizontalLine(
+    PaintingContext context,
+    Offset offset,
+    int width,
+    int bufferHeight,
+    int bufferWidth,
+    int yOffset,
+  ) {
+    final int targetY = offset.y + yOffset;
+    if (targetY < 0 || targetY >= bufferHeight) return;
+    final int clipStart = offset.x.clamp(0, bufferWidth);
+    final int clipEnd = (offset.x + width).clamp(0, bufferWidth);
+    final int clippedWidth = clipEnd - clipStart;
+    if (clippedWidth <= 0) return;
+    context.writeString(
+      clipStart,
+      targetY,
+      BoxDrawingConstants.horizontal * clippedWidth,
+      _borderStyle,
+    );
+  }
 
-    void drawCorner(int xOffset, int yOffset, String cornerChar) {
-      final int targetX = offset.x + xOffset;
-      final int targetY = offset.y + yOffset;
-      if (targetX >= 0 && targetY >= 0) {
-        context.buffer.writeStyled(targetX, targetY, cornerChar, _borderStyle);
-      }
-    }
+  void _drawVerticalBorder(
+    PaintingContext context,
+    Offset offset,
+    int bufferWidth,
+    int xOffset,
+  ) {
+    final int targetX = offset.x + xOffset;
+    if (targetX < 0 || targetX >= bufferWidth) return;
+    context.buffer.writeStyled(
+      targetX,
+      offset.y,
+      BoxDrawingConstants.vertical,
+      _borderStyle,
+    );
+  }
 
-    drawHorizontalLine(-1);
-    drawHorizontalLine(1);
-    drawVerticalBorder(-1);
-    drawVerticalBorder(width);
-    drawCorner(-1, -1, BoxDrawingConstants.topLeft);
-    drawCorner(width, -1, BoxDrawingConstants.topRight);
-    drawCorner(-1, 1, BoxDrawingConstants.bottomLeft);
-    drawCorner(width, 1, BoxDrawingConstants.bottomRight);
+  void _drawCorner(
+    PaintingContext context,
+    Offset offset,
+    int xOffset,
+    int yOffset,
+    String cornerChar,
+  ) {
+    final int targetX = offset.x + xOffset;
+    final int targetY = offset.y + yOffset;
+    if (targetX >= 0 && targetY >= 0) {
+      context.buffer.writeStyled(targetX, targetY, cornerChar, _borderStyle);
+    }
   }
 }
