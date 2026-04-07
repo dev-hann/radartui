@@ -67,6 +67,7 @@ class _ListViewState<T> extends State<ListView<T>>
 
   @override
   void onKeyEvent(KeyEvent event) {
+    final totalItems = widget.items.length;
     switch (event.code) {
       case KeyCode.arrowUp:
         _moveSelection(-1);
@@ -81,7 +82,7 @@ class _ListViewState<T> extends State<ListView<T>>
       default:
         if (event.isActivationKey &&
             selectedIndex >= 0 &&
-            selectedIndex < widget.items.length) {
+            selectedIndex < totalItems) {
           widget.onItemSelected
               ?.call(selectedIndex, widget.items[selectedIndex]);
         }
@@ -90,13 +91,14 @@ class _ListViewState<T> extends State<ListView<T>>
 
   void _moveSelection(int direction) {
     setState(() {
+      final totalItems = widget.items.length;
       if (widget.wrapAroundNavigation) {
         selectedIndex =
-            wrapSelectableIndex(selectedIndex + direction, widget.items.length);
+            wrapSelectableIndex(selectedIndex + direction, totalItems);
       } else {
         selectedIndex = (selectedIndex + direction).clamp(
           0,
-          widget.items.length - 1,
+          totalItems - 1,
         );
       }
       scrollController.ensureVisible(selectedIndex, _viewportHeight);

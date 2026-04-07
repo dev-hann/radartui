@@ -179,17 +179,16 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
   }
 
   void _moveSelection(int direction) {
+    final totalRows = widget.rows.length;
     setState(() {
-      _focusedRowIndex = (_focusedRowIndex + direction).clamp(
-        0,
-        widget.rows.length - 1,
-      );
+      _focusedRowIndex = (_focusedRowIndex + direction).clamp(0, totalRows - 1);
       _scrollController.ensureVisible(_focusedRowIndex, _viewportHeight);
     });
   }
 
   void _triggerSort() {
-    if (_focusedColumnIndex < widget.columns.length) {
+    final totalColumns = widget.columns.length;
+    if (_focusedColumnIndex < totalColumns) {
       final column = widget.columns[_focusedColumnIndex];
       final ascending = widget.sortColumnIndex != _focusedColumnIndex
           ? true
@@ -199,8 +198,9 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
   }
 
   void _toggleSelection() {
+    final totalRows = widget.rows.length;
     if (!widget.showCheckboxColumn) return;
-    if (_focusedRowIndex >= 0 && _focusedRowIndex < widget.rows.length) {
+    if (_focusedRowIndex >= 0 && _focusedRowIndex < totalRows) {
       final row = widget.rows[_focusedRowIndex];
       row.onSelectChanged?.call(!row.selected);
     }
@@ -212,9 +212,10 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
     final headerRow = _buildHeaderRow(columnWidths);
 
     final visibleRows = <Widget>[];
-    final scrollOffset = _scrollController.offset.clamp(0, widget.rows.length);
-    final visibleCount = _viewportHeight.clamp(1, widget.rows.length);
-    final endIndex = (scrollOffset + visibleCount).clamp(0, widget.rows.length);
+    final totalRows = widget.rows.length;
+    final scrollOffset = _scrollController.offset.clamp(0, totalRows);
+    final visibleCount = _viewportHeight.clamp(1, totalRows);
+    final endIndex = (scrollOffset + visibleCount).clamp(0, totalRows);
 
     for (int i = scrollOffset; i < endIndex; i++) {
       visibleRows.add(_buildDataRow(i, columnWidths));
@@ -231,8 +232,8 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
 
   List<int> _calculateColumnWidths() {
     final widths = <int>[];
-    final int columnCount = widget.columns.length;
-    for (int i = 0; i < columnCount; i++) {
+    final totalColumns = widget.columns.length;
+    for (int i = 0; i < totalColumns; i++) {
       widths.add(_maxColumnWidth(i));
     }
     return widths;
@@ -256,8 +257,8 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
       parts.add('   ');
     }
 
-    final int columnCount = widget.columns.length;
-    for (int i = 0; i < columnCount; i++) {
+    final totalColumns = widget.columns.length;
+    for (int i = 0; i < totalColumns; i++) {
       final column = widget.columns[i];
       final width = columnWidths[i];
       String label = column.label;
@@ -289,8 +290,8 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
       parts.add(row.selected ? '[x]' : '[ ]');
     }
 
-    final int columnCount = widget.columns.length;
-    for (int i = 0; i < columnCount; i++) {
+    final totalColumns = widget.columns.length;
+    for (int i = 0; i < totalColumns; i++) {
       final width = columnWidths[i];
       final column = widget.columns[i];
       final cellValue = i < row.cells.length ? row.cells[i].value : '';

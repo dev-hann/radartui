@@ -122,8 +122,9 @@ class _MenuBarState extends State<MenuBar> with FocusableState<MenuBar> {
       });
     } else if (event.code == KeyCode.arrowLeft ||
         event.code == KeyCode.arrowRight) {
+      final totalItems = widget.items.length;
       setState(() {
-        _openMenuIndex = widget.items.isNotEmpty ? 0 : -1;
+        _openMenuIndex = totalItems > 0 ? 0 : -1;
         if (_openMenuIndex >= 0) focusNode.trapFocus = true;
       });
     }
@@ -149,16 +150,17 @@ class _MenuBarState extends State<MenuBar> with FocusableState<MenuBar> {
   }
 
   void _navigateLeft() {
+    final totalItems = widget.items.length;
     setState(() {
-      _openMenuIndex =
-          (_openMenuIndex - 1 + widget.items.length) % widget.items.length;
+      _openMenuIndex = (_openMenuIndex - 1 + totalItems) % totalItems;
       _selectedItemIndex = 0;
     });
   }
 
   void _navigateRight() {
+    final totalItems = widget.items.length;
     setState(() {
-      _openMenuIndex = (_openMenuIndex + 1) % widget.items.length;
+      _openMenuIndex = (_openMenuIndex + 1) % totalItems;
       _selectedItemIndex = 0;
     });
   }

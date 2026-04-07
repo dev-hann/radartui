@@ -70,7 +70,7 @@ class _GridViewState<T> extends State<GridView<T>>
   @override
   void onKeyEvent(KeyEvent event) {
     final totalItems = widget.items.length;
-    if (widget.items.isEmpty) return;
+    if (totalItems == 0) return;
 
     switch (event.code) {
       case KeyCode.arrowUp:
@@ -93,14 +93,13 @@ class _GridViewState<T> extends State<GridView<T>>
 
   void _moveSelection(int delta) {
     setState(() {
-      if (widget.items.isEmpty) return;
+      final totalItems = widget.items.length;
+      if (totalItems == 0) return;
 
       if (widget.wrapAroundNavigation) {
-        selectedIndex =
-            wrapSelectableIndex(selectedIndex + delta, widget.items.length);
+        selectedIndex = wrapSelectableIndex(selectedIndex + delta, totalItems);
       } else {
-        selectedIndex =
-            (selectedIndex + delta).clamp(0, widget.items.length - 1);
+        selectedIndex = (selectedIndex + delta).clamp(0, totalItems - 1);
       }
     });
   }
