@@ -54,10 +54,7 @@ class _RadioState<T> extends State<Radio<T>> with FocusableState<Radio<T>> {
       duration: const Duration(milliseconds: 100),
       initialValue: isSelected ? 1.0 : 0.0,
     );
-    _colorAnim = ColorTween(
-      begin: Color.black,
-      end: widget.activeColor ?? Color.blue,
-    ).animate(_controller);
+    _colorAnim = _createColorAnimation(_controller);
     _controller.addListener(() => setState(() {}));
   }
 
@@ -86,16 +83,20 @@ class _RadioState<T> extends State<Radio<T>> with FocusableState<Radio<T>> {
     }
 
     if (oldWidget.activeColor != widget.activeColor) {
-      _colorAnim = ColorTween(
-        begin: Color.black,
-        end: widget.activeColor ?? Color.blue,
-      ).animate(_controller);
+      _colorAnim = _createColorAnimation(_controller);
     }
   }
 
   void _onTap() {
     if (widget.onChanged == null) return;
     widget.onChanged!(widget.value);
+  }
+
+  Animation<Color> _createColorAnimation(AnimationController controller) {
+    return ColorTween(
+      begin: Color.black,
+      end: widget.activeColor ?? Color.blue,
+    ).animate(controller);
   }
 
   @override
