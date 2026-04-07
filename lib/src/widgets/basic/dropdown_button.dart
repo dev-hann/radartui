@@ -98,13 +98,18 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
         _cachedValueIndex != null) {
       return _cachedValueIndex!;
     }
-    _cachedValueToIndexMap = {};
+
+    _cachedValueToIndexMap ??= {};
+    _cachedValueToIndexMap!.clear();
+    _cachedValueIndex = null;
     for (int i = 0; i < widget.items.length; i++) {
-      _cachedValueToIndexMap![widget.items[i].value] = i;
-      if (widget.items[i].value == widget.value) {
+      final item = widget.items[i];
+      _cachedValueToIndexMap![item.value] = i;
+      if (item.value == widget.value) {
         _cachedValueIndex = i;
       }
     }
+
     _cachedItemsIdentity = widget.items;
     return _cachedValueIndex!;
   }
