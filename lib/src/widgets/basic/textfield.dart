@@ -657,148 +657,47 @@ class RenderTextField extends RenderBox {
     final int bufferHeight = context.buffer.terminal.height;
     final int bufferWidth = context.buffer.terminal.width;
 
-    _drawBorderEdges(
-      context,
-      offset,
-      width,
-      bufferHeight,
-      bufferWidth,
-      _borderStyle,
-    );
-    _drawBorderCorners(
-      context,
-      offset,
-      width,
-      bufferHeight,
-      bufferWidth,
-      _borderStyle,
-    );
-  }
-
-  void _drawBorderEdges(
-    PaintingContext context,
-    Offset offset,
-    int width,
-    int bufferHeight,
-    int bufferWidth,
-    TextStyle borderStyle,
-  ) {
-    _drawTopBorder(context, offset, width, bufferWidth, borderStyle);
-    _drawBottomBorder(
-        context, offset, width, bufferHeight, bufferWidth, borderStyle);
-    _drawLeftBorder(context, offset, bufferHeight, borderStyle);
-    _drawRightBorder(
-        context, offset, width, bufferHeight, bufferWidth, borderStyle);
-  }
-
-  void _drawTopBorder(
-    PaintingContext context,
-    Offset offset,
-    int width,
-    int bufferWidth,
-    TextStyle borderStyle,
-  ) {
-    if (offset.y > 0) {
-      _drawHorizontalLine(
-          context, offset.x, offset.y - 1, width, bufferWidth, borderStyle);
-    }
-  }
-
-  void _drawBottomBorder(
-    PaintingContext context,
-    Offset offset,
-    int width,
-    int bufferHeight,
-    int bufferWidth,
-    TextStyle borderStyle,
-  ) {
-    if (offset.y + 1 < bufferHeight) {
-      _drawHorizontalLine(
-          context, offset.x, offset.y + 1, width, bufferWidth, borderStyle);
-    }
-  }
-
-  void _drawLeftBorder(
-    PaintingContext context,
-    Offset offset,
-    int bufferHeight,
-    TextStyle borderStyle,
-  ) {
-    if (offset.x > 0) {
-      context.buffer.writeStyled(
-        offset.x - 1,
-        offset.y,
-        BoxDrawingConstants.vertical,
-        borderStyle,
+    void drawHorizontalLine(int yOffset) {
+      final int targetY = offset.y + yOffset;
+      if (targetY < 0 || targetY >= bufferHeight) return;
+      final int clipStart = offset.x.clamp(0, bufferWidth);
+      final int clipEnd = (offset.x + width).clamp(0, bufferWidth);
+      final int clippedWidth = clipEnd - clipStart;
+      if (clippedWidth <= 0) return;
+      context.writeString(
+        clipStart,
+        targetY,
+        BoxDrawingConstants.horizontal * clippedWidth,
+        _borderStyle,
       );
     }
-  }
 
-  void _drawRightBorder(
-    PaintingContext context,
-    Offset offset,
-    int width,
-    int bufferHeight,
-    int bufferWidth,
-    TextStyle borderStyle,
-  ) {
-    if (offset.x + width < bufferWidth) {
+    void drawVerticalBorder(int xOffset) {
+      final int targetX = offset.x + xOffset;
+      if (targetX < 0 || targetX >= bufferWidth) return;
       context.buffer.writeStyled(
-        offset.x + width,
+        targetX,
         offset.y,
         BoxDrawingConstants.vertical,
-        borderStyle,
+        _borderStyle,
       );
     }
-  }
 
-  void _drawHorizontalLine(
-    PaintingContext context,
-    int startX,
-    int y,
-    int width,
-    int bufferWidth,
-    TextStyle style,
-  ) {
-    final int clipStart = startX.clamp(0, bufferWidth);
-    final int clipEnd = (startX + width).clamp(0, bufferWidth);
-    final int clippedWidth = clipEnd - clipStart;
-    if (clippedWidth <= 0) return;
-    context.writeString(
-      clipStart,
-      y,
-      BoxDrawingConstants.horizontal * clippedWidth,
-      style,
-    );
-  }
-
-  void _drawBorderCorners(
-    PaintingContext context,
-    Offset offset,
-    int width,
-    int bufferHeight,
-    int bufferWidth,
-    TextStyle borderStyle,
-  ) {
-    _drawCorner(context, offset.x - 1, offset.y - 1,
-        BoxDrawingConstants.topLeft, borderStyle);
-    _drawCorner(context, offset.x + width, offset.y - 1,
-        BoxDrawingConstants.topRight, borderStyle);
-    _drawCorner(context, offset.x - 1, offset.y + 1,
-        BoxDrawingConstants.bottomLeft, borderStyle);
-    _drawCorner(context, offset.x + width, offset.y + 1,
-        BoxDrawingConstants.bottomRight, borderStyle);
-  }
-
-  void _drawCorner(
-    PaintingContext context,
-    int x,
-    int y,
-    String ch,
-    TextStyle style,
-  ) {
-    if (x >= 0 && y >= 0) {
-      context.buffer.writeStyled(x, y, ch, style);
+    void drawCorner(int xOffset, int yOffset, String cornerChar) {
+      final int targetX = offset.x + xOffset;
+      final int targetY = offset.y + yOffset;
+      if (targetX >= 0 && targetY >= 0) {
+        context.buffer.writeStyled(targetX, targetY, cornerChar, _borderStyle);
+      }
     }
+
+    drawHorizontalLine(-1);
+    drawHorizontalLine(1);
+    drawVerticalBorder(-1);
+    drawVerticalBorder(width);
+    drawCorner(-1, -1, BoxDrawingConstants.topLeft);
+    drawCorner(width, -1, BoxDrawingConstants.topRight);
+    drawCorner(-1, 1, BoxDrawingConstants.bottomLeft);
+    drawCorner(width, 1, BoxDrawingConstants.bottomRight);
   }
 }
