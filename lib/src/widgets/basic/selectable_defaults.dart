@@ -2,7 +2,7 @@ import '../../../radartui.dart';
 
 /// Default builder for selected items in selectable widgets.
 ///
-/// Prefixes the item with a '>' character to indicate selection.
+/// Prefixes that item with a '>' character to indicate selection.
 /// Used by [ListView] and [GridView] when no custom builder is provided.
 Widget defaultSelectedBuilder<T>(T item) {
   return Text('> $item');
@@ -10,13 +10,13 @@ Widget defaultSelectedBuilder<T>(T item) {
 
 /// Default builder for unselected items in selectable widgets.
 ///
-/// Prefixes the item with two spaces for alignment with selected items.
+/// Prefixes that item with two spaces for alignment with selected items.
 /// Used by [ListView] and [GridView] when no custom builder is provided.
 Widget defaultUnselectedBuilder<T>(T item) {
   return Text('  $item');
 }
 
-/// Wraps an index within the bounds of a list.
+/// Wraps an index within bounds of a list.
 ///
 /// Handles wrap-around navigation where moving past the last item
 /// returns to the first, and vice versa. Returns a value in the

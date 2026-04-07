@@ -183,8 +183,9 @@ class RenderContainer extends RenderBox
   @override
   void performLayout(Constraints constraints) {
     final boxConstraints = constraints.asBoxConstraints;
-    final totalMargin = margin ?? EdgeInsets.zero;
-    final totalPadding = padding ?? EdgeInsets.zero;
+    const edgeInsetsZero = EdgeInsets.zero;
+    final totalMargin = margin ?? edgeInsetsZero;
+    final totalPadding = padding ?? edgeInsetsZero;
 
     int containerW = _width ?? boxConstraints.maxWidth;
     int containerH = _height ?? LayoutConstants.defaultContainerHeight;
@@ -220,8 +221,9 @@ class RenderContainer extends RenderBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final totalMargin = margin ?? EdgeInsets.zero;
-    final totalPadding = padding ?? EdgeInsets.zero;
+    const edgeInsetsZero = EdgeInsets.zero;
+    final totalMargin = margin ?? edgeInsetsZero;
+    final totalPadding = padding ?? edgeInsetsZero;
     final innerOffset = offset + Offset(totalMargin.left, totalMargin.top);
     final innerWidth =
         (size!.width - totalMargin.horizontal).clamp(0, size!.width);
