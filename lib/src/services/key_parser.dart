@@ -277,8 +277,10 @@ class KeyParser {
     final code = switch (data[0]) {
       27 => KeyCode.escape,
       9 => KeyCode.tab,
-      10 || 13 => KeyCode.enter,
-      127 || 8 => KeyCode.backspace,
+      10 => KeyCode.enter,
+      13 => KeyCode.enter,
+      127 => KeyCode.backspace,
+      8 => KeyCode.backspace,
       32 => KeyCode.space,
       _ => null,
     };

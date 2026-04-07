@@ -2,7 +2,7 @@ import 'dart:async';
 
 import '../binding.dart';
 import '../foundation.dart';
-import '../rendering.dart';
+import 'basic/sized_box.dart';
 import 'focus_manager.dart';
 import 'framework.dart';
 import 'navigator_observer.dart';
@@ -298,7 +298,7 @@ class NavigatorState extends State<Navigator> {
   @override
   Widget build(BuildContext context) {
     if (_history.isEmpty) {
-      return widget.home ?? const _EmptyWidget();
+      return widget.home ?? const SizedBox.shrink();
     }
 
     return _NavigatorScope(
@@ -417,32 +417,4 @@ extension BuildContextNavigation on BuildContext {
 
   /// Returns the singleton [FocusManager] instance.
   FocusManager get focusManager => Navigator.focusManager;
-}
-
-class _EmptyWidget extends StatelessWidget {
-  const _EmptyWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return const _EmptyRenderWidget();
-  }
-}
-
-class _EmptyRenderWidget extends RenderObjectWidget {
-  const _EmptyRenderWidget();
-
-  @override
-  RenderObjectElement createElement() => RenderObjectElement(this);
-
-  @override
-  _EmptyRenderObject createRenderObject(BuildContext context) =>
-      _EmptyRenderObject();
-}
-
-class _EmptyRenderObject extends RenderObject {
-  @override
-  void performLayout(Constraints constraints) {}
-
-  @override
-  void paint(PaintingContext context, Offset offset) {}
 }

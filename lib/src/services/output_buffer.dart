@@ -262,6 +262,8 @@ class OutputBuffer {
   /// Renders only the changed cells to the terminal since the last flush.
   void flush() {
     _flushBuffer.clear();
+    _cachedAnsiStyle = null;
+    _cachedAnsiCode = null;
     int cursorX = -1;
     int cursorY = -1;
     TextStyle? currentStyle;
