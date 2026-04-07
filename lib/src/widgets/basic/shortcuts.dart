@@ -22,14 +22,7 @@ class ShortcutActivator {
 
   /// Returns `true` if [event] matches this activator's key and modifiers.
   bool accepts(KeyEvent event) {
-    if (event.code != key) {
-      if (key == KeyCode.char) {
-        if (event.code != KeyCode.char) return false;
-      } else {
-        return false;
-      }
-    }
-
+    if (event.code != key) return false;
     if (ctrl != null && ctrl != event.isCtrlPressed) return false;
     if (alt != null && alt != event.isAltPressed) return false;
     if (shift != null && shift != event.isShiftPressed) return false;
