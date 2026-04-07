@@ -389,13 +389,13 @@ class RenderMenuBar extends RenderBox {
         identical(_items, _cachedItemsIdentity)) {
       return;
     }
+
+    final bool hasOpenMenu =
+        openMenuIndex >= 0 && openMenuIndex < _items.length;
     _cachedShortcutWidths = const {};
-    _cachedDropdownWidth = 0;
-    _cachedDropdownX = 0;
-    if (openMenuIndex >= 0 && openMenuIndex < _items.length) {
-      _cachedDropdownWidth = _computeMaxDropdownWidth(_items[openMenuIndex]);
-      _cachedDropdownX = _computeDropdownX();
-    }
+    _cachedDropdownWidth =
+        hasOpenMenu ? _computeMaxDropdownWidth(_items[openMenuIndex]) : 0;
+    _cachedDropdownX = hasOpenMenu ? _computeDropdownX() : 0;
     _cachedOpenMenuIndex = openMenuIndex;
   }
 
