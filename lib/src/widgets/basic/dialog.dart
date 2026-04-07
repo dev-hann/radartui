@@ -67,7 +67,8 @@ class Dialog extends StatelessWidget {
 
   Widget _buildActionRow() {
     final actionWidgets = <Widget>[];
-    for (int i = 0; i < actions!.length; i++) {
+    final int actionCount = actions!.length;
+    for (int i = 0; i < actionCount; i++) {
       if (i > 0) {
         actionWidgets.add(const Container(width: 2));
       }

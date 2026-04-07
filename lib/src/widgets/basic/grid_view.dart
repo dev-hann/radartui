@@ -109,7 +109,8 @@ class _GridViewState<T> extends State<GridView<T>>
   Widget build(BuildContext context) {
     final children = <Widget>[];
 
-    for (int i = 0; i < widget.items.length; i++) {
+    final int itemCount = widget.items.length;
+    for (int i = 0; i < itemCount; i++) {
       final item = widget.items[i];
       final isSelected = i == selectedIndex && hasFocus;
       children.add(
