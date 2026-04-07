@@ -58,12 +58,7 @@ class _CircularProgressIndicatorState extends State<CircularProgressIndicator> {
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: widget.speed,
-    );
-    _controller.addStatusListener(_onStatusChanged);
-    _controller.addListener(_onFrame);
-    _controller.forward();
+    _setupAnimationController();
   }
 
   @override
@@ -71,10 +66,7 @@ class _CircularProgressIndicatorState extends State<CircularProgressIndicator> {
     super.didUpdateWidget(oldWidget);
     if (widget.speed != oldWidget.speed) {
       _controller.dispose();
-      _controller = AnimationController(duration: widget.speed);
-      _controller.addStatusListener(_onStatusChanged);
-      _controller.addListener(_onFrame);
-      _controller.forward();
+      _setupAnimationController();
     }
   }
 
@@ -96,6 +88,13 @@ class _CircularProgressIndicatorState extends State<CircularProgressIndicator> {
     _controller.removeStatusListener(_onStatusChanged);
     _controller.dispose();
     super.dispose();
+  }
+
+  void _setupAnimationController() {
+    _controller = AnimationController(duration: widget.speed);
+    _controller.addStatusListener(_onStatusChanged);
+    _controller.addListener(_onFrame);
+    _controller.forward();
   }
 
   @override
