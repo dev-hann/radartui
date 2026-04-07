@@ -32,7 +32,7 @@ class TextSpan {
   @override
   int get hashCode => Object.hash(text, style, children);
 
-  /// Returns the unstyled plain-text content of this span and its descendants.
+  /// Returns unstyled plain-text content of this span and its descendants.
   String get plainText {
     final buffer = StringBuffer();
     _collectPlainText(buffer);
@@ -253,15 +253,15 @@ class RenderRichText extends RenderBox {
   ) {
     final segmentLines = segment.text.split('\n');
 
-    for (final entry in segmentLines.asMap().entries) {
-      if (entry.key > 0) {
+    for (int i = 0; i < segmentLines.length; i++) {
+      if (i > 0) {
         lines.add(currentLine);
         currentLine = _StyledLine.empty();
         currentX = 0;
       }
 
       currentLine = _wrapSegmentText(
-        entry.value,
+        segmentLines[i],
         segment.style,
         maxWidth,
         lines,
@@ -321,22 +321,22 @@ class RenderRichText extends RenderBox {
     _StyledLine currentLine,
   ) {
     final segmentLines = segment.text.split('\n');
-    for (final entry in segmentLines.asMap().entries) {
-      if (entry.key > 0) {
+    for (int i = 0; i < segmentLines.length; i++) {
+      if (i > 0) {
         lines.add(currentLine);
         currentLine = _StyledLine.empty();
       }
-      currentLine.add(entry.value, segment.style);
+      currentLine.add(segmentLines[i], segment.style);
     }
     return currentLine;
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    for (final entry in _lines.asMap().entries) {
-      final line = entry.value;
+    for (int i = 0; i < _lines.length; i++) {
+      final line = _lines[i];
       int x = offset.x;
-      final int y = offset.y + entry.key;
+      final int y = offset.y + i;
       for (final run in line.runs) {
         x = _paintRun(context, x, y, run);
       }
