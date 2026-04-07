@@ -82,12 +82,13 @@ class _GridViewState<T> extends State<GridView<T>>
       case KeyCode.arrowRight:
         _moveSelection(1);
       default:
-        if (event.isActivationKey &&
-            selectedIndex >= 0 &&
-            selectedIndex < totalItems) {
-          widget.onItemSelected
-              ?.call(selectedIndex, widget.items[selectedIndex]);
-        }
+        _handleActivationKey(event.isActivationKey, totalItems);
+    }
+  }
+
+  void _handleActivationKey(bool isActivationKey, int totalItems) {
+    if (isActivationKey && selectedIndex >= 0 && selectedIndex < totalItems) {
+      widget.onItemSelected?.call(selectedIndex, widget.items[selectedIndex]);
     }
   }
 

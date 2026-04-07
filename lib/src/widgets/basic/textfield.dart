@@ -654,8 +654,8 @@ class RenderTextField extends RenderBox {
 
   void _drawBorder(PaintingContext context, Offset offset, Size borderSize) {
     final int width = borderSize.width.toInt();
-    final int bufferHeight = context.buffer.terminal.height;
-    final int bufferWidth = context.buffer.terminal.width;
+    final bufferHeight = context.buffer.terminal.height;
+    final bufferWidth = context.buffer.terminal.width;
 
     _drawHorizontalLine(context, offset, width, bufferHeight, bufferWidth, -1);
     _drawHorizontalLine(context, offset, width, bufferHeight, bufferWidth, 1);
@@ -676,7 +676,9 @@ class RenderTextField extends RenderBox {
     int yOffset,
   ) {
     final int targetY = offset.y + yOffset;
-    if (targetY < 0 || targetY >= bufferHeight) return;
+    if (!_isValidPosition(offset.x, targetY, bufferHeight, bufferWidth)) {
+      return;
+    }
     final int clipStart = offset.x.clamp(0, bufferWidth);
     final int clipEnd = (offset.x + width).clamp(0, bufferWidth);
     final int clippedWidth = clipEnd - clipStart;
@@ -696,7 +698,9 @@ class RenderTextField extends RenderBox {
     int xOffset,
   ) {
     final int targetX = offset.x + xOffset;
-    if (targetX < 0 || targetX >= bufferWidth) return;
+    if (!_isValidPosition(targetX, offset.y, 1, bufferWidth)) {
+      return;
+    }
     context.buffer.writeStyled(
       targetX,
       offset.y,
@@ -717,5 +721,9 @@ class RenderTextField extends RenderBox {
     if (targetX >= 0 && targetY >= 0) {
       context.buffer.writeStyled(targetX, targetY, cornerChar, _borderStyle);
     }
+  }
+
+  bool _isValidPosition(int x, int y, int bufferHeight, int bufferWidth) {
+    return x >= 0 && x < bufferWidth && y >= 0 && y < bufferHeight;
   }
 }

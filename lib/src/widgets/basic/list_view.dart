@@ -74,18 +74,23 @@ class _ListViewState<T> extends State<ListView<T>>
       case KeyCode.arrowDown:
         _moveSelection(1);
       case KeyCode.char:
-        if (event.char == 'k') {
-          _moveSelection(-1);
-        } else if (event.char == 'j') {
-          _moveSelection(1);
-        }
+        _handleCharKey(event.char, totalItems);
       default:
-        if (event.isActivationKey &&
-            selectedIndex >= 0 &&
-            selectedIndex < totalItems) {
-          widget.onItemSelected
-              ?.call(selectedIndex, widget.items[selectedIndex]);
-        }
+        _handleActivationKey(event.isActivationKey, totalItems);
+    }
+  }
+
+  void _handleCharKey(String? char, int totalItems) {
+    if (char == 'k') {
+      _moveSelection(-1);
+    } else if (char == 'j') {
+      _moveSelection(1);
+    }
+  }
+
+  void _handleActivationKey(bool isActivationKey, int totalItems) {
+    if (isActivationKey && selectedIndex >= 0 && selectedIndex < totalItems) {
+      widget.onItemSelected?.call(selectedIndex, widget.items[selectedIndex]);
     }
   }
 

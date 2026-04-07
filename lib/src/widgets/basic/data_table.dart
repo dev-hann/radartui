@@ -152,19 +152,9 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
       case KeyCode.arrowDown:
         _moveSelection(1);
       case KeyCode.arrowLeft:
-        setState(() {
-          _focusedColumnIndex = (_focusedColumnIndex - 1).clamp(
-            0,
-            widget.columns.length - 1,
-          );
-        });
+        _moveFocusColumn(-1);
       case KeyCode.arrowRight:
-        setState(() {
-          _focusedColumnIndex = (_focusedColumnIndex + 1).clamp(
-            0,
-            widget.columns.length - 1,
-          );
-        });
+        _moveFocusColumn(1);
       case KeyCode.enter:
         _triggerSort();
       case KeyCode.space:
@@ -176,6 +166,15 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
       default:
         break;
     }
+  }
+
+  void _moveFocusColumn(int direction) {
+    setState(() {
+      _focusedColumnIndex = (_focusedColumnIndex + direction).clamp(
+        0,
+        widget.columns.length - 1,
+      );
+    });
   }
 
   void _moveSelection(int direction) {
