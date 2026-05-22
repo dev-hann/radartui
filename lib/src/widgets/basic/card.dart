@@ -67,7 +67,7 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
     final totalPadding = padding ?? EdgeInsets.zero;
     const borderSize = 2;
 
@@ -102,13 +102,21 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     EdgeInsets totalPadding,
     int borderSize,
   ) {
-    final availableWidth = boxConstraints.maxWidth - borderSize;
-    final availableHeight = boxConstraints.maxHeight - borderSize;
+    final maxChildWidth = (boxConstraints.maxWidth -
+            borderSize -
+            totalPadding.left -
+            totalPadding.right)
+        .clamp(0, 999999);
+    final maxChildHeight = (boxConstraints.maxHeight -
+            borderSize -
+            totalPadding.top -
+            totalPadding.bottom)
+        .clamp(0, 999999);
     return BoxConstraints(
       minWidth: 0,
-      maxWidth: availableWidth - totalPadding.left - totalPadding.right,
+      maxWidth: maxChildWidth,
       minHeight: 0,
-      maxHeight: availableHeight - totalPadding.top - totalPadding.bottom,
+      maxHeight: maxChildHeight,
     );
   }
 
@@ -136,7 +144,8 @@ class RenderCard extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   }
 
   int _resolveDimension(int minDim, int maxDim, int contentDim) {
-    return minDim >= maxDim ? maxDim : contentDim;
+    if (minDim >= maxDim) return maxDim;
+    return contentDim.clamp(minDim, maxDim);
   }
 
   @override

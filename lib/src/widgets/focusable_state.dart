@@ -47,7 +47,11 @@ mixin FocusableState<T extends StatefulWidget> on State<T> {
     FocusManager.instance.registerNode(_focusNode);
     _focusNode.onKeyEvent = onKeyEvent;
     _focusNode.addListener(_onFocusChange);
+    final bool oldHasFocus = _hasFocus;
     _hasFocus = _focusNode.hasFocus;
+    if (oldHasFocus != _hasFocus) {
+      onFocusChange(_hasFocus);
+    }
   }
 
   @override

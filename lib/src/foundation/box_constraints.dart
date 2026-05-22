@@ -1,4 +1,4 @@
-import '../rendering.dart';
+import 'constraints.dart';
 import 'edge_insets.dart';
 import 'size.dart';
 
@@ -59,6 +59,16 @@ class BoxConstraints extends Constraints {
 
   /// The maximum height constraint.
   final int maxHeight;
+
+  /// Downcasts [constraints] to [BoxConstraints].
+  ///
+  /// Throws [StateError] if the constraints are not box constraints.
+  static BoxConstraints asBox(Constraints constraints) {
+    if (constraints is BoxConstraints) {
+      return constraints;
+    }
+    throw StateError('Constraints is not a BoxConstraints');
+  }
 
   /// Whether these constraints force an exact size in both dimensions.
   bool get isTight => minWidth == maxWidth && minHeight == maxHeight;

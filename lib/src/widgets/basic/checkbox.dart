@@ -1,5 +1,4 @@
 import '../../../radartui.dart';
-import '../../foundation/drawing_constants.dart';
 
 /// A material-design checkbox that toggles between checked (✓) and unchecked states.
 ///
@@ -54,7 +53,7 @@ class _CheckboxState extends State<Checkbox> with FocusableState<Checkbox> {
       initialValue: widget.value ? 1.0 : 0.0,
     );
     _colorAnim = _createColorAnimation(_controller);
-    _controller.addListener(() => setState(() {}));
+    _controller.addListener(_onAnimationUpdate);
   }
 
   @override
@@ -105,8 +104,13 @@ class _CheckboxState extends State<Checkbox> with FocusableState<Checkbox> {
     );
   }
 
+  void _onAnimationUpdate() {
+    setState(() {});
+  }
+
   @override
   void dispose() {
+    _controller.removeListener(_onAnimationUpdate);
     _controller.dispose();
     super.dispose();
   }
@@ -265,10 +269,7 @@ class RenderCheckbox extends RenderBox {
     _ensureStylesCached();
     _paintBackground(context, offset);
     _paintBorder(context, offset);
-    final String checkChar = _getCheckChar();
-    if (checkChar.isNotEmpty) {
-      _paintIndicator(context, offset, checkChar);
-    }
+    _paintIndicator(context, offset, _getCheckChar());
   }
 
   void _ensureStylesCached() {
@@ -293,9 +294,8 @@ class RenderCheckbox extends RenderBox {
   void _paintBorder(PaintingContext context, Offset offset) {
     final TextStyle style =
         _styleCache.get('border', () => throw UnimplementedError());
-    const String borderChars =
-        '${BoxDrawingConstants.leftTee}${BoxDrawingConstants.rightTee}';
-    context.writeString(offset.x, offset.y, borderChars, style);
+    context.writeString(offset.x, offset.y, '[', style);
+    context.writeString(offset.x + 2, offset.y, ']', style);
   }
 
   void _paintIndicator(
@@ -317,5 +317,6 @@ class RenderCheckbox extends RenderBox {
     return Color.white;
   }
 
-  String _getCheckChar() => !enabled ? (value ? '×' : '') : (value ? '✓' : '');
+  String _getCheckChar() =>
+      !enabled ? (value ? '×' : ' ') : (value ? '✓' : ' ');
 }

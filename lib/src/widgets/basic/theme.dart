@@ -7,12 +7,12 @@ import '../../../radartui.dart';
 class ThemeData {
   /// Creates a [ThemeData] with customizable color tokens.
   const ThemeData({
-    this.primaryColor = Colors.blue,
-    this.backgroundColor = Colors.black,
-    this.textColor = Colors.white,
-    this.selectedColor = Colors.blue,
-    this.borderColor = Colors.white,
-    this.dividerColor = Colors.white,
+    this.primaryColor = Color.blue,
+    this.backgroundColor = Color.black,
+    this.textColor = Color.white,
+    this.selectedColor = Color.blue,
+    this.borderColor = Color.white,
+    this.dividerColor = Color.white,
   });
 
   /// The primary accent color used for interactive elements.
@@ -35,22 +35,22 @@ class ThemeData {
 
   /// A pre-built dark theme.
   static ThemeData get dark => const ThemeData(
-        primaryColor: Colors.blue,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        selectedColor: Colors.blue,
-        borderColor: Colors.white,
-        dividerColor: Colors.white,
+        primaryColor: Color.blue,
+        backgroundColor: Color.black,
+        textColor: Color.white,
+        selectedColor: Color.blue,
+        borderColor: Color.white,
+        dividerColor: Color.white,
       );
 
   /// A pre-built light theme.
   static ThemeData get light => const ThemeData(
-        primaryColor: Colors.blue,
-        backgroundColor: Colors.white,
-        textColor: Colors.black,
-        selectedColor: Colors.blue,
-        borderColor: Colors.black,
-        dividerColor: Colors.black,
+        primaryColor: Color.blue,
+        backgroundColor: Color.white,
+        textColor: Color.black,
+        selectedColor: Color.blue,
+        borderColor: Color.black,
+        dividerColor: Color.black,
       );
 
   /// Creates a copy of this theme with the given fields replaced.

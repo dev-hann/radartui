@@ -14,7 +14,7 @@ class Dialog extends StatelessWidget {
     this.actions,
     this.padding,
     this.titleStyle,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor = Color.white,
   });
 
   /// The content widget displayed in the dialog body.

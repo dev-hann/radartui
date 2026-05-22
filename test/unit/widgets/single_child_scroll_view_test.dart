@@ -113,9 +113,9 @@ void main() {
         controller.dispose();
       });
 
-      test('animateTo updates offset', () {
+      test('jumpTo updates offset', () {
         final controller = ScrollController();
-        controller.animateTo(15);
+        controller.jumpTo(15);
         expect(controller.offset, equals(15));
         controller.dispose();
       });

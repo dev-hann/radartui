@@ -163,7 +163,7 @@ class RenderText extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
     final maxWidth = boxConstraints.maxWidth;
 
     _lines = _wrapText(text, maxWidth);
@@ -218,18 +218,8 @@ class RenderText extends RenderBox {
     }
 
     final lines = <String>[];
-    final paragraphs = text.split('\n');
-
-    for (final paragraph in paragraphs) {
-      if (paragraph.isEmpty) {
-        lines.add('');
-      } else if (paragraph.length <= maxWidth) {
-        lines.add(paragraph);
-      } else if (softWrap) {
-        lines.addAll(_wrapParagraph(paragraph, maxWidth));
-      } else {
-        lines.add(paragraph.substring(0, maxWidth));
-      }
+    for (final paragraph in text.split('\n')) {
+      lines.addAll(_wrapLine(paragraph, maxWidth));
     }
 
     final result = lines.isEmpty ? [''] : lines;
@@ -240,6 +230,18 @@ class RenderText extends RenderBox {
     _cachedMaxLines = maxLines;
     _cachedLines = result;
     return result;
+  }
+
+  List<String> _wrapLine(String paragraph, int maxWidth) {
+    if (paragraph.isEmpty) {
+      return [''];
+    } else if (paragraph.length <= maxWidth) {
+      return [paragraph];
+    } else if (softWrap) {
+      return _wrapParagraph(paragraph, maxWidth);
+    } else {
+      return [paragraph.substring(0, maxWidth)];
+    }
   }
 
   List<String> _wrapParagraph(String paragraph, int maxWidth) {

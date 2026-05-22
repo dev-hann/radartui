@@ -15,6 +15,7 @@ export 'foundation/box_constraints.dart';
 export 'foundation/change_notifier.dart';
 export 'foundation/color.dart';
 export 'foundation/constants.dart';
+export 'foundation/constraints.dart';
 export 'foundation/edge_insets.dart';
 export 'foundation/errors.dart';
 export 'foundation/flex.dart';

@@ -136,6 +136,9 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
       _cachedColumnWidths = [];
     }
     _cachedViewportHeight = null;
+    if (widget.rows.isNotEmpty) {
+      _focusedRowIndex = _focusedRowIndex.clamp(0, widget.rows.length - 1);
+    }
   }
 
   @override
@@ -159,10 +162,6 @@ class _DataTableState extends State<DataTable> with FocusableState<DataTable> {
         _triggerSort();
       case KeyCode.space:
         _toggleSelection();
-      case KeyCode.char:
-        if (event.char == ' ') {
-          _toggleSelection();
-        }
       default:
         break;
     }

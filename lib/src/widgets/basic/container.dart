@@ -182,7 +182,7 @@ class RenderContainer extends RenderBox
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
     const edgeInsetsZero = EdgeInsets.zero;
     final totalMargin = margin ?? edgeInsetsZero;
     final totalPadding = padding ?? edgeInsetsZero;
@@ -210,8 +210,8 @@ class RenderContainer extends RenderBox
     final int horizPad = totalPadding.horizontal + _borderHorizontal;
     final int vertPad = totalPadding.vertical + _borderVertical;
     child!.layout(BoxConstraints(
-      maxWidth: containerW - horizPad,
-      maxHeight: containerH - vertPad,
+      maxWidth: (containerW - horizPad).clamp(0, containerW),
+      maxHeight: (containerH - vertPad).clamp(0, containerH),
     ));
 
     final resolvedW = _width ?? child!.size!.width + horizPad;
@@ -317,7 +317,8 @@ class RenderContainer extends RenderBox
         isTop ? (sides.left ? '┌' : '╶') : (sides.left ? '└' : '╶');
     final String rightCorner =
         isTop ? (sides.right ? '┐' : '╴') : (sides.right ? '┘' : '╴');
-    final int inner = innerWidth > 2 ? innerWidth - 2 : 0;
+    if (innerWidth < 2) return;
+    final int inner = innerWidth - 2;
     context.writeString(
       innerOffset.x,
       innerOffset.y + y,

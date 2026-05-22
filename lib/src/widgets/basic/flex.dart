@@ -121,7 +121,7 @@ class RenderFlex extends RenderBox
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
     final isHorizontal = direction == Axis.horizontal;
     final axisExtents = _axisExtents(isHorizontal, boxConstraints);
     final totalFlex = _computeTotalFlex();

@@ -54,7 +54,7 @@ git status --porcelain                    # empty
 - 변경 내용 2
 ```
 
-항목은 backlog.md의 마지막 N루프 completed 항목에서 추출.
+항목은 `git log --oneline` 최근 커밋에서 추출.
 
 ### 3. Dry-run Verification
 

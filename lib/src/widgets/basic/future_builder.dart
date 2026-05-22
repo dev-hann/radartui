@@ -35,7 +35,7 @@ class _FutureBuilderState<T> extends State<FutureBuilder<T>> {
   void initState() {
     super.initState();
     _snapshot = widget.initialData == null
-        ? const AsyncSnapshot<Never>.nothing() as AsyncSnapshot<T>
+        ? AsyncSnapshot<T>.nothing()
         : AsyncSnapshot<T>.withData(
             ConnectionState.none,
             widget.initialData as T,

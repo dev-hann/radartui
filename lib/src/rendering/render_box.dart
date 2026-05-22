@@ -40,6 +40,7 @@ mixin RenderObjectWithChildMixin<C extends RenderObject> on RenderObject {
     _child?.parent = null;
     _child = value;
     _child?.parent = this;
+    markNeedsLayout();
   }
 
   /// Whether this render object currently has a child.
@@ -56,17 +57,24 @@ mixin ContainerRenderObjectMixin<C extends RenderObject, D extends ParentData>
     setupParentData(child);
     child.parent = this;
     _children.add(child);
+    markNeedsLayout();
   }
 
   /// Removes a [child] from the children list.
   void remove(C child) {
     _children.remove(child);
     child.parent = null;
+    markNeedsLayout();
   }
 
   /// Removes all children from this render object.
-  void clear() => _children.clear();
+  void clear() {
+    for (final C child in _children) {
+      child.parent = null;
+    }
+    _children.clear();
+  }
 
   /// An unmodifiable view of the current children.
-  List<C> get children => _children;
+  List<C> get children => List.unmodifiable(_children);
 }

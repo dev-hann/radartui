@@ -8,7 +8,7 @@ abstract class SingleChildRenderBox extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
 
     if (child != null) {
       final childConstraints = getConstraintsForChild(boxConstraints);

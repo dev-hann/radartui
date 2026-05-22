@@ -74,12 +74,14 @@ class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
   }
 
   void _onStreamData(T data) {
+    if (!mounted) return;
     setState(() {
       _snapshot = AsyncSnapshot<T>.withData(ConnectionState.active, data);
     });
   }
 
   void _onStreamError(Object error, StackTrace stackTrace) {
+    if (!mounted) return;
     setState(() {
       _snapshot = AsyncSnapshot<T>.withError(
         ConnectionState.active,
@@ -90,6 +92,7 @@ class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
   }
 
   void _onStreamDone() {
+    if (!mounted) return;
     setState(() {
       _snapshot = _snapshot.inState(ConnectionState.done);
     });

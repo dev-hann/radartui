@@ -3,7 +3,7 @@ import '../pty_app_runner.dart';
 
 void main(List<String> args) {
   runPtyApp(
-    const Form(
+    Form(
       child: Column(
         children: [
           TextFormField(placeholder: 'Enter name'),

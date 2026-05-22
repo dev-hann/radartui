@@ -1,5 +1,4 @@
 import '../../../radartui.dart';
-import '../../foundation/drawing_constants.dart';
 
 /// A boolean toggle switch (on/off).
 ///
@@ -266,9 +265,8 @@ class RenderToggle extends RenderBox {
 
   void _paintBorder(PaintingContext context, Offset offset) {
     final TextStyle style = _cachedBorderStyle!;
-    const String borderChars =
-        '${BoxDrawingConstants.leftTee}${BoxDrawingConstants.rightTee}';
-    context.writeString(offset.x, offset.y, borderChars, style);
+    context.writeString(offset.x, offset.y, '[', style);
+    context.writeString(offset.x + 2, offset.y, ']', style);
   }
 
   void _paintIndicator(PaintingContext context, Offset offset) {

@@ -168,7 +168,7 @@ class _RenderScrollViewport extends RenderBox
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
 
     if (child != null) {
       final childConstraints = _buildChildConstraints(boxConstraints);

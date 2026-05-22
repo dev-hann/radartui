@@ -65,6 +65,8 @@ class _CircularProgressIndicatorState extends State<CircularProgressIndicator> {
   void didUpdateWidget(CircularProgressIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.speed != oldWidget.speed) {
+      _controller.removeListener(_onFrame);
+      _controller.removeStatusListener(_onStatusChanged);
       _controller.dispose();
       _setupAnimationController();
     }

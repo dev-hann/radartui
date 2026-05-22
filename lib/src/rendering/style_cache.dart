@@ -10,7 +10,7 @@ class StyleCache {
   StyleCache();
 
   final Map<String, TextStyle> _cache = {};
-  bool _isValid = true;
+  bool _isValid = false;
 
   /// Retrieves or creates a cached style for the given [key].
   ///
@@ -22,6 +22,7 @@ class StyleCache {
       cached = builder();
       _cache[key] = cached;
     }
+    _isValid = true;
     return cached;
   }
 

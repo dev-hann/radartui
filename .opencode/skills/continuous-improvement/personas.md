@@ -91,9 +91,9 @@
 
 ### 참조 문서
 
-- `AGENTS.md` Section 5 (테스트, 버그 발생 가능성 높은 영역)
-- `AGENTS.md` Section 6 (품질 검증)
-- `docs/testing-guide.md` (버그 발생 가능성 높은 영역 상세, 테스트 템플릿)
+- `AGENTS.md` Section 6 (테스트, 버그 발생 가능성 높은 영역)
+- `TESTING.md` (TDD Tier, 테스트 레벨, 버그 발생 가능성 높은 영역 상세)
+- `doc/testing-guide.md` (PTY golden test 가이드, 테스트 명령어)
 
 ### 핵심 질문
 
@@ -107,7 +107,7 @@
 - [ ] **AGENTS.md Section 6**: `dart format .` 실행
 - [ ] **AGENTS.md Section 6**: `dart analyze` — 0 issues (에러, 경고, 힌트 모두)
 - [ ] `dart test` — 전체 통과
-- [ ] **docs/testing-guide.md** 버그 발생 가능성 높은 영역 재확인:
+- [ ] **TESTING.md** 버그 발생 가능성 높은 영역 재확인:
   - `isTight` 비교 연산자 (`==` 여부)
   - `deflate` 음수 처리
   - F-key 파싱 (복잡한 이스케이프 시퀀스)
@@ -116,7 +116,7 @@
   - 16-color ANSI (값 10-15)
   - Space 키 (`char` 대신 `KeyCode.space`)
 - [ ] 변경된 파일이 DESIGN 문서의 범위와 일치
-- [ ] **docs/testing-guide.md**: 대화형 위젯 변경 시 체크리스트 확인 (Space/Enter/Tab/ESC, 포커스 표시)
+- [ ] **TESTING.md**: 대화형 위젯 변경 시 체크리스트 확인 (Space/Enter/Tab/ESC, 포커스 표시)
 
 ---
 
@@ -126,19 +126,15 @@
 
 ### 참조 문서
 
-- `docs/improvements/` 기존 문서 (양식 참조)
-- `docs/improvements/backlog.md` (상태 관리)
+- `CHANGELOG.md` (변경 이력)
 
 ### 핵심 질문
 
-1. backlog.md 상태가 정확한가?
-2. 개선 문서에 실제 변경 내용이 기록되었는가?
-3. 다음 루프가 이 루프의 결과를 이해할 수 있는가?
+1. CHANGELOG.md에 실제 변경 내용이 기록되었는가?
+2. 다음 루프가 이 루프의 결과를 이해할 수 있는가?
 
 ### 체크리스트
 
-- [ ] **backlog.md**: 상태 업데이트 implemented → completed
-- [ ] **docs/improvements/**: 기존 문서 양식에 맞춰 실제 변경 내용 기록 (문제, 방안, 결과)
+- [ ] **CHANGELOG.md**: 실제 변경 내용 기록 (문제, 방안, 결과)
 - [ ] 1줄 요약 출력 (예: "Loop N 완료: <개선내용>. N/N 테스트 통과.")
-- [ ] **backlog.md**: 다음 루프를 위한 상태가 명확히 기록됨 (Scan Level, Pending, Loop Counter)
 - [ ] **루프 카운터 % 5 == 0**: `publishing-pub-dev` 스킬 호출 조건 충족 여부 확인

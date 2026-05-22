@@ -108,6 +108,7 @@ class _DropdownButtonState<T> extends State<DropdownButton<T>>
       }
     }
 
+    _cachedValueIndex ??= 0;
     _cachedItemsIdentity = widget.items;
     return _cachedValueIndex!;
   }
@@ -395,7 +396,7 @@ class RenderDropdownButton extends RenderBox {
     final int textW = _textWidth;
     final int x = offset.x;
     final int y = offset.y;
-    context.fillBackground(x, y, textW + 3, bgStyle);
+    context.fillBackground(x, y, textW + 4, bgStyle);
     final int cx = context.writeString(x + 1, y, _text, fgBgStyle);
     final String arrow = _isOpen
         ? ' ${BoxDrawingConstants.arrowUp}'
@@ -404,7 +405,7 @@ class RenderDropdownButton extends RenderBox {
   }
 }
 
-class _DropdownMenuRenderWidget extends RenderObjectWidget {
+class _DropdownMenuRenderWidget<T> extends RenderObjectWidget {
   const _DropdownMenuRenderWidget({
     required this.items,
     required this.selectedIndex,
@@ -412,7 +413,7 @@ class _DropdownMenuRenderWidget extends RenderObjectWidget {
     required this.focusColor,
   });
 
-  final List<DropdownMenuItem> items;
+  final List<DropdownMenuItem<T>> items;
   final int selectedIndex;
   final Color dropdownColor;
   final Color focusColor;
@@ -421,8 +422,8 @@ class _DropdownMenuRenderWidget extends RenderObjectWidget {
   RenderObjectElement createElement() => RenderObjectElement(this);
 
   @override
-  RenderDropdownMenu createRenderObject(BuildContext context) =>
-      RenderDropdownMenu(
+  RenderDropdownMenu<T> createRenderObject(BuildContext context) =>
+      RenderDropdownMenu<T>(
         items: items,
         selectedIndex: selectedIndex,
         dropdownColor: dropdownColor,
@@ -431,7 +432,7 @@ class _DropdownMenuRenderWidget extends RenderObjectWidget {
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
-    final render = renderObject as RenderDropdownMenu;
+    final render = renderObject as RenderDropdownMenu<T>;
     render.items = items;
     render.selectedIndex = selectedIndex;
     render.dropdownColor = dropdownColor;
@@ -440,10 +441,10 @@ class _DropdownMenuRenderWidget extends RenderObjectWidget {
 }
 
 /// Render object that paints the open dropdown menu popup with selectable items.
-class RenderDropdownMenu extends RenderBox {
+class RenderDropdownMenu<T> extends RenderBox {
   /// Creates a [RenderDropdownMenu] with the given items and visual configuration.
   RenderDropdownMenu({
-    required List<DropdownMenuItem> items,
+    required List<DropdownMenuItem<T>> items,
     required int selectedIndex,
     required Color dropdownColor,
     required Color focusColor,
@@ -452,16 +453,16 @@ class RenderDropdownMenu extends RenderBox {
         _dropdownColor = dropdownColor,
         _focusColor = focusColor;
 
-  List<DropdownMenuItem> _items;
+  List<DropdownMenuItem<T>> _items;
   int _selectedIndex;
   Color _dropdownColor;
   Color _focusColor;
 
   /// The list of menu items to display.
-  List<DropdownMenuItem> get items => _items;
+  List<DropdownMenuItem<T>> get items => _items;
 
   /// Sets the menu items and invalidates cached styles.
-  set items(List<DropdownMenuItem> v) {
+  set items(List<DropdownMenuItem<T>> v) {
     if (identical(_items, v)) return;
     _items = v;
     _invalidateCache();
@@ -509,7 +510,7 @@ class RenderDropdownMenu extends RenderBox {
   Color? _cachedFocusColor;
   Color? _cachedDropdownColor;
   int _cachedMaxItemWidth = 0;
-  List<DropdownMenuItem>? _cachedItemsIdentity;
+  List<DropdownMenuItem<T>>? _cachedItemsIdentity;
 
   void _invalidateCache() {
     _cachedSelectedBg = null;
@@ -572,7 +573,7 @@ class RenderDropdownMenu extends RenderBox {
     final TextStyle normalDisabled = _cachedNormalDisabledFg!;
     final int itemsLength = _items.length;
     for (int i = 0; i < itemsLength; i++) {
-      final DropdownMenuItem item = _items[i];
+      final DropdownMenuItem<T> item = _items[i];
       final bool isSelected = i == _selectedIndex;
       final TextStyle bgStyle = isSelected ? selectedBg : normalBg;
       final TextStyle fgBgStyle = isSelected

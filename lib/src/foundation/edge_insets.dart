@@ -15,10 +15,10 @@ class EdgeInsets {
 
   /// Creates insets with only the specified non-zero edges.
   const EdgeInsets.only({
+    this.left = 0,
     this.top = 0,
     this.right = 0,
     this.bottom = 0,
-    this.left = 0,
   });
 
   /// The inset from the top edge.

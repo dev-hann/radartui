@@ -37,7 +37,7 @@ void main() {
       scope.dispose();
     });
 
-    test('FocusNode._setFocus changes hasFocus', () {
+    test('node gains focus when scope activates', () {
       final scope = FocusScope();
       final node = FocusNode();
 

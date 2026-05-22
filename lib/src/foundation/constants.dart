@@ -1,4 +1,4 @@
-import '../rendering.dart';
+import 'constraints.dart';
 
 /// Layout-related constants used across the framework.
 class LayoutConstants {

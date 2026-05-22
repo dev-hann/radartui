@@ -3,7 +3,7 @@
 /// Terminal cells are discrete, so coordinates are always integers.
 class Size {
   /// Creates a [Size] with the given [width] and [height].
-  const Size(this.width, this.height);
+  const Size(this.width, this.height) : assert(width >= 0 && height >= 0);
 
   /// The width in terminal columns.
   final int width;

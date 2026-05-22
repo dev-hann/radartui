@@ -42,11 +42,18 @@ class _CheckboxExampleState extends State<CheckboxExample> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Checkbox Widget Example',
-            style: TextStyle(color: Color.brightCyan, bold: true),
+          const Container(
+            width: 50,
+            height: 3,
+            color: Color.blue,
+            child: Center(
+              child: Text(
+                '☑ Checkbox Widget Example',
+                style: TextStyle(color: Color.white, bold: true),
+              ),
+            ),
           ),
-          const SizedBox(height: 1),
+          const SizedBox(height: 2),
           Row(
             children: [
               Checkbox(

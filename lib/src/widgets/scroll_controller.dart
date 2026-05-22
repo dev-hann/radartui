@@ -17,7 +17,7 @@ class ScrollController extends ChangeNotifier {
   }
 
   /// Scrolls to the given [newOffset].
-  void animateTo(int newOffset) {
+  void jumpTo(int newOffset) {
     offset = newOffset;
   }
 

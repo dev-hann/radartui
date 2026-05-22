@@ -53,14 +53,18 @@ class RenderLayoutBuilder extends RenderBox
   /// The build context passed to the builder.
   BuildContext buildContext;
   Element? _childElement;
+  Widget? _cachedWidget;
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
     final childWidget = builder(buildContext, boxConstraints);
 
-    _childElement?.unmount();
-    _childElement = childWidget.createElement()..mount(null);
+    if (!identical(childWidget, _cachedWidget)) {
+      _childElement?.unmount();
+      _childElement = childWidget.createElement()..mount(null);
+      _cachedWidget = childWidget;
+    }
 
     final childRender = _childElement?.renderObject;
     if (childRender != null) {

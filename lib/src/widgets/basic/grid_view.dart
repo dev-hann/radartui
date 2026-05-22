@@ -68,6 +68,18 @@ class _GridViewState<T> extends State<GridView<T>>
   }
 
   @override
+  void didUpdateWidget(covariant GridView<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.items != widget.items) {
+      if (widget.items.isEmpty) {
+        selectedIndex = -1;
+      } else if (selectedIndex >= widget.items.length) {
+        selectedIndex = widget.items.length - 1;
+      }
+    }
+  }
+
+  @override
   void onKeyEvent(KeyEvent event) {
     final totalItems = widget.items.length;
     if (totalItems == 0) return;
@@ -220,7 +232,7 @@ class RenderGridView extends RenderBox
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
 
     for (final child in children) {
       child.layout(boxConstraints.loosen());

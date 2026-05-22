@@ -99,8 +99,7 @@ abstract class RenderObject {
     _needsPaint = true;
 
     if (parentUsesSize && _parent != null && !_relayoutBoundary) {
-      _parent!._needsLayout = true;
-      _parent!._needsPaint = true;
+      _parent!.markNeedsLayout();
     }
   }
 
@@ -109,21 +108,4 @@ abstract class RenderObject {
 
   /// Paints this render object into the given [context] at [offset].
   void paint(PaintingContext context, Offset offset);
-}
-
-/// Abstract layout constraints passed to render objects during layout.
-abstract class Constraints {
-  /// Creates a [Constraints].
-  const Constraints();
-
-  /// A sentinel value representing unbounded space.
-  static const int infinity = 999999;
-
-  /// Returns this as [BoxConstraints], or throws if it is not.
-  BoxConstraints get asBoxConstraints {
-    if (this is BoxConstraints) {
-      return this as BoxConstraints;
-    }
-    throw StateError('Constraints is not a BoxConstraints');
-  }
 }

@@ -64,10 +64,10 @@ class _GridViewExampleState extends State<GridViewExample> {
               style: TextStyle(color: Color.brightBlack),
             ),
           const SizedBox(height: 1),
-          Container(
-            color: Color.brightBlack,
-            padding: const EdgeInsets.all(1),
-            child: Expanded(
+          Expanded(
+            child: Container(
+              color: Color.brightBlack,
+              padding: const EdgeInsets.all(1),
               child: GridView<String>(
                 items: items,
                 crossAxisCount: 3,

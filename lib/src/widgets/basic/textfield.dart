@@ -574,7 +574,7 @@ class RenderTextField extends RenderBox {
       1,
       Constraints.infinity,
     );
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
     size = boxConstraints.constrain(Size(desiredWidth, 1));
   }
 
@@ -659,8 +659,8 @@ class RenderTextField extends RenderBox {
 
     _drawHorizontalLine(context, offset, width, bufferHeight, bufferWidth, -1);
     _drawHorizontalLine(context, offset, width, bufferHeight, bufferWidth, 1);
-    _drawVerticalBorder(context, offset, bufferWidth, -1);
-    _drawVerticalBorder(context, offset, bufferWidth, width);
+    _drawVerticalBorder(context, offset, bufferWidth, bufferHeight, -1);
+    _drawVerticalBorder(context, offset, bufferWidth, bufferHeight, width);
     _drawCorner(context, offset, -1, -1, BoxDrawingConstants.topLeft);
     _drawCorner(context, offset, width, -1, BoxDrawingConstants.topRight);
     _drawCorner(context, offset, -1, 1, BoxDrawingConstants.bottomLeft);
@@ -695,10 +695,11 @@ class RenderTextField extends RenderBox {
     PaintingContext context,
     Offset offset,
     int bufferWidth,
+    int bufferHeight,
     int xOffset,
   ) {
     final int targetX = offset.x + xOffset;
-    if (!_isValidPosition(targetX, offset.y, 1, bufferWidth)) {
+    if (!_isValidPosition(targetX, offset.y, bufferHeight, bufferWidth)) {
       return;
     }
     context.buffer.writeStyled(

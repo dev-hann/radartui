@@ -93,6 +93,7 @@ class FocusScope {
     _nodes.removeAt(index);
     node._scope = null;
     if (index <= _currentIndex && _nodes.isNotEmpty) {
+      _currentIndex--;
       _currentIndex = _currentIndex.clamp(0, _nodes.length - 1);
       if (_isActive) {
         _nodes[_currentIndex]._setFocus(true);

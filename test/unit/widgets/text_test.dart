@@ -267,11 +267,11 @@ void main() {
 
   group('FontFamily', () {
     test('FontFamily has system value', () {
-      expect(FontFamily.system, equals(FontFamily.system));
+      expect(FontFamily.system.name, equals('system'));
     });
 
     test('FontFamily has monospace value', () {
-      expect(FontFamily.monospace, equals(FontFamily.monospace));
+      expect(FontFamily.monospace.name, equals('monospace'));
     });
 
     test('FontFamily values contains all options', () {

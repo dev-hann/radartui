@@ -45,7 +45,7 @@ class _LinearProgressIndicatorState extends State<LinearProgressIndicator> {
       parent: _controller,
       curve: Curves.linear,
     );
-    _controller.addListener(() => setState(() {}));
+    _controller.addListener(_onAnimationUpdate);
 
     if (widget.value == null) {
       _controller.addStatusListener(_onStatusChanged);
@@ -78,8 +78,14 @@ class _LinearProgressIndicatorState extends State<LinearProgressIndicator> {
     }
   }
 
+  void _onAnimationUpdate() {
+    setState(() {});
+  }
+
   @override
   void dispose() {
+    _controller.removeListener(_onAnimationUpdate);
+    _controller.removeStatusListener(_onStatusChanged);
     _controller.dispose();
     super.dispose();
   }
@@ -144,7 +150,7 @@ class RenderLinearProgressIndicator extends RenderBox {
     required Color backgroundColor,
     required Color color,
     int? indicatorWidth,
-  })  : _value = value ?? 0.0,
+  })  : _value = value,
         _animValue = animValue,
         _backgroundColor = backgroundColor,
         _color = color,
@@ -217,7 +223,7 @@ class RenderLinearProgressIndicator extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
     final int w = indicatorWidth ?? boxConstraints.maxWidth;
     size = Size(w, 1);
   }

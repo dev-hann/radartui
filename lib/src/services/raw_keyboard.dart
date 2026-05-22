@@ -16,8 +16,10 @@ class RawKeyboard implements KeyboardBackend {
 
   @override
   void initialize() {
-    stdin.echoMode = false;
-    stdin.lineMode = false;
+    try {
+      stdin.echoMode = false;
+      stdin.lineMode = false;
+    } catch (_) {}
     _subscription =
         stdin.transform(const SystemEncoding().decoder).listen(_handleInput);
   }

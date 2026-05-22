@@ -383,6 +383,12 @@ abstract class ComponentElement extends Element implements BuildContext {
     rebuild();
   }
 
+  @override
+  void unmount() {
+    _child?.unmount();
+    super.unmount();
+  }
+
   /// Rebuilds the element by calling [build] and updating the child.
   void rebuild() => _child = updateChild(_child, build());
 
@@ -436,11 +442,9 @@ class InheritedElement extends ComponentElement {
   Widget build() => (widget as InheritedWidget).child;
   @override
   void update(Widget newWidget) {
-    final oldWidget = widget;
-    super.update(newWidget);
-    if ((oldWidget as InheritedWidget).updateShouldNotify(
-      newWidget as InheritedWidget,
-    )) {
+    final oldWidget = widget as InheritedWidget;
+    widget = newWidget;
+    if (oldWidget.updateShouldNotify(newWidget as InheritedWidget)) {
       for (final dependent in _dependents) {
         dependent.markNeedsBuild();
       }
@@ -472,16 +476,12 @@ class ParentDataElement extends ComponentElement {
   @override
   void mount(Element? parent) {
     super.mount(parent);
-    final childWidget = (widget as ParentDataWidget).child;
-    _child = updateChild(null, childWidget);
     _applyParentData();
   }
 
   @override
   void update(Widget newWidget) {
     super.update(newWidget);
-    final childWidget = (widget as ParentDataWidget).child;
-    _child = updateChild(_child, childWidget);
     _applyParentData();
   }
 
@@ -493,15 +493,7 @@ class ParentDataElement extends ComponentElement {
   }
 
   @override
-  void visitChildren(void Function(Element e) visitor) {
-    if (_child != null) visitor(_child!);
-  }
-
-  @override
   Widget build() => (widget as ParentDataWidget).child;
-
-  @override
-  RenderObject? get renderObject => _child?.renderObject;
 }
 
 /// A widget that creates and manages a [RenderObject], analogous to Flutter's [RenderObjectWidget].

@@ -1,7 +1,7 @@
 /// A terminal color using ANSI 16-color palette values (0–15).
 ///
 /// Use [Color.transparent] (-1) to indicate no color.
-/// See also [Colors] for named constants.
+/// See also [Color] for static constants like [Color.red], [Color.blue].
 class Color {
   /// Creates a [Color] with the given ANSI [value].
   const Color(this.value);
@@ -76,6 +76,10 @@ class Color {
 /// Predefined [Color] constants following material naming conventions.
 ///
 /// Provides same ANSI 16-color palette as [Color].
+///
+/// **Deprecated**: Use [Color] static constants directly (e.g., `Color.red`
+/// instead of `Colors.red`). This class will be removed in a future version.
+@Deprecated('Use Color static constants instead. For example, Color.red.')
 class Colors {
   /// Black (ANSI 0).
   static const Color black = Color(0);
@@ -201,7 +205,9 @@ class TextStyle {
 
   /// Returns a new [TextStyle] that merges this style with [other].
   ///
-  /// Non-null properties from [other] take priority over this style's values.
+  /// Color properties from [other] take priority when non-null.
+  /// Boolean properties use union semantics: `true` from either style
+  /// is preserved in the result.
   TextStyle merge(TextStyle? other) {
     if (other == null) return this;
     return TextStyle(

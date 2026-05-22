@@ -208,30 +208,24 @@ class FormFieldState<T> extends State<FormField<T>> {
 /// A convenience widget that combines a [TextField] with form field validation.
 ///
 /// Integrates with the parent [Form] for validation and saving of text input.
-class TextFormField extends StatefulWidget {
+class TextFormField extends FormField<String> {
   /// Creates a [TextFormField] with optional [controller] and [validator].
-  const TextFormField({
+  TextFormField({
     super.key,
     this.controller,
-    this.initialValue,
-    this.validator,
-    this.onSaved,
+    String? initialValue,
+    super.validator,
+    super.onSaved,
     this.placeholder,
     this.style,
     this.maxLength,
-  });
+  }) : super(
+          initialValue: initialValue ?? '',
+          builder: _defaultBuilder,
+        );
 
   /// An optional external text controller.
   final TextEditingController? controller;
-
-  /// The initial text value when no controller is provided.
-  final String? initialValue;
-
-  /// An optional validation function for the text content.
-  final String? Function(String?)? validator;
-
-  /// Called when the parent [Form] is saved with the current text.
-  final void Function(String)? onSaved;
 
   /// Placeholder text displayed when the field is empty.
   final String? placeholder;
@@ -242,28 +236,58 @@ class TextFormField extends StatefulWidget {
   /// The maximum number of characters allowed.
   final int? maxLength;
 
-  @override
-  State<TextFormField> createState() => _TextFormFieldState();
+  static Widget _defaultBuilder(FormFieldState<String> field) {
+    final widget = field.widget as TextFormField;
+    return _TextFormField(field: field, widget: widget);
+  }
 }
 
-class _TextFormFieldState extends State<TextFormField> {
+class _TextFormField extends StatefulWidget {
+  const _TextFormField({required this.field, required this.widget});
+  final FormFieldState<String> field;
+  final TextFormField widget;
+
+  @override
+  State<_TextFormField> createState() => _TextFormFieldState();
+}
+
+class _TextFormFieldState extends State<_TextFormField> {
   late TextEditingController _controller;
   bool _isControllerOwned = false;
-  String? _errorText;
 
   @override
   void initState() {
     super.initState();
-    if (widget.controller != null) {
-      _controller = widget.controller!;
+    if (widget.widget.controller != null) {
+      _controller = widget.widget.controller!;
     } else {
       _controller = TextEditingController();
-      if (widget.initialValue != null) {
-        _controller.text = widget.initialValue!;
+      if (widget.field.value.isNotEmpty) {
+        _controller.text = widget.field.value;
       }
       _isControllerOwned = true;
     }
     _controller.addListener(_onControllerChanged);
+  }
+
+  @override
+  void didUpdateWidget(covariant _TextFormField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.widget.controller != oldWidget.widget.controller) {
+      _controller.removeListener(_onControllerChanged);
+      if (_isControllerOwned) {
+        _controller.dispose();
+      }
+      if (widget.widget.controller != null) {
+        _controller = widget.widget.controller!;
+        _isControllerOwned = false;
+      } else {
+        _controller = TextEditingController();
+        _controller.text = widget.field.value;
+        _isControllerOwned = true;
+      }
+      _controller.addListener(_onControllerChanged);
+    }
   }
 
   @override
@@ -276,19 +300,7 @@ class _TextFormFieldState extends State<TextFormField> {
   }
 
   void _onControllerChanged() {
-    setState(() {});
-  }
-
-  bool validate() {
-    if (widget.validator != null) {
-      _errorText = widget.validator!(_controller.text);
-    }
-    setState(() {});
-    return _errorText == null;
-  }
-
-  void save() {
-    widget.onSaved?.call(_controller.text);
+    widget.field.setValue(_controller.text);
   }
 
   @override
@@ -297,12 +309,15 @@ class _TextFormFieldState extends State<TextFormField> {
       children: [
         TextField(
           controller: _controller,
-          placeholder: widget.placeholder,
-          style: widget.style,
-          maxLength: widget.maxLength,
+          placeholder: widget.widget.placeholder,
+          style: widget.widget.style,
+          maxLength: widget.widget.maxLength,
         ),
-        if (_errorText != null)
-          Text(_errorText!, style: const TextStyle(color: Color.red)),
+        if (widget.field.hasError)
+          Text(
+            widget.field.errorText!,
+            style: const TextStyle(color: Color.red),
+          ),
       ],
     );
   }

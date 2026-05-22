@@ -73,20 +73,30 @@ class VerticalDivider extends StatelessWidget {
   }
 }
 
-class _DividerRenderWidget extends RenderObjectWidget {
-  const _DividerRenderWidget({
-    required this.height,
+abstract class _BaseDividerRenderWidget extends RenderObjectWidget {
+  const _BaseDividerRenderWidget({
     required this.thickness,
     required this.color,
     required this.character,
   });
-  final int height;
+
   final int thickness;
   final Color color;
   final String character;
 
   @override
   RenderObjectElement createElement() => RenderObjectElement(this);
+}
+
+class _DividerRenderWidget extends _BaseDividerRenderWidget {
+  const _DividerRenderWidget({
+    required this.height,
+    required super.thickness,
+    required super.color,
+    required super.character,
+  });
+
+  final int height;
 
   @override
   RenderDivider createRenderObject(BuildContext context) => RenderDivider(
@@ -106,20 +116,15 @@ class _DividerRenderWidget extends RenderObjectWidget {
   }
 }
 
-class _VerticalDividerRenderWidget extends RenderObjectWidget {
+class _VerticalDividerRenderWidget extends _BaseDividerRenderWidget {
   const _VerticalDividerRenderWidget({
     required this.width,
-    required this.thickness,
-    required this.color,
-    required this.character,
+    required super.thickness,
+    required super.color,
+    required super.character,
   });
-  final int width;
-  final int thickness;
-  final Color color;
-  final String character;
 
-  @override
-  RenderObjectElement createElement() => RenderObjectElement(this);
+  final int width;
 
   @override
   RenderVerticalDivider createRenderObject(BuildContext context) =>
@@ -140,30 +145,14 @@ class _VerticalDividerRenderWidget extends RenderObjectWidget {
   }
 }
 
-/// Render object that paints a horizontal divider line.
-class RenderDivider extends RenderBox {
-  /// Creates a [RenderDivider] with the given dimensions and visual properties.
-  RenderDivider({
-    required int dividerHeight,
+abstract class _BaseRenderDivider extends RenderBox {
+  _BaseRenderDivider({
     required int thickness,
     required Color color,
     required String character,
-  })  : _dividerHeight = dividerHeight,
-        _thickness = thickness,
+  })  : _thickness = thickness,
         _color = color,
         _character = character;
-
-  int _dividerHeight;
-
-  /// The total height of the divider area.
-  int get dividerHeight => _dividerHeight;
-
-  /// Sets the total height and marks layout as needed.
-  set dividerHeight(int value) {
-    if (_dividerHeight == value) return;
-    _dividerHeight = value;
-    markNeedsLayout();
-  }
 
   int _thickness;
 
@@ -203,10 +192,33 @@ class RenderDivider extends RenderBox {
   }
 
   TextStyle? _cachedStyle;
+}
+
+/// Render object that paints a horizontal divider line.
+class RenderDivider extends _BaseRenderDivider {
+  /// Creates a [RenderDivider] with the given dimensions and visual properties.
+  RenderDivider({
+    required int dividerHeight,
+    required super.thickness,
+    required super.color,
+    required super.character,
+  }) : _dividerHeight = dividerHeight;
+
+  int _dividerHeight;
+
+  /// The total height of the divider area.
+  int get dividerHeight => _dividerHeight;
+
+  /// Sets the total height and marks layout as needed.
+  set dividerHeight(int value) {
+    if (_dividerHeight == value) return;
+    _dividerHeight = value;
+    markNeedsLayout();
+  }
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
     size = Size(boxConstraints.maxWidth, _dividerHeight);
   }
 
@@ -228,17 +240,14 @@ class RenderDivider extends RenderBox {
 }
 
 /// Render object that paints a vertical divider line.
-class RenderVerticalDivider extends RenderBox {
+class RenderVerticalDivider extends _BaseRenderDivider {
   /// Creates a [RenderVerticalDivider] with the given dimensions and visual properties.
   RenderVerticalDivider({
     required int dividerWidth,
-    required int thickness,
-    required Color color,
-    required String character,
-  })  : _dividerWidth = dividerWidth,
-        _thickness = thickness,
-        _color = color,
-        _character = character;
+    required super.thickness,
+    required super.color,
+    required super.character,
+  }) : _dividerWidth = dividerWidth;
 
   int _dividerWidth;
 
@@ -252,48 +261,9 @@ class RenderVerticalDivider extends RenderBox {
     markNeedsLayout();
   }
 
-  int _thickness;
-
-  /// The number of columns actually drawn.
-  int get thickness => _thickness;
-
-  /// Sets the thickness and marks layout as needed.
-  set thickness(int value) {
-    if (_thickness == value) return;
-    _thickness = value;
-    markNeedsLayout();
-  }
-
-  Color _color;
-
-  /// The color of the divider line.
-  Color get color => _color;
-
-  /// Sets the color and invalidates the paint cache.
-  set color(Color value) {
-    if (_color == value) return;
-    _color = value;
-    _cachedStyle = null;
-    markNeedsPaint();
-  }
-
-  String _character;
-
-  /// The character used to draw the line.
-  String get character => _character;
-
-  /// Sets the character and marks layout as needed.
-  set character(String value) {
-    if (_character == value) return;
-    _character = value;
-    markNeedsLayout();
-  }
-
-  TextStyle? _cachedStyle;
-
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
     size = Size(_dividerWidth, boxConstraints.maxHeight);
   }
 

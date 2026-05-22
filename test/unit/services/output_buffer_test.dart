@@ -58,7 +58,7 @@ void main() {
 
   group('OutputBuffer', () {
     late TestTerminal terminal;
-    late OutputBuffer buffer;
+    late TestOutputBuffer buffer;
 
     setUp(() {
       terminal = TestTerminal();
@@ -68,10 +68,12 @@ void main() {
     group('write', () {
       test('write at valid position', () {
         buffer.write(0, 0, 'A');
+        expect(terminal.cellAt(0, 0), equals('A'));
       });
 
       test('write at negative position does nothing', () {
         buffer.write(-1, -1, 'A');
+        expect(terminal.cellAt(0, 0), equals(' '));
       });
     });
 
@@ -79,15 +81,21 @@ void main() {
       test('writeStyled at valid position', () {
         const style = TextStyle(color: Colors.red);
         buffer.writeStyled(0, 0, 'A', style);
+        expect(terminal.cellAt(0, 0), equals('A'));
+        expect(buffer.styleAt(0, 0), equals(style));
       });
 
       test('writeStyled at negative position does nothing', () {
         const style = TextStyle(color: Colors.red);
         buffer.writeStyled(-1, -1, 'A', style);
+        expect(terminal.cellAt(0, 0), equals(' '));
+        expect(buffer.styleAt(0, 0), isNull);
       });
 
       test('writeStyled with null style', () {
         buffer.writeStyled(0, 0, 'A', null);
+        expect(terminal.cellAt(0, 0), equals('A'));
+        expect(buffer.styleAt(0, 0), isNull);
       });
     });
 
@@ -95,6 +103,7 @@ void main() {
       test('clear fills grid with empty cells', () {
         buffer.write(0, 0, 'A');
         buffer.clear();
+        expect(terminal.cellAt(0, 0), equals(' '));
       });
     });
 
@@ -102,6 +111,7 @@ void main() {
       test('smartClear fills grid with empty cells', () {
         buffer.write(0, 0, 'A');
         buffer.smartClear();
+        expect(terminal.cellAt(0, 0), equals(' '));
       });
     });
 

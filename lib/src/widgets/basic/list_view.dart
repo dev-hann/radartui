@@ -66,6 +66,18 @@ class _ListViewState<T> extends State<ListView<T>>
   }
 
   @override
+  void didUpdateWidget(covariant ListView<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.items != widget.items) {
+      if (widget.items.isEmpty) {
+        selectedIndex = -1;
+      } else if (selectedIndex >= widget.items.length) {
+        selectedIndex = widget.items.length - 1;
+      }
+    }
+  }
+
+  @override
   void onKeyEvent(KeyEvent event) {
     final totalItems = widget.items.length;
     switch (event.code) {
@@ -115,8 +127,7 @@ class _ListViewState<T> extends State<ListView<T>>
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = context.findAncestorWidgetOfExactType<MediaQuery>();
-    _viewportHeight = mediaQuery?.data.size.height ?? 24;
+    _viewportHeight = MediaQuery.maybeOf(context).size.height;
 
     final itemCount = widget.items.length;
     if (widget.items.isEmpty) {

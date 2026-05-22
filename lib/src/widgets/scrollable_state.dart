@@ -8,6 +8,7 @@ import 'scroll_controller.dart';
 mixin ScrollableState<T extends StatefulWidget> on State<T> {
   late ScrollController _scrollController;
   bool _ownsScrollController = false;
+  ScrollController? _providedController;
 
   /// Override to provide an external [ScrollController], or return null to use an internal one.
   ScrollController? get providedScrollController => null;
@@ -22,20 +23,22 @@ mixin ScrollableState<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     super.initState();
-    _scrollController = providedScrollController ?? ScrollController();
-    _ownsScrollController = providedScrollController == null;
+    _providedController = providedScrollController;
+    _scrollController = _providedController ?? ScrollController();
+    _ownsScrollController = _providedController == null;
     _scrollController.addListener(_onScrollChanged);
   }
 
   @override
   void didUpdateWidget(covariant T oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final newController = providedScrollController;
-    if (newController != _scrollController) {
+    final ScrollController? newController = providedScrollController;
+    if (newController != _providedController) {
       _scrollController.removeListener(_onScrollChanged);
       if (_ownsScrollController) {
         _scrollController.dispose();
       }
+      _providedController = newController;
       _scrollController = newController ?? ScrollController();
       _ownsScrollController = newController == null;
       _scrollController.addListener(_onScrollChanged);

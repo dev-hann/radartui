@@ -133,7 +133,7 @@ class _TrackingRenderBox extends RenderBox {
 
   @override
   void performLayout(Constraints constraints) {
-    receivedConstraints = constraints.asBoxConstraints;
+    receivedConstraints = BoxConstraints.asBox(constraints);
     size = const Size(20, 10);
   }
 

@@ -53,7 +53,7 @@ class RenderStack extends RenderBox
 
   @override
   void performLayout(Constraints constraints) {
-    final boxConstraints = constraints.asBoxConstraints;
+    final boxConstraints = BoxConstraints.asBox(constraints);
     final childConstraints = boxConstraints.loosen();
 
     final dimensions = _layoutChildren(boxConstraints, childConstraints);

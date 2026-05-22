@@ -29,10 +29,10 @@ class DefaultTextStyle extends InheritedWidget {
 
   /// Returns the [TextStyle] from the closest [DefaultTextStyle] ancestor,
   /// or `null` if none exists.
-  static TextStyle maybeOf(BuildContext context) {
+  static TextStyle? maybeOf(BuildContext context) {
     final widget =
         context.dependOnInheritedWidgetOfExactType<DefaultTextStyle>();
-    return widget?.style ?? const TextStyle();
+    return widget?.style;
   }
 
   /// Whether descendant widgets should rebuild when [style] changes.

@@ -1,5 +1,4 @@
 import '../../../radartui.dart';
-import '../../foundation/drawing_constants.dart';
 
 /// A single radio button that selects one value from a mutually exclusive group.
 ///
@@ -55,7 +54,7 @@ class _RadioState<T> extends State<Radio<T>> with FocusableState<Radio<T>> {
       initialValue: isSelected ? 1.0 : 0.0,
     );
     _colorAnim = _createColorAnimation(_controller);
-    _controller.addListener(() => setState(() {}));
+    _controller.addListener(_onAnimationUpdate);
   }
 
   @override
@@ -115,8 +114,13 @@ class _RadioState<T> extends State<Radio<T>> with FocusableState<Radio<T>> {
     );
   }
 
+  void _onAnimationUpdate() {
+    setState(() {});
+  }
+
   @override
   void dispose() {
+    _controller.removeListener(_onAnimationUpdate);
     _controller.dispose();
     super.dispose();
   }
@@ -294,10 +298,7 @@ class RenderRadio extends RenderBox {
     _ensureStylesCached();
     _paintBackground(context, offset);
     _paintBorder(context, offset);
-    final String selectionChar = _getSelectionChar();
-    if (selectionChar.isNotEmpty) {
-      _paintIndicator(context, offset, selectionChar);
-    }
+    _paintIndicator(context, offset, _getSelectionChar());
   }
 
   void _ensureStylesCached() {
@@ -322,9 +323,8 @@ class RenderRadio extends RenderBox {
 
   void _paintBorder(PaintingContext context, Offset offset) {
     final TextStyle style = _cachedBorderStyle!;
-    const String borderChars =
-        '${BoxDrawingConstants.leftTee}${BoxDrawingConstants.rightTee}';
-    context.writeString(offset.x, offset.y, borderChars, style);
+    context.writeString(offset.x, offset.y, '(', style);
+    context.writeString(offset.x + 2, offset.y, ')', style);
   }
 
   void _paintIndicator(
@@ -351,5 +351,5 @@ class RenderRadio extends RenderBox {
   }
 
   String _getSelectionChar() =>
-      !enabled ? (selected ? '×' : '') : (selected ? '●' : '');
+      !enabled ? (selected ? '×' : ' ') : (selected ? '●' : ' ');
 }

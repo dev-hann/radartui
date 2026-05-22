@@ -100,7 +100,7 @@ class _ExpansionTileState extends State<ExpansionTile>
       _isControllerOwned = true;
     }
     if (widget.initiallyExpanded) {
-      _controller._isExpanded = true;
+      _controller.expand();
     }
     _controller.addListener(_onControllerChange);
   }
