@@ -1,6 +1,6 @@
 name: radartui
 description: A Flutter-inspired TUI framework for Dart. Build terminal UIs with declarative widgets, state management, diff-based rendering, and a rich widget library.
-version: 0.0.2
+version: 0.0.3
 repository: https://github.com/dev-hann/radartui
 issue_tracker: https://github.com/dev-hann/radartui/issues
 topics:

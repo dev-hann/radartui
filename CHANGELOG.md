@@ -1,5 +1,57 @@
 # Changelog
 
+## 0.0.3 (2026-05-23)
+
+### Foundation & Rendering
+- Fix `StyleCache._isValid` starting as true on empty cache
+- Fix `BoxConstraints` remove dead `asBoxConstraints` getter
+- Fix `RenderObject.layout()` propagation chain — use `markNeedsLayout()`
+- Fix `ContainerRenderObjectMixin.children` returning mutable internal list
+- Add assert for non-negative `Size` dimensions
+- Fix `EdgeInsets.only` parameter order to match Flutter (left, top, right, bottom)
+- Deprecate `Colors` class in favor of `Color` static constants
+- Fix `TextStyle.merge` doc comment to reflect union semantics
+
+### Widget Bug Fixes
+- Fix checkbox, radio, toggle border rendering (correct positions `[ ]`, `( )`)
+- Fix textfield vertical border not rendering (`bufferHeight` not passed)
+- Fix card `_resolveDimension` ignoring min/max constraints
+- Fix card and container negative child constraints
+- Fix `DropdownButton` null crash when value not in items + background width
+- Fix `DropdownButton` generic type `T` lost in menu render widget
+- Fix `LinearProgressIndicator` losing null value (indeterminate mode dead code)
+- Fix `DataTable` duplicate space-key handling and `_focusedRowIndex` out of bounds
+- Fix `DefaultTextStyle.maybeOf` never returning null
+- Fix `GridView` and `ListView` selectedIndex out of bounds on items change
+- Fix `FocusScope._removeNodeAtIndex` not decrementing currentIndex
+- Fix `FocusableState._swapFocusNode` not triggering onFocusChange
+- Fix `ScrollableState` recreating controller on every didUpdateWidget
+- Rename `ScrollController.animateTo` to `jumpTo` (no animation implemented)
+- Fix `FutureBuilder` unsafe cast `AsyncSnapshot<Never> as AsyncSnapshot<T>`
+- Fix `ExpansionTile` accessing controller private field instead of public API
+- Fix `ListView` MediaQuery dependency not registered
+- Fix `LayoutBuilder` unnecessary element unmount/remount on every layout
+
+### Framework Fixes
+- Fix `ComponentElement` never unmounting `_child` (memory leak)
+- Fix `InheritedElement.update` notifying dependents after rebuild (wrong order)
+- Fix `ParentDataElement` double-updating child in mount and update
+- Fix `TextFormField` not integrating with `Form` registration (now extends `FormField<String>`)
+
+### Stability Improvements
+- Fix `StreamBuilder` setState after dispose from stream callbacks
+- Fix `Checkbox`, `Radio`, `LinearProgressIndicator`, `CircularProgressIndicator` AnimationController listener leaks
+- Fix `RawKeyboard` crashing on piped stdin (try-catch for echoMode/lineMode)
+
+### Structural Improvements
+- Refactor `Divider` to extract shared base classes, eliminating ~80 lines of duplication
+- Unify `Colors.` → `Color.` usage across theme and dialog widgets
+- Fix `foundation.dart` export ordering
+
+### Documentation
+- Add `TESTING.md`, `ROADMAP.md`, `doc/ARCHITECTURE.md`, `doc/CONVENTIONS.md`
+- Update `AGENTS.md` with TDD enforcement, feature checklist, and super.key clarification
+
 ## 0.0.2 (2026-04-05)
 
 - Expand pubspec description for pub.dev compliance
